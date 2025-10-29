@@ -537,33 +537,52 @@ class CoolholeClient extends EventEmitter {
         await chatInput.focus();
         await this.page.waitForTimeout(30);
       }
-      
+
+      // Check element stability and visibility before clicking
+      const box = await chatInput.boundingBox();
+      if (!box || box.width < 10 || box.height < 10) {
+        console.error('❌ Chat input not visible or too small');
+        return false;
+      }
+
       // Verify focus is on the input
       const isFocused = await chatInput.evaluate(el => document.activeElement === el);
       if (!isFocused) {
         console.warn('⚠️ Chat input lost focus, forcing focus again');
-        await chatInput.click(); // Click to force focus
+        try {
+          await chatInput.click({ timeout: 2000 }); // Click to force focus, short timeout
+        } catch (err) {
+          console.error('❌ Could not click chat input:', err.message);
+          return false;
+        }
         await this.page.waitForTimeout(50);
       }
-      
+
       // Clear existing text
       await chatInput.evaluate(el => el.value = '');
-      
+
       // Use fill() instead of type() - faster and handles emojis better
       await chatInput.fill(message);
       await this.page.waitForTimeout(100);
-      
+
       // Ensure still focused before pressing Enter
       await chatInput.focus();
       await this.page.waitForTimeout(30);
-      
-      // Send message
-      await chatInput.press('Enter');
-      
+
+      // Try to send message, catch click/press timeouts
+      try {
+        console.log(`[CoolholeClient] Attempting to send chat: ${message}`);
+        await chatInput.press('Enter', { timeout: 3000 });
+        console.log(`[CoolholeClient] Chat input Enter pressed successfully.`);
+      } catch (err) {
+        console.error('❌ Error pressing Enter to send message:', err.message);
+        return false;
+      }
+
       // Update rate limiting
       this.lastMessageTime = Date.now();
-      
-      console.log('✅ Message sent successfully');
+
+      console.log(`[CoolholeClient] Message sent to chat: ${message}`);
       return true;
     } catch (error) {
       console.error('Error sending message:', error.message);

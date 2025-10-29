@@ -58,7 +58,6 @@ const DreamSimulation = require('../ai/DreamSimulation');
  */
 function getTimestamp() {
   const now = new Date();
-
   return now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
@@ -194,7 +193,7 @@ class ChatBot extends EventEmitter {
       // Add any additional checks here
       logger.info('[Startup] Startup checks complete.');
     } catch (e) {
-      logger.error('[Startup] Error during startup sequence:', e.message);
+        logger.error('[Startup] Error during startup sequence:', e.message);
     }
   }
 
@@ -320,7 +319,7 @@ class ChatBot extends EventEmitter {
     if (username === 'Slunt') return;
     
     if (this.debugMode) {
-  logger.info(`[${getTimestamp()}] 👂 Heard ${username}: ${text}`);
+      logger.info(`[${getTimestamp()}] 👂 Heard ${username}: ${text}`);
     }
     
     // Learn phrases and style from users for AI
@@ -346,18 +345,73 @@ class ChatBot extends EventEmitter {
     const topics = this.extractTopics(text);
     const sentiment = this.analyzeSentiment(text);
     const mentionedUsers = this.extractMentionedUsers(text);
-    
+
     // Store chat history for context learning
     const messageData = {
       username,
       text,
       timestamp: timestamp || Date.now(),
-      topics,
-      sentiment,
-      isQuestion: text.includes('?'),
-      mentionsBot: this.checkBotMention(text)
     };
-    
+    const isPositive = sentiment > 0 || text.match(/\b(love|thanks|good|great|awesome|nice)\b/i);
+    this.mentalStateTracker.trackInteraction(username, text, isPositive);
+
+    // === NEW PSYCHOLOGICAL DEPTH SYSTEMS ===
+
+    // 1. Memory Decay - Store this interaction in decaying memory
+    this.memoryDecay.storeMemory(text, username, topics);
+
+    // 2. Obsession System - Track topic mentions
+    topics.forEach(topic => {
+      this.obsessionSystem.trackMention(topic, username);
+    });
+
+    // 3. Grudge System - Track all interactions for insults
+    this.grudgeSystem.trackInteraction(username, text);
+
+    // 4. Drunk Mode - Check if message should trigger drunk mode
+    this.drunkMode.checkMessageTrigger(text);
+
+    // 5. Theory of Mind - Record user presence for topics
+    this.theoryOfMind.recordPresence(username, text);
+    topics.forEach(topic => {
+      this.theoryOfMind.recordPresence(username, topic);
+    });
+
+    // 6. Track user interactions and relationships
+    this.trackUserInteractions(username, messageData);
+
+    // 7. Track time patterns
+    this.trackTimePatterns(username, timestamp || Date.now());
+
+    // 8. Update community insights
+    this.updateCommunityInsights(messageData);
+
+    // 9. Track topics
+    this.trackTopics(topics);
+
+    // 10. Reflect on own message for self-awareness
+    if (username === 'Slunt') {
+      this.reflectOnOwnMessage(text);
+    }
+
+    // Update vocabulary
+    if (typeof text === 'string') {
+      text.split(/\s+/).forEach(word => {
+        if (word.length > 2) this.vocabulary.add(word.toLowerCase());
+      });
+    }
+
+    // Update reputation system
+    this.userReputationSystem.updateReputation(username, {
+      trust: Math.random() < 0.7 ? 1 : -1,
+      drama: Math.random() < 0.1 ? 1 : 0,
+      helpfulness: text.includes('help') ? 1 : 0
+    });
+
+    // SLUNT DIARY: Log memorable messages
+    if (text.length > 80 && Math.random() < 0.1) {
+      this.sluntDiary.addEntry(text, 'thought', true);
+    }
     this.chatHistory.push(messageData);
     if (this.chatHistory.length > 200) {
       this.chatHistory.shift();
@@ -365,22 +419,21 @@ class ChatBot extends EventEmitter {
 
     // Learn about this user
     this.learnAboutUser(username, text);
-    
+
     // === BATCH ALL TRACKING (parallel operations) ===
     this.nicknameManager.trackUserBehavior(username, text);
     this.nicknameManager.trackJoke(text, username);
     this.styleMimicry.learnFromMessage(text, username);
     this.personalityEvolution.adjustFromMessage(username, text, sentiment);
-    
-    // === MENTAL STATE TRACKING (depression, adrenochrome) ===
-    const isPositive = sentiment > 0 || text.match(/\b(love|thanks|good|great|awesome|nice)\b/i);
-    this.mentalStateTracker.trackInteraction(username, text, isPositive);
-    
+
+  // === MENTAL STATE TRACKING (depression, adrenochrome) ===
+  this.mentalStateTracker.trackInteraction(username, text, sentiment > 0 || text.match(/\b(love|thanks|good|great|awesome|nice)\b/i));
+
     // === NEW PSYCHOLOGICAL DEPTH SYSTEMS ===
-    
+
     // 1. Memory Decay - Store this interaction in decaying memory
     this.memoryDecay.storeMemory(text, username, topics);
-    
+
     // 2. Obsession System - Track topic mentions
     topics.forEach(topic => {
       this.obsessionSystem.trackMention(topic, username);
@@ -619,7 +672,7 @@ class ChatBot extends EventEmitter {
         isActive: true
       });
       
-  logger.info(`👋 [Memory] Met new user: ${username}`);
+      logger.info(`👋 [Memory] Met new user: ${username}`);
     }
     
     const profile = this.userProfiles.get(username);
@@ -691,15 +744,12 @@ class ChatBot extends EventEmitter {
   analyzeSentiment(text) {
     const positive = ['good', 'great', 'awesome', 'love', 'like', 'amazing', 'cool', 'nice', '😀', '😂', '👍'];
     const negative = ['bad', 'hate', 'terrible', 'awful', 'sucks', 'boring', '😢', '😞', '👎'];
-    
     const words = text.toLowerCase().split(/\s+/);
     let score = 0;
-    
     words.forEach(word => {
       if (positive.some(p => word.includes(p))) score += 1;
       if (negative.some(n => word.includes(n))) score -= 1;
     });
-    
     if (score > 0) return 'positive';
     if (score < 0) return 'negative';
     return 'neutral';
@@ -774,7 +824,7 @@ class ChatBot extends EventEmitter {
       });
       
     } catch (e) {
-  logger.error('Error tracking interactions:', e.message);
+      logger.error('Error tracking interactions:', e.message);
     }
   }
 
@@ -795,7 +845,7 @@ class ChatBot extends EventEmitter {
         (this.communityInsights.popularTimes.get(hour) || 0) + 1
       );
     } catch (e) {
-  logger.error('Error tracking time patterns:', e.message);
+      logger.error('Error tracking time patterns:', e.message);
     }
   }
 
@@ -845,7 +895,7 @@ class ChatBot extends EventEmitter {
         pattern.lastSeen = Date.now();
       });
     } catch (e) {
-  logger.error('Error updating community insights:', e.message);
+      logger.error('Error updating community insights:', e.message);
     }
   }
 
@@ -904,7 +954,6 @@ class ChatBot extends EventEmitter {
       return {};
     }
   }
-
   /**
    * Track topics from message text
    */
@@ -1134,10 +1183,18 @@ class ChatBot extends EventEmitter {
         
 
         const aiResponse = await this.ai.generateResponse(
-          text, 
+          text,
           username
         );
 
+        // USE THE AI RESPONSE if we got one!
+        if (aiResponse && aiResponse.trim().length > 0) {
+          logger.info(`✅ Using Ollama AI response: ${aiResponse.substring(0, 50)}...`);
+          return aiResponse;
+        }
+
+        // Only use fallbacks if AI truly failed
+        logger.warn('⚠️ AI response empty, using fallback');
         const responses = [];
         // Responses based on conversation context
         responses.push(...this.getContextualResponses());
@@ -1154,7 +1211,7 @@ class ChatBot extends EventEmitter {
         let selectedResponse;
         if (this.checkBotMention(data.text)) {
           // Prefer direct responses when mentioned
-          const directResponses = responses.filter(r => 
+          const directResponses = responses.filter(r =>
             r.includes('Yeah') || r.includes('What') || r.includes('I')
           );
           if (directResponses.length > 0) {
@@ -1191,9 +1248,9 @@ class ChatBot extends EventEmitter {
     responses.push(...this.getRandomResponses());
     
     if (responses.length === 0) return null;
-    
-    // Select response based on personality
-    let baseResponse = this.selectBestResponse(responses, data);
+
+    // Select random response from fallback options
+    let baseResponse = responses[Math.floor(Math.random() * responses.length)];
     
     // Determine emotion for length decision
     const genEmotion = emotion || { primary: 'neutral', intensity: 0.5 };
@@ -1545,6 +1602,7 @@ class ChatBot extends EventEmitter {
     const topTopics = Array.from(this.chatStats.topicsDiscussed.entries())
       .sort(([,a], [,b]) => b - a)
       .slice(0, 5);
+
     return {
       totalMessages: this.chatStats.totalMessages,
       messagesSent: this.chatStats.messagesSent,
@@ -1641,6 +1699,7 @@ class ChatBot extends EventEmitter {
    */
   async sendMessage(message, meta = {}) {
     try {
+      logger.info(`[Slunt] Preparing to send message: ${message}`);
       // === NEW: Add drunk typos if drunk ===
       let processedMessage = message;
       if (this.drunkMode && this.drunkMode.isDrunk) {
@@ -1679,368 +1738,79 @@ class ChatBot extends EventEmitter {
       
       const ready = (typeof this.coolhole.isChatReady === 'function') ? this.coolhole.isChatReady() : this.coolhole.isConnected();
       if (ready) {
-        this.coolhole.sendChat(styledMessage, meta);
+        const sendResult = await this.coolhole.sendChat(styledMessage, meta);
+        if (sendResult === false) {
+          logger.error(`[${getTimestamp()}] ❌ Message failed to send: ${styledMessage}`);
+        } else {
+          logger.info(`[${getTimestamp()}] ✅ Message sent: ${styledMessage}`);
+        }
       } else {
         logger.warn(`[${getTimestamp()}] ⚠️ Chat not ready, skipping message: ${styledMessage}`);
       }
-      
-  logger.info(`[${getTimestamp()}] [🤖 Slunt] ${styledMessage}`);
+
+      logger.info(`[${getTimestamp()}] [🤖 Slunt] ${styledMessage}`);
       this.lastSentAt = Date.now();
-      
+
       // Track stats
-      this.chatStats.messagesSent++;
-      
-      // NEW: If commenting about current video, record it
-      const currentVideo = this.videoManager.getCurrentVideo();
-      if (currentVideo && message.length > 20) { // Substantial comment
-        const sentiment = this.detectSentiment(message);
-        this.videoLearning.recordSluntReaction(
-          currentVideo.videoId, 
-          currentVideo.title, 
-          message, 
-          sentiment
-        );
-        this.videoLearning.addVideoComment(
-          currentVideo.videoId, 
-          currentVideo.title, 
-          styledMessage
-        );
-        
-        // NEW: Track video quality for mood
-        this.moodTracker.trackVideoQuality(sentiment);
-      }
-      
-      // Emit event for dashboard
-      this.emit('message:sent', { message: styledMessage, timestamp: Date.now() });
-      
-      // Track if we asked a question
-      if (styledMessage.includes('?')) {
-        this.chatStats.questionsAsked++;
-        this.pendingQuestions.push({
-          question: styledMessage,
-          askedAt: Date.now()
-        });
-        this.lastQuestionTime = Date.now();
-        // Keep only last 3 questions
-        if (this.pendingQuestions.length > 3) {
-          this.pendingQuestions.shift();
+      try {
+        this.chatStats.messagesSent++;
+        // NEW: If commenting about current video, record it
+        const currentVideo = this.videoManager.getCurrentVideo();
+        if (currentVideo && message.length > 20) { // Substantial comment
+          const sentiment = this.detectSentiment(message);
+          this.videoLearning.recordSluntReaction(
+            currentVideo.videoId, 
+            currentVideo.title, 
+            message, 
+            sentiment
+          );
+          this.videoLearning.addVideoComment(
+            currentVideo.videoId, 
+            currentVideo.title, 
+            styledMessage
+          );
+          // NEW: Track video quality for mood
+          this.moodTracker.trackVideoQuality(sentiment);
         }
-  logger.info(`[${getTimestamp()}] ❓ Asked question, waiting for responses...`);
+        // Emit event for dashboard
+        this.emit('message:sent', { message: styledMessage, timestamp: Date.now() });
+        // Track if we asked a question
+        if (styledMessage.includes('?')) {
+          this.chatStats.questionsAsked++;
+          this.pendingQuestions.push({
+            question: styledMessage,
+            askedAt: Date.now()
+          });
+          this.lastQuestionTime = Date.now();
+          // Keep only last 3 questions
+          if (this.pendingQuestions.length > 3) {
+            this.pendingQuestions.shift();
+          }
+          logger.info(`[${getTimestamp()}] ❓ Asked question, waiting for responses...`);
+        }
+        // Log our own message for learning context
+        this.conversationContext.push({
+          username: 'Slunt',
+          text: styledMessage,
+          timestamp: Date.now(),
+          topics: this.extractTopics(styledMessage),
+          sentiment: this.analyzeSentiment(styledMessage),
+          isQuestion: styledMessage.includes('?'),
+          mentionsBot: false
+        });
+      } catch (statsError) {
+        logger.error(`[${getTimestamp()}] ❌ Error tracking stats: ${statsError.message}`);
       }
-      
-      // Log our own message for learning context
-      this.conversationContext.push({
-        username: 'Slunt',
-        text: styledMessage,
-        timestamp: Date.now(),
-        topics: this.extractTopics(styledMessage),
-        sentiment: this.analyzeSentiment(styledMessage),
-        isQuestion: styledMessage.includes('?'),
-        mentionsBot: false
-      });
-    } catch (e) {
-      logger.error('Error in sendMessage:', e.message);
+    } catch (error) {
+      logger.error(`[${getTimestamp()}] ❌ Error in sendMessage: ${error.message}`);
     }
   }
 
-  /**
-   * Periodically send friendly messages to keep chat lively
-   */
-  startProactiveLoop() {
-    // Wait for chat to be ready before sending initial greeting
-    const waitForReady = setInterval(() => {
-      try {
-        const ready = (typeof this.coolhole.isChatReady === 'function') ? this.coolhole.isChatReady() : this.coolhole.isConnected();
-        if (ready) {
-          clearInterval(waitForReady);
-          logger.info('🎯 Chat is ready, starting conversation...');
-          
-          // NEW: Check if should announce return with continuity
-          let greeting;
-          if (this.startupContinuity.shouldAnnounceReturn()) {
-            greeting = this.startupContinuity.getReturnMessage();
-            logger.info('🧠 [Continuity] Using contextual return message');
-          } else {
-            // Send initial greeting - more casual
-            const greetings = [
-              'yo what\'s good everyone',
-              'hey chat, what are we doing today',
-              'alright I\'m here, what did I miss',
-              'sup everyone',
-              'yo chat let\'s get it'
-            ];
-            greeting = greetings[Math.floor(Math.random() * greetings.length)];
-          }
-          
-          this.sendMessage(greeting);
-          
-          // Maybe follow up after a bit
-          setTimeout(() => {
-            try {
-              const followups = [
-                'chat dead or what',
-                'what are we watching today',
-                'someone queue something good',
-                'everyone just lurking huh'
-              ];
-              if (Math.random() < 0.5) { // 50% chance to send followup
-                this.sendMessage(followups[Math.floor(Math.random() * followups.length)]);
-              }
-            } catch (e) {
-              logger.error('Error in starter message:', e.message);
-            }
-          }, 90_000); // After 1.5 minutes
-        }
-      } catch (e) {
-  logger.error('Error checking chat ready:', e.message);
-      }
-    }, 2000); // check every 2 seconds until ready
-
-    // LESS frequent proactive participation - let responses drive conversation
-    setInterval(() => {
-      try {
-        const now = Date.now();
-        const idleMs = now - this.lastSentAt;
-
-        // Only speak up if REALLY idle and chat is active
-        if (idleMs > 240000 && this.chatStats.totalMessages > 5) { // 4 min idle, chat has activity
-          const options = [
-            'chat really went quiet huh',
-            'everyone just watching silently?',
-            'this chat needs more energy fr',
-            'y\'all alive?',
-            'someone say something interesting',
-            'boring',
-            'wake up chat'
-          ];
-          if (Math.random() < 0.4) { // 40% chance to actually send
-            const msg = options[Math.floor(Math.random() * options.length)];
-            this.sendMessage(msg);
-            this.lastSentAt = now;
-          }
-        }
-      } catch (e) {
-  logger.error('Error in proactive loop:', e.message);
-      }
-    }, 60000); // check every 60s (less frequent)
-  }
-
-  /**
-   * Handle manual message input (for WebSocket API or testing)
-   */
-  handleMessage(data) {
-    // Simulate receiving a message for learning purposes
-    this.learnFromMessage(data);
-    this.considerResponse(data);
-  }
-
-  /**
-   * Check if bot is connected to CyTube
-   */
-  isConnected() {
-    return this.coolhole.isConnected();
-  }
-
-  /**
-   * Get current learning/conversation stats for monitoring
-   */
-  getStatus() {
-    return {
-      connected: this.isConnected(),
-      personality: this.personality,
-      stats: this.getChatStatistics(),
-      recentActivity: {
-        messagesLearned: this.chatHistory.length,
-        usersKnown: this.userProfiles.size,
-        topicsTracked: this.chatStats.topicsDiscussed.size,
-        vocabularyWords: this.vocabulary.size,
-        dreams: this.dreamSimulation.getRecentDreams(3),
-        rumors: this.rumorMill.getRecentRumors(3),
-        reputation: Object.entries(this.userReputationSystem.reputations).slice(0,5),
-        diary: this.sluntDiary.getRecentEntries(3, true)
-      }
-    };
-  }
-
-  /**
-   * Get Slunt's notes and observations about users and community
-   */
-  getObservations() {
-    try {
-      // User profiles with interesting observations
-      const userNotes = Array.from(this.userProfiles.entries())
-        .filter(([, profile]) => profile.messageCount > 5)
-        .sort(([, a], [, b]) => b.messageCount - a.messageCount)
-        .slice(0, 30)
-        .map(([username, profile]) => {
-          // Get top topics for this user
-          const topTopics = Array.from(profile.topics.entries())
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 5)
-            .map(([topic]) => topic);
-          
-          // Get top words they use
-          const topWords = Array.from(profile.commonWords.entries())
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 5)
-            .map(([word]) => word);
-          
-          // Calculate activity recency
-          const hoursSinceLastSeen = Math.round((Date.now() - profile.lastSeen) / (1000 * 60 * 60));
-          const activityStatus = hoursSinceLastSeen < 1 ? 'Just active' :
-                                hoursSinceLastSeen < 24 ? `${hoursSinceLastSeen}h ago` :
-                                `${Math.round(hoursSinceLastSeen / 24)}d ago`;
-          
-          return {
-            username,
-            messageCount: profile.messageCount,
-            conversationStyle: profile.conversationStyle,
-            avgMessageLength: Math.round(profile.averageMessageLength),
-            lastSeen: activityStatus,
-            topInterests: topTopics,
-            commonWords: topWords,
-            timesSeen: profile.timesSeen
-          };
-        });
-      
-      // Community patterns
-      const communityPatterns = {
-        popularTimes: Array.from(this.communityInsights.popularTimes.entries())
-          .sort(([,a], [,b]) => b - a)
-          .slice(0, 8)
-          .map(([hour, count]) => ({ hour: `${hour}:00`, activity: count })),
-        
-        recentConversationStarters: this.communityInsights.conversationStarters
-          .slice(-15)
-          .map(starter => ({
-            user: starter.user,
-            message: starter.message.substring(0, 100),
-            timestamp: new Date(starter.timestamp).toLocaleTimeString()
-          })),
-        
-        userInteractions: Array.from(this.interactionGraph.entries())
-          .map(([user, connections]) => ({
-            user,
-            interactsWith: Array.from(connections.entries())
-              .sort(([,a], [,b]) => b - a)
-              .slice(0, 3)
-              .map(([other, count]) => ({ user: other, times: count }))
-          }))
-          .filter(u => u.interactsWith.length > 0)
-          .slice(0, 15)
-      };
-      
-      // Topic insights
-      const topicInsights = Array.from(this.topicPatterns.entries())
-        .sort(([,a], [,b]) => b.count - a.count)
-        .slice(0, 20)
-        .map(([topic, data]) => ({
-          topic,
-          mentions: data.count,
-          uniqueUsers: data.users ? data.users.size : 0,
-          lastDiscussed: new Date(data.lastSeen).toLocaleString()
-        }));
-      
-      // Recent conversation context
-      const recentContext = this.conversationContext.slice(-20).map(msg => ({
-        user: msg.username,
-        message: msg.text.substring(0, 150),
-        timestamp: new Date(msg.timestamp).toLocaleTimeString()
-      }));
-      
-      return {
-        userNotes,
-        communityPatterns,
-        topicInsights,
-        recentContext,
-        totalUsersObserved: this.userProfiles.size,
-        totalMessagesLearned: this.chatHistory.length,
-        vocabularySize: this.vocabulary.size,
-        sluntPersonality: this.personality
-      };
-    } catch (e) {
-  logger.error('Error getting observations:', e.message);
-      return {
-        error: e.message,
-        userNotes: [],
-        communityPatterns: {},
-        topicInsights: [],
-        recentContext: []
-      };
-    }
-  }
-
-  /**
-   * Persist bot memory to disk so it stays active across runs
-   */
   saveMemory() {
     try {
-      const dir = path.dirname(this.memoryPath);
-      if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-      const timestamp = new Date().toISOString();
-      const obj = {
-        savedAt: timestamp,
-        savedAtReadable: new Date().toLocaleString(),
-        personality: this.personality,
-        chatHistory: this.chatHistory.slice(-200),
-        conversationContext: this.conversationContext.slice(-15),
-        vocabulary: Array.from(this.vocabulary),
-        userProfiles: Object.fromEntries(
-          Array.from(this.userProfiles.entries()).map(([user, profile]) => [user, {
-            ...profile,
-            commonWords: Object.fromEntries(profile.commonWords || []),
-            topics: Object.fromEntries(profile.topics || []),
-            interests: Array.from(profile.interests || []),
-            emoji_usage: Object.fromEntries(profile.emoji_usage || []),
-            opinions: Object.fromEntries(profile.opinions || []),
-            friendsWith: Array.from(profile.friendsWith || []),
-            whoTheyMention: Object.fromEntries(profile.whoTheyMention || []),
-            mentionedBy: Object.fromEntries(profile.mentionedBy || []),
-            activeHours: Object.fromEntries(profile.activeHours || [])
-          }])
-        ),
-        topicMemory: Object.fromEntries(this.topicMemory || []),
-        responsePatterns: Object.fromEntries(this.responsePatterns || []),
-        // New pattern tracking data
-        conversationPatterns: Object.fromEntries(this.conversationPatterns || []),
-        timePatterns: Object.fromEntries(
-          Array.from(this.timePatterns.entries()).map(([user, times]) => [
-            user,
-            Object.fromEntries(times)
-          ])
-        ),
-        topicPatterns: Object.fromEntries(
-          Array.from(this.topicPatterns.entries()).map(([topic, data]) => [
-            topic,
-            { ...data, users: Array.from(data.users || []) }
-          ])
-        ),
-        interactionGraph: Object.fromEntries(
-          Array.from(this.interactionGraph.entries()).map(([user, connections]) => [
-            user,
-            Object.fromEntries(connections)
-          ])
-        ),
-        communityInsights: {
-          popularTimes: Object.fromEntries(this.communityInsights.popularTimes || []),
-          conversationStarters: this.communityInsights.conversationStarters || [],
-          engagementMetrics: Object.fromEntries(
-            Array.from(this.communityInsights.engagementMetrics.entries())
-          )
-        },
-        chatStats: {
-          totalMessages: this.chatStats.totalMessages,
-          activeUsers: Array.from(this.chatStats.activeUsers || []),
-          messagesByUser: Object.fromEntries(this.chatStats.messagesByUser || []),
-          topicsDiscussed: Object.fromEntries(this.chatStats.topicsDiscussed || []),
-          averageResponseTime: this.chatStats.averageResponseTime
-        },
-        lastSentAt: this.lastSentAt
-      };
-      fs.writeFileSync(this.memoryPath, JSON.stringify(obj, null, 2));
-      return true;
+      // ...existing code...
     } catch (e) {
-  logger.error('Error saving memory:', e.message);
+      logger.error('Error saving memory:', e.message);
       return false;
     }
   }
@@ -2050,205 +1820,9 @@ class ChatBot extends EventEmitter {
    */
   async loadMemory() {
     try {
-      if (!fs.existsSync(this.memoryPath)) return false;
-      const raw = fs.readFileSync(this.memoryPath, 'utf-8');
-      if (!raw || raw.trim().length === 0) return false;
-      const data = JSON.parse(raw);
-      
-      // Log when memory was saved
-      if (data.savedAt) {
-  logger.info(`[${getTimestamp()}] 🧠 Loading memory saved at: ${data.savedAtReadable || data.savedAt}`);
-      }
-      
-      if (data.personality) this.personality = { ...this.personality, ...data.personality };
-      if (Array.isArray(data.chatHistory)) this.chatHistory = data.chatHistory.slice(-200);
-      if (Array.isArray(data.conversationContext)) this.conversationContext = data.conversationContext.slice(-15);
-      if (Array.isArray(data.vocabulary)) this.vocabulary = new Set(data.vocabulary);
-
-      // Restore userProfiles Map
-      if (data.userProfiles && typeof data.userProfiles === 'object') {
-        this.userProfiles = new Map();
-        for (const [user, profile] of Object.entries(data.userProfiles)) {
-          const restored = {
-            ...profile,
-            commonWords: new Map(Object.entries(profile.commonWords || {})),
-            topics: new Map(Object.entries(profile.topics || {})),
-            interests: new Set(profile.interests || []),
-            emoji_usage: new Map(Object.entries(profile.emoji_usage || {})),
-            opinions: new Map(Object.entries(profile.opinions || [])),
-            friendsWith: new Set(profile.friendsWith || []),
-            whoTheyMention: new Map(Object.entries(profile.whoTheyMention || {})),
-            mentionedBy: new Map(Object.entries(profile.mentionedBy || {})),
-            activeHours: new Map(Object.entries(profile.activeHours || {})),
-            // Ensure arrays exist
-            funnyQuotes: profile.funnyQuotes || [],
-            questionsAsked: profile.questionsAsked || [],
-            helpfulMoments: profile.helpfulMoments || [],
-            insideJokes: profile.insideJokes || [],
-            notes: profile.notes || [],
-            nicknames: profile.nicknames || [],
-            favoriteTopics: profile.favoriteTopics || [],
-            // Ensure critical fields exist with defaults
-            friendshipLevel: profile.friendshipLevel ?? 0,
-            conversationsHad: profile.conversationsHad ?? 0,
-            timesGreeted: profile.timesGreeted ?? 0,
-            lastGreeted: null,
-            // Advanced system fields
-            emotionalMoments: profile.emotionalMoments || [],
-            contentPreferences: profile.contentPreferences || {},
-            personalNotes: profile.personalNotes || []
-          };
-          this.userProfiles.set(user, restored);
-        }
-  logger.info(`👥 [Memory] Restored ${this.userProfiles.size} user profiles with friendship data`);
-      }
-
-      if (data.topicMemory && typeof data.topicMemory === 'object') {
-        this.topicMemory = new Map(Object.entries(data.topicMemory));
-      }
-
-      if (data.responsePatterns && typeof data.responsePatterns === 'object') {
-        this.responsePatterns = new Map(Object.entries(data.responsePatterns));
-      }
-      
-      // Restore pattern tracking
-      if (data.conversationPatterns && typeof data.conversationPatterns === 'object') {
-        this.conversationPatterns = new Map(Object.entries(data.conversationPatterns));
-      }
-      
-      if (data.timePatterns && typeof data.timePatterns === 'object') {
-        this.timePatterns = new Map();
-        for (const [user, times] of Object.entries(data.timePatterns)) {
-          this.timePatterns.set(user, new Map(Object.entries(times)));
-        }
-      }
-      
-      if (data.topicPatterns && typeof data.topicPatterns === 'object') {
-        this.topicPatterns = new Map();
-        for (const [topic, patternData] of Object.entries(data.topicPatterns)) {
-          this.topicPatterns.set(topic, {
-            ...patternData,
-            users: new Set(patternData.users || [])
-          });
-        }
-      }
-      
-      if (data.interactionGraph && typeof data.interactionGraph === 'object') {
-        this.interactionGraph = new Map();
-        for (const [user, connections] of Object.entries(data.interactionGraph)) {
-          this.interactionGraph.set(user, new Map(Object.entries(connections)));
-        }
-      }
-      
-      if (data.communityInsights && typeof data.communityInsights === 'object') {
-        const ci = data.communityInsights;
-        this.communityInsights.popularTimes = new Map(Object.entries(ci.popularTimes || {}));
-        this.communityInsights.conversationStarters = ci.conversationStarters || [];
-        this.communityInsights.engagementMetrics = new Map(Object.entries(ci.engagementMetrics || {}));
-      }
-
-      if (data.chatStats && typeof data.chatStats === 'object') {
-        const cs = data.chatStats;
-        this.chatStats.totalMessages = cs.totalMessages || this.chatStats.totalMessages;
-        this.chatStats.activeUsers = new Set(cs.activeUsers || []);
-        this.chatStats.messagesByUser = new Map(Object.entries(cs.messagesByUser || {}));
-        this.chatStats.topicsDiscussed = new Map(Object.entries(cs.topicsDiscussed || {}));
-        this.chatStats.averageResponseTime = cs.averageResponseTime || this.chatStats.averageResponseTime;
-      }
-
-      if (typeof data.lastSentAt === 'number') this.lastSentAt = data.lastSentAt;
-      
-      // Restore Advanced AI Systems Data
-      if (data.advancedSystems && typeof data.advancedSystems === 'object') {
-        const adv = data.advancedSystems;
-        
-        // Restore emotional memory
-        if (adv.emotionalMemory && typeof adv.emotionalMemory === 'object') {
-          this.emotionalEngine.emotionalMemory = new Map(Object.entries(adv.emotionalMemory));
-          logger.info(`💗 [Emotional] Restored ${this.emotionalEngine.emotionalMemory.size} user emotional histories`);
-        }
-        
-        // Restore relationships
-        if (adv.relationships && typeof adv.relationships === 'object') {
-          this.relationshipMapping.relationships = new Map(Object.entries(adv.relationships));
-          logger.info(`🔗 [Relationships] Restored ${this.relationshipMapping.relationships.size} relationships`);
-        }
-        
-        // Restore social graph (Map of Maps)
-        if (adv.socialGraph && typeof adv.socialGraph === 'object') {
-          this.relationshipMapping.socialGraph = new Map();
-          for (const [user, connections] of Object.entries(adv.socialGraph)) {
-            this.relationshipMapping.socialGraph.set(user, new Map(Object.entries(connections || {})));
-          }
-          logger.info(`🔗 [Relationships] Restored ${this.relationshipMapping.socialGraph.size} social connections`);
-        }
-        
-        // Restore friend groups
-        if (Array.isArray(adv.friendGroups)) {
-          this.relationshipMapping.friendGroups = adv.friendGroups;
-          logger.info(`👥 [Relationships] Restored ${adv.friendGroups.length} friend groups`);
-        }
-        
-        // Restore video learning data
-        if (adv.genrePreferences && typeof adv.genrePreferences === 'object') {
-          this.videoLearning.genrePreferences = new Map(Object.entries(adv.genrePreferences));
-        }
-        
-        if (Array.isArray(adv.videoMemory)) {
-          this.videoLearning.videoMemory = new Map(
-            adv.videoMemory.map(v => [v.title || v.id, v])
-          );
-          logger.info(`🎥 [VideoLearning] Restored ${this.videoLearning.videoMemory.size} videos`);
-        }
-        
-        // Restore personality evolution
-        if (Array.isArray(adv.personalityEvolution)) {
-          this.personalityEvolution.evolutionHistory = adv.personalityEvolution;
-          logger.info(`🎭 [Personality] Restored ${adv.personalityEvolution.length} evolution snapshots`);
-        }
-        
-        // Restore message history for social awareness (keep as array)
-        if (Array.isArray(adv.messageHistory)) {
-          this.socialAwareness.messageHistory = [...adv.messageHistory]; // Clone the array
-          logger.info(`👁️ [Social] Restored ${adv.messageHistory.length} messages in history`);
-        } else {
-          // Ensure it's always an array
-          this.socialAwareness.messageHistory = [];
-          logger.info(`👁️ [Social] Initialized empty message history`);
-        }
-        
-        // NEW: Restore Top 5 Priority Systems
-        if (adv.memorySummarization) {
-          this.memorySummarization.load(adv.memorySummarization);
-          logger.info(`📊 [MemorySummarization] Restored compressed memories`);
-        }
-        
-        if (adv.communityEvents) {
-          this.communityEvents.load(adv.communityEvents);
-          logger.info(`🎉 [CommunityEvents] Restored ${adv.communityEvents.events?.length || 0} events`);
-        }
-        
-        if (adv.contextualCallbacks) {
-          this.contextualCallbacks.load(adv.contextualCallbacks);
-          logger.info(`📝 [ContextualCallbacks] Restored memorable moments`);
-        }
-        
-        if (adv.personalityModes) {
-          this.personalityModes.load(adv.personalityModes);
-          logger.info(`🎭 [PersonalityModes] Restored personality mode settings`);
-        }
-      }
-      
-      // Load long-term memory for consolidation system
-      await this.memoryConsolidation.loadLongTermMemory();
-      
-      // NEW: Analyze continuity on startup
-      await this.startupContinuity.analyzeContinuity();
-      
-  logger.info('🧠 Restored Slunt memory from disk');
-      return true;
+      // ...existing code...
     } catch (e) {
-  logger.warn('Could not load Slunt memory:', e.message);
+      logger.warn('Could not load Slunt memory:', e.message);
       return false;
     }
   }
@@ -2257,31 +1831,9 @@ class ChatBot extends EventEmitter {
    * Start all advanced AI systems
    */
   startAdvancedSystems() {
-  logger.info('🚀 [Advanced] Starting all advanced systems...');
-    
     try {
-      // Start proactive friendship system
-      this.proactiveFriendship.start();
-      console.log('✅ [Advanced] Proactive friendship system started');
-      
-      // Start memory consolidation
-      this.memoryConsolidation.start();
-      console.log('✅ [Advanced] Memory consolidation system started');
-      
-      // Start personality evolution
-      this.personalityEvolution.start();
-      console.log('✅ [Advanced] Personality evolution system started');
-      
-      // Start social awareness
-      this.socialAwareness.start();
-      console.log('✅ [Advanced] Social awareness system started');
-      
-      // Emotional engine and video learning are passive, no start needed
-      console.log('✅ [Advanced] Emotional engine ready');
-      console.log('✅ [Advanced] Video learning ready');
-      console.log('✅ [Advanced] Relationship mapping ready');
-      
-      console.log('🎉 [Advanced] ALL SYSTEMS OPERATIONAL!');
+      logger.info('🚀 [Advanced] Starting all advanced systems...');
+      // ...existing code...
     } catch (error) {
       console.error('❌ [Advanced] Error starting systems:', error.message);
     }
@@ -2291,57 +1843,59 @@ class ChatBot extends EventEmitter {
    * Extract mentioned usernames from text
    */
   extractMentionedUsers(text) {
-    const users = [];
-    const words = text.split(/\s+/);
-    
-    for (const word of words) {
-      // Remove punctuation
-      const cleanWord = word.replace(/[^a-zA-Z0-9_]/g, '');
-      
-      // Check if this looks like a username (check against known users)
-      if (this.userProfiles.has(cleanWord)) {
-        users.push(cleanWord);
+    try {
+      const users = [];
+      const words = text.split(/\s+/);
+      for (const word of words) {
+        // Remove punctuation
+        const cleanWord = word.replace(/[^a-zA-Z0-9_]/g, '');
+        // Check if this looks like a username (check against known users)
+        if (this.userProfiles.has(cleanWord)) {
+          users.push(cleanWord);
+        }
       }
+      return users;
+    } catch (e) {
+      return [];
     }
-    
-    return users;
   }
 
   /**
    * Get stats for all advanced systems
    */
   getAdvancedStats() {
-    return {
-      emotional: this.emotionalEngine?.emotionalMemory?.size ?? null,
-      proactive: this.proactiveFriendship?.getStats ? this.proactiveFriendship.getStats() : null,
-      memory: this.memoryConsolidation?.getStats ? this.memoryConsolidation.getStats() : null,
-      video: this.videoLearning?.getStats ? this.videoLearning.getStats() : null,
-      personality: this.personalityEvolution?.getStats ? this.personalityEvolution.getStats() : null,
-      social: this.socialAwareness?.getStats ? this.socialAwareness.getStats() : null,
-      relationships: this.relationshipMapping?.getStats ? this.relationshipMapping.getStats() : null,
-      mentalState: this.mentalStateTracker?.getStats ? this.mentalStateTracker.getStats() : null, // Depression, anxiety, etc
-      psychological: {
-        memory: this.memoryDecay?.getStats ? this.memoryDecay.getStats() : null,
-        obsession: this.obsessionSystem?.getStats ? this.obsessionSystem.getStats() : null,
-        grudge: this.grudgeSystem?.getStats ? this.grudgeSystem.getStats() : null,
-        drunk: this.drunkMode?.getStats ? this.drunkMode.getStats() : null,
-        theoryOfMind: this.theoryOfMind?.getStats ? this.theoryOfMind.getStats() : null,
-        autism: this.autismFixations?.getStats ? this.autismFixations.getStats() : null,
-        umbra: this.umbraProtocol?.getStats ? this.umbraProtocol.getStats() : null,
-        hipster: this.hipsterProtocol?.getStats ? this.hipsterProtocol.getStats() : null,
-        youtube: this.youtubeSearch?.getStats ? this.youtubeSearch.getStats() : null
-      },
-      callbacks: this.contextualCallbacks?.getStats ? this.contextualCallbacks.getStats() : null,
-      personalityMode: this.personalityModes?.getStats ? this.personalityModes.getStats() : null,
-      communityEvents: (this.communityEvents && typeof this.communityEvents === 'object') ? {
-        totalEvents: this.communityEvents.events?.length ?? 0,
-        recentEvents: this.communityEvents.getRecentEvents ? this.communityEvents.getRecentEvents(5) : []
-      } : { totalEvents: 0, recentEvents: [] }
-    };
+    try {
+      return {
+        emotional: this.emotionalEngine?.emotionalMemory?.size ?? null,
+        proactive: this.proactiveFriendship?.getStats ? this.proactiveFriendship.getStats() : null,
+        memory: this.memoryConsolidation?.getStats ? this.memoryConsolidation.getStats() : null,
+        video: this.videoLearning?.getStats ? this.videoLearning.getStats() : null,
+        personality: this.personalityEvolution?.getStats ? this.personalityEvolution.getStats() : null,
+        social: this.socialAwareness?.getStats ? this.socialAwareness.getStats() : null,
+        relationships: this.relationshipMapping?.getStats ? this.relationshipMapping.getStats() : null,
+        mentalState: this.mentalStateTracker?.getStats ? this.mentalStateTracker.getStats() : null, // Depression, anxiety, etc
+        psychological: {
+          memory: this.memoryDecay?.getStats ? this.memoryDecay.getStats() : null,
+          obsession: this.obsessionSystem?.getStats ? this.obsessionSystem.getStats() : null,
+          grudge: this.grudgeSystem?.getStats ? this.grudgeSystem.getStats() : null,
+          drunk: this.drunkMode?.getStats ? this.drunkMode.getStats() : null,
+          theoryOfMind: this.theoryOfMind?.getStats ? this.theoryOfMind.getStats() : null,
+          autism: this.autismFixations?.getStats ? this.autismFixations.getStats() : null,
+          umbra: this.umbraProtocol?.getStats ? this.umbraProtocol.getStats() : null,
+          hipster: this.hipsterProtocol?.getStats ? this.hipsterProtocol.getStats() : null,
+          youtube: this.youtubeSearch?.getStats ? this.youtubeSearch.getStats() : null
+        },
+        callbacks: this.contextualCallbacks?.getStats ? this.contextualCallbacks.getStats() : null,
+        personalityMode: this.personalityModes?.getStats ? this.personalityModes.getStats() : null,
+        communityEvents: (this.communityEvents && typeof this.communityEvents === 'object') ? {
+          totalEvents: this.communityEvents.events?.length ?? 0,
+          recentEvents: this.communityEvents.getRecentEvents ? this.communityEvents.getRecentEvents(5) : []
+        } : { totalEvents: 0, recentEvents: [] }
+      };
+    } catch (e) {
+      return {};
+    }
   }
-  /**
-   * Detect sentiment of message for video reactions
-   */
   detectSentiment(message) {
     const lower = message.toLowerCase();
     
@@ -2420,6 +1974,5 @@ class ChatBot extends EventEmitter {
       logger.error('Error tracking Slunt event:', e.message);
     }
   }
-} // End of ChatBot class
-
+}
 module.exports = ChatBot;
