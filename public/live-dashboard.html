@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slunt Live Dashboard - Real-time Monitoring</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+
+        .status-badge.online {
+            background: #10b981;
+        }
+
+        .status-badge.offline {
+            background: #ef4444;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .chat-message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chat-message.bot {
+            background: rgba(59, 130, 246, 0.3);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .chat-message .username {
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        .chat-message .timestamp {
+            opacity: 0.6;
+            font-size: 0.8em;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 3px solid #8b5cf6;
+        }
+
+        .user-card .username {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #a78bfa;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .emote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .emote-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+
+        .vision-preview {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ocr-text {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
+        .personality-trait {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .trait-bar {
+            flex: 1;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+
+        .trait-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .log-entry {
+            padding: 5px;
+            margin: 3px 0;
+            font-size: 0.85em;
+            opacity: 0.9;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            padding-left: 8px;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .command-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .command-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .metric-highlight {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status" id="connectionStatus">
+        <span id="connectionText">Connecting...</span>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🤖 Slunt Live Dashboard</h1>
+            <div id="statusBadges">
+                <span class="status-badge offline" id="botStatus">Bot: Offline</span>
+                <span class="status-badge offline" id="visionStatus">Vision: Offline</span>
+                <span class="status-badge offline" id="explorerStatus">Explorer: Offline</span>
+                <span class="status-badge offline" id="cursorStatus">Cursor: Offline</span>
+            </div>
+            <div style="margin-top: 10px; opacity: 0.8;">
+                <span id="uptime">Uptime: 0m</span> | 
+                <span id="lastUpdate">Last update: Never</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- Bot Stats Card -->
+            <div class="card">
+                <h2>🤖 Bot Statistics</h2>
+                <div class="metric-highlight" id="totalMessages">0</div>
+                <div style="text-align: center; opacity: 0.8; margin-bottom: 15px;">Total Messages Seen</div>
+                <div class="stat">
+                    <span class="stat-label">Messages Sent:</span>
+                    <span class="stat-value" id="messagesSent">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Response Rate:</span>
+                    <span class="stat-value" id="responseRate">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Questions Asked:</span>
+                    <span class="stat-value" id="questionsAsked">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Users Tracked:</span>
+                    <span class="stat-value" id="usersTracked">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Topics Learned:</span>
+                    <span class="stat-value" id="topicsLearned">0</span>
+                </div>
+            </div>
+
+            <!-- Personality Card -->
+            <div class="card">
+                <h2>🧠 Personality Traits</h2>
+                <div class="personality-trait">
+                    <span>Chattiness</span>
+                    <div class="trait-bar"><div class="trait-fill" id="chattiness" style="width: 0%"></div></div>
+                    <span id="chattinessValue">0</span>
+                </div>
+                <div class="personality-trait">
+                    <span>Snarkiness</span>
+                    <div class="trait-bar"><div class="trait-fill" id="snarkiness" style="width: 0%"></div></div>
+                    <span id="snarkinessValue">0</span>
+                </div>
+                <div class="personality-trait">
+                    <span>Humor</span>
+                    <div class="trait-bar"><div class="trait-fill" id="humor" style="width: 0%"></div></div>
+                    <span id="humorValue">0</span>
+                </div>
+                <div class="personality-trait">
+                    <span>Chaos</span>
+                    <div class="trait-bar"><div class="trait-fill" id="chaos" style="width: 0%"></div></div>
+                    <span id="chaosValue">0</span>
+                </div>
+                <div class="personality-trait">
+                    <span>Helpfulness</span>
+                    <div class="trait-bar"><div class="trait-fill" id="helpfulness" style="width: 0%"></div></div>
+                    <span id="helpfulnessValue">0</span>
+                </div>
+            </div>
+
+            <!-- Recent Chat Card -->
+            <div class="card full-width">
+                <h2>💬 Live Chat Feed</h2>
+                <div class="chat-messages" id="chatMessages">
+                    <div style="text-align: center; opacity: 0.5; padding: 20px;">Waiting for messages...</div>
+                </div>
+            </div>
+
+            <!-- Active Users Card -->
+            <div class="card">
+                <h2>👥 Active Users</h2>
+                <div id="activeUsers">
+                    <div style="text-align: center; opacity: 0.5; padding: 20px;">No users yet...</div>
+                </div>
+            </div>
+
+            <!-- Vision Analysis Card -->
+            <div class="card">
+                <h2>👁️ Vision Analysis</h2>
+                <div class="stat">
+                    <span class="stat-label">Last Capture:</span>
+                    <span class="stat-value" id="lastCapture">Never</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Total Captures:</span>
+                    <span class="stat-value" id="totalCaptures">0</span>
+                </div>
+                <img id="latestScreenshot" class="vision-preview" style="display: none;" alt="Latest screenshot">
+                <div id="ocrText" class="ocr-text" style="display: none;"></div>
+            </div>
+
+            <!-- Explorer Discoveries Card -->
+            <div class="card">
+                <h2>🔍 Feature Explorer</h2>
+                <div class="stat">
+                    <span class="stat-label">Emotes Found:</span>
+                    <span class="stat-value" id="emotesFound">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Commands Found:</span>
+                    <span class="stat-value" id="commandsFound">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">UI Elements:</span>
+                    <span class="stat-value" id="uiElements">0</span>
+                </div>
+                <div id="emotesList" class="emote-grid"></div>
+            </div>
+
+            <!-- Cursor Activity Card -->
+            <div class="card">
+                <h2>🖱️ Cursor Activity</h2>
+                <div class="stat">
+                    <span class="stat-label">Total Interactions:</span>
+                    <span class="stat-value" id="cursorInteractions">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Emotes Used:</span>
+                    <span class="stat-value" id="cursorEmotesUsed">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Elements Discovered:</span>
+                    <span class="stat-value" id="cursorDiscovered">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last Action:</span>
+                    <span class="stat-value" id="cursorLastAction">None</span>
+                </div>
+                <button style="margin-top: 10px; padding: 10px; background: rgba(59, 130, 246, 0.3); border: 1px solid #3b82f6; border-radius: 5px; color: white; cursor: pointer;" onclick="triggerEmote()">
+                    😊 Trigger Random Emote
+                </button>
+            </div>
+
+            <!-- Commands Card -->
+            <div class="card full-width">
+                <h2>⚡ Available Commands</h2>
+                <div id="commandsList" class="command-list">
+                    <div style="text-align: center; opacity: 0.5; padding: 20px;">Discovering commands...</div>
+                </div>
+            </div>
+
+            <!-- Community Insights Card -->
+            <div class="card full-width">
+                <h2>📊 Community Insights</h2>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Most Active Time</h3>
+                        <div class="metric-highlight" style="font-size: 1.5em;" id="peakTime">--:--</div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Popular Topics</h3>
+                        <div id="popularTopics" style="font-size: 0.9em;"></div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Chat Velocity</h3>
+                        <div class="metric-highlight" style="font-size: 1.5em;" id="chatVelocity">0 msg/min</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Socket.IO connection
+        const socket = io('http://localhost:3001', {
+            transports: ['websocket', 'polling']
+        });
+
+        const state = {
+            startTime: Date.now(),
+            chatHistory: [],
+            maxChatHistory: 50
+        };
+
+        // Connection status
+        socket.on('connect', () => {
+            console.log('✅ Socket.IO connected');
+            updateConnectionStatus(true);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('❌ Socket.IO disconnected');
+            updateConnectionStatus(false);
+        });
+
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            const textEl = document.getElementById('connectionText');
+            
+            if (connected) {
+                statusEl.className = 'connection-status status-badge online pulse';
+                textEl.textContent = '🟢 Live';
+            } else {
+                statusEl.className = 'connection-status status-badge offline';
+                textEl.textContent = '🔴 Disconnected';
+            }
+        }
+
+        // Update uptime
+        setInterval(() => {
+            const minutes = Math.floor((Date.now() - state.startTime) / 60000);
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            
+            let uptimeText = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+            document.getElementById('uptime').textContent = `Uptime: ${uptimeText}`;
+        }, 10000);
+
+        // Chat event
+        socket.on('chat:message', (data) => {
+            console.log('📨 Chat message:', data);
+            addChatMessage(data);
+            updateLastUpdate();
+        });
+
+        // Bot stats update
+        socket.on('bot:stats', (stats) => {
+            console.log('📊 Bot stats:', stats);
+            updateBotStats(stats);
+            updateLastUpdate();
+        });
+
+        // Vision events
+        socket.on('vision:screenshot', (data) => {
+            console.log('📸 Vision screenshot:', data);
+            updateVisionAnalysis(data);
+            updateLastUpdate();
+        });
+
+        // Explorer events
+        socket.on('explorer:emotes', (emotes) => {
+            console.log('😊 Emotes discovered:', emotes);
+            updateEmotes(emotes);
+            updateLastUpdate();
+        });
+
+        socket.on('explorer:commands', (commands) => {
+            console.log('⚡ Commands discovered:', commands);
+            updateCommands(commands);
+            updateLastUpdate();
+        });
+
+        socket.on('explorer:discovery', (data) => {
+            console.log('🔍 Explorer discovery:', data);
+            updateExplorerStats(data);
+            updateLastUpdate();
+        });
+
+        // User profile updates
+        socket.on('bot:user_profile', (profile) => {
+            console.log('👤 User profile update:', profile);
+            updateUserProfile(profile);
+            updateLastUpdate();
+        });
+
+        // Community insights
+        socket.on('bot:community_insights', (insights) => {
+            console.log('📊 Community insights:', insights);
+            updateCommunityInsights(insights);
+            updateLastUpdate();
+        });
+
+        // Cursor events
+        socket.on('cursor:discovery', (data) => {
+            console.log('🖱️ Cursor discovery:', data);
+            updateCursorDiscovery(data);
+            updateLastUpdate();
+        });
+
+        socket.on('cursor:emoteUsed', (data) => {
+            console.log('😊 Cursor emote used:', data);
+            updateCursorEmoteUsed(data);
+            updateLastUpdate();
+        });
+
+        socket.on('cursor:interaction', (data) => {
+            console.log('🖱️ Cursor interaction:', data);
+            updateCursorInteraction(data);
+            updateLastUpdate();
+        });
+
+        function addChatMessage(data) {
+            const container = document.getElementById('chatMessages');
+            const isBot = data.username === 'Slunt' || data.username === 'slunt';
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-message ${isBot ? 'bot' : ''}`;
+            msgDiv.innerHTML = `
+                <span class="timestamp">[${new Date().toLocaleTimeString()}]</span>
+                <span class="username">${data.username}:</span>
+                <span>${escapeHtml(data.message)}</span>
+            `;
+            
+            container.insertBefore(msgDiv, container.firstChild);
+            
+            // Keep only recent messages
+            while (container.children.length > state.maxChatHistory) {
+                container.removeChild(container.lastChild);
+            }
+
+            // Remove placeholder
+            const placeholder = container.querySelector('[style*="text-align: center"]');
+            if (placeholder) placeholder.remove();
+        }
+
+        function updateBotStats(stats) {
+            document.getElementById('totalMessages').textContent = stats.totalMessages || 0;
+            document.getElementById('messagesSent').textContent = stats.messagesSent || 0;
+            document.getElementById('questionsAsked').textContent = stats.questionsAsked || 0;
+            document.getElementById('usersTracked').textContent = stats.usersTracked || 0;
+            document.getElementById('topicsLearned').textContent = stats.topicsLearned || 0;
+            
+            const responseRate = stats.totalMessages > 0 
+                ? Math.round((stats.messagesSent / stats.totalMessages) * 100)
+                : 0;
+            document.getElementById('responseRate').textContent = `${responseRate}%`;
+
+            // Update personality traits
+            if (stats.personality) {
+                updatePersonalityTrait('chattiness', stats.personality.chattiness);
+                updatePersonalityTrait('snarkiness', stats.personality.snarkiness);
+                updatePersonalityTrait('humor', stats.personality.humor);
+                updatePersonalityTrait('chaos', stats.personality.chaos);
+                updatePersonalityTrait('helpfulness', stats.personality.helpfulness);
+            }
+
+            // Update status badges
+            document.getElementById('botStatus').className = 'status-badge online';
+            document.getElementById('botStatus').textContent = 'Bot: Online';
+        }
+
+        function updatePersonalityTrait(trait, value) {
+            const percentage = Math.round(value * 100);
+            document.getElementById(trait).style.width = `${percentage}%`;
+            document.getElementById(`${trait}Value`).textContent = value.toFixed(2);
+        }
+
+        function updateVisionAnalysis(data) {
+            document.getElementById('lastCapture').textContent = new Date().toLocaleTimeString();
+            document.getElementById('totalCaptures').textContent = (parseInt(document.getElementById('totalCaptures').textContent) || 0) + 1;
+            
+            if (data.screenshot) {
+                const img = document.getElementById('latestScreenshot');
+                img.src = data.screenshot;
+                img.style.display = 'block';
+            }
+
+            if (data.ocrText) {
+                const ocrDiv = document.getElementById('ocrText');
+                ocrDiv.textContent = data.ocrText;
+                ocrDiv.style.display = 'block';
+            }
+
+            document.getElementById('visionStatus').className = 'status-badge online';
+            document.getElementById('visionStatus').textContent = 'Vision: Active';
+        }
+
+        function updateEmotes(emotes) {
+            const container = document.getElementById('emotesList');
+            container.innerHTML = '';
+            
+            emotes.slice(0, 20).forEach(emote => {
+                const div = document.createElement('div');
+                div.className = 'emote-item';
+                div.textContent = emote.name || emote;
+                container.appendChild(div);
+            });
+
+            document.getElementById('emotesFound').textContent = emotes.length;
+        }
+
+        function updateCommands(commands) {
+            const container = document.getElementById('commandsList');
+            container.innerHTML = '';
+            
+            commands.forEach(cmd => {
+                const div = document.createElement('div');
+                div.className = 'command-item';
+                div.textContent = cmd.name || cmd;
+                container.appendChild(div);
+            });
+
+            document.getElementById('commandsFound').textContent = commands.length;
+        }
+
+        function updateExplorerStats(data) {
+            if (data.emotes) document.getElementById('emotesFound').textContent = data.emotes;
+            if (data.commands) document.getElementById('commandsFound').textContent = data.commands;
+            if (data.uiElements) document.getElementById('uiElements').textContent = data.uiElements;
+
+            document.getElementById('explorerStatus').className = 'status-badge online';
+            document.getElementById('explorerStatus').textContent = 'Explorer: Active';
+        }
+
+        function updateUserProfile(profile) {
+            const container = document.getElementById('activeUsers');
+            let userEl = document.getElementById(`user-${profile.username}`);
+            
+            if (!userEl) {
+                // Remove placeholder
+                const placeholder = container.querySelector('[style*="text-align: center"]');
+                if (placeholder) placeholder.remove();
+
+                userEl = document.createElement('div');
+                userEl.id = `user-${profile.username}`;
+                userEl.className = 'user-card';
+                container.appendChild(userEl);
+            }
+
+            userEl.innerHTML = `
+                <div class="username">${profile.username}</div>
+                <div class="user-stats">
+                    <span>💬 ${profile.messageCount || 0} msgs</span>
+                    <span>📚 ${profile.topicsDiscussed || 0} topics</span>
+                </div>
+            `;
+        }
+
+        function updateCommunityInsights(insights) {
+            if (insights.peakTime) {
+                document.getElementById('peakTime').textContent = insights.peakTime;
+            }
+
+            if (insights.popularTopics && insights.popularTopics.length > 0) {
+                const topicsDiv = document.getElementById('popularTopics');
+                topicsDiv.innerHTML = insights.popularTopics.slice(0, 5)
+                    .map(topic => `<div style="margin: 3px 0;">• ${topic}</div>`)
+                    .join('');
+            }
+
+            if (insights.chatVelocity !== undefined) {
+                document.getElementById('chatVelocity').textContent = `${insights.chatVelocity} msg/min`;
+            }
+        }
+
+        function updateCursorDiscovery(data) {
+            document.getElementById('cursorDiscovered').textContent = data.total || 0;
+            document.getElementById('cursorStatus').className = 'status-badge online';
+            document.getElementById('cursorStatus').textContent = 'Cursor: Active';
+        }
+
+        function updateCursorEmoteUsed(data) {
+            const current = parseInt(document.getElementById('cursorEmotesUsed').textContent) || 0;
+            document.getElementById('cursorEmotesUsed').textContent = current + 1;
+            document.getElementById('cursorLastAction').textContent = `Used emote: ${data.emote}`;
+        }
+
+        function updateCursorInteraction(data) {
+            const current = parseInt(document.getElementById('cursorInteractions').textContent) || 0;
+            document.getElementById('cursorInteractions').textContent = current + 1;
+            document.getElementById('cursorLastAction').textContent = `${data.type}: ${data.name}`;
+        }
+
+        function triggerEmote() {
+            fetch('/api/cursor/emote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Emote triggered:', data);
+            })
+            .catch(err => console.error('Failed to trigger emote:', err));
+        }
+
+        function updateLastUpdate() {
+            document.getElementById('lastUpdate').textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Initial load - fetch current stats
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                console.log('📊 Initial dashboard data:', data);
+                if (data.bot) updateBotStats(data.bot);
+                if (data.vision) updateVisionAnalysis(data.vision);
+                if (data.explorer) updateExplorerStats(data.explorer);
+                if (data.cursor) {
+                    document.getElementById('cursorInteractions').textContent = data.cursor.totalInteractions || 0;
+                    document.getElementById('cursorEmotesUsed').textContent = data.cursor.uniqueEmotesUsed || 0;
+                    document.getElementById('cursorDiscovered').textContent = data.cursor.discoveredElements || 0;
+                    if (data.cursor.totalInteractions > 0) {
+                        document.getElementById('cursorStatus').className = 'status-badge online';
+                        document.getElementById('cursorStatus').textContent = 'Cursor: Active';
+                    }
+                }
+            })
+            .catch(err => console.error('Failed to load initial data:', err));
+    </script>
+</body>
+</html>

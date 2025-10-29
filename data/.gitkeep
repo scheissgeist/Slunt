@@ -1,0 +1,4 @@
+# Keep this directory in git but ignore the contents
+# This ensures the data directory exists for the bot to store CoolPoints data
+*
+!.gitkeep

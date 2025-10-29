@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node -c:*)",
+      "Bash(for file in src/ai/*.js)",
+      "Bash(do echo \"Checking: $file\")",
+      "Bash(echo:*)",
+      "Bash(done)",
+      "Bash(if [ ! -d \"data\" ])",
+      "Bash(then mkdir -p data)",
+      "Bash(else echo \"Data directory exists\")",
+      "Bash(fi)",
+      "Bash(if [ ! -d \"logs\" ])",
+      "Bash(then mkdir -p logs)",
+      "Bash(else echo \"Logs directory exists\")",
+      "Bash(timeout 10 node:*)",
+      "Bash(dir /B \"c:\\Users\\seanw\\Desktop\\Slunt\")",
+      "Bash(dir:*)",
+      "Read(//c//**)",
+      "Bash(timeout 15 node:*)",
+      "Bash(node:*)",
+      "Bash(taskkill:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(start-slunt-clean.bat)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

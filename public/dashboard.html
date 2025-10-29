@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🤖 Slunt's Brain - Comprehensive Dashboard</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+        
+        .container { 
+            max-width: 1800px; 
+            margin: 0 auto; 
+        }
+        
+        .header { 
+            text-align: center; 
+            margin-bottom: 30px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            margin-bottom: 10px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 10px 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 20px;
+            font-size: 1.2em;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 20px;
+            border: 1px solid rgba(255,255,255,0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            animation: slideUp 0.5s ease-out;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+        }
+        
+        .card-icon {
+            font-size: 2em;
+            margin-right: 15px;
+        }
+        
+        .card-title {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .stat-label {
+            color: #e0e0e0;
+            font-weight: 500;
+        }
+        
+        .stat-value {
+            font-weight: bold;
+            color: #00ff88;
+            font-size: 1.1em;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00d4ff);
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .list-item {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            border-left: 3px solid #00ff88;
+        }
+        
+        .chart-container {
+            width: 100%;
+            height: 200px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+            margin: 15px 0;
+            padding: 10px;
+        }
+        
+        .emote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+        
+        .emote-item {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.5em;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .emote-item:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.2);
+        }
+        
+        .log-entry {
+            padding: 5px;
+            margin: 3px 0;
+            background: rgba(0,0,0,0.3);
+            border-radius: 5px;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+            opacity: 0;
+            animation: fadeIn 0.5s forwards;
+        }
+        
+        .log-timestamp {
+            color: #888;
+            margin-right: 10px;
+        }
+        
+        .personality-trait {
+            display: inline-block;
+            margin: 5px;
+            padding: 5px 15px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+        
+        .video-preview {
+            background: rgba(0,0,0,0.4);
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .screenshot-preview {
+            width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .badge-success { background: #00ff88; color: #000; }
+        .badge-warning { background: #ffa500; color: #000; }
+        .badge-info { background: #00d4ff; color: #000; }
+        
+        .scrollable {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .scrollable::-webkit-scrollbar-track {
+            background: rgba(0,0,0,0.2);
+            border-radius: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar-thumb:hover {
+            background: rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>🤖 Slunt's Brain Dashboard</h1>
+            <div class="status-badge">
+                <span id="statusIndicator">●</span>
+                <span id="statusText">Connecting...</span>
+                <span id="uptime">00:00:00</span>
+            </div>
+        </div>
+
+        <!-- Main Stats Grid -->
+        <div class="grid">
+            <!-- Bot Status Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🧠</span>
+                    <span class="card-title">Bot Intelligence</span>
+                </div>
+                <div id="botStats">
+                    <div class="stat-row">
+                        <span class="stat-label">Messages Learned</span>
+                        <span class="stat-value" id="messagesLearned">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Active Users</span>
+                        <span class="stat-value" id="activeUsers">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Vocabulary Size</span>
+                        <span class="stat-value" id="vocabularySize">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">AI Responses</span>
+                        <span class="stat-value" id="aiResponses">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personality Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">😊</span>
+                    <span class="card-title">Personality</span>
+                </div>
+                <div id="personality">
+                    <div class="stat-row">
+                        <span class="stat-label">Chattiness</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="chattiness" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Friendliness</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="friendliness" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Curiosity</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="curiosity" style="width: 0%">0%</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Explorer Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🔍</span>
+                    <span class="card-title">Feature Explorer</span>
+                </div>
+                <div id="explorer">
+                    <div class="stat-row">
+                        <span class="stat-label">Emotes Discovered</span>
+                        <span class="stat-value" id="emotesDiscovered">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Emotes Used</span>
+                        <span class="stat-value" id="emotesUsed">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Videos Queued</span>
+                        <span class="stat-value" id="videosQueued">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Features Explored</span>
+                        <span class="stat-value" id="featuresExplored">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Vision Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">👁️</span>
+                    <span class="card-title">Vision Analysis</span>
+                </div>
+                <div id="vision">
+                    <div class="stat-row">
+                        <span class="stat-label">Screenshots Taken</span>
+                        <span class="stat-value" id="screenshots">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Scene Changes</span>
+                        <span class="stat-value" id="sceneChanges">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Text Detected</span>
+                        <span class="stat-value" id="textDetected">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Current Video</span>
+                        <span class="stat-value" id="currentVideo">Unknown</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Info Grid -->
+        <div class="grid">
+            <!-- Learning Progress Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">📈</span>
+                    <span class="card-title">Learning Progress</span>
+                </div>
+                <div id="learning" class="scrollable">
+                    <div class="list-item">
+                        <strong>Chat Patterns:</strong> Analyzing conversation flow...
+                    </div>
+                    <div class="list-item">
+                        <strong>Topic Trends:</strong> Detecting popular topics...
+                    </div>
+                    <div class="list-item">
+                        <strong>User Relationships:</strong> Mapping social graph...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Discovered Emotes Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">😄</span>
+                    <span class="card-title">Discovered Emotes</span>
+                </div>
+                <div id="emotes" class="emote-grid scrollable">
+                    <div class="emote-item">🔍</div>
+                    <div class="emote-item">...</div>
+                </div>
+            </div>
+
+            <!-- Visual Insights Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🎬</span>
+                    <span class="card-title">Visual Insights</span>
+                </div>
+                <div id="visualInsights" class="scrollable">
+                    <div class="video-preview">
+                        <strong>Now Watching:</strong>
+                        <div id="nowWatching">Detecting...</div>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Avg Brightness</span>
+                        <span class="stat-value" id="avgBrightness">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Scene Change Rate</span>
+                        <span class="stat-value" id="sceneRate">0/min</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Log Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">📋</span>
+                    <span class="card-title">Recent Activity</span>
+                </div>
+                <div id="activityLog" class="scrollable">
+                    <div class="log-entry">
+                        <span class="log-timestamp">[00:00:00]</span>
+                        <span>Waiting for activity...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Community Insights Grid -->
+        <div class="grid">
+            <!-- Top Users Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">👥</span>
+                    <span class="card-title">Top Users</span>
+                </div>
+                <div id="topUsers" class="scrollable">
+                    <div class="list-item">Analyzing user activity...</div>
+                </div>
+            </div>
+
+            <!-- Popular Topics Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">💬</span>
+                    <span class="card-title">Trending Topics</span>
+                </div>
+                <div id="topicTrends" class="scrollable">
+                    <div class="list-item">Detecting trends...</div>
+                </div>
+            </div>
+
+            <!-- Video History Card -->
+            <div class="card">
+                <div class="card-header">
+                    <span class="card-icon">🎥</span>
+                    <span class="card-title">Video History</span>
+                </div>
+                <div id="videoHistory" class="scrollable">
+                    <div class="list-item">No videos detected yet...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        const startTime = Date.now();
+        let connectionAttempts = 0;
+        let isConnected = false;
+        
+        // Uptime counter
+        setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const hours = Math.floor(elapsed / 3600000);
+            const minutes = Math.floor((elapsed % 3600000) / 60000);
+            const seconds = Math.floor((elapsed % 60000) / 1000);
+            document.getElementById('uptime').textContent = 
+                `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }, 1000);
+        
+        // Socket connection
+        socket.on('connect', () => {
+            console.log('✅ Socket.IO connected!', socket.id);
+            isConnected = true;
+            connectionAttempts = 0;
+            document.getElementById('statusIndicator').style.color = '#00ff88';
+            document.getElementById('statusText').textContent = 'Online (Real-time)';
+            addLog('🔌 Connected to server - Real-time updates enabled');
+            loadDashboardData();
+        });
+        
+        socket.on('connect_error', (error) => {
+            connectionAttempts++;
+            console.error('❌ Socket.IO connection error:', error);
+            console.log(`Attempt ${connectionAttempts} - Falling back to polling mode`);
+            if (connectionAttempts === 1) {
+                addLog('⚠️ Real-time connection failed - Using polling mode');
+            }
+        });
+        
+        socket.on('disconnect', () => {
+            console.log('❌ Socket.IO disconnected');
+            isConnected = false;
+            document.getElementById('statusIndicator').style.color = '#ffaa00';
+            document.getElementById('statusText').textContent = 'Online (Polling)';
+            addLog('⚠️ Real-time connection lost - Switched to polling mode');
+        });
+        
+        socket.on('reconnect', (attemptNumber) => {
+            console.log(`✅ Socket.IO reconnected after ${attemptNumber} attempts`);
+            addLog(`🔌 Reconnected - Real-time updates restored`);
+        });
+        
+        // Load dashboard data
+        async function loadDashboardData() {
+            try {
+                const response = await fetch('/api/dashboard');
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                const data = await response.json();
+                updateDashboard(data);
+                
+                // Update connection status based on successful fetch
+                if (!isConnected) {
+                    document.getElementById('statusIndicator').style.color = '#ffaa00';
+                    document.getElementById('statusText').textContent = 'Online (Polling)';
+                }
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                document.getElementById('statusIndicator').style.color = '#ff6666';
+                document.getElementById('statusText').textContent = 'Connection Error';
+                addLog(`❌ Failed to fetch data: ${error.message}`);
+            }
+        }
+        
+        // Update dashboard with data
+        function updateDashboard(data) {
+            console.log('📊 Updating dashboard with data:', data);
+            
+            // Bot stats
+            if (data.bot && data.bot.stats) {
+                document.getElementById('messagesLearned').textContent = data.bot.stats.totalMessages || 0;
+                document.getElementById('activeUsers').textContent = data.bot.stats.activeUsers?.size || 0;
+                document.getElementById('vocabularySize').textContent = data.bot.status?.vocabularySize || 0;
+            }
+            
+            // Personality
+            if (data.bot && data.bot.personality) {
+                const p = data.bot.personality;
+                updateProgress('chattiness', p.chattiness || 0);
+                updateProgress('friendliness', p.friendliness || 0);
+                updateProgress('curiosity', p.curiosity || 0);
+            }
+            
+            // Explorer
+            if (data.explorer) {
+                if (data.explorer.progress) {
+                    document.getElementById('emotesDiscovered').textContent = data.explorer.progress.emotesDiscovered || 0;
+                    document.getElementById('emotesUsed').textContent = data.explorer.progress.emotesUsed || 0;
+                    document.getElementById('videosQueued').textContent = data.explorer.progress.videosQueued || 0;
+                    document.getElementById('featuresExplored').textContent = data.explorer.progress.featuresExplored || 0;
+                }
+                
+                // Update emotes
+                if (data.explorer.features && data.explorer.features.emotes) {
+                    updateEmotes(data.explorer.features.emotes);
+                }
+            }
+            
+            // Vision
+            if (data.vision) {
+                document.getElementById('screenshots').textContent = data.vision.totalScreenshots || 0;
+                document.getElementById('sceneChanges').textContent = data.vision.totalSceneChanges || 0;
+                document.getElementById('textDetected').textContent = data.vision.totalTextDetected || 0;
+                document.getElementById('currentVideo').textContent = data.vision.currentVideo || 'Unknown';
+                document.getElementById('nowWatching').textContent = data.vision.currentVideo || 'Detecting...';
+                document.getElementById('avgBrightness').textContent = Math.round(data.vision.averageBrightness || 0);
+                document.getElementById('sceneRate').textContent = (data.vision.sceneChangeRate || 0).toFixed(2) + '/min';
+            }
+            
+            // Top users
+            if (data.bot && data.bot.stats && data.bot.stats.messagesByUser) {
+                updateTopUsers(data.bot.stats.messagesByUser);
+            }
+            
+            // Add timestamp
+            const lastUpdate = new Date().toLocaleTimeString();
+            console.log(`✅ Dashboard updated at ${lastUpdate}`);
+        }
+        
+        // Update progress bar
+        function updateProgress(id, value) {
+            const percent = Math.round(value * 100);
+            const el = document.getElementById(id);
+            el.style.width = percent + '%';
+            el.textContent = percent + '%';
+        }
+        
+        // Update emotes display
+        function updateEmotes(emotes) {
+            const container = document.getElementById('emotes');
+            container.innerHTML = '';
+            emotes.slice(0, 20).forEach(emote => {
+                const div = document.createElement('div');
+                div.className = 'emote-item';
+                div.textContent = emote.name;
+                div.title = emote.type;
+                container.appendChild(div);
+            });
+        }
+        
+        // Update top users
+        function updateTopUsers(messagesByUser) {
+            const container = document.getElementById('topUsers');
+            container.innerHTML = '';
+            const sorted = Array.from(messagesByUser.entries())
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            sorted.forEach(([user, count]) => {
+                const div = document.createElement('div');
+                div.className = 'list-item';
+                div.innerHTML = `<strong>${user}</strong>: ${count} messages`;
+                container.appendChild(div);
+            });
+        }
+        
+        // Add log entry
+        function addLog(message) {
+            const container = document.getElementById('activityLog');
+            const entry = document.createElement('div');
+            entry.className = 'log-entry';
+            const time = new Date().toLocaleTimeString();
+            entry.innerHTML = `<span class="log-timestamp">[${time}]</span><span>${message}</span>`;
+            container.insertBefore(entry, container.firstChild);
+            
+            // Keep only last 50 entries
+            while (container.children.length > 50) {
+                container.removeChild(container.lastChild);
+            }
+        }
+        
+        // Socket event listeners
+        socket.on('explorer:emotes', (data) => {
+            console.log('📡 Received explorer:emotes:', data);
+            addLog(`🔍 Discovered ${data.totalFound} emotes`);
+            if (data.emotes) {
+                updateEmotes(data.emotes);
+            }
+            loadDashboardData();
+        });
+        
+        socket.on('explorer:progress', (data) => {
+            console.log('📡 Received explorer:progress:', data);
+            if (data.emotesDiscovered !== undefined) {
+                document.getElementById('emotesDiscovered').textContent = data.emotesDiscovered;
+            }
+            if (data.emotesUsed !== undefined) {
+                document.getElementById('emotesUsed').textContent = data.emotesUsed;
+            }
+            if (data.videosQueued !== undefined) {
+                document.getElementById('videosQueued').textContent = data.videosQueued;
+            }
+            if (data.featuresExplored !== undefined) {
+                document.getElementById('featuresExplored').textContent = data.featuresExplored;
+            }
+        });
+        
+        socket.on('vision:screenshot', (data) => {
+            console.log('📡 Received vision:screenshot:', data);
+            addLog(`📸 Screenshot captured and analyzed`);
+            // Update screenshot count
+            const current = parseInt(document.getElementById('screenshots').textContent) || 0;
+            document.getElementById('screenshots').textContent = current + 1;
+        });
+        
+        socket.on('vision:text', (data) => {
+            console.log('📡 Received vision:text:', data);
+            addLog(`📝 Text detected: ${data.text.slice(0, 3).join(', ')}${data.text.length > 3 ? '...' : ''}`);
+        });
+        
+        socket.on('vision:sceneChange', (data) => {
+            console.log('📡 Received vision:sceneChange:', data);
+            addLog(`🎬 Scene change detected!`);
+            const current = parseInt(document.getElementById('sceneChanges').textContent) || 0;
+            document.getElementById('sceneChanges').textContent = current + 1;
+        });
+        
+        socket.on('vision:video', (data) => {
+            console.log('📡 Received vision:video:', data);
+            addLog(`🎥 Now playing: ${data.title}`);
+            document.getElementById('currentVideo').textContent = data.title;
+            document.getElementById('nowWatching').textContent = data.title;
+        });
+        
+        socket.on('vision:fullAnalysis', (data) => {
+            console.log('📡 Received vision:fullAnalysis:', data);
+            if (data.totalScreenshots !== undefined) {
+                document.getElementById('screenshots').textContent = data.totalScreenshots;
+            }
+            if (data.totalSceneChanges !== undefined) {
+                document.getElementById('sceneChanges').textContent = data.totalSceneChanges;
+            }
+            if (data.totalTextDetected !== undefined) {
+                document.getElementById('textDetected').textContent = data.totalTextDetected;
+            }
+            if (data.currentVideo) {
+                document.getElementById('currentVideo').textContent = data.currentVideo;
+                document.getElementById('nowWatching').textContent = data.currentVideo;
+            }
+            if (data.averageBrightness !== undefined) {
+                document.getElementById('avgBrightness').textContent = Math.round(data.averageBrightness);
+            }
+            if (data.sceneChangeRate !== undefined) {
+                document.getElementById('sceneRate').textContent = data.sceneChangeRate.toFixed(2) + '/min';
+            }
+        });
+        
+        socket.on('explorer:emoteUsed', (data) => {
+            console.log('📡 Received explorer:emoteUsed:', data);
+            addLog(`😄 Used emote: ${data.emote.name}`);
+        });
+        
+        socket.on('explorer:videoQueued', (data) => {
+            console.log('📡 Received explorer:videoQueued:', data);
+            addLog(`📹 Queued video: ${data.title}`);
+        });
+        
+        // Refresh dashboard every 10 seconds
+        setInterval(loadDashboardData, 10000);
+        
+        // Initial load
+        loadDashboardData();
+    </script>
+</body>
+</html>
