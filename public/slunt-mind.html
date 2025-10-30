@@ -212,6 +212,40 @@
             opacity: 0.8;
         }
 
+        .platform-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-left: 5px;
+            color: white;
+        }
+
+        .platform-badge.twitch {
+            background: #9146ff;
+        }
+
+        .platform-badge.discord {
+            background: #5865f2;
+        }
+
+        .platform-badge.coolhole {
+            background: #ff1493;
+        }
+
+        .cross-platform-tag {
+            display: inline-block;
+            font-size: 0.9em;
+            margin-left: 5px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
         .strength-bar {
             height: 6px;
             background: #1e2538;
@@ -943,9 +977,22 @@
                 
                 const user1 = rel.users[0] === 'Slunt' ? rel.users[1] : rel.users[0];
                 
+                // Generate platform badges
+                let platformBadges = '';
+                if (rel.platforms && rel.platforms[user1]) {
+                    const platforms = Array.isArray(rel.platforms[user1]) ? rel.platforms[user1] : [];
+                    platforms.forEach(platform => {
+                        const badge = platform === 'twitch' ? 'T' : platform === 'discord' ? 'D' : 'C';
+                        platformBadges += `<span class="platform-badge ${platform}">${badge}</span>`;
+                    });
+                }
+                
+                // Add cross-platform indicator if applicable
+                const crossPlatformTag = rel.crossPlatform ? '<span class="cross-platform-tag">🌐</span>' : '';
+                
                 card.innerHTML = `
                     <div class="relationship-header">
-                        <div class="username">${user1}</div>
+                        <div class="username">${user1} ${platformBadges} ${crossPlatformTag}</div>
                         <div class="opinion-tag ${opinion}">${opinion}</div>
                     </div>
                     <div class="relationship-stats">
@@ -1286,10 +1333,29 @@
             const user = rel.users[0] === 'Slunt' ? rel.users[1] : rel.users[0];
             const opinion = determineOpinion(rel.strength);
             
+            // Generate platform badges
+            let platformInfo = 'No platform data';
+            if (rel.platforms && rel.platforms[user]) {
+                const platforms = Array.isArray(rel.platforms[user]) ? rel.platforms[user] : [];
+                if (platforms.length > 0) {
+                    platformInfo = platforms.map(p => {
+                        const name = p.charAt(0).toUpperCase() + p.slice(1);
+                        const badge = p === 'twitch' ? 'T' : p === 'discord' ? 'D' : 'C';
+                        return `<span class="platform-badge ${p}">${badge}</span> ${name}`;
+                    }).join(', ');
+                }
+            }
+            
+            const crossPlatformIndicator = rel.crossPlatform ? '<div style="color: #10b981; margin-top: 10px;">🌐 Cross-Platform User (seen on multiple platforms)</div>' : '';
+            
             document.getElementById('modalUsername').textContent = user;
             document.getElementById('modalContent').innerHTML = `
                 <div style="margin: 20px 0;">
                     <div class="opinion-tag ${opinion}" style="display: inline-block; margin-bottom: 15px;">${opinion}</div>
+                    
+                    <h3>Platforms</h3>
+                    <div style="margin-bottom: 15px;">${platformInfo}</div>
+                    ${crossPlatformIndicator}
                     
                     <h3>Statistics</h3>
                     <div class="relationship-stats" style="display: flex; flex-direction: column; gap: 10px;">

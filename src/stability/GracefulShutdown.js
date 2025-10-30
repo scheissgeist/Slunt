@@ -212,6 +212,39 @@ class GracefulShutdown {
 
     const closePromises = [];
 
+    // Stop timers and intervals
+    logger.info('⏱️ [Shutdown] Stopping timers and intervals...');
+    
+    // Stop PersonalityScheduler
+    if (this.chatBot.personalityScheduler && typeof this.chatBot.personalityScheduler.stop === 'function') {
+      try {
+        this.chatBot.personalityScheduler.stop();
+        logger.info('✅ [Shutdown] PersonalityScheduler stopped');
+      } catch (err) {
+        logger.error(`❌ [Shutdown] PersonalityScheduler stop failed: ${err.message}`);
+      }
+    }
+    
+    // Stop StreamStatusMonitor
+    if (global.streamMonitor && typeof global.streamMonitor.stop === 'function') {
+      try {
+        global.streamMonitor.stop();
+        logger.info('✅ [Shutdown] StreamStatusMonitor stopped');
+      } catch (err) {
+        logger.error(`❌ [Shutdown] StreamStatusMonitor stop failed: ${err.message}`);
+      }
+    }
+    
+    // Stop SentimentAnalyzer if it has a stop method
+    if (this.chatBot.sentimentAnalyzer && typeof this.chatBot.sentimentAnalyzer.stop === 'function') {
+      try {
+        this.chatBot.sentimentAnalyzer.stop();
+        logger.info('✅ [Shutdown] SentimentAnalyzer stopped');
+      } catch (err) {
+        logger.error(`❌ [Shutdown] SentimentAnalyzer stop failed: ${err.message}`);
+      }
+    }
+
     // Discord
     if (this.chatBot.discordClient && this.chatBot.discordClient.client) {
       closePromises.push(

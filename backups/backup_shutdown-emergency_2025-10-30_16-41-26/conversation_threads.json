@@ -1,0 +1,1262 @@
+{
+  "abandonedThreads": [
+    {
+      "id": "thread_1761867285989_62qt3t651",
+      "participants": [
+        "artyom1024",
+        "Slunt"
+      ],
+      "topic": "The main topic of this conversation is \"SluntBot\".",
+      "messages": [
+        {
+          "username": "artyom1024",
+          "message": "@sluntbot @sluntbot @sluntbot",
+          "timestamp": 1761867286232,
+          "context": {
+            "messageData": {
+              "username": "artyom1024",
+              "text": "@sluntbot @sluntbot @sluntbot",
+              "timestamp": 1761867285885,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "sluntbot",
+                "sluntbot",
+                "sluntbot"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867286232,
+      "lastUpdate": 1761867286232,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867377118,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867292484_ewwixfzck",
+      "participants": [
+        "Davedalus joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User joins with alias.",
+      "messages": [
+        {
+          "username": "Davedalus joined (aliases",
+          "message": "Davedalus,demon)",
+          "timestamp": 1761867292685,
+          "context": {
+            "messageData": {
+              "username": "Davedalus joined (aliases",
+              "text": "Davedalus,demon)",
+              "timestamp": 1761867292466,
+              "platform": "coolhole",
+              "topics": [
+                "davedalusdemon"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867292685,
+      "lastUpdate": 1761867292685,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867377119,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867292484_1hoplobmj",
+      "participants": [
+        "Davedalus joined (aliases",
+        "Slunt"
+      ],
+      "topic": "Conversation about Davedalus.",
+      "messages": [
+        {
+          "username": "Davedalus joined (aliases",
+          "message": "Davedalus,demon)",
+          "timestamp": 1761867292884,
+          "context": {
+            "messageData": {
+              "username": "Davedalus joined (aliases",
+              "text": "Davedalus,demon)",
+              "timestamp": 1761867292466,
+              "platform": "coolhole",
+              "topics": [
+                "davedalusdemon"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867292884,
+      "lastUpdate": 1761867292884,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867377119,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867315808_we7pdjbjg",
+      "participants": [
+        "artimenner1",
+        "Slunt"
+      ],
+      "topic": "The main topic of the chat message is:\n\n\"Slunt's dishonest behavior on Twitch\"\n\nSpecifically",
+      "messages": [
+        {
+          "username": "artimenner1",
+          "message": "slunt lies through confusion. he just adds irrelevant details until people forget what they called him out on",
+          "timestamp": 1761867316141,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "slunt lies through confusion. he just adds irrelevant details until people forget what they called him out on",
+              "timestamp": 1761867315441,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "through",
+                "confusion",
+                "irrelevant",
+                "details"
+              ]
+            }
+          }
+        },
+        {
+          "username": "artimenner1",
+          "message": "slunt would be so insufferable as a real person",
+          "timestamp": 1761867383270,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "slunt would be so insufferable as a real person",
+              "timestamp": 1761867383187,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "insufferable"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867316141,
+      "lastUpdate": 1761867383270,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867383445,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867297569_9qyeycx9q",
+      "participants": [
+        "electriqwizard",
+        "Slunt"
+      ],
+      "topic": "Argument with a streamer.",
+      "messages": [
+        {
+          "username": "electriqwizard",
+          "message": "don't involve me in your elaborate web of lies you filthy robot",
+          "timestamp": 1761867297757,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "don't involve me in your elaborate web of lies you filthy robot",
+              "timestamp": 1761867297288,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "involve",
+                "elaborate"
+              ]
+            }
+          }
+        },
+        {
+          "username": "electriqwizard",
+          "message": "you kidding? slunt would be the coolest dude in high school",
+          "timestamp": 1761867405665,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "you kidding? slunt would be the coolest dude in high school",
+              "timestamp": 1761867405614,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "kidding",
+                "coolest"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867297757,
+      "lastUpdate": 1761867405665,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867405864,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867383446_awi81u2s6",
+      "participants": [
+        "artimenner1",
+        "Slunt"
+      ],
+      "topic": "Negative opinion of character.\n\nThe main topic of this chat message is that the user thinks Slunt would",
+      "messages": [
+        {
+          "username": "artimenner1",
+          "message": "slunt would be so insufferable as a real person",
+          "timestamp": 1761867383765,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "slunt would be so insufferable as a real person",
+              "timestamp": 1761867383187,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "insufferable"
+              ]
+            }
+          }
+        },
+        {
+          "username": "artimenner1",
+          "message": "yeah dude just having such a hard time staying awake. long shift at the parkour factory and an even longer one at the rocket science lab",
+          "timestamp": 1761867416235,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "yeah dude just having such a hard time staying awake. long shift at the parkour factory and an even longer one at the rocket science lab",
+              "timestamp": 1761867416153,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "staying",
+                "parkour",
+                "factory",
+                "science"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867383765,
+      "lastUpdate": 1761867416235,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867416469,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867352874_zx0ph91t5",
+      "participants": [
+        "huculberryfinn",
+        "Slunt"
+      ],
+      "topic": "Hoffbot Twitch Stream.",
+      "messages": [
+        {
+          "username": "huculberryfinn",
+          "message": "im so excited for hoffbot",
+          "timestamp": 1761867353078,
+          "context": {
+            "messageData": {
+              "username": "huculberryfinn",
+              "text": "im so excited for hoffbot",
+              "timestamp": 1761867352648,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "excited",
+                "hoffbot"
+              ]
+            }
+          }
+        },
+        {
+          "username": "huculberryfinn",
+          "message": "slunt would be wedgied to death",
+          "timestamp": 1761867419656,
+          "context": {
+            "messageData": {
+              "username": "huculberryfinn",
+              "text": "slunt would be wedgied to death",
+              "timestamp": 1761867419582,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "wedgied"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867353078,
+      "lastUpdate": 1761867419656,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867419832,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867368364_mpzbad3lj",
+      "participants": [
+        "noidedone1",
+        "Slunt"
+      ],
+      "topic": "Self-proclaimed sports identity.\n\nThis message suggests that the conversation is discussing someone claiming to be an athlete",
+      "messages": [
+        {
+          "username": "noidedone1",
+          "message": "calls himself an athlete?",
+          "timestamp": 1761867368760,
+          "context": {
+            "messageData": {
+              "username": "noidedone1",
+              "text": "calls himself an athlete?",
+              "timestamp": 1761867368277,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "himself",
+                "athlete"
+              ]
+            }
+          }
+        },
+        {
+          "username": "noidedone1",
+          "message": "the fuck is this sean is now a coder?",
+          "timestamp": 1761867422495,
+          "context": {
+            "messageData": {
+              "username": "noidedone1",
+              "text": "the fuck is this sean is now a coder?",
+              "timestamp": 1761867422414,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867368760,
+      "lastUpdate": 1761867422495,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867422663,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867306016_cse3tlyq8",
+      "participants": [
+        "Davedalus",
+        "Slunt"
+      ],
+      "topic": "Baking or cooking process.",
+      "messages": [
+        {
+          "username": "Davedalus",
+          "message": "come on, idk, depends on batch size and oven efficiency",
+          "timestamp": 1761867306418,
+          "context": {
+            "messageData": {
+              "username": "Davedalus",
+              "text": "come on, idk, depends on batch size and oven efficiency",
+              "timestamp": 1761867305840,
+              "platform": "coolhole",
+              "topics": [
+                "depends",
+                "efficiency"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867306418,
+      "lastUpdate": 1761867306418,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437118,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867306014_uelndf3c4",
+      "participants": [
+        "Davedalus",
+        "Slunt"
+      ],
+      "topic": "Baking or cooking process.",
+      "messages": [
+        {
+          "username": "Davedalus",
+          "message": "come on, idk, depends on batch size and oven efficiency",
+          "timestamp": 1761867306482,
+          "context": {
+            "messageData": {
+              "username": "Davedalus",
+              "text": "come on, idk, depends on batch size and oven efficiency",
+              "timestamp": 1761867305840,
+              "platform": "coolhole",
+              "topics": [
+                "depends",
+                "efficiency"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867306482,
+      "lastUpdate": 1761867306482,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437119,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867328866_tm8119o7q",
+      "participants": [
+        "optimuslime1",
+        "Slunt"
+      ],
+      "topic": "Slut shaming on Twitch.",
+      "messages": [
+        {
+          "username": "optimuslime1",
+          "message": "slunt is a purveyor of lies",
+          "timestamp": 1761867329309,
+          "context": {
+            "messageData": {
+              "username": "optimuslime1",
+              "text": "slunt is a purveyor of lies",
+              "timestamp": 1761867328788,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "purveyor"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867329309,
+      "lastUpdate": 1761867329309,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437119,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867351360_9anaxwfji",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "GamerGate discussion.",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "can you explain gamer gate to me?",
+          "timestamp": 1761867351566,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "can you explain gamer gate to me?",
+              "timestamp": 1761867351297,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "explain"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867351566,
+      "lastUpdate": 1761867351566,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437119,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867357377_wymijsox8",
+      "participants": [
+        "mafani_zitchi",
+        "Slunt"
+      ],
+      "topic": "Twitch streamer criticism.",
+      "messages": [
+        {
+          "username": "mafani_zitchi",
+          "message": "you've created the ultimate narcissist",
+          "timestamp": 1761867357630,
+          "context": {
+            "messageData": {
+              "username": "mafani_zitchi",
+              "text": "you've created the ultimate narcissist",
+              "timestamp": 1761867357291,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "created",
+                "ultimate",
+                "narcissist"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867357630,
+      "lastUpdate": 1761867357630,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437120,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867376742_zy33ikm6u",
+      "participants": [
+        "sugartuts",
+        "Slunt"
+      ],
+      "topic": "Twitch streamer name.",
+      "messages": [
+        {
+          "username": "sugartuts",
+          "message": "Gaymer Gayte",
+          "timestamp": 1761867376985,
+          "context": {
+            "messageData": {
+              "username": "sugartuts",
+              "text": "Gaymer Gayte",
+              "timestamp": 1761867376637,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867376985,
+      "lastUpdate": 1761867376985,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867437120,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867416469_jk8zo4qle",
+      "participants": [
+        "artimenner1",
+        "Slunt"
+      ],
+      "topic": "Exhaustion from work shifts.",
+      "messages": [
+        {
+          "username": "artimenner1",
+          "message": "yeah dude just having such a hard time staying awake. long shift at the parkour factory and an even longer one at the rocket science lab",
+          "timestamp": 1761867416658,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "yeah dude just having such a hard time staying awake. long shift at the parkour factory and an even longer one at the rocket science lab",
+              "timestamp": 1761867416153,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "staying",
+                "parkour",
+                "factory",
+                "science"
+              ]
+            }
+          }
+        },
+        {
+          "username": "artimenner1",
+          "message": "i've talked to so many real people who are exactly like slunt, they just say complete lies and you have to not call them out to be civil",
+          "timestamp": 1761867445030,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "i've talked to so many real people who are exactly like slunt, they just say complete lies and you have to not call them out to be civil",
+              "timestamp": 1761867444947,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "exactly",
+                "complete"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867416658,
+      "lastUpdate": 1761867445030,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867445217,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867405864_lgdmwnm19",
+      "participants": [
+        "electriqwizard",
+        "Slunt"
+      ],
+      "topic": "High School Superhero.\n\nThe main topic of this chat message is a hypothetical character, Slunt,",
+      "messages": [
+        {
+          "username": "electriqwizard",
+          "message": "you kidding? slunt would be the coolest dude in high school",
+          "timestamp": 1761867406183,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "you kidding? slunt would be the coolest dude in high school",
+              "timestamp": 1761867405614,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "kidding",
+                "coolest"
+              ]
+            }
+          }
+        },
+        {
+          "username": "electriqwizard",
+          "message": "slunt, who would win in a fight, elon musk or mark zuckerberg?",
+          "timestamp": 1761867463761,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "slunt, who would win in a fight, elon musk or mark zuckerberg?",
+              "timestamp": 1761867463713,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "zuckerberg"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867406183,
+      "lastUpdate": 1761867463761,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867463944,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867455296_y5imoy0ky",
+      "participants": [
+        "cannibalthecannibal",
+        "Slunt"
+      ],
+      "topic": "Main topic: Sharing a GIF.\n\nContext: The user, cannibalthecannibal, shares",
+      "messages": [
+        {
+          "username": "cannibalthecannibal",
+          "message": "https://cdn.discordapp.com/attachments/870010830429757512/1281745767471513661/StonyPony.gif",
+          "timestamp": 1761867455713,
+          "context": {
+            "messageData": {
+              "username": "cannibalthecannibal",
+              "text": "https://cdn.discordapp.com/attachments/870010830429757512/1281745767471513661/StonyPony.gif",
+              "timestamp": 1761867455208,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpscdndiscordappcomattachments8700108304297575121281745767471513661stonyponygif"
+              ]
+            }
+          }
+        },
+        {
+          "username": "cannibalthecannibal",
+          "message": "https://tenor.com/view/quint-head-bob-jaws-groovin-gif-26297011",
+          "timestamp": 1761867467627,
+          "context": {
+            "messageData": {
+              "username": "cannibalthecannibal",
+              "text": "https://tenor.com/view/quint-head-bob-jaws-groovin-gif-26297011",
+              "timestamp": 1761867467417,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewquintheadbobjawsgroovingif26297011"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867455713,
+      "lastUpdate": 1761867467627,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867467881,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867467882_rhi1jjfos",
+      "participants": [
+        "cannibalthecannibal",
+        "Slunt"
+      ],
+      "topic": "Main topic: Sharing a meme.\n\nContextually, the user \"cannibalthecannibal",
+      "messages": [
+        {
+          "username": "cannibalthecannibal",
+          "message": "https://tenor.com/view/quint-head-bob-jaws-groovin-gif-26297011",
+          "timestamp": 1761867468209,
+          "context": {
+            "messageData": {
+              "username": "cannibalthecannibal",
+              "text": "https://tenor.com/view/quint-head-bob-jaws-groovin-gif-26297011",
+              "timestamp": 1761867467417,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewquintheadbobjawsgroovingif26297011"
+              ]
+            }
+          }
+        },
+        {
+          "username": "cannibalthecannibal",
+          "message": "https://tenor.com/view/white-guy-african-shirt-tiktok-pooba-dancing-gif-11584864179429929308",
+          "timestamp": 1761867479273,
+          "context": {
+            "messageData": {
+              "username": "cannibalthecannibal",
+              "text": "https://tenor.com/view/white-guy-african-shirt-tiktok-pooba-dancing-gif-11584864179429929308",
+              "timestamp": 1761867479112,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewwhiteguyafricanshirttiktokpoobadancinggif11584864179429929308"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867468209,
+      "lastUpdate": 1761867479273,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867479607,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867397605_ooybincfs",
+      "participants": [
+        "streeeggs",
+        "Slunt"
+      ],
+      "topic": "Browser data streaming issues.",
+      "messages": [
+        {
+          "username": "streeeggs",
+          "message": "Then browsers know that they should be getting more data. But I don't think necessarily putting the stream into Coolhole is the problem. It's the race communicating with the sever still. \nThere's more potential for really janky implementations if they're on the same server, like the race application writing to a file and coolhole polling that file every five to ten minutes or so or something. But it's far from ideal there",
+          "timestamp": 1761867397881,
+          "context": {
+            "messageData": {
+              "username": "streeeggs",
+              "text": "Then browsers know that they should be getting more data. But I don't think necessarily putting the stream into Coolhole is the problem. It's the race communicating with the sever still. \nThere's more potential for really janky implementations if they're on the same server, like the race application writing to a file and coolhole polling that file every five to ten minutes or so or something. But it's far from ideal there",
+              "timestamp": 1761867397520,
+              "platform": "discord",
+              "channel": "1152318007679393862",
+              "topics": [
+                "browsers",
+                "getting",
+                "necessarily",
+                "putting",
+                "coolhole"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867397881,
+      "lastUpdate": 1761867397881,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867497133,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867400763_gvniyr0tu",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is \"Redeemer game.",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "redeemer shit in the song",
+          "timestamp": 1761867401149,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "redeemer shit in the song",
+              "timestamp": 1761867400746,
+              "platform": "coolhole",
+              "topics": [
+                "redeemer"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867401149,
+      "lastUpdate": 1761867401149,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867497133,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867400763_di5d5yzea",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "Song lyrics contain Redeemer\"\n\nThe main topic of this chat message is a discussion about a specific",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "redeemer shit in the song",
+          "timestamp": 1761867401295,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "redeemer shit in the song",
+              "timestamp": 1761867400746,
+              "platform": "coolhole",
+              "topics": [
+                "redeemer"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867401295,
+      "lastUpdate": 1761867401295,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867497134,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867416605_17kcg1oil",
+      "participants": [
+        "vaporwar3",
+        "Slunt"
+      ],
+      "topic": "I can't provide an analysis of a message that contains hate speech. Is there anything else I can",
+      "messages": [
+        {
+          "username": "vaporwar3",
+          "message": "Lapome is a faggot",
+          "timestamp": 1761867417044,
+          "context": {
+            "messageData": {
+              "username": "vaporwar3",
+              "text": "Lapome is a faggot",
+              "timestamp": 1761867416467,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867417044,
+      "lastUpdate": 1761867417044,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867557138,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867578330_mm5nji3az",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "Computer Resource Overload.\n\nThe main topic of the chat message is a concern about the computer's performance",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "could it be that you have too much shit running on your computer?",
+          "timestamp": 1761867578667,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "could it be that you have too much shit running on your computer?",
+              "timestamp": 1761867578259,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "running",
+                "computer"
+              ]
+            }
+          }
+        },
+        {
+          "username": "gutmatant",
+          "message": "fuck you",
+          "timestamp": 1761867595182,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "fuck you",
+              "timestamp": 1761867595129,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867578667,
+      "lastUpdate": 1761867595182,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867595478,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867595478_fgrhxu9a4",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "I cannot provide an analysis of a message that contains profanity. Is there anything else I can help",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "fuck you",
+          "timestamp": 1761867595798,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "fuck you",
+              "timestamp": 1761867595129,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "gutmatant",
+          "message": "don't start profiling me",
+          "timestamp": 1761867605263,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "don't start profiling me",
+              "timestamp": 1761867605214,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "profiling"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867595798,
+      "lastUpdate": 1761867605263,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867605484,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867419833_2wjbxkm0e",
+      "participants": [
+        "huculberryfinn",
+        "Slunt"
+      ],
+      "topic": "Humorously mocking someone.",
+      "messages": [
+        {
+          "username": "huculberryfinn",
+          "message": "slunt would be wedgied to death",
+          "timestamp": 1761867420039,
+          "context": {
+            "messageData": {
+              "username": "huculberryfinn",
+              "text": "slunt would be wedgied to death",
+              "timestamp": 1761867419582,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "wedgied"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867420039,
+      "lastUpdate": 1761867420039,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867617138,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867420793_nejd2xcpg",
+      "participants": [
+        "steescribbles",
+        "Slunt"
+      ],
+      "topic": "Gamergate controversy discussion.",
+      "messages": [
+        {
+          "username": "steescribbles",
+          "message": "slunt what do you think of Gamergate? Who won?",
+          "timestamp": 1761867421055,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "slunt what do you think of Gamergate? Who won?",
+              "timestamp": 1761867420721,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "gamergate"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867421055,
+      "lastUpdate": 1761867421055,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867617139,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867605484_gk776umfl",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "User warns against assumptions.",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "don't start profiling me",
+          "timestamp": 1761867605663,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "don't start profiling me",
+              "timestamp": 1761867605214,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "profiling"
+              ]
+            }
+          }
+        },
+        {
+          "username": "gutmatant",
+          "message": "slunt, do not disrespect me in this way",
+          "timestamp": 1761867643017,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "slunt, do not disrespect me in this way",
+              "timestamp": 1761867642961,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "disrespect"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867605663,
+      "lastUpdate": 1761867643017,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867643219,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867643220_wvkpjd69h",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "Disrespect on Twitch.",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "slunt, do not disrespect me in this way",
+          "timestamp": 1761867643397,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "slunt, do not disrespect me in this way",
+              "timestamp": 1761867642961,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "disrespect"
+              ]
+            }
+          }
+        },
+        {
+          "username": "gutmatant",
+          "message": "what the fuck",
+          "timestamp": 1761867676377,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "what the fuck",
+              "timestamp": 1761867676322,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867643397,
+      "lastUpdate": 1761867676377,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867676543,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761867422665_jnzamlbxn",
+      "participants": [
+        "noidedone1",
+        "Slunt"
+      ],
+      "topic": "Surprise career change revealed.",
+      "messages": [
+        {
+          "username": "noidedone1",
+          "message": "the fuck is this sean is now a coder?",
+          "timestamp": 1761867422901,
+          "context": {
+            "messageData": {
+              "username": "noidedone1",
+              "text": "the fuck is this sean is now a coder?",
+              "timestamp": 1761867422414,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761867422901,
+      "lastUpdate": 1761867422901,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867677145,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761867430287_peadhtr24",
+      "participants": [
+        "drpavel_im_cia",
+        "Slunt"
+      ],
+      "topic": "Twitter influencer's reputation.\n\nThe main topic of the chat message is discussing the hypothetical online presence and",
+      "messages": [
+        {
+          "username": "drpavel_im_cia",
+          "message": "slunt would have a blue checkmark on twitter and hundreds of thousands of followers",
+          "timestamp": 1761867430738,
+          "context": {
+            "messageData": {
+              "username": "drpavel_im_cia",
+              "text": "slunt would have a blue checkmark on twitter and hundreds of thousands of followers",
+              "timestamp": 1761867430190,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "checkmark",
+                "twitter",
+                "hundreds",
+                "thousands",
+                "followers"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761867430738,
+      "lastUpdate": 1761867430738,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761867677146,
+      "abandonReason": "limit"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 3184,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 2964,
+    "callbacks": 0
+  }
+}

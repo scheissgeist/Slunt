@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slunt Sentiment Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
+      text-align: center;
+      opacity: 0.9;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      transition: transform 0.3s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card-title {
+      font-size: 1.2em;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .icon {
+      font-size: 1.5em;
+    }
+
+    .metric-large {
+      font-size: 3em;
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .sentiment-positive { color: #4ade80; }
+    .sentiment-neutral { color: #fbbf24; }
+    .sentiment-negative { color: #f87171; }
+
+    .activity-high { color: #ef4444; }
+    .activity-medium { color: #fbbf24; }
+    .activity-low { color: #3b82f6; }
+
+    .progress-bar {
+      width: 100%;
+      height: 30px;
+      background: rgba(0,0,0,0.3);
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 10px 0;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, #4ade80, #3b82f6);
+      transition: width 0.5s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+    }
+
+    .topic-list {
+      list-style: none;
+    }
+
+    .topic-item {
+      background: rgba(255,255,255,0.1);
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topic-badge {
+      background: rgba(59, 130, 246, 0.5);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 0.9em;
+    }
+
+    .user-list {
+      list-style: none;
+    }
+
+    .user-item {
+      padding: 8px;
+      margin: 5px 0;
+      background: rgba(255,255,255,0.05);
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chart-container {
+      height: 200px;
+      background: rgba(0,0,0,0.2);
+      border-radius: 10px;
+      padding: 15px;
+      position: relative;
+    }
+
+    canvas {
+      width: 100% !important;
+      height: 100% !important;
+    }
+
+    .alert {
+      background: rgba(239, 68, 68, 0.3);
+      border: 2px solid #ef4444;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      margin-right: 8px;
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .connected { background: #4ade80; }
+    .disconnected { background: #ef4444; }
+
+    .personality-info {
+      background: rgba(0,0,0,0.3);
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .trait-bars {
+      margin-top: 10px;
+    }
+
+    .trait-bar {
+      margin: 8px 0;
+    }
+
+    .trait-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+      font-size: 0.9em;
+    }
+
+    .trait-fill {
+      height: 8px;
+      background: rgba(59, 130, 246, 0.5);
+      border-radius: 4px;
+    }
+
+    .clip-list {
+      max-height: 200px;
+      overflow-y: auto;
+    }
+
+    .clip-item {
+      background: rgba(255,255,255,0.05);
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      font-size: 0.9em;
+    }
+
+    .clip-link {
+      color: #60a5fa;
+      text-decoration: none;
+    }
+
+    .clip-link:hover {
+      text-decoration: underline;
+    }
+
+    .timestamp {
+      opacity: 0.6;
+      font-size: 0.8em;
+    }
+
+    /* Platform breakdown styles */
+    .platform-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .platform-stat {
+      background: rgba(0,0,0,0.3);
+      border-radius: 10px;
+      padding: 15px;
+      border-left: 4px solid #888;
+      transition: all 0.3s;
+    }
+
+    .platform-stat:hover {
+      transform: translateX(5px);
+      background: rgba(0,0,0,0.4);
+    }
+
+    .platform-stat.active {
+      border-left-width: 6px;
+      background: rgba(255,255,255,0.1);
+    }
+
+    #twitch-stat.active {
+      border-left-color: #9146ff;
+    }
+
+    #discord-stat.active {
+      border-left-color: #5865f2;
+    }
+
+    #coolhole-stat.active {
+      border-left-color: #ff6b9d;
+    }
+
+    .platform-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .platform-badge {
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 15px;
+      font-size: 0.9em;
+    }
+
+    .platform-badge.twitch {
+      background: rgba(145, 70, 255, 0.3);
+      color: #bf94ff;
+    }
+
+    .platform-badge.discord {
+      background: rgba(88, 101, 242, 0.3);
+      color: #8ea1ff;
+    }
+
+    .platform-badge.coolhole {
+      background: rgba(255, 107, 157, 0.3);
+      color: #ffafd1;
+    }
+
+    .platform-count {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .platform-details {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .detail-item {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9em;
+      opacity: 0.9;
+    }
+
+    .user-platform-badges {
+      display: flex;
+      gap: 5px;
+      margin-top: 3px;
+    }
+
+    .user-platform-badge {
+      font-size: 0.7em;
+      padding: 2px 6px;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+
+    .user-platform-badge.twitch {
+      background: rgba(145, 70, 255, 0.5);
+    }
+
+    .user-platform-badge.discord {
+      background: rgba(88, 101, 242, 0.5);
+    }
+
+    .user-platform-badge.coolhole {
+      background: rgba(255, 107, 157, 0.5);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🧠 Slunt Sentiment Dashboard</h1>
+    <p class="subtitle">
+      <span class="status-indicator connected"></span>
+      Live monitoring active
+    </p>
+
+    <div id="drama-alert" class="alert" style="display: none;">
+      <strong>🚨 Drama Detected!</strong>
+      <p id="drama-message">High tension in chat detected</p>
+    </div>
+
+    <div class="grid">
+      <!-- Overall Sentiment -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">😊</span>
+          Overall Sentiment
+        </div>
+        <div id="sentiment-value" class="metric-large sentiment-neutral">
+          50%
+        </div>
+        <div id="sentiment-label" style="text-align: center; font-size: 1.2em;">
+          Neutral
+        </div>
+        <div class="progress-bar">
+          <div id="sentiment-bar" class="progress-fill" style="width: 50%">
+            50%
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Level -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📊</span>
+          Activity Level
+        </div>
+        <div id="activity-value" class="metric-large activity-low">
+          LOW
+        </div>
+        <div style="text-align: center;">
+          <span id="message-count">0</span> messages in last 2min<br>
+          <span id="unique-users">0</span> unique users
+        </div>
+      </div>
+
+      <!-- Drama Level -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🔥</span>
+          Drama Meter
+        </div>
+        <div id="drama-value" class="metric-large">
+          0%
+        </div>
+        <div class="progress-bar">
+          <div id="drama-bar" class="progress-fill" style="width: 0%; background: linear-gradient(90deg, #fbbf24, #ef4444)">
+            0%
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Platform Breakdown -->
+    <div class="grid">
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🌐</span>
+          Platform Activity
+        </div>
+        <div class="platform-breakdown" id="platform-breakdown">
+          <div class="platform-stat" id="twitch-stat">
+            <div class="platform-header">
+              <span class="platform-badge twitch">🎮 Twitch</span>
+              <span class="platform-count">0 msgs</span>
+            </div>
+            <div class="platform-details">
+              <span class="detail-item">👥 <span id="twitch-users">0</span> users</span>
+              <span class="detail-item">😂 <span id="twitch-reactions">0</span> reactions</span>
+              <span class="detail-item">💭 <span id="twitch-sentiment">50%</span> sentiment</span>
+            </div>
+          </div>
+          
+          <div class="platform-stat" id="discord-stat">
+            <div class="platform-header">
+              <span class="platform-badge discord">💬 Discord</span>
+              <span class="platform-count">0 msgs</span>
+            </div>
+            <div class="platform-details">
+              <span class="detail-item">👥 <span id="discord-users">0</span> users</span>
+              <span class="detail-item">😂 <span id="discord-reactions">0</span> reactions</span>
+              <span class="detail-item">💭 <span id="discord-sentiment">50%</span> sentiment</span>
+            </div>
+          </div>
+          
+          <div class="platform-stat" id="coolhole-stat">
+            <div class="platform-header">
+              <span class="platform-badge coolhole">🕳️ Coolhole</span>
+              <span class="platform-count">0 msgs</span>
+            </div>
+            <div class="platform-details">
+              <span class="detail-item">👥 <span id="coolhole-users">0</span> users</span>
+              <span class="detail-item">😂 <span id="coolhole-reactions">0</span> reactions</span>
+              <span class="detail-item">💭 <span id="coolhole-sentiment">50%</span> sentiment</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Top Topics -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">💬</span>
+          Trending Topics
+        </div>
+        <ul id="topics-list" class="topic-list">
+          <li style="opacity: 0.5; text-align: center;">Waiting for messages...</li>
+        </ul>
+      </div>
+
+      <!-- Top Users -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">👥</span>
+          Most Active Users
+        </div>
+        <ul id="users-list" class="user-list">
+          <li style="opacity: 0.5; text-align: center;">Waiting for messages...</li>
+        </ul>
+      </div>
+
+      <!-- Mood Trajectory -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">📈</span>
+          Mood Trajectory
+        </div>
+        <div class="chart-container">
+          <canvas id="mood-chart"></canvas>
+        </div>
+        <div id="mood-shift" style="margin-top: 10px; text-align: center;">
+          No significant changes
+        </div>
+      </div>
+    </div>
+
+    <div class="grid">
+      <!-- Personality Mode -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🎭</span>
+          Current Personality
+        </div>
+        <div id="personality-mode" style="font-size: 1.5em; text-align: center; margin: 10px 0;">
+          Loading...
+        </div>
+        <div class="personality-info">
+          <div id="personality-desc" style="margin-bottom: 10px; opacity: 0.8;">
+            --
+          </div>
+          <div><strong>Active Modifiers:</strong></div>
+          <div id="personality-modifiers" style="margin-top: 5px;">
+            None
+          </div>
+          <div class="trait-bars" id="trait-bars"></div>
+        </div>
+      </div>
+
+      <!-- Auto Clips -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">🎬</span>
+          Auto Clip Creator
+        </div>
+        <div style="text-align: center; margin: 10px 0;">
+          <div>Total Clips: <strong id="clip-count">0</strong></div>
+          <div style="opacity: 0.7; font-size: 0.9em;">
+            Cooldown: <span id="clip-cooldown">--</span>s
+          </div>
+        </div>
+        <div id="clip-metrics" style="font-size: 0.9em; opacity: 0.8; margin: 10px 0;">
+          Monitoring chat activity...
+        </div>
+        <div class="clip-list" id="clip-list">
+          <div style="opacity: 0.5; text-align: center;">No clips yet</div>
+        </div>
+      </div>
+
+      <!-- System Info -->
+      <div class="card">
+        <div class="card-title">
+          <span class="icon">⚙️</span>
+          System Status
+        </div>
+        <div style="font-size: 0.9em;">
+          <div style="margin: 8px 0;">
+            <strong>Platforms:</strong>
+            <div id="platform-status" style="margin-top: 5px;"></div>
+          </div>
+          <div style="margin: 8px 0;">
+            <strong>Stream:</strong> <span id="stream-status">--</span>
+          </div>
+          <div style="margin: 8px 0;">
+            <strong>Uptime:</strong> <span id="uptime">--</span>
+          </div>
+          <div style="margin: 8px 0;">
+            <strong>Last Update:</strong><br>
+            <span id="last-update" style="font-size: 0.8em; opacity: 0.7;">--</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    const socket = io();
+    let startTime = Date.now();
+    let moodChart = null;
+
+    // Initialize mood chart
+    const ctx = document.getElementById('mood-chart').getContext('2d');
+    const chartData = {
+      labels: [],
+      data: []
+    };
+
+    function drawMoodChart() {
+      const canvas = document.getElementById('mood-chart');
+      const ctx = canvas.getContext('2d');
+      const width = canvas.width;
+      const height = canvas.height;
+
+      ctx.clearRect(0, 0, width, height);
+
+      if (chartData.data.length < 2) return;
+
+      ctx.strokeStyle = '#60a5fa';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+
+      const xStep = width / (chartData.data.length - 1);
+      
+      chartData.data.forEach((value, index) => {
+        const x = index * xStep;
+        const y = height - (value * height);
+        
+        if (index === 0) {
+          ctx.moveTo(x, y);
+        } else {
+          ctx.lineTo(x, y);
+        }
+      });
+
+      ctx.stroke();
+
+      // Draw points
+      ctx.fillStyle = '#60a5fa';
+      chartData.data.forEach((value, index) => {
+        const x = index * xStep;
+        const y = height - (value * height);
+        ctx.beginPath();
+        ctx.arc(x, y, 3, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      // Draw baseline
+      ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(0, height / 2);
+      ctx.lineTo(width, height / 2);
+      ctx.stroke();
+    }
+
+    // Update sentiment display
+    socket.on('sentiment:update', (data) => {
+      const { metrics, topUsers, sentimentShift, dramaAlert } = data;
+
+      // Overall sentiment
+      const sentimentPercent = Math.round(metrics.overallSentiment * 100);
+      document.getElementById('sentiment-value').textContent = `${sentimentPercent}%`;
+      document.getElementById('sentiment-label').textContent = metrics.sentimentLabel;
+      document.getElementById('sentiment-bar').style.width = `${sentimentPercent}%`;
+      
+      const sentimentEl = document.getElementById('sentiment-value');
+      sentimentEl.className = 'metric-large';
+      if (sentimentPercent >= 60) sentimentEl.classList.add('sentiment-positive');
+      else if (sentimentPercent >= 40) sentimentEl.classList.add('sentiment-neutral');
+      else sentimentEl.classList.add('sentiment-negative');
+
+      // Activity
+      document.getElementById('activity-value').textContent = metrics.activityLevel.toUpperCase();
+      document.getElementById('message-count').textContent = metrics.messageCount;
+      document.getElementById('unique-users').textContent = metrics.uniqueUsers;
+      
+      const activityEl = document.getElementById('activity-value');
+      activityEl.className = 'metric-large';
+      activityEl.classList.add(`activity-${metrics.activityLevel}`);
+
+      // Drama
+      const dramaPercent = Math.round(metrics.dramaLevel * 100);
+      document.getElementById('drama-value').textContent = `${dramaPercent}%`;
+      document.getElementById('drama-bar').style.width = `${dramaPercent}%`;
+      document.getElementById('drama-bar').textContent = `${dramaPercent}%`;
+
+      // Drama alert
+      const alertEl = document.getElementById('drama-alert');
+      if (dramaAlert) {
+        alertEl.style.display = 'block';
+      } else {
+        alertEl.style.display = 'none';
+      }
+
+      // Topics
+      if (metrics.topTopics && metrics.topTopics.length > 0) {
+        document.getElementById('topics-list').innerHTML = metrics.topTopics
+          .map(topic => `
+            <li class="topic-item">
+              <span>${topic.topic}</span>
+              <span class="topic-badge">${topic.frequency}</span>
+            </li>
+          `).join('');
+      }
+
+      // Platform Breakdown
+      if (metrics.platformBreakdown) {
+        const platforms = metrics.platformBreakdown;
+        
+        // Twitch
+        const twitchStat = document.getElementById('twitch-stat');
+        twitchStat.querySelector('.platform-count').textContent = `${platforms.twitch.messageCount} msgs`;
+        document.getElementById('twitch-users').textContent = platforms.twitch.uniqueUsers;
+        document.getElementById('twitch-sentiment').textContent = `${Math.round(platforms.twitch.sentiment * 100)}%`;
+        if (platforms.twitch.active) {
+          twitchStat.classList.add('active');
+        } else {
+          twitchStat.classList.remove('active');
+        }
+        
+        // Discord
+        const discordStat = document.getElementById('discord-stat');
+        discordStat.querySelector('.platform-count').textContent = `${platforms.discord.messageCount} msgs`;
+        document.getElementById('discord-users').textContent = platforms.discord.uniqueUsers;
+        document.getElementById('discord-sentiment').textContent = `${Math.round(platforms.discord.sentiment * 100)}%`;
+        if (platforms.discord.active) {
+          discordStat.classList.add('active');
+        } else {
+          discordStat.classList.remove('active');
+        }
+        
+        // Coolhole
+        const coolholeStat = document.getElementById('coolhole-stat');
+        coolholeStat.querySelector('.platform-count').textContent = `${platforms.coolhole.messageCount} msgs`;
+        document.getElementById('coolhole-users').textContent = platforms.coolhole.uniqueUsers;
+        document.getElementById('coolhole-sentiment').textContent = `${Math.round(platforms.coolhole.sentiment * 100)}%`;
+        if (platforms.coolhole.active) {
+          coolholeStat.classList.add('active');
+        } else {
+          coolholeStat.classList.remove('active');
+        }
+      }
+
+      // Users
+      if (topUsers && topUsers.length > 0) {
+        document.getElementById('users-list').innerHTML = topUsers
+          .map(user => {
+            const sentiment = Math.round(user.avgSentiment * 100);
+            const color = sentiment >= 60 ? '#4ade80' : sentiment >= 40 ? '#fbbf24' : '#f87171';
+            
+            // Platform badges
+            const platformBadges = user.platforms && user.platforms.length > 0
+              ? `<div class="user-platform-badges">
+                  ${user.platforms.map(p => `<span class="user-platform-badge ${p}">${p[0].toUpperCase()}</span>`).join('')}
+                 </div>`
+              : '';
+            
+            return `
+              <li class="user-item">
+                <div>
+                  <span>${user.username}</span>
+                  ${platformBadges}
+                </div>
+                <span style="color: ${color}">${user.messageCount} msgs (${sentiment}%)</span>
+              </li>
+            `;
+          }).join('');
+      }
+
+      // Mood trajectory
+      if (metrics.moodTrajectory && metrics.moodTrajectory.length > 0) {
+        chartData.data = metrics.moodTrajectory.map(p => p.sentiment);
+        drawMoodChart();
+
+        if (sentimentShift) {
+          const arrow = sentimentShift.direction === 'improving' ? '📈' : '📉';
+          document.getElementById('mood-shift').innerHTML = `
+            ${arrow} Mood ${sentimentShift.direction}<br>
+            <span style="font-size: 0.9em; opacity: 0.8;">
+              ${Math.round(sentimentShift.from * 100)}% → ${Math.round(sentimentShift.to * 100)}%
+            </span>
+          `;
+        }
+      }
+
+      document.getElementById('last-update').textContent = new Date().toLocaleTimeString();
+    });
+
+    // Update personality
+    socket.on('personality:update', (data) => {
+      if (!data) return;
+
+      document.getElementById('personality-mode').textContent = data.currentMode.replace('_', ' ').toUpperCase();
+      document.getElementById('personality-desc').textContent = data.description;
+
+      if (data.activeModifiers && data.activeModifiers.length > 0) {
+        document.getElementById('personality-modifiers').innerHTML = data.activeModifiers
+          .map(m => `<div style="margin: 3px 0;">• ${m.description}</div>`)
+          .join('');
+      } else {
+        document.getElementById('personality-modifiers').textContent = 'None';
+      }
+
+      // Trait bars
+      if (data.traits) {
+        const traitBars = Object.entries(data.traits)
+          .map(([trait, value]) => {
+            const percent = Math.round(value * 100);
+            return `
+              <div class="trait-bar">
+                <div class="trait-label">
+                  <span>${trait}</span>
+                  <span>${percent}%</span>
+                </div>
+                <div style="width: 100%; height: 8px; background: rgba(0,0,0,0.3); border-radius: 4px;">
+                  <div class="trait-fill" style="width: ${percent}%"></div>
+                </div>
+              </div>
+            `;
+          }).join('');
+        document.getElementById('trait-bars').innerHTML = traitBars;
+      }
+    });
+
+    // Update clip creator
+    socket.on('clips:update', (data) => {
+      if (!data) return;
+
+      document.getElementById('clip-count').textContent = data.totalClips;
+      document.getElementById('clip-cooldown').textContent = Math.round(data.timeSinceLastClip || 0);
+
+      if (data.currentActivity) {
+        const activity = data.currentActivity;
+        
+        // Show platform breakdown if available
+        let platformInfo = '';
+        if (activity.platformBreakdown) {
+          const breakdown = activity.platformBreakdown;
+          const parts = [];
+          if (breakdown.twitch.messages > 0) {
+            parts.push(`🎮 ${breakdown.twitch.messages}m ${breakdown.twitch.reactions > 0 ? '😂' + breakdown.twitch.reactions : ''}`);
+          }
+          if (breakdown.discord.messages > 0) {
+            parts.push(`💬 ${breakdown.discord.messages}m ${breakdown.discord.reactions > 0 ? '😂' + breakdown.discord.reactions : ''}`);
+          }
+          if (breakdown.coolhole.messages > 0) {
+            parts.push(`🕳️ ${breakdown.coolhole.messages}m ${breakdown.coolhole.reactions > 0 ? '😂' + breakdown.coolhole.reactions : ''}`);
+          }
+          platformInfo = parts.length > 0 ? `<br><div style="font-size: 0.85em; opacity: 0.7; margin-top: 5px;">${parts.join(' | ')}</div>` : '';
+        }
+        
+        document.getElementById('clip-metrics').innerHTML = `
+          Messages: ${activity.messageCount}/${Math.round(activity.windowSize)}s | 
+          Reactions: ${activity.reactionCount} | 
+          Users: ${activity.uniqueUsers}
+          ${platformInfo}
+        `;
+      }
+
+      if (data.recentClips && data.recentClips.length > 0) {
+        document.getElementById('clip-list').innerHTML = data.recentClips
+          .map(clip => `
+            <div class="clip-item">
+              <div><a href="${clip.edit_url}" target="_blank" class="clip-link">Clip ${clip.id.slice(0, 8)}</a></div>
+              <div class="timestamp">${new Date(clip.createdAt).toLocaleTimeString()}</div>
+              <div style="opacity: 0.7; font-size: 0.85em;">${clip.reason}</div>
+            </div>
+          `).join('');
+      }
+    });
+
+    // Platform status
+    socket.on('platform:status', (platforms) => {
+      if (!platforms) return;
+      
+      const html = Object.entries(platforms).map(([name, data]) => {
+        const status = data.connected ? '🟢' : '🔴';
+        const disabled = data.disabled ? ' (disabled)' : '';
+        return `<div>${status} ${name}${disabled}</div>`;
+      }).join('');
+      
+      document.getElementById('platform-status').innerHTML = html;
+    });
+
+    // Stream status
+    socket.on('stream:status', (data) => {
+      if (!data) return;
+      document.getElementById('stream-status').textContent = data.isLive ? '🔴 LIVE' : '⚫ Offline';
+    });
+
+    // Uptime
+    setInterval(() => {
+      const uptime = Date.now() - startTime;
+      const hours = Math.floor(uptime / 3600000);
+      const minutes = Math.floor((uptime % 3600000) / 60000);
+      document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+    }, 1000);
+
+    // Request initial data
+    setTimeout(() => {
+      socket.emit('getSentimentData');
+      socket.emit('getPersonalityData');
+      socket.emit('getClipData');
+    }, 1000);
+  </script>
+</body>
+</html>

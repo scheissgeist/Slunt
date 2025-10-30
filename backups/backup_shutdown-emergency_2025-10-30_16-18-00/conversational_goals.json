@@ -1,0 +1,19 @@
+{
+  "activeGoals": [
+    {
+      "id": "goal_1761791808780",
+      "text": "I'd like to get the person to discuss their favorite hobbies or activities outside of work/school. This would help me learn more about them beyond our",
+      "created": 1761791808780,
+      "progress": 0,
+      "attempts": 0
+    },
+    {
+      "id": "goal_1761851266197",
+      "text": "I've been chatting with you and I noticed we haven't had a chance to talk about our favorite TV shows. Can you tell me what's the",
+      "created": 1761851266197,
+      "progress": 0,
+      "attempts": 0
+    }
+  ],
+  "completedGoals": []
+}

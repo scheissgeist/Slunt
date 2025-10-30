@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1761784666713,
+    "type": "video_reaction",
+    "prediction": "this video gonna be fire",
+    "target": null,
+    "confidence": 50,
+    "timeframe": 300000,
+    "createdAt": 1761784666713,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761784792330,
+    "type": "chat_pattern",
+    "prediction": "chat about to die",
+    "target": null,
+    "confidence": 55,
+    "timeframe": 300000,
+    "createdAt": 1761784792330,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761785581016,
+    "type": "video_reaction",
+    "prediction": "video queue about to get weird",
+    "target": null,
+    "confidence": 50,
+    "timeframe": 300000,
+    "createdAt": 1761785581016,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761785973681,
+    "type": "user_behavior",
+    "prediction": "Brainfiend about to leave",
+    "target": "Brainfiend",
+    "confidence": 60,
+    "timeframe": 300000,
+    "createdAt": 1761785973681,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761792685656,
+    "type": "chat_pattern",
+    "prediction": "someone gonna change the subject",
+    "target": null,
+    "confidence": 55,
+    "timeframe": 300000,
+    "createdAt": 1761792685656,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761810421671,
+    "type": "drama",
+    "prediction": "someones gonna get mad",
+    "target": null,
+    "confidence": 65,
+    "timeframe": 300000,
+    "createdAt": 1761810421671,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761810508621,
+    "type": "drama",
+    "prediction": "beef incoming",
+    "target": null,
+    "confidence": 65,
+    "timeframe": 300000,
+    "createdAt": 1761810508621,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  },
+  {
+    "id": 1761851129621,
+    "type": "chat_pattern",
+    "prediction": "chat gonna get heated",
+    "target": null,
+    "confidence": 55,
+    "timeframe": 300000,
+    "createdAt": 1761851129621,
+    "resolvedAt": null,
+    "outcome": null,
+    "evidence": []
+  }
+]

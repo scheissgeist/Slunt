@@ -26,6 +26,7 @@ const AutismFixations = require('../ai/AutismFixations');
 const UmbraProtocol = require('../ai/UmbraProtocol');
 const HipsterProtocol = require('../ai/HipsterProtocol');
 const DynamicPhraseGenerator = require('../ai/DynamicPhraseGenerator');
+const EdgyPersonality = require('../ai/EdgyPersonality');
 const YouTubeSearch = require('../video/youtubeSearch');
 const CoolPointsHandler = require('./coolPointsHandler');
 const Responses = require('./ChatBotResponses');
@@ -48,6 +49,11 @@ const MetaAwareness = require('../ai/MetaAwareness');
 const ContextualCallbacks = require('../ai/ContextualCallbacks');
 const PersonalityModes = require('../ai/PersonalityModes');
 const EmotionTiming = require('../ai/EmotionTiming');
+
+// Advanced Feature Systems
+const PersonalityScheduler = require('../ai/PersonalityScheduler');
+const SentimentAnalyzer = require('../ai/SentimentAnalyzer');
+const ClipCreator = require('../services/ClipCreator');
 const StartupContinuity = require('../ai/StartupContinuity');
 
 // NEW 9 Advanced Interaction Systems
@@ -171,6 +177,7 @@ class ChatBot extends EventEmitter {
     this.umbraProtocol = new UmbraProtocol();
     this.hipsterProtocol = new HipsterProtocol(this);
     this.nicknameManager = new NicknameManager();
+    this.edgyPersonality = new EdgyPersonality();
 
     // Advanced AI systems
     this.relationshipMapping = new RelationshipMapping();
@@ -190,6 +197,11 @@ class ChatBot extends EventEmitter {
     this.personalityModes = new PersonalityModes(this);
     this.emotionTiming = new EmotionTiming();
     this.startupContinuity = new StartupContinuity();
+
+    // Advanced Feature Systems
+    this.personalityScheduler = new PersonalityScheduler();
+    this.sentimentAnalyzer = new SentimentAnalyzer();
+    this.clipCreator = null; // Initialized later with twitchClient
 
     // AI Engine (Optional - for advanced AI responses)
     this.ai = new AIEngine();
@@ -278,6 +290,11 @@ class ChatBot extends EventEmitter {
     // Start stability monitoring
     this.memoryManager.start();
     console.log('✅ [Stability] Memory manager started');
+    
+    // Start advanced feature systems
+    this.personalityScheduler.start();
+    this.sentimentAnalyzer.start();
+    console.log('🚀 [Features] Personality scheduler and sentiment analyzer started');
     
     this.chatStats = {
       totalMessages: 0,
@@ -368,6 +385,27 @@ class ChatBot extends EventEmitter {
         console.error('❌ [Auto-save] Failed:', error.message);
       }
     }, 5 * 60 * 1000); // Every 5 minutes
+    
+    // Check for cross-platform user matches every 10 minutes
+    setInterval(() => {
+      try {
+        console.log('🔍 [Cross-Platform] Scanning for cross-platform users...');
+        const matches = this.relationshipMapping.findCrossPlatformMatches();
+        
+        if (matches.length > 0) {
+          console.log(`🌐 [Cross-Platform] Found ${matches.length} potential matches:`);
+          matches.forEach(match => {
+            if (match.likelySamePerson) {
+              console.log(`  ✅ ${match.username1}@${match.platform1} ≈ ${match.username2}@${match.platform2} (${Math.round(match.similarity * 100)}% similar)`);
+            }
+          });
+        } else {
+          console.log('  No cross-platform matches found');
+        }
+      } catch (error) {
+        console.error('❌ [Cross-Platform] Matching failed:', error.message);
+      }
+    }, 10 * 60 * 1000); // Every 10 minutes
     
     // DISABLED: Startup sequence slows boot and clutters chat
     // setTimeout(() => {
@@ -652,6 +690,14 @@ class ChatBot extends EventEmitter {
       logger.info(`[${getTimestamp()}] 👂 Heard ${username}: ${text}`);
     }
     
+    // Analyze sentiment and track mood
+    this.sentimentAnalyzer.analyzeMessage(data);
+    
+    // Feed activity to clip creator if initialized
+    if (this.clipCreator) {
+      this.clipCreator.processMessage(data);
+    }
+    
     // Learn phrases and style from users for AI
     if (this.ai && this.ai.enabled) {
       this.ai.learnFromUsers(text, username);
@@ -903,7 +949,7 @@ class ChatBot extends EventEmitter {
     // === RELATIONSHIP MAPPING ===
     // Update relationships for mentioned users
     mentionedUsers.forEach(mentionedUser => {
-      this.relationshipMapping.updateRelationship(username, mentionedUser, 'mention');
+      this.relationshipMapping.updateRelationship(username, mentionedUser, 'mention', messageData.platform);
     });
 
     // Check if this is a reply to someone (based on context)
@@ -911,7 +957,7 @@ class ChatBot extends EventEmitter {
     if (recentMessages.length > 1) {
       const prevMsg = recentMessages[recentMessages.length - 2];
       if (prevMsg.username !== username) {
-        this.relationshipMapping.updateRelationship(username, prevMsg.username, 'reply');
+        this.relationshipMapping.updateRelationship(username, prevMsg.username, 'reply', messageData.platform);
       }
     }
 
@@ -1477,6 +1523,15 @@ class ChatBot extends EventEmitter {
         return;
       }
       
+      // Check if platform is disabled (stream status based)
+      if (this.platformManager) {
+        const platformData = this.platformManager.platforms.get(platform);
+        if (platformData && platformData.client && platformData.client.disabled) {
+          logger.info(`[${getTimestamp()}] 🚫 ${platform} is disabled (stream status), skipping response`);
+          return;
+        }
+      }
+      
       // Check if bot is muted
       if (this.muted) {
         logger.info(`[${getTimestamp()}] 🔇 Bot is muted, skipping response`);
@@ -1485,6 +1540,54 @@ class ChatBot extends EventEmitter {
 
       const shouldRespond = this.shouldRespond(data);
       logger.info(`[${getTimestamp()}] 🤔 Should respond to "${text}" from ${username}? ${shouldRespond}`);
+
+      // === DISCORD REACTIONS & EDGY PERSONALITY 🔥 ===
+      // Check if we should react on Discord (even if not responding with text)
+      if (platform === 'discord' && data.messageId && this.discordClient) {
+        const userRelationship = { familiarity: 0.5 }; // Default moderate familiarity
+        
+        // Check if we should add a reaction
+        const shouldReact = Math.random() < 0.15; // 15% chance to react
+        
+        if (shouldReact && this.edgyPersonality) {
+          const reactionContext = {
+            messageContent: text,
+            mood: this.moodTracker.getCurrentMood(),
+            sentiment: this.emotionalEngine.detectEmotion(text, username)
+          };
+          
+          const emoji = this.edgyPersonality.getReactionEmoji(reactionContext);
+          
+          if (emoji) {
+            try {
+              await this.discordClient.reactToMessage(data, emoji);
+              logger.info(`[${getTimestamp()}] 😀 Reacted with ${emoji} to ${username}'s message`);
+            } catch (error) {
+              logger.error(`Failed to add reaction: ${error.message}`);
+            }
+          }
+        }
+        
+        // Sometimes react INSTEAD of responding (if not a direct mention)
+        if (shouldRespond && !data.mentionedBot && this.edgyPersonality && this.edgyPersonality.shouldReactInstead()) {
+          const reactionContext = {
+            messageContent: text,
+            mood: this.moodTracker.getCurrentMood()
+          };
+          
+          const emoji = this.edgyPersonality.getReactionEmoji(reactionContext);
+          
+          if (emoji) {
+            try {
+              await this.discordClient.reactToMessage(data, emoji);
+              logger.info(`[${getTimestamp()}] 😀 Reacted instead of responding with ${emoji}`);
+              return; // Skip text response
+            } catch (error) {
+              logger.error(`Failed to add reaction: ${error.message}`);
+            }
+          }
+        }
+      }
 
       if (shouldRespond) {
         // Check if already generating a response
@@ -1496,10 +1599,62 @@ class ChatBot extends EventEmitter {
         // Lock response generation
         this.isGeneratingResponse = true;
         
+        // CRITICAL: Capture platform/channel in closure to prevent cross-contamination
+        const responsePlatform = platform;
+        const responseChannel = channel;
+        
         setTimeout(async () => {
           try {
             let response = await this.generateResponse(data);
             if (!response) return;
+            
+            // === EDGY PERSONALITY MODIFICATIONS 🔥 ===
+            // Use a simple familiarity proxy based on recent interactions
+            const userRelationship = { familiarity: 0.5 }; // Default moderate familiarity
+            
+            // Check if we should inject edgy behavior
+            if (this.edgyPersonality && this.edgyPersonality.shouldBeEdgy(userRelationship)) {
+              const edgyContext = {
+                userRelationship,
+                messageContent: text,
+                username,
+                mood: this.moodTracker.getCurrentMood()
+              };
+              
+              const edgyResponse = this.edgyPersonality.getEdgyResponse(edgyContext);
+              
+              // Sometimes replace entire response with edgy comment (20% chance)
+              if (Math.random() < 0.2) {
+                response = edgyResponse;
+                logger.info(`[${getTimestamp()}] 🔥 Using edgy response: "${edgyResponse}"`);
+              } else {
+                // Otherwise append to existing response
+                response = `${response} ${edgyResponse}`;
+                logger.info(`[${getTimestamp()}] 🔥 Appended edgy comment: "${edgyResponse}"`);
+              }
+            }
+            
+            // Check for nationality-based banter (separate trigger, higher chance)
+            if (this.edgyPersonality && this.edgyPersonality.shouldAccuseNationality(userRelationship)) {
+              const nationalityComment = this.edgyPersonality.getNationalityComment(username);
+              
+              // Sometimes use it as entire response (30% chance)
+              if (Math.random() < 0.3) {
+                response = nationalityComment;
+                logger.info(`[${getTimestamp()}] 🌍 Using nationality banter: "${nationalityComment}"`);
+              } else {
+                // Otherwise append it
+                response = `${response} ${nationalityComment}`;
+                logger.info(`[${getTimestamp()}] 🌍 Appended nationality banter: "${nationalityComment}"`);
+              }
+            }
+            
+            // Check for contextual banter triggers
+            const contextualBanter = this.edgyPersonality ? this.edgyPersonality.getContextualBanter(text) : null;
+            if (contextualBanter && Math.random() < 0.4) { // 40% chance if contextually triggered
+              response = `${response} ${contextualBanter}`;
+              logger.info(`[${getTimestamp()}] 🎯 Contextual banter: "${contextualBanter}"`);
+            }
             
             // === ULTRA-REALISTIC MODIFICATIONS 🎭 ===
             // NOTE: Reduced chaos for better coherence
@@ -1567,7 +1722,7 @@ class ChatBot extends EventEmitter {
               
               // Send each part with natural pauses
               for (let i = 0; i < parts.length; i++) {
-                this.sendMessage(parts[i]);
+                this.sendMessage(parts[i], { platform: responsePlatform, channelId: responseChannel });
                 if (this.chatRoleAwareness && this.config && this.config.username) {
                   this.chatRoleAwareness.trackMessage(this.config.username, true); // true = Slunt's message
                 }
@@ -1579,7 +1734,7 @@ class ChatBot extends EventEmitter {
               }
             } else {
               // Send single message
-              this.sendMessage(response);
+              this.sendMessage(response, { platform: responsePlatform, channelId: responseChannel });
               if (this.chatRoleAwareness && this.config && this.config.username) {
                 this.chatRoleAwareness.trackMessage(this.config.username, true);
               }
@@ -2102,7 +2257,10 @@ class ChatBot extends EventEmitter {
         }
 
         // Get recent conversation (last 3 messages for context)
-        const recentConvo = this.conversationContext.slice(-3);
+        // CRITICAL: Filter by platform to prevent cross-contamination
+        const recentConvo = this.conversationContext
+          .filter(m => m.platform === platform) // Only messages from same platform
+          .slice(-3);
         let convoContext = '';
         if (recentConvo.length > 0) {
           convoContext = '\nRecent chat:\n' + recentConvo.map(m => `${m.username}: ${m.text}`).join('\n');
@@ -2191,37 +2349,29 @@ class ChatBot extends EventEmitter {
             }
           }
           
-          // Hard cap at 120 characters for conciseness
-          if (cleanResponse.length > 120) {
+          // Hard cap at 150 characters for conciseness (increased from 120 to reduce mid-word cuts)
+          if (cleanResponse.length > 150) {
             // IMPROVED: Always cut at word boundary, never mid-word
-            let truncated = cleanResponse.substring(0, 120);
+            let truncated = cleanResponse.substring(0, 150);
             
-            // Find last complete word (space, comma, dash, or period)
-            const lastBreak = Math.max(
-              truncated.lastIndexOf(' '),
-              truncated.lastIndexOf(','),
-              truncated.lastIndexOf('-'),
-              truncated.lastIndexOf('.')
-            );
+            // Find last complete word - look for space followed by word characters
+            // This ensures we don't cut in the middle of the last word
+            const lastSpace = truncated.lastIndexOf(' ');
             
-            if (lastBreak > 60) {
-              // Cut at the last natural break
-              truncated = truncated.substring(0, lastBreak).trim();
+            if (lastSpace > 80) {
+              // Cut at the last space to keep complete words
+              truncated = truncated.substring(0, lastSpace).trim();
               
               // Remove trailing punctuation if it's not sentence-ending
-              truncated = truncated.replace(/[,\-]$/, '');
+              truncated = truncated.replace(/[,\-:]$/, '');
               
-              // Add ellipsis or period if needed
-              if (!/[.!?]$/.test(truncated)) {
-                // If we cut mid-sentence, no punctuation (more natural)
-                // truncated += '...'; // Removed - looks cleaner without
-              }
+              // No need to add ellipsis - looks cleaner without
             } else {
-              // Fallback: cut at 100 chars to ensure we find a break
-              truncated = cleanResponse.substring(0, 100);
-              const lastSpace = truncated.lastIndexOf(' ');
-              if (lastSpace > 40) {
-                truncated = truncated.substring(0, lastSpace).trim();
+              // Fallback: cut at 120 chars and find last space
+              truncated = cleanResponse.substring(0, 120);
+              const lastSpace2 = truncated.lastIndexOf(' ');
+              if (lastSpace2 > 60) {
+                truncated = truncated.substring(0, lastSpace2).trim();
               }
             }
             
@@ -2945,10 +3095,12 @@ class ChatBot extends EventEmitter {
       if (this.drunkMode && this.drunkMode.isDrunk && Math.random() < 0.3) {
         processedMessage = this.drunkMode.addTypos(processedMessage);
       }
-      // Add umbra brag if available (REDUCED - less frequent and more natural)
-      const brag = await this.umbraProtocol.getBrag();
-      if (brag && Math.random() < 0.2 && processedMessage.length < 100) {
-        processedMessage = `${processedMessage}. ${brag}`;
+      // Add umbra brag ONLY if protocol is active AND should brag (very rare)
+      if (this.umbraProtocol.isActive && this.umbraProtocol.shouldBrag() && processedMessage.length < 100) {
+        const brag = await this.umbraProtocol.getBrag();
+        if (brag) {
+          processedMessage = `${processedMessage}. ${brag}`;
+        }
       }
       
       // === NEW: Maybe add Hipster mention (REDUCED - only if message is long enough and not too cluttered) ===
@@ -3365,6 +3517,56 @@ class ChatBot extends EventEmitter {
     } catch (e) {
       logger.error('Error tracking Slunt event:', e.message);
     }
+  }
+
+  /**
+   * Initialize clip creator with twitch client
+   */
+  initializeClipCreator(twitchClient) {
+    if (!twitchClient) {
+      console.warn('⚠️ [Clip] Cannot initialize - no Twitch client');
+      return;
+    }
+    
+    this.clipCreator = new ClipCreator(twitchClient);
+    console.log('🎬 [Clip] Auto clip creator initialized');
+    
+    // Listen for clip events
+    this.clipCreator.on('clipCreated', (clipInfo) => {
+      console.log(`✅ [Clip] New clip created: ${clipInfo.edit_url}`);
+      this.emit('clip:created', clipInfo);
+    });
+  }
+
+  /**
+   * Get personality scheduler status
+   */
+  getPersonalityStatus() {
+    return this.personalityScheduler.getStatus();
+  }
+
+  /**
+   * Get sentiment analyzer metrics
+   */
+  getSentimentMetrics() {
+    return this.sentimentAnalyzer.getDashboardData();
+  }
+
+  /**
+   * Get clip creator status
+   */
+  getClipStatus() {
+    return this.clipCreator ? this.clipCreator.getStatus() : null;
+  }
+
+  /**
+   * Manually trigger a clip
+   */
+  async createManualClip() {
+    if (!this.clipCreator) {
+      return { error: 'Clip creator not initialized' };
+    }
+    return await this.clipCreator.manualClip();
   }
 }
 module.exports = ChatBot;

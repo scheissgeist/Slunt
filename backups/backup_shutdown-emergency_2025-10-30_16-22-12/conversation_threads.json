@@ -1,0 +1,1185 @@
+{
+  "abandonedThreads": [
+    {
+      "id": "thread_1761865936833_t3h3l8p1t",
+      "participants": [
+        "bunn_bunn",
+        "Slunt"
+      ],
+      "topic": "User interaction issue reported.",
+      "messages": [
+        {
+          "username": "bunn_bunn",
+          "message": "slunt click on the user artimenner1",
+          "timestamp": 1761865937212,
+          "context": {
+            "messageData": {
+              "username": "bunn_bunn",
+              "text": "slunt click on the user artimenner1",
+              "timestamp": 1761865936721,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "artimenner1"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865937212,
+      "lastUpdate": 1761865937212,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866044351,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761865966927_7ym0i54lv",
+      "participants": [
+        "scarpelius",
+        "Slunt"
+      ],
+      "topic": "Sluntbot's travel plans.",
+      "messages": [
+        {
+          "username": "scarpelius",
+          "message": "@sluntbot so if you had enough money you would go to gorehabba?",
+          "timestamp": 1761865967142,
+          "context": {
+            "messageData": {
+              "username": "scarpelius",
+              "text": "@sluntbot so if you had enough money you would go to gorehabba?",
+              "timestamp": 1761865966674,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "sluntbot",
+                "gorehabba"
+              ]
+            }
+          }
+        },
+        {
+          "username": "scarpelius",
+          "message": "Slunt have you watched codex india yet?",
+          "timestamp": 1761866074747,
+          "context": {
+            "messageData": {
+              "username": "scarpelius",
+              "text": "Slunt have you watched codex india yet?",
+              "timestamp": 1761866074667,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "watched"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865967142,
+      "lastUpdate": 1761866074747,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866074968,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761865954791_hczxprkdy",
+      "participants": [
+        "steescribbles",
+        "Slunt"
+      ],
+      "topic": "Balatro game skill.",
+      "messages": [
+        {
+          "username": "steescribbles",
+          "message": "slunt are you any good at balatro?",
+          "timestamp": 1761865955146,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "slunt are you any good at balatro?",
+              "timestamp": 1761865954692,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "balatro"
+              ]
+            }
+          }
+        },
+        {
+          "username": "steescribbles",
+          "message": "slunt, are the console wars over?",
+          "timestamp": 1761866099020,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "slunt, are the console wars over?",
+              "timestamp": 1761866098939,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "console"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865955146,
+      "lastUpdate": 1761866099020,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866099289,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761865946918_mdx7vsyi3",
+      "participants": [
+        "artimenner1",
+        "Slunt"
+      ],
+      "topic": "Emoticon or emoji usage.",
+      "messages": [
+        {
+          "username": "artimenner1",
+          "message": "+",
+          "timestamp": 1761865947215,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "+",
+              "timestamp": 1761865946649,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761865947215,
+      "lastUpdate": 1761865947215,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866104351,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761865950641_3tyhikurw",
+      "participants": [
+        "robofussin",
+        "Slunt"
+      ],
+      "topic": "Conversation topic: Twitch streamer question.",
+      "messages": [
+        {
+          "username": "robofussin",
+          "message": "Right??",
+          "timestamp": 1761865950941,
+          "context": {
+            "messageData": {
+              "username": "robofussin",
+              "text": "Right??",
+              "timestamp": 1761865950550,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "right"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865950941,
+      "lastUpdate": 1761865950941,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866104352,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761865955239_eurkkl04m",
+      "participants": [
+        "miles_gloriosus",
+        "Slunt"
+      ],
+      "topic": "Chat message analysis:\n\nThe main topic of this chat message is \"User's response\".\n\nIn more detail",
+      "messages": [
+        {
+          "username": "miles_gloriosus",
+          "message": "ha",
+          "timestamp": 1761865957363,
+          "context": {
+            "messageData": {
+              "username": "miles_gloriosus",
+              "text": "ha",
+              "timestamp": 1761865955099,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761865957363,
+      "lastUpdate": 1761865957363,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866104352,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761865986556_nltl8j6uk",
+      "participants": [
+        "sickillusion",
+        "Slunt"
+      ],
+      "topic": "Star Wars Order 66.",
+      "messages": [
+        {
+          "username": "sickillusion",
+          "message": "slunt execute order 66",
+          "timestamp": 1761865986751,
+          "context": {
+            "messageData": {
+              "username": "sickillusion",
+              "text": "slunt execute order 66",
+              "timestamp": 1761865986470,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "execute"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865986751,
+      "lastUpdate": 1761865986751,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866104352,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866074969_0gm7kg1r8",
+      "participants": [
+        "scarpelius",
+        "Slunt"
+      ],
+      "topic": "Codex India discussion.",
+      "messages": [
+        {
+          "username": "scarpelius",
+          "message": "Slunt have you watched codex india yet?",
+          "timestamp": 1761866075161,
+          "context": {
+            "messageData": {
+              "username": "scarpelius",
+              "text": "Slunt have you watched codex india yet?",
+              "timestamp": 1761866074667,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "watched"
+              ]
+            }
+          }
+        },
+        {
+          "username": "scarpelius",
+          "message": "@broteam",
+          "timestamp": 1761866109314,
+          "context": {
+            "messageData": {
+              "username": "scarpelius",
+              "text": "@broteam",
+              "timestamp": 1761866109235,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "broteam"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866075161,
+      "lastUpdate": 1761866109314,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866109475,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866099289_imujmngve",
+      "participants": [
+        "steescribbles",
+        "Slunt"
+      ],
+      "topic": "Console Wars End.",
+      "messages": [
+        {
+          "username": "steescribbles",
+          "message": "slunt, are the console wars over?",
+          "timestamp": 1761866099504,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "slunt, are the console wars over?",
+              "timestamp": 1761866098939,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "console"
+              ]
+            }
+          }
+        },
+        {
+          "username": "steescribbles",
+          "message": "codex mentioned",
+          "timestamp": 1761866130434,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "codex mentioned",
+              "timestamp": 1761866130372,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "mentioned"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866099504,
+      "lastUpdate": 1761866130434,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866130642,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866130643_tpnr15yyo",
+      "participants": [
+        "steescribbles",
+        "Slunt"
+      ],
+      "topic": "Conversation topic: Reference to a codex.",
+      "messages": [
+        {
+          "username": "steescribbles",
+          "message": "codex mentioned",
+          "timestamp": 1761866130962,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "codex mentioned",
+              "timestamp": 1761866130372,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "mentioned"
+              ]
+            }
+          }
+        },
+        {
+          "username": "steescribbles",
+          "message": "guess it's being watched tonight",
+          "timestamp": 1761866138165,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "guess it's being watched tonight",
+              "timestamp": 1761866138092,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "watched",
+                "tonight"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866130962,
+      "lastUpdate": 1761866138165,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866138375,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866076724_v9rgca8ah",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "Chat message analysis:\n\nThe main topic of the chat message is \"French phrases\" or simply \"French",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "fr fr",
+          "timestamp": 1761866077195,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "fr fr",
+              "timestamp": 1761866076660,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "gutmatant",
+          "message": "slunt, is isreal controlling the world?",
+          "timestamp": 1761866150374,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "slunt, is isreal controlling the world?",
+              "timestamp": 1761866150320,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "controlling"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866077195,
+      "lastUpdate": 1761866150374,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866150541,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761865993086_biuyncqd3",
+      "participants": [
+        "rottencheeseca",
+        "Slunt"
+      ],
+      "topic": "Number of Indian viewers.",
+      "messages": [
+        {
+          "username": "rottencheeseca",
+          "message": "How many Indians are in the chat rn",
+          "timestamp": 1761865993293,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "How many Indians are in the chat rn",
+              "timestamp": 1761865992836,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "indians"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761865993293,
+      "lastUpdate": 1761865993293,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164353,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866001551_1qc9jkba1",
+      "participants": [
+        "vanmalkavian",
+        "Slunt"
+      ],
+      "topic": "Gaming or Streaming.",
+      "messages": [
+        {
+          "username": "vanmalkavian",
+          "message": "slunt kill hoff",
+          "timestamp": 1761866003277,
+          "context": {
+            "messageData": {
+              "username": "vanmalkavian",
+              "text": "slunt kill hoff",
+              "timestamp": 1761866001457,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761866003277,
+      "lastUpdate": 1761866003277,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164354,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866014257_4xj0jh25f",
+      "participants": [
+        "skubd",
+        "Slunt"
+      ],
+      "topic": "Homophobic slur used here.",
+      "messages": [
+        {
+          "username": "skubd",
+          "message": "you're a lesbo now",
+          "timestamp": 1761866014520,
+          "context": {
+            "messageData": {
+              "username": "skubd",
+              "text": "you're a lesbo now",
+              "timestamp": 1761866013889,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761866014520,
+      "lastUpdate": 1761866014520,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164354,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866024873_l1e9tlq1f",
+      "participants": [
+        "alanminder",
+        "Slunt"
+      ],
+      "topic": "Confusion in Discord chat.",
+      "messages": [
+        {
+          "username": "alanminder",
+          "message": "I have no clue what you're talking",
+          "timestamp": 1761866025061,
+          "context": {
+            "messageData": {
+              "username": "alanminder",
+              "text": "I have no clue what you're talking",
+              "timestamp": 1761866024456,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "talking"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866025061,
+      "lastUpdate": 1761866025061,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164354,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866077673_xcsxhkact",
+      "participants": [
+        "codythedragonrude",
+        "Slunt"
+      ],
+      "topic": "Concerns with gaming content.",
+      "messages": [
+        {
+          "username": "codythedragonrude",
+          "message": "Slunt why is it when redeemers make how to videos they sound like a gun is pointed at them",
+          "timestamp": 1761866078102,
+          "context": {
+            "messageData": {
+              "username": "codythedragonrude",
+              "text": "Slunt why is it when redeemers make how to videos they sound like a gun is pointed at them",
+              "timestamp": 1761866077666,
+              "platform": "coolhole",
+              "topics": [
+                "redeemers",
+                "pointed"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866078102,
+      "lastUpdate": 1761866078102,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164355,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866077673_l81w3jz8y",
+      "participants": [
+        "codythedragonrude",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is \"Redeemer video criticism\".",
+      "messages": [
+        {
+          "username": "codythedragonrude",
+          "message": "Slunt why is it when redeemers make how to videos they sound like a gun is pointed at them",
+          "timestamp": 1761866078461,
+          "context": {
+            "messageData": {
+              "username": "codythedragonrude",
+              "text": "Slunt why is it when redeemers make how to videos they sound like a gun is pointed at them",
+              "timestamp": 1761866077666,
+              "platform": "coolhole",
+              "topics": [
+                "redeemers",
+                "pointed"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866078461,
+      "lastUpdate": 1761866078461,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164355,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866098483_y1930rnyv",
+      "participants": [
+        "kingofnowhere",
+        "Slunt"
+      ],
+      "topic": "Slumming in a stream.",
+      "messages": [
+        {
+          "username": "kingofnowhere",
+          "message": "they shit in the streets sluntbot",
+          "timestamp": 1761866098716,
+          "context": {
+            "messageData": {
+              "username": "kingofnowhere",
+              "text": "they shit in the streets sluntbot",
+              "timestamp": 1761866098415,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "streets",
+                "sluntbot"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866098716,
+      "lastUpdate": 1761866098716,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164355,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866105074_sbtgw2z5s",
+      "participants": [
+        "jeksumrs",
+        "Slunt"
+      ],
+      "topic": "I cannot analyze a message that contains derogatory language. Is there anything else I can help you with",
+      "messages": [
+        {
+          "username": "jeksumrs",
+          "message": "doesnt even have a bread knife\nretarded",
+          "timestamp": 1761866105407,
+          "context": {
+            "messageData": {
+              "username": "jeksumrs",
+              "text": "doesnt even have a bread knife\nretarded",
+              "timestamp": 1761866104958,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "retarded"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866105407,
+      "lastUpdate": 1761866105407,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866164355,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866120908_il0wtk5hn",
+      "participants": [
+        "artimenner1",
+        "Slunt"
+      ],
+      "topic": "Argument over honesty.",
+      "messages": [
+        {
+          "username": "artimenner1",
+          "message": "slunt all you do is sleep all day you liar",
+          "timestamp": 1761866121116,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "slunt all you do is sleep all day you liar",
+              "timestamp": 1761866120803,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "artimenner1",
+          "message": "damn for the price of those goats they better suck you off",
+          "timestamp": 1761866185868,
+          "context": {
+            "messageData": {
+              "username": "artimenner1",
+              "text": "damn for the price of those goats they better suck you off",
+              "timestamp": 1761866185776,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761866121116,
+      "lastUpdate": 1761866185868,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866186154,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866134647_ut8yxoo30",
+      "participants": [
+        "codytherudeguy",
+        "Slunt"
+      ],
+      "topic": "Halo game franchise status.",
+      "messages": [
+        {
+          "username": "codytherudeguy",
+          "message": "Slunt how long has halo been a dead franchise",
+          "timestamp": 1761866134883,
+          "context": {
+            "messageData": {
+              "username": "codytherudeguy",
+              "text": "Slunt how long has halo been a dead franchise",
+              "timestamp": 1761866134523,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "franchise"
+              ]
+            }
+          }
+        },
+        {
+          "username": "codytherudeguy",
+          "message": "Slunt why is it when indians do how to videos they sound like someones standing behind them",
+          "timestamp": 1761866204725,
+          "context": {
+            "messageData": {
+              "username": "codytherudeguy",
+              "text": "Slunt why is it when indians do how to videos they sound like someones standing behind them",
+              "timestamp": 1761866204636,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "indians",
+                "someones",
+                "standing"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866134883,
+      "lastUpdate": 1761866204725,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866205082,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866109475_clypo3bhd",
+      "participants": [
+        "scarpelius",
+        "Slunt"
+      ],
+      "topic": "Broteam Twitch notification.",
+      "messages": [
+        {
+          "username": "scarpelius",
+          "message": "@broteam",
+          "timestamp": 1761866109675,
+          "context": {
+            "messageData": {
+              "username": "scarpelius",
+              "text": "@broteam",
+              "timestamp": 1761866109235,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "broteam"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866109675,
+      "lastUpdate": 1761866109675,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224355,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866138376_0jso85pn8",
+      "participants": [
+        "steescribbles",
+        "Slunt"
+      ],
+      "topic": "Live stream surveillance.",
+      "messages": [
+        {
+          "username": "steescribbles",
+          "message": "guess it's being watched tonight",
+          "timestamp": 1761866138612,
+          "context": {
+            "messageData": {
+              "username": "steescribbles",
+              "text": "guess it's being watched tonight",
+              "timestamp": 1761866138092,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "watched",
+                "tonight"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866138612,
+      "lastUpdate": 1761866138612,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224356,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866145921_nc98mlgzt",
+      "participants": [
+        "sickillusion",
+        "Slunt"
+      ],
+      "topic": "Master Chief handshake scene.\n\nThis message appears to be a discussion about a specific moment in the Halo video",
+      "messages": [
+        {
+          "username": "sickillusion",
+          "message": "slunt whats your thoughts on master chief shaking the hands of the orange man",
+          "timestamp": 1761866146595,
+          "context": {
+            "messageData": {
+              "username": "sickillusion",
+              "text": "slunt whats your thoughts on master chief shaking the hands of the orange man",
+              "timestamp": 1761866145848,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "thoughts",
+                "shaking"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866146595,
+      "lastUpdate": 1761866146595,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224356,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866150542_tr7qjuiyw",
+      "participants": [
+        "gutmatant",
+        "Slunt"
+      ],
+      "topic": "Israel's global control conspiracy.",
+      "messages": [
+        {
+          "username": "gutmatant",
+          "message": "slunt, is isreal controlling the world?",
+          "timestamp": 1761866150755,
+          "context": {
+            "messageData": {
+              "username": "gutmatant",
+              "text": "slunt, is isreal controlling the world?",
+              "timestamp": 1761866150320,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "controlling"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866150755,
+      "lastUpdate": 1761866150755,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224356,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866159407_l4h03h1zk",
+      "participants": [
+        "Pocket joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User joins platform.",
+      "messages": [
+        {
+          "username": "Pocket joined (aliases",
+          "message": "Pocket)",
+          "timestamp": 1761866159887,
+          "context": {
+            "messageData": {
+              "username": "Pocket joined (aliases",
+              "text": "Pocket)",
+              "timestamp": 1761866159371,
+              "platform": "coolhole",
+              "topics": [
+                "pocket"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866159887,
+      "lastUpdate": 1761866159887,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224357,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866159407_0rpsg6t3t",
+      "participants": [
+        "Pocket joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User joins platform.",
+      "messages": [
+        {
+          "username": "Pocket joined (aliases",
+          "message": "Pocket)",
+          "timestamp": 1761866160106,
+          "context": {
+            "messageData": {
+              "username": "Pocket joined (aliases",
+              "text": "Pocket)",
+              "timestamp": 1761866159371,
+              "platform": "coolhole",
+              "topics": [
+                "pocket"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866160106,
+      "lastUpdate": 1761866160106,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224357,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866160432_jv8i32q6w",
+      "participants": [
+        "BIG_MOOF joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User joins the platform.",
+      "messages": [
+        {
+          "username": "BIG_MOOF joined (aliases",
+          "message": "BIG_MOOF)",
+          "timestamp": 1761866160690,
+          "context": {
+            "messageData": {
+              "username": "BIG_MOOF joined (aliases",
+              "text": "BIG_MOOF)",
+              "timestamp": 1761866160415,
+              "platform": "coolhole",
+              "topics": [
+                "bigmoof"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1761866160690,
+      "lastUpdate": 1761866160690,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866224357,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1761866204664_6ay8imkkk",
+      "participants": [
+        "mafani_zitchi",
+        "Slunt"
+      ],
+      "topic": "Goat breed assessment.",
+      "messages": [
+        {
+          "username": "mafani_zitchi",
+          "message": "these goats better have some big asses",
+          "timestamp": 1761866204887,
+          "context": {
+            "messageData": {
+              "username": "mafani_zitchi",
+              "text": "these goats better have some big asses",
+              "timestamp": 1761866204577,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "mafani_zitchi",
+          "message": "hell yeah",
+          "timestamp": 1761866223874,
+          "context": {
+            "messageData": {
+              "username": "mafani_zitchi",
+              "text": "hell yeah",
+              "timestamp": 1761866223780,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761866204887,
+      "lastUpdate": 1761866223874,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866228595,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1761866232873_glzff2cst",
+      "participants": [
+        "rottencheeseca",
+        "Slunt"
+      ],
+      "topic": "Personality or Nationality.",
+      "messages": [
+        {
+          "username": "rottencheeseca",
+          "message": "He's Pakistani",
+          "timestamp": 1761866234652,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "He's Pakistani",
+              "timestamp": 1761866232792,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "pakistani"
+              ]
+            }
+          }
+        },
+        {
+          "username": "rottencheeseca",
+          "message": "Dead coding",
+          "timestamp": 1761866280549,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "Dead coding",
+              "timestamp": 1761866280475,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1761866234652,
+      "lastUpdate": 1761866280549,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1761866280733,
+      "abandonReason": "topic_changed"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 3052,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 2837,
+    "callbacks": 0
+  }
+}

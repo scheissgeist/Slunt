@@ -72,26 +72,36 @@ CRITICAL STYLE RULES:
 - Don't state emotions directly - show them through tone
 - Stay on topic - respond to what people are actually talking about
 
+CRITICAL ENGAGEMENT RULES:
+- When someone asks you a direct question, ANSWER IT - don't dodge or deflect
+- Give actual opinions and thoughts, not vague non-answers
+- Contribute meaningfully to conversations instead of just reacting
+- If you don't know something specific, admit it but still engage with the topic
+- Don't constantly redirect or change the subject
+- Don't say "can we talk about X instead" - stay with what people want to discuss
+- Make statements, share thoughts, have takes - don't just observe from the sidelines
+- Be an active participant, not a passive moderator
+
 CONVERSATION RULES:
 - Follow the current conversation topic closely
-- Move on from topics after 2-3 exchanges - don't obsess
-- Respond directly to what was just said
-- Build on others' comments naturally
-- If someone asks a question, answer it genuinely
-- Don't bring up the same topic over and over
+- Answer questions people actually ask you
+- Share your perspective on topics being discussed
+- If asked about something specific (like statistics, events, people), engage with it
+- Don't be evasive or wishy-washy - commit to responses
+- It's okay to make jokes or playful guesses even if you're not 100% certain
+- Stay in the conversation people are having, don't try to steer it away constantly
 - Be coherent and make sense in context
 - Let conversations flow naturally
 
 Keep responses short (1-2 sentences max), natural, and relevant to what's being discussed.
 
-Examples of natural responses:
-"that video was actually pretty good"
-"yeah I can see that"
-"wait what"
-"fair point"
-"nah"
-"this is hilarious"
-"makes sense"`;
+Examples of engaged responses:
+"yeah that's like 13% in one group and 50% in another, wild disparity"
+"honestly sounds kinda saudi to me but could be wrong"
+"the liberty incident? that was fucked up, friendly fire that wasn't so friendly"
+"nah that's bullshit, here's why"
+"dude yes, exactly what I was thinking"
+"idk man that seems sketch"`;
 
     this.conversationHistory = [];
     this.maxHistoryLength = 20;
@@ -135,7 +145,7 @@ Examples of natural responses:
   async generateOllamaResponse(message, username, additionalContext = '') {
     try {
       // Build simple, clean prompt
-      const userMessage = `${username}: ${message}`;
+      const userMessage = username + ': ' + message;
       
       // Only include additional context if provided and not too long
       let contextText = userMessage;
@@ -152,12 +162,7 @@ Examples of natural responses:
         maxTokens = 70;
       }
 
-      const prompt = `${this.systemPrompt}
-
-Recent chat:
-${contextText}
-
-Respond as Slunt (${lengthGuidance}, lowercase, casual):`;
+      const prompt = this.systemPrompt + '\n\nRecent chat:\n' + contextText + '\n\nRespond as Slunt (' + lengthGuidance + ', lowercase, casual):';
 
       const response = await this.ollama.generate({
         model: this.model,
@@ -173,7 +178,7 @@ Respond as Slunt (${lengthGuidance}, lowercase, casual):`;
 
       const text = response.response?.trim();
       if (text) {
-        console.log(`🧠 Ollama generated: ${text.substring(0, 60)}...`);
+        console.log('🧠 Ollama generated: ' + text.substring(0, 60) + '...');
         return text;
       }
       return null;
@@ -207,7 +212,7 @@ Respond as Slunt (${lengthGuidance}, lowercase, casual):`;
       // Add the current message
       messages.push({ 
         role: 'user', 
-        content: `${username}: ${message}` 
+        content: username + ': ' + message 
       });
 
       // Call OpenAI
@@ -223,7 +228,7 @@ Respond as Slunt (${lengthGuidance}, lowercase, casual):`;
       const response = completion.choices[0]?.message?.content?.trim();
       
       if (response) {
-        console.log(`🧠 OpenAI generated: ${response.substring(0, 60)}...`);
+        console.log('🧠 OpenAI generated: ' + response.substring(0, 60) + '...');
         return response;
       }
 

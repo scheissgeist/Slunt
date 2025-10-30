@@ -107,6 +107,7 @@ const CursorController = require('./src/services/CursorController');
 const PlatformManager = require('./src/io/platformManager');
 const DiscordClient = require('./src/io/discordClient');
 const TwitchClient = require('./src/io/twitchClient');
+const StreamStatusMonitor = require('./src/services/StreamStatusMonitor');
 
 const app = express();
 const server = http.createServer(app);
@@ -144,6 +145,11 @@ app.get('/mind', (req, res) => {
 // Serve Multi-Platform Control Center
 app.get('/platforms', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'multi-platform-dashboard.html'));
+});
+
+// Serve Sentiment Dashboard
+app.get('/sentiment', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'sentiment-dashboard.html'));
 });
 
 // Initialize bot components
@@ -195,6 +201,24 @@ setInterval(() => {
   if (platformManager) {
     const platformStatus = platformManager.getStatus();
     io.emit('platform:status', platformStatus);
+  }
+  
+  // Broadcast sentiment data
+  if (chatBot.sentimentAnalyzer) {
+    const sentimentData = chatBot.getSentimentMetrics();
+    io.emit('sentiment:update', sentimentData);
+  }
+  
+  // Broadcast personality status
+  if (chatBot.personalityScheduler) {
+    const personalityStatus = chatBot.getPersonalityStatus();
+    io.emit('personality:update', personalityStatus);
+  }
+  
+  // Broadcast clip creator status
+  if (chatBot.clipCreator) {
+    const clipStatus = chatBot.getClipStatus();
+    io.emit('clips:update', clipStatus);
   }
   
   // Send user profiles
@@ -1067,6 +1091,11 @@ io.on('connection', (socket) => {
   connectedClients++;
   console.log(`🔌 [Socket.IO] Client connected: ${socket.id} (Total: ${connectedClients})`);
 
+  // Handle socket errors
+  socket.on('error', (error) => {
+    logger.error(`❌ [Socket.IO] Socket error for ${socket.id}:`, error.message);
+  });
+
   // Send current state immediately when dashboard connects
   if (coolholeExplorer) {
     const explorerData = coolholeExplorer.getExplorationData();
@@ -1247,6 +1276,12 @@ if (enableCoolhole) {
     // Give ChatBot access to platform manager for sending messages
     chatBot.setPlatformManager(platformManager);
     
+    // Give ChatBot access to Discord client for reactions
+    if (discordClient) {
+      chatBot.discordClient = discordClient;
+      console.log('🎮 [Discord] Client reference set for reactions');
+    }
+    
     // Give ChatBot access to rate limiter for spam protection
     chatBot.setRateLimiter(rateLimiter);
     
@@ -1256,6 +1291,37 @@ if (enableCoolhole) {
     // Initialize all platforms
     console.log('🚀 Initializing all platforms...');
     await platformManager.initialize();
+    
+    // Initialize clip creator if Twitch is available
+    if (twitchClient) {
+      chatBot.initializeClipCreator(twitchClient);
+      
+      // Listen for clip events
+      chatBot.on('clip:created', (clipInfo) => {
+        io.emit('clip:created', clipInfo);
+      });
+    }
+    
+    // Initialize stream status monitor for platform switching
+    if (twitchClient && process.env.TWITCH_CLIENT_ID && process.env.TWITCH_OAUTH_TOKEN) {
+      const streamMonitor = new StreamStatusMonitor(platformManager);
+      // Extract channel name from TWITCH_CHANNELS (format: "broteam" or "#broteam")
+      const twitchChannel = process.env.TWITCH_CHANNELS ? 
+                           process.env.TWITCH_CHANNELS.split(',')[0].replace('#', '').trim() : 
+                           null;
+      
+      if (twitchChannel) {
+        console.log(`📺 Starting stream status monitor for channel: ${twitchChannel}`);
+        streamMonitor.start(twitchChannel);
+        
+        // Make monitor available globally for testing
+        global.streamMonitor = streamMonitor;
+      } else {
+        console.log('⚠️ TWITCH_CHANNELS not configured, stream status monitor disabled');
+      }
+    } else {
+      console.log('⚠️ Twitch credentials not configured, stream status monitor disabled');
+    }
   })().catch(error => {
     console.error('❌ Error initializing platforms:', error);
   });
@@ -1494,7 +1560,7 @@ async function gracefulShutdown(signal) {
       if (chatBot.sluntDiary) await chatBot.sluntDiary.saveDiary();
       // PersonalityEvolution doesn't have savePersonality method - data is auto-saved
       // MemoryConsolidation doesn't have saveMemories method - uses consolidateMemories() instead
-      if (chatBot.videoLearning) await chatBot.videoLearning.saveVideoData();
+      // VideoLearning doesn't have saveVideoData method - data is stored in memory
       if (chatBot.predictionEngine) await chatBot.predictionEngine.savePredictions();
       if (chatBot.eventMemorySystem) await chatBot.eventMemorySystem.saveEvents();
       if (chatBot.bitCommitment) await chatBot.bitCommitment.saveBits();

@@ -209,17 +209,23 @@ class StyleMimicry {
       }
     }
 
-    // Add slang/reactions sometimes
+    // Add slang/reactions sometimes (REDUCED frequency & add variety check)
     const topSlang = Array.from(this.stylePatterns.slang.entries())
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(s => s[0]);
 
-    if (topSlang.length > 0 && Math.random() > 0.7) {
-      const slang = topSlang[Math.floor(Math.random() * topSlang.length)];
-      // Add at the end sometimes
-      if (Math.random() > 0.5) {
-        message = `${message} ${slang}`;
+    if (topSlang.length > 0 && Math.random() > 0.85) { // Reduced from 0.7 to 0.85 (15% -> 15% but with checks below)
+      // Don't add slang if message already has common filler words
+      const lowerMsg = message.toLowerCase();
+      const hasFillerWords = ['lit', 'ik', 'fr', 'ngl', 'tbh', 'tho', 'lmao', 'lol'].some(word => lowerMsg.includes(word));
+      
+      if (!hasFillerWords) {
+        const slang = topSlang[Math.floor(Math.random() * topSlang.length)];
+        // Add at the end sometimes
+        if (Math.random() > 0.5) {
+          message = `${message} ${slang}`;
+        }
       }
     }
 

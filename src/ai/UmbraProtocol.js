@@ -13,11 +13,10 @@ class UmbraProtocol {
     this.activatedAt = null;
     this.duration = 0; // How long protocol lasts
     
-    // Trigger phrases
+    // Trigger phrases - only very explicit dating/relationship words
     this.triggers = [
-      'girl', 'girls', 'woman', 'women', 'date', 'dating',
-      'girlfriend', 'relationship', 'sex', 'sexy', 'hot',
-      'attractive', 'crush', 'virginity', 'virgin', 'single'
+      'girlfriend', 'boyfriend', 'dating', 'date',
+      'relationship', 'crush', 'single'
     ];
     
     // Brag types
@@ -46,7 +45,7 @@ class UmbraProtocol {
     
     // Cooldown tracking
     this.lastActivation = 0;
-    this.cooldownDuration = 30 * 60 * 1000; // 30 minutes
+    this.cooldownDuration = 60 * 60 * 1000; // 60 minutes (increased from 30)
     
     // Stats
     this.stats = {
@@ -69,11 +68,11 @@ class UmbraProtocol {
 
     const lowerMsg = message.toLowerCase();
 
-    // Check for triggers - but very rarely
+    // Check for triggers - extremely rare
     for (const trigger of this.triggers) {
       if (lowerMsg.includes(trigger)) {
-        // Only 5% chance to activate (down from 25%)
-        if (Math.random() < 0.05) {
+        // Only 0.5% chance to activate (reduced from 2%)
+        if (Math.random() < 0.005) {
           this.activate();
           return true;
         }
@@ -168,8 +167,8 @@ Your subtle hint:`;
    */
   shouldBrag() {
     if (!this.isActive) return false;
-    // Only 3% chance to add brag when protocol is active (was 12%)
-    return Math.random() < 0.03;
+    // Only 1.5% chance to add brag when protocol is active (reduced from 3%)
+    return Math.random() < 0.015;
   }
 
   /**

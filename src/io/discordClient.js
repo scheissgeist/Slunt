@@ -219,6 +219,58 @@ class DiscordClient extends EventEmitter {
   }
 
   /**
+   * Add a reaction to a message
+   */
+  async addReaction(channelId, messageId, emoji) {
+    if (!this.isReady) {
+      console.warn('⚠️ [Discord] Not ready, skipping reaction');
+      return false;
+    }
+
+    try {
+      const channel = await this.client.channels.fetch(channelId);
+      
+      if (!channel || !channel.isTextBased()) {
+        console.error('❌ [Discord] Invalid channel for reaction:', channelId);
+        return false;
+      }
+
+      const message = await channel.messages.fetch(messageId);
+      
+      if (!message) {
+        console.error('❌ [Discord] Message not found:', messageId);
+        return false;
+      }
+
+      await message.react(emoji);
+      console.log(`😀 [Discord] Added reaction ${emoji} to message ${messageId}`);
+      return true;
+      
+    } catch (error) {
+      console.error('❌ [Discord] Reaction error:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * React to a message based on raw message object
+   */
+  async reactToMessage(messageData, emoji) {
+    if (!messageData.rawMessage) {
+      return this.addReaction(messageData.channelId, messageData.messageId, emoji);
+    }
+
+    try {
+      await messageData.rawMessage.react(emoji);
+      console.log(`😀 [Discord] Added reaction ${emoji}`);
+      return true;
+    } catch (error) {
+      console.error('❌ [Discord] Reaction error:', error.message);
+      return false;
+    }
+  }
+
+  /**
    * Split long messages
    */
   splitMessage(content, maxLength) {

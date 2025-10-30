@@ -87,8 +87,20 @@ class RelationshipMapping {
         Array.from(connections.entries())
       ]);
 
+      // Convert platform Sets to arrays for JSON serialization
+      const relationshipsArray = Array.from(this.relationships.entries()).map(([key, rel]) => {
+        const serializedRel = { ...rel };
+        if (rel.platforms) {
+          serializedRel.platforms = {};
+          for (const [username, platforms] of Object.entries(rel.platforms)) {
+            serializedRel.platforms[username] = platforms instanceof Set ? Array.from(platforms) : platforms;
+          }
+        }
+        return [key, serializedRel];
+      });
+
       const data = {
-        relationships: Array.from(this.relationships.entries()),
+        relationships: relationshipsArray,
         socialGraph: socialGraphArray,
         friendGroups: this.friendGroups,
         savedAt: Date.now()
@@ -104,7 +116,7 @@ class RelationshipMapping {
   /**
    * Update relationship between two users
    */
-  updateRelationship(user1, user2, interactionType) {
+  updateRelationship(user1, user2, interactionType, platform = 'unknown') {
     // Normalize order (alphabetically)
     const [userA, userB] = [user1, user2].sort();
     const key = `${userA}-${userB}`;
@@ -118,13 +130,30 @@ class RelationshipMapping {
         conversations: 0,
         sentiment: 'neutral',
         firstInteraction: Date.now(),
-        lastInteraction: Date.now()
+        lastInteraction: Date.now(),
+        platforms: {}, // Track which platforms each user has been seen on
+        crossPlatform: false // Whether this is a cross-platform relationship
       });
     }
 
     const rel = this.relationships.get(key);
     rel.interactions++;
     rel.lastInteraction = Date.now();
+
+    // Track platforms for each user
+    if (!rel.platforms) rel.platforms = {};
+    if (!rel.platforms[userA]) rel.platforms[userA] = new Set();
+    if (!rel.platforms[userB]) rel.platforms[userB] = new Set();
+    
+    // Convert to Set if it's an array (from loaded data)
+    if (Array.isArray(rel.platforms[userA])) rel.platforms[userA] = new Set(rel.platforms[userA]);
+    if (Array.isArray(rel.platforms[userB])) rel.platforms[userB] = new Set(rel.platforms[userB]);
+    
+    rel.platforms[userA].add(platform);
+    rel.platforms[userB].add(platform);
+    
+    // Check if this is a cross-platform relationship
+    rel.crossPlatform = rel.platforms[userA].size > 1 || rel.platforms[userB].size > 1;
 
     // Update based on interaction type
     switch (interactionType) {
@@ -151,7 +180,7 @@ class RelationshipMapping {
     // Update social graph
     this.updateSocialGraph(userA, userB, rel.strength);
 
-    console.log(`🔗 [Relationships] Updated ${userA} ↔ ${userB}: ${rel.strength} strength, ${rel.interactions} interactions`);
+    console.log(`🔗 [Relationships] Updated ${userA} ↔ ${userB}: ${rel.strength} strength, ${rel.interactions} interactions (${platform})`);
     
     // Auto-save after updating (debounced would be better but this works)
     this.saveRelationships();
@@ -472,6 +501,163 @@ class RelationshipMapping {
       conflicts: Array.from(this.relationships.values())
         .filter(r => r.sentiment === 'negative').length
     };
+  }
+
+  /**
+   * Find cross-platform user matches based on username similarity
+   * Uses Levenshtein distance and normalization to identify same users
+   */
+  findCrossPlatformMatches() {
+    const matches = [];
+    const usersByPlatform = new Map();
+    
+    // Group users by platform
+    for (const [key, rel] of this.relationships.entries()) {
+      if (!rel.platforms) continue;
+      
+      for (const [username, platforms] of Object.entries(rel.platforms)) {
+        if (!Array.isArray(platforms)) continue;
+        
+        platforms.forEach(platform => {
+          if (!usersByPlatform.has(platform)) {
+            usersByPlatform.set(platform, new Set());
+          }
+          usersByPlatform.get(platform).add(username);
+        });
+      }
+    }
+    
+    // Compare users across platforms
+    const allPlatforms = Array.from(usersByPlatform.keys());
+    
+    for (let i = 0; i < allPlatforms.length; i++) {
+      for (let j = i + 1; j < allPlatforms.length; j++) {
+        const platform1 = allPlatforms[i];
+        const platform2 = allPlatforms[j];
+        const users1 = Array.from(usersByPlatform.get(platform1) || []);
+        const users2 = Array.from(usersByPlatform.get(platform2) || []);
+        
+        // Compare each user from platform1 with platform2
+        for (const user1 of users1) {
+          for (const user2 of users2) {
+            const similarity = this.calculateUsernameSimilarity(user1, user2);
+            
+            if (similarity > 0.8) { // 80% similarity threshold
+              matches.push({
+                username1: user1,
+                platform1: platform1,
+                username2: user2,
+                platform2: platform2,
+                similarity: similarity,
+                likelySamePerson: similarity > 0.9
+              });
+            }
+          }
+        }
+      }
+    }
+    
+    return matches;
+  }
+
+  /**
+   * Calculate similarity between two usernames (0-1)
+   * Uses normalized Levenshtein distance
+   */
+  calculateUsernameSimilarity(username1, username2) {
+    // Normalize usernames
+    const normalized1 = this.normalizeUsername(username1);
+    const normalized2 = this.normalizeUsername(username2);
+    
+    if (normalized1 === normalized2) return 1.0;
+    
+    const distance = this.levenshteinDistance(normalized1, normalized2);
+    const maxLength = Math.max(normalized1.length, normalized2.length);
+    
+    return 1 - (distance / maxLength);
+  }
+
+  /**
+   * Normalize username for comparison
+   */
+  normalizeUsername(username) {
+    return username
+      .toLowerCase()
+      .replace(/[_\-\s]/g, '') // Remove underscores, hyphens, spaces
+      .replace(/[0-9]+$/, ''); // Remove trailing numbers
+  }
+
+  /**
+   * Calculate Levenshtein distance between two strings
+   */
+  levenshteinDistance(str1, str2) {
+    const matrix = [];
+    
+    for (let i = 0; i <= str2.length; i++) {
+      matrix[i] = [i];
+    }
+    
+    for (let j = 0; j <= str1.length; j++) {
+      matrix[0][j] = j;
+    }
+    
+    for (let i = 1; i <= str2.length; i++) {
+      for (let j = 1; j <= str1.length; j++) {
+        if (str2.charAt(i - 1) === str1.charAt(j - 1)) {
+          matrix[i][j] = matrix[i - 1][j - 1];
+        } else {
+          matrix[i][j] = Math.min(
+            matrix[i - 1][j - 1] + 1, // substitution
+            matrix[i][j - 1] + 1,     // insertion
+            matrix[i - 1][j] + 1      // deletion
+          );
+        }
+      }
+    }
+    
+    return matrix[str2.length][str1.length];
+  }
+
+  /**
+   * Merge relationship data for users identified as same person across platforms
+   */
+  mergeCrossPlatformUser(username1, platform1, username2, platform2) {
+    console.log(`🔗 Merging cross-platform user: ${username1}@${platform1} = ${username2}@${platform2}`);
+    
+    // Find all relationships involving either username
+    const relationshipsToUpdate = [];
+    
+    for (const [key, rel] of this.relationships.entries()) {
+      if (rel.users.includes(username1) || rel.users.includes(username2)) {
+        relationshipsToUpdate.push([key, rel]);
+      }
+    }
+    
+    // Update platform tracking for merged user
+    relationshipsToUpdate.forEach(([key, rel]) => {
+      if (!rel.platforms) rel.platforms = {};
+      
+      // If relationship involves username1, add username2's platform
+      if (rel.users.includes(username1)) {
+        if (!rel.platforms[username1]) rel.platforms[username1] = [];
+        if (!rel.platforms[username1].includes(platform2)) {
+          rel.platforms[username1].push(platform2);
+        }
+      }
+      
+      // If relationship involves username2, add username1's platform
+      if (rel.users.includes(username2)) {
+        if (!rel.platforms[username2]) rel.platforms[username2] = [];
+        if (!rel.platforms[username2].includes(platform1)) {
+          rel.platforms[username2].push(platform1);
+        }
+      }
+      
+      // Mark as cross-platform
+      rel.crossPlatform = true;
+    });
+    
+    this.saveRelationships();
   }
 }
 
