@@ -13,10 +13,15 @@ class RumorMill {
       'meme inflation', 'friendship collapse',
     ];
     const type = rumorTypes[Math.floor(Math.random() * rumorTypes.length)];
+    
+    // Create rumor for INTERNAL USE ONLY - don't expose raw analysis in chat
     const rumor = `${user} is involved in a ${type} about ${topic}`;
     this.rumors.push({ user, topic, rumor, time: Date.now() });
     if (this.rumors.length > this.maxRumors) this.rumors.shift();
-    return rumor;
+    
+    // Return null - rumors should NOT be sent to chat directly
+    // AI should weave them into natural conversation if relevant
+    return null;
   }
 
   getRecentRumors(limit = 5) {

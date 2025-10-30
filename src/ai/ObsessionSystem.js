@@ -290,6 +290,24 @@ class ObsessionSystem {
         : null
     };
   }
+
+  /**
+   * Get current obsession for dashboard
+   */
+  getCurrentObsession() {
+    if (!this.currentObsession) {
+      return { active: false };
+    }
+    
+    const timeLeft = this.currentObsession.endsAt - Date.now();
+    return {
+      active: true,
+      topic: this.currentObsession.topic,
+      intensity: Math.round(this.currentObsession.intensity * 100),
+      duration: timeLeft,
+      mentions: this.currentObsession.mentions
+    };
+  }
 }
 
 module.exports = ObsessionSystem;

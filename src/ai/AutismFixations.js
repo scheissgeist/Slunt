@@ -117,11 +117,44 @@ class AutismFixations {
     this.dumpMessages = 0;
     this.maxDumpMessages = 3; // Will infodump up to 3 messages
     
+    // Favorite fixation rotation (changes every 3 hours)
+    this.favoriteFixation = this.fixations[Math.floor(Math.random() * this.fixations.length)];
+    this.rotationInterval = 3 * 60 * 60 * 1000; // 3 hours
+    this.lastRotation = Date.now();
+    
     // Stats
     this.stats = {
       totalDumps: 0,
       dumpsByTopic: {}
     };
+    
+    // Setup rotation
+    this.setupRotation();
+  }
+
+  /**
+   * Setup periodic rotation of favorite fixation
+   */
+  setupRotation() {
+    setInterval(() => {
+      this.rotateFavorite();
+    }, this.rotationInterval);
+  }
+
+  /**
+   * Rotate to a new favorite fixation
+   */
+  rotateFavorite() {
+    const oldFavorite = this.favoriteFixation.topic;
+    // Pick a different fixation
+    let newFixation;
+    do {
+      newFixation = this.fixations[Math.floor(Math.random() * this.fixations.length)];
+    } while (newFixation.topic === oldFavorite && this.fixations.length > 1);
+    
+    this.favoriteFixation = newFixation;
+    this.lastRotation = Date.now();
+    console.log(`🤓 [Autism] New favorite fixation: ${newFixation.topic} (was: ${oldFavorite})`);
   }
 
   /**
@@ -234,6 +267,7 @@ class AutismFixations {
     return {
       currentlyDumping: this.currentlyDumping,
       currentTopic: this.dumpingTopic,
+      favoriteFixation: this.favoriteFixation.topic,
       totalDumps: this.stats.totalDumps,
       topicBreakdown: this.stats.dumpsByTopic
     };

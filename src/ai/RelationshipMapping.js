@@ -3,12 +3,64 @@
  * Advanced social graph and relationship dynamics
  */
 
+const fs = require('fs').promises;
+const path = require('path');
+
 class RelationshipMapping {
   constructor(chatBot) {
     this.chatBot = chatBot;
     this.relationships = new Map(); // user1-user2 -> relationship data
     this.friendGroups = [];
     this.socialGraph = new Map(); // username -> connections
+    this.savePath = './data/relationships.json';
+    this.loadRelationships(); // Auto-load on startup
+  }
+
+  /**
+   * Load relationships from disk
+   */
+  async loadRelationships() {
+    try {
+      const data = await fs.readFile(this.savePath, 'utf8');
+      const parsed = JSON.parse(data);
+      
+      // Convert arrays back to Maps
+      if (parsed.relationships) {
+        this.relationships = new Map(parsed.relationships);
+      }
+      if (parsed.socialGraph) {
+        this.socialGraph = new Map(parsed.socialGraph);
+      }
+      this.friendGroups = parsed.friendGroups || [];
+      
+      console.log(`🔗 [Relationships] Loaded ${this.relationships.size} relationships from disk`);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('🔗 [Relationships] Error loading:', error.message);
+      }
+    }
+  }
+
+  /**
+   * Save relationships to disk
+   */
+  async saveRelationships() {
+    try {
+      const dir = path.dirname(this.savePath);
+      await fs.mkdir(dir, { recursive: true });
+
+      const data = {
+        relationships: Array.from(this.relationships.entries()),
+        socialGraph: Array.from(this.socialGraph.entries()),
+        friendGroups: this.friendGroups,
+        savedAt: Date.now()
+      };
+
+      await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
+      console.log(`🔗 [Relationships] Saved ${this.relationships.size} relationships to disk`);
+    } catch (error) {
+      console.error('🔗 [Relationships] Error saving:', error.message);
+    }
   }
 
   /**
@@ -62,6 +114,9 @@ class RelationshipMapping {
     this.updateSocialGraph(userA, userB, rel.strength);
 
     console.log(`🔗 [Relationships] Updated ${userA} ↔ ${userB}: ${rel.strength} strength, ${rel.interactions} interactions`);
+    
+    // Auto-save after updating (debounced would be better but this works)
+    this.saveRelationships();
   }
 
   /**

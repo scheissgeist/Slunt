@@ -195,8 +195,13 @@ class SocialAwareness {
 
   /**
    * Onboard new user with tips
+   * DISABLED - Let Ollama AI handle all responses naturally
    */
   async onboardNewUser(username) {
+    // Disabled automatic tips - Ollama AI will respond naturally to all messages
+    return;
+
+    /* DISABLED CODE:
     const profile = this.chatBot.userProfiles.get(username);
     if (!profile || profile.messageCount > 10) return;
 
@@ -209,13 +214,14 @@ class SocialAwareness {
       ];
 
       const tip = tips[Math.floor(Math.random() * tips.length)];
-      
+
       try {
         await this.chatBot.sendMessage(tip);
       } catch (error) {
         console.error(`👋 [Social] Error onboarding user:`, error.message);
       }
     }
+    */
   }
 
   /**

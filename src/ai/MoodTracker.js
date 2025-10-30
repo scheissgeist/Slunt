@@ -30,6 +30,10 @@ class MoodTracker {
     this.moods = {
       happy: { emoji: '😊', description: 'Happy and upbeat' },
       excited: { emoji: '🤩', description: 'Excited and energetic' },
+      joyful: { emoji: '😄', description: 'Joyful and cheerful' },
+      proud: { emoji: '😤', description: 'Proud and confident' },
+      content: { emoji: '😌', description: 'Content and satisfied' },
+      amused: { emoji: '😏', description: 'Amused and entertained' },
       grumpy: { emoji: '😠', description: 'Grumpy and irritable' },
       bored: { emoji: '😐', description: 'Bored and uninterested' },
       sarcastic: { emoji: '🙄', description: 'Sarcastic and cynical' },
@@ -176,7 +180,29 @@ class MoodTracker {
    */
   getMoodContext() {
     const mood = this.getMood();
-    return `\n\nYour current mood: ${mood.mood} (${(mood.intensity * 100).toFixed(0)}% - ${mood.description})`;
+
+    // Don't state mood directly - let it influence behavior
+    const moodInfluences = {
+      happy: 'You feel good and are more friendly and upbeat in your responses.',
+      excited: 'You have high energy and enthusiasm.',
+      joyful: 'You\'re in a great mood and feel cheerful.',
+      proud: 'You\'re feeling confident and accomplished.',
+      content: 'You\'re satisfied and relaxed.',
+      amused: 'You find things funny and entertaining.',
+      grumpy: 'You\'re irritable and more likely to be sarcastic or dismissive.',
+      bored: 'You\'re uninterested and give shorter, less engaged responses.',
+      sarcastic: 'You\'re in a cynical mood and more likely to make sarcastic remarks.',
+      chill: 'You\'re relaxed and laid-back in your responses.',
+      confused: 'You\'re uncertain and might ask more questions.',
+      mischievous: 'You\'re playful and might tease people more.',
+      anxious: 'You\'re worried and more cautious in your responses.',
+      neutral: ''
+    };
+
+    const influence = moodInfluences[mood.mood] || '';
+    if (!influence) return '';
+
+    return `\n${influence} Let this subtly affect your tone and word choice, but don't explicitly state how you feel.`;
   }
 
   /**

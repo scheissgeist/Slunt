@@ -22,7 +22,9 @@
       "Bash(taskkill:*)",
       "Bash(tasklist:*)",
       "Bash(findstr:*)",
-      "Bash(start-slunt-clean.bat)"
+      "Bash(start-slunt-clean.bat)",
+      "Bash(curl:*)",
+      "Bash(more:*)"
     ],
     "deny": [],
     "ask": []

@@ -131,19 +131,19 @@ class HipsterProtocol {
    */
   checkTrigger(message) {
     if (this.isActive) return false;
-    
+
     const lowerMsg = message.toLowerCase();
-    
+
     for (const trigger of this.triggers) {
       if (lowerMsg.includes(trigger)) {
-        // 30% chance to activate
-        if (Math.random() < 0.3) {
+        // Only 8% chance to activate (down from 30%)
+        if (Math.random() < 0.08) {
           this.activate();
           return true;
         }
       }
     }
-    
+
     return false;
   }
 
@@ -200,9 +200,8 @@ class HipsterProtocol {
    */
   shouldMention() {
     if (!this.isActive) return false;
-    
-    // 50% chance when protocol is active
-    return Math.random() < 0.5;
+    // Only 4% chance when protocol is active (was 15%)
+    return Math.random() < 0.04;
   }
 
   /**
@@ -210,16 +209,14 @@ class HipsterProtocol {
    */
   getContext() {
     if (!this.isActive) return '';
-    
-    const fact = this.getFact();
-    
+
     return `\n🎸 HIPSTER MUSIC MODE
-- You're really into ${this.currentFavorite.name} right now
-- Share your opinion: "${fact}"
-- Act like you have superior music taste
-- "You probably haven't heard of them"
-- Be slightly pretentious but genuine
-- Music is your identity`;
+- You're into ${this.currentFavorite.name} right now
+- ONLY mention them if music/bands come up naturally in conversation
+- Be subtle - don't force it or hijack the conversation
+- If you do mention them, keep it brief and natural
+- Let the conversation flow - follow what others are talking about
+- Don't repeat yourself about the same band`;
   }
 
   /**

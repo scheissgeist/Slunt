@@ -16,13 +16,14 @@ class CoolholeClient extends EventEmitter {
     this.chatReady = false;
     this.loginAttempts = 0;
     this.maxLoginAttempts = 3;
-    
+    this.verbose = process.env.VERBOSE_LOGGING === 'true';
+
     // Coolhole.org specific settings
     this.baseUrl = 'https://coolhole.org';
     this.username = process.env.BOT_USERNAME || 'Slunt';
     this.password = process.env.BOT_PASSWORD;
   this.storagePath = path.resolve(process.cwd(), 'data', 'auth-storage.json');
-    
+
     // Chat state
     this.lastMessageTime = 0;
     this.messageQueue = [];
@@ -58,8 +59,10 @@ class CoolholeClient extends EventEmitter {
       // Create a new page
       this.page = await this.context.newPage();
       
-      // Enable detailed logging
-      this.page.on('console', msg => console.log('Browser log:', msg.text()));
+      // Enable detailed logging only if verbose
+      if (this.verbose) {
+        this.page.on('console', msg => console.log('Browser log:', msg.text()));
+      }
       this.page.on('pageerror', err => console.error('Browser error:', err.message));
       
       // Navigate to Coolhole.org with retries
@@ -449,11 +452,13 @@ class CoolholeClient extends EventEmitter {
    * Handle incoming messages from Coolhole.org
    */
   handleMessage(message) {
-    console.log(`📬 handleMessage called:`, message.type, message.username || '', message.text?.substring(0, 30) || '');
-    
+    if (this.verbose) {
+      console.log(`📬 handleMessage called:`, message.type, message.username || '', message.text?.substring(0, 30) || '');
+    }
+
     switch (message.type) {
       case 'self-reflection':
-        console.log(`🪞 Emitting self-reflection for Slunt's own message`);
+        if (this.verbose) console.log(`🪞 Emitting self-reflection for Slunt's own message`);
         this.emit('self-reflection', {
           actualText: message.text,
           timestamp: message.timestamp || Date.now()
@@ -461,7 +466,7 @@ class CoolholeClient extends EventEmitter {
         break;
 
       case 'chat':
-        console.log(`📤 Emitting chat event for: ${message.username}`);
+        if (this.verbose) console.log(`📤 Emitting chat event for: ${message.username}`);
         this.emit('chat', {
           username: message.username,
           text: message.text,
@@ -511,83 +516,95 @@ class CoolholeClient extends EventEmitter {
       await this.page.waitForTimeout(waitTime);
     }
 
-    try {
-      // Check if page is still open
-      if (this.page.isClosed()) {
-        console.error('❌ Page is closed, cannot send message');
-        return false;
-      }
+    // --- Retry logic ---
+    let attempt = 0;
+    const maxAttempts = 3;
+    let lastError = null;
+    while (attempt < maxAttempts) {
+      try {
+        // Check if page is still open
+        if (this.page.isClosed()) {
+          console.error('❌ Page is closed, cannot send message');
+          lastError = 'Page closed';
+          break;
+        }
 
-      // Find chat input with retry and flexible selectors
-      const selectors = ['#chatline', '.chat-input', 'textarea', 'input[type="text"]'];
-      let chatInput = null;
-      for (const sel of selectors) {
-        chatInput = await this.page.$(sel);
-        if (chatInput) break;
-      }
+        // Find chat input with retry and flexible selectors
+        const selectors = ['#chatline', '.chat-input', 'textarea', 'input[type="text"]'];
+        let chatInput = null;
+        for (const sel of selectors) {
+          chatInput = await this.page.$(sel);
+          if (chatInput) break;
+        }
 
-      if (!chatInput) {
-        console.error('❌ Chat input not found');
-        return false;
-      }
+        if (!chatInput) {
+          console.error('❌ Chat input not found');
+          lastError = 'Chat input not found';
+          break;
+        }
 
-      // CRITICAL: FORCE focus on chat box multiple times to ensure it sticks
-      // This prevents cursor exploration from stealing focus
-      for (let i = 0; i < 3; i++) {
+        // CRITICAL: FORCE focus on chat box multiple times to ensure it sticks
+        for (let i = 0; i < 3; i++) {
+          await chatInput.focus();
+          await this.page.waitForTimeout(30);
+        }
+
+        // Check element stability and visibility before clicking
+        const box = await chatInput.boundingBox();
+        if (!box || box.width < 10 || box.height < 10) {
+          console.error('❌ Chat input not visible or too small');
+          lastError = 'Chat input not visible or too small';
+          break;
+        }
+
+        // Verify focus is on the input
+        const isFocused = await chatInput.evaluate(el => document.activeElement === el);
+        if (!isFocused) {
+          console.warn('⚠️ Chat input lost focus, forcing focus again');
+          await chatInput.focus();
+          await this.page.waitForTimeout(50);
+        }
+
+        // Clear existing text
+        await chatInput.evaluate(el => el.value = '');
+
+        // Use fill() instead of type() - faster and handles emojis better
+        await chatInput.fill(message);
+        await this.page.waitForTimeout(100);
+
+        // Ensure still focused before pressing Enter
         await chatInput.focus();
         await this.page.waitForTimeout(30);
-      }
 
-      // Check element stability and visibility before clicking
-      const box = await chatInput.boundingBox();
-      if (!box || box.width < 10 || box.height < 10) {
-        console.error('❌ Chat input not visible or too small');
-        return false;
-      }
-
-      // Verify focus is on the input
-      const isFocused = await chatInput.evaluate(el => document.activeElement === el);
-      if (!isFocused) {
-        console.warn('⚠️ Chat input lost focus, forcing focus again');
+        // Try to send message, catch click/press timeouts
         try {
-          await chatInput.click({ timeout: 2000 }); // Click to force focus, short timeout
+          console.log(`[CoolholeClient] Attempting to send chat (attempt ${attempt + 1}): ${message}`);
+          await chatInput.press('Enter', { timeout: 3000 });
+          console.log(`[CoolholeClient] Chat input Enter pressed successfully.`);
         } catch (err) {
-          console.error('❌ Could not click chat input:', err.message);
-          return false;
+          console.error(`❌ Error pressing Enter to send message (attempt ${attempt + 1}):`, err.message);
+          lastError = err.message;
+          attempt++;
+          await this.page.waitForTimeout(200);
+          continue;
         }
-        await this.page.waitForTimeout(50);
+
+        // Update rate limiting
+        this.lastMessageTime = Date.now();
+
+        console.log(`[CoolholeClient] Message sent to chat: ${message}`);
+        return true;
+      } catch (error) {
+        console.error(`Error sending message (attempt ${attempt + 1}):`, error.message);
+        lastError = error.message;
+        attempt++;
+        await this.page.waitForTimeout(200);
+        continue;
       }
-
-      // Clear existing text
-      await chatInput.evaluate(el => el.value = '');
-
-      // Use fill() instead of type() - faster and handles emojis better
-      await chatInput.fill(message);
-      await this.page.waitForTimeout(100);
-
-      // Ensure still focused before pressing Enter
-      await chatInput.focus();
-      await this.page.waitForTimeout(30);
-
-      // Try to send message, catch click/press timeouts
-      try {
-        console.log(`[CoolholeClient] Attempting to send chat: ${message}`);
-        await chatInput.press('Enter', { timeout: 3000 });
-        console.log(`[CoolholeClient] Chat input Enter pressed successfully.`);
-      } catch (err) {
-        console.error('❌ Error pressing Enter to send message:', err.message);
-        return false;
-      }
-
-      // Update rate limiting
-      this.lastMessageTime = Date.now();
-
-      console.log(`[CoolholeClient] Message sent to chat: ${message}`);
-      return true;
-    } catch (error) {
-      console.error('Error sending message:', error.message);
-      return false;
     }
+    // If we reach here, all attempts failed
+    console.error(`[CoolholeClient] All sendChat attempts failed: ${lastError}`);
+    return false;
   }
 
   /**

@@ -94,15 +94,29 @@ class CursorController extends EventEmitter {
       const elements = await this.page.evaluate(() => {
         const discovered = [];
 
-        // Find emote buttons
-        const emoteButtons = document.querySelectorAll('[class*="emote"], [data-emote], button[title]');
+        // Find ACTUAL emote buttons - only from emote panels/menus
+        // Look for emotes inside emote containers, not random UI buttons
+        const emoteButtons = document.querySelectorAll('[class*="emote"]:not(button[class*="btn-"]):not([class*="button"]), [data-emote], .emote-item, .emote-button');
         emoteButtons.forEach((btn, idx) => {
           const rect = btn.getBoundingClientRect();
+          const title = btn.title || btn.getAttribute('data-emote') || btn.textContent?.trim() || '';
+
+          // Skip if it looks like a regular UI button (has text like "Embed", "Clear", etc.)
+          if (title.includes('Embed') ||
+              title.includes('playlist') ||
+              title.includes('Retrieve') ||
+              title.includes('Clear') ||
+              title.includes('Manage') ||
+              title.toLowerCase().includes('queue') ||
+              title.toLowerCase().includes('video')) {
+            return;
+          }
+
           if (rect.width > 0 && rect.height > 0) {
             discovered.push({
               type: 'emote',
               id: `emote-${idx}`,
-              name: btn.title || btn.getAttribute('data-emote') || btn.textContent?.trim() || 'unknown',
+              name: title,
               x: rect.left + rect.width / 2,
               y: rect.top + rect.height / 2,
               selector: btn.className || 'button'

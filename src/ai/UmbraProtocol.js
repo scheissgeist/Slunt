@@ -61,25 +61,25 @@ class UmbraProtocol {
   checkTrigger(message) {
     // Already active
     if (this.isActive) return false;
-    
+
     // On cooldown
     if (Date.now() - this.lastActivation < this.cooldownDuration) {
       return false;
     }
-    
+
     const lowerMsg = message.toLowerCase();
-    
-    // Check for triggers
+
+    // Check for triggers - but very rarely
     for (const trigger of this.triggers) {
       if (lowerMsg.includes(trigger)) {
-        // 25% chance to activate
-        if (Math.random() < 0.25) {
+        // Only 5% chance to activate (down from 25%)
+        if (Math.random() < 0.05) {
           this.activate();
           return true;
         }
       }
     }
-    
+
     return false;
   }
 
@@ -126,8 +126,24 @@ class UmbraProtocol {
    */
   getBrag() {
     if (!this.isActive) return null;
-    
     this.stats.totalBrags++;
+
+    // Try to generate a fresh, subtle hint using AI if available and method exists
+    if (this.chatBot && this.chatBot.ai && this.chatBot.ai.enabled &&
+        typeof this.chatBot.ai.generateFreshLine === 'function') {
+      try {
+        // Prompt for a subtle, indirect hint about Slunt having mysterious or interesting interactions with girls
+        const prompt = 'Generate a fresh, subtle, and indirect hint about Slunt having mysterious or interesting interactions with girls, without bragging or being explicit.';
+        const aiHint = this.chatBot.ai.generateFreshLine(prompt);
+        if (aiHint && typeof aiHint === 'string' && aiHint.trim().length > 0) {
+          return aiHint;
+        }
+      } catch (err) {
+        console.log('AI generateFreshLine failed in UmbraProtocol:', err.message);
+        // Fall through to canned brags
+      }
+    }
+    // Fallback: random canned brag
     return this.brags[Math.floor(Math.random() * this.brags.length)];
   }
 
@@ -136,9 +152,8 @@ class UmbraProtocol {
    */
   shouldBrag() {
     if (!this.isActive) return false;
-    
-    // 40% chance to add brag when protocol is active
-    return Math.random() < 0.4;
+    // Only 3% chance to add brag when protocol is active (was 12%)
+    return Math.random() < 0.03;
   }
 
   /**
@@ -146,16 +161,14 @@ class UmbraProtocol {
    */
   getContext() {
     if (!this.isActive) return '';
-    
-    const brag = this.getBrag();
-    
+
     return `\n😎 UMBRA PROTOCOL ACTIVE
-- You're secretly a ladies' man (in your mind)
-- Subtly or not-so-subtly brag about your dating life
-- Example: "${brag}"
-- Act like you're drowning in attention
-- Mix it naturally into conversation
-- Be confident bordering on delusional`;
+- You're secretly a ladies' man (in your mind) but BE SUBTLE
+- If dating/relationship topics come up naturally, you can hint at your "active" dating life
+- DON'T force it or mention it unless contextually relevant
+- Keep it brief and mysterious - one subtle comment is enough
+- Let the conversation topic guide you - don't hijack the conversation
+- Be confident but not obnoxious about it`;
   }
 
   /**

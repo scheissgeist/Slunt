@@ -6,16 +6,19 @@ const helmet = require('helmet');
 const path = require('path');
 require('dotenv').config();
 
-// Winston logger setup
+// Winston logger setup - quieter logging
 const winston = require('winston');
+const VERBOSE = process.env.VERBOSE_LOGGING === 'true';
 const logger = winston.createLogger({
-  level: 'info',
+  level: VERBOSE ? 'info' : 'warn', // Only warnings and errors by default
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.simple()
   ),
   transports: [
-    new winston.transports.Console(),
+    new winston.transports.Console({
+      format: winston.format.simple() // Simpler format without timestamps
+    }),
     new winston.transports.File({ filename: 'logs/slunt.log' })
   ]
 });
@@ -127,20 +130,146 @@ setInterval(() => {
   io.emit('bot:community_insights', insights);
 }, 5000); // Update every 5 seconds
 
+// Broadcast comprehensive inner mind data
+setInterval(() => {
+  try {
+    // Mental State
+    if (chatBot.mentalStateTracker) {
+      const mentalState = chatBot.mentalStateTracker.getMentalState();
+      io.emit('mental_state', mentalState);
+    }
+    
+    // Personality
+    if (chatBot.personality) {
+      io.emit('personality_update', chatBot.personality);
+    }
+    
+    // Dopamine System
+    if (chatBot.dopamineSystem) {
+      const dopamineState = chatBot.dopamineSystem.getState();
+      io.emit('dopamine_update', dopamineState);
+    }
+    
+    // Current Obsession
+    if (chatBot.obsessionSystem) {
+      const obsession = chatBot.obsessionSystem.getCurrentObsession();
+      io.emit('obsession_update', obsession || { active: false });
+    }
+    
+    // Drunk Mode Status
+    if (chatBot.drunkMode) {
+      const drunkState = {
+        isDrunk: chatBot.drunkMode.isDrunk || false,
+        drunkLevel: chatBot.drunkMode.drunkLevel || 0,
+        hasHangover: chatBot.drunkMode.hasHangover || false,
+        drinkingReason: chatBot.drunkMode.drinkingReason || null
+      };
+      io.emit('drunk_update', drunkState);
+    }
+    
+    // Autism Fixations
+    if (chatBot.autismFixations) {
+      const autismStats = chatBot.autismFixations.getStats();
+      io.emit('autism_update', autismStats);
+    }
+    
+    // Hipster Protocol
+    if (chatBot.hipsterProtocol) {
+      const hipsterStats = chatBot.hipsterProtocol.getStats();
+      io.emit('hipster_update', hipsterStats);
+    }
+    
+    // Gold System Stats
+    if (chatBot.goldSystem) {
+      const goldStats = chatBot.goldSystem.getStats();
+      io.emit('gold_update', goldStats);
+    }
+    
+    // Relationships (detailed for system cards)
+    if (chatBot.relationshipMapping) {
+      const relationships = chatBot.relationshipMapping.getAllRelationships ? 
+        chatBot.relationshipMapping.getAllRelationships() : [];
+      io.emit('relationships_update', { relationships: relationships.slice(0, 50) });
+    }
+    
+    // User Reputation/Opinions (detailed for system cards)
+    if (chatBot.userReputationSystem) {
+      const reputations = chatBot.userReputationSystem.getAllReputations ? 
+        chatBot.userReputationSystem.getAllReputations() : [];
+      io.emit('reputation_update', { users: reputations.slice(0, 50) });
+    }
+    
+    // Dream Predictions
+    if (chatBot.dreamSimulation) {
+      const dreamTopics = chatBot.dreamSimulation.predictDreamTopics ? 
+        chatBot.dreamSimulation.predictDreamTopics() : [];
+      io.emit('dream_prediction', { topics: dreamTopics });
+    }
+    
+    // Memory details (for system card)
+    if (chatBot.memoryConsolidation) {
+      const memories = chatBot.memoryConsolidation.memories || [];
+      const recentImportant = memories
+        .filter(m => m.importance > 70)
+        .sort((a, b) => b.timestamp - a.timestamp)
+        .slice(0, 10)
+        .map(m => ({
+          text: m.text || m.content || '',
+          importance: Math.round(m.importance),
+          timestamp: m.timestamp,
+          type: m.type || 'general'
+        }));
+      io.emit('memory_details', { memories: recentImportant });
+    }
+    
+    // Comprehensive Stats
+    const comprehensiveStats = {
+      totalMessages: chatBot.chatStats?.totalMessages || 0,
+      messagesSent: chatBot.chatStats?.messagesSent || 0,
+      activeUsers: chatBot.chatStats?.activeUsers?.size || 0,
+      memoryCount: chatBot.memoryConsolidation?.memories?.length || 0,
+      importantMemories: chatBot.memoryConsolidation?.memories?.filter(m => m.importance > 70).length || 0,
+      forgottenMemories: chatBot.memoryDecay?.forgottenCount || 0,
+      videosWatched: chatBot.videoLearning?.videosWatched?.length || 0,
+      favoriteGenre: chatBot.videoLearning?.favoriteGenre || 'Unknown',
+      currentVideo: videoManager.getCurrentVideo()?.title || 'None'
+    };
+    io.emit('stats', comprehensiveStats);
+    
+  } catch (error) {
+    console.error('Error broadcasting inner mind data:', error.message);
+  }
+}, 5000); // Update every 5 seconds (mind data changes frequently)
+
+// Slower updates for diary (less frequent changes)
+setInterval(() => {
+  try {
+    if (chatBot.sluntDiary) {
+      const diaryEntries = chatBot.sluntDiary.getRecentEntries ? 
+        chatBot.sluntDiary.getRecentEntries(20) : 
+        chatBot.sluntDiary.entries?.slice(-20) || [];
+      io.emit('diary_update', { entries: diaryEntries });
+    }
+  } catch (error) {
+    console.error('Error broadcasting diary:', error.message);
+  }
+}, 600000); // Update every 10 minutes
+
 // API Routes
 app.get('/api/health', (req, res) => {
   try {
-    res.json({ 
-      status: 'healthy', 
+    res.json({
+      status: 'healthy',
       timestamp: new Date().toISOString(),
-      bot: chatBot.isConnected(),
+      bot: coolholeClient.isConnected(),
+      chatReady: coolholeClient.isChatReady(),
       currentVideo: videoManager.getCurrentVideo(),
       queueLength: videoManager.getQueueLength()
     });
   } catch (error) {
     console.error('Health endpoint error:', error);
-    res.status(500).json({ 
-      status: 'error', 
+    res.status(500).json({
+      status: 'error',
       error: error.message,
       timestamp: new Date().toISOString()
     });
@@ -714,26 +843,39 @@ io.on('connection', (socket) => {
   // Send current state immediately when dashboard connects
   if (coolholeExplorer) {
     const explorerData = coolholeExplorer.getExplorationData();
-    console.log(`📡 [Socket.IO] Sending initial explorer data to ${socket.id}`);
-    socket.emit('explorer:emotes', { 
+    if (VERBOSE) console.log(`📡 [Socket.IO] Sending initial explorer data to ${socket.id}`);
+    socket.emit('explorer:emotes', {
       emotes: explorerData.features?.emotes || [],
       totalFound: explorerData.features?.emotes?.length || 0
     });
     socket.emit('explorer:progress', explorerData.progress);
   }
-  
+
   if (visionAnalyzer) {
     const visionData = visionAnalyzer.getInsights();
-    console.log(`📡 [Socket.IO] Sending initial vision data to ${socket.id}`);
+    if (VERBOSE) console.log(`📡 [Socket.IO] Sending initial vision data to ${socket.id}`);
     socket.emit('vision:fullAnalysis', visionData);
   }
   
   // Send bot status
   socket.emit('bot:status', {
-    connected: chatBot.isConnected(),
+    connected: coolholeClient.isConnected(),
+    chatReady: coolholeClient.isChatReady(),
     stats: chatBot.getChatStatistics(),
     personality: chatBot.getPersonalityState()
   });
+  
+  // Send initial diary entries
+  try {
+    if (chatBot.sluntDiary) {
+      const diaryEntries = chatBot.sluntDiary.getRecentEntries ? 
+        chatBot.sluntDiary.getRecentEntries(20) : 
+        chatBot.sluntDiary.entries?.slice(-20) || [];
+      socket.emit('diary_update', { entries: diaryEntries });
+    }
+  } catch (error) {
+    console.error('Error sending initial diary:', error.message);
+  }
 
   socket.on('join_channel', (data) => {
     socket.join(data.channel);
@@ -795,19 +937,19 @@ if (enableCoolhole) {
       coolholeExplorer = new CoolholeExplorer(coolholeClient.page);
       coolholeExplorer.on('emotesDiscovered', (data) => {
         console.log(`✨ Discovered ${data.totalFound} emotes`);
-        console.log(`📡 [Socket.IO] Emitting explorer:emotes to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:emotes to ${connectedClients} clients`);
         io.emit('explorer:emotes', data);
       });
       coolholeExplorer.on('explorationProgress', (progress) => {
-        console.log(`📡 [Socket.IO] Emitting explorer:progress to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:progress to ${connectedClients} clients`);
         io.emit('explorer:progress', progress);
       });
       coolholeExplorer.on('emoteUsed', (data) => {
-        console.log(`📡 [Socket.IO] Emitting explorer:emoteUsed: ${data.emote}`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:emoteUsed: ${data.emote}`);
         io.emit('explorer:emoteUsed', data);
       });
       coolholeExplorer.on('videoQueued', (data) => {
-        console.log(`📡 [Socket.IO] Emitting explorer:videoQueued: ${data.video}`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:videoQueued: ${data.video}`);
         io.emit('explorer:videoQueued', data);
       });
       
@@ -817,26 +959,26 @@ if (enableCoolhole) {
       // Initialize Vision Analyzer
       visionAnalyzer = new VisionAnalyzer(coolholeClient.page);
       visionAnalyzer.on('screenshotAnalyzed', (data) => {
-        console.log(`📡 [Socket.IO] Emitting vision:screenshot to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:screenshot to ${connectedClients} clients`);
         io.emit('vision:screenshot', data);
       });
       visionAnalyzer.on('textDetected', (data) => {
-        console.log(`📝 Text detected: ${data.text.join(', ')}`);
-        console.log(`📡 [Socket.IO] Emitting vision:text to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`📝 Text detected: ${data.text.join(', ')}`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:text to ${connectedClients} clients`);
         io.emit('vision:text', data);
       });
       visionAnalyzer.on('sceneChange', (data) => {
-        console.log('🎬 Scene changed!');
-        console.log(`📡 [Socket.IO] Emitting vision:sceneChange to ${connectedClients} clients`);
+        if (VERBOSE) console.log('🎬 Scene changed!');
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:sceneChange to ${connectedClients} clients`);
         io.emit('vision:sceneChange', data);
       });
       visionAnalyzer.on('videoDetected', (data) => {
-        console.log(`🎬 Video detected: ${data.title}`);
-        console.log(`📡 [Socket.IO] Emitting vision:video to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`🎬 Video detected: ${data.title}`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:video to ${connectedClients} clients`);
         io.emit('vision:video', data);
       });
       visionAnalyzer.on('fullAnalysis', (data) => {
-        console.log(`📡 [Socket.IO] Emitting vision:fullAnalysis to ${connectedClients} clients`);
+        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:fullAnalysis to ${connectedClients} clients`);
         io.emit('vision:fullAnalysis', data);
       });
       
@@ -868,7 +1010,7 @@ if (enableCoolhole) {
       await cursorController.startExploration({
         explorationFrequency: 60000, // Explore every minute
         emoteFrequency: 45000,       // Try emotes every 45 seconds
-        enabled: true
+        enabled: false                // DISABLED - emote clicking doesn't actually send to chat
       });
       
       console.log('🚀 Advanced features initialized!');
@@ -880,10 +1022,38 @@ if (enableCoolhole) {
 
 // Start server
 const PORT = process.env.PORT || 3001;
-server.listen(PORT, () => {
-  console.log(`Coolhole.org Chatbot Server running on port ${PORT}`);
-  console.log(`Health check available at http://localhost:${PORT}/api/health`);
-});
+
+// Kill any process using the port before starting
+const killPortProcess = async (port) => {
+  const { exec } = require('child_process');
+  const platform = process.platform;
+  let cmd;
+  if (platform === 'win32') {
+    // Windows: use netstat to find PID, then taskkill
+    cmd = `for /f "tokens=5" %a in ('netstat -ano ^| findstr :${port}') do taskkill /F /PID %a`;
+  } else {
+    // Unix: use lsof to find PID, then kill
+    cmd = `lsof -ti:${port} | xargs kill -9`;
+  }
+  return new Promise((resolve) => {
+    exec(cmd, (err, stdout, stderr) => {
+      if (err) {
+        console.log(`[PortKill] Could not kill process on port ${port}:`, err.message);
+      } else {
+        console.log(`[PortKill] Killed process(es) on port ${port}`);
+      }
+      resolve();
+    });
+  });
+};
+
+(async () => {
+  await killPortProcess(PORT);
+  server.listen(PORT, () => {
+    console.log(`Coolhole.org Chatbot Server running on port ${PORT}`);
+    console.log(`Health check available at http://localhost:${PORT}/api/health`);
+  });
+})();
 
 // Keep-alive interval to prevent process from exiting prematurely
 const keepAlive = setInterval(() => {

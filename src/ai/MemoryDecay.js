@@ -282,29 +282,84 @@ class MemoryDecay {
   }
 
   /**
-   * Get context for AI prompts
+   * Get context for AI prompts with relevant memories
    */
-  getContext() {
+  getContext(currentUsername = null, currentTopic = null) {
     const memoryArray = Array.from(this.memories.values());
-    
+
     if (memoryArray.length === 0) return '';
-    
+
     const fadedCount = memoryArray.filter(m => m.clarity < 0.5).length;
     const distortedCount = memoryArray.filter(m => m.distorted).length;
-    
+
     let context = '\n🧠 MEMORY STATUS:';
     context += `\n- Total memories: ${memoryArray.length}`;
-    
+
     if (fadedCount > 0) {
-      context += `\n- ${fadedCount} memories are fading`;
+      context += `\n- ${fadedCount} memories are fading (you might misremember)`;
     }
-    
+
     if (distortedCount > 0) {
       context += `\n- ${distortedCount} memories are distorted`;
-      context += `\n- You might misremember details`;
     }
-    
+
+    // Include relevant recent memories for context
+    const relevantMemories = this.getRelevantMemories(currentUsername, currentTopic, 3);
+    if (relevantMemories.length > 0) {
+      context += '\n\n💭 RECENT RELEVANT MEMORIES:';
+      relevantMemories.forEach(mem => {
+        const clarity = mem.clarity < 0.5 ? '[FUZZY] ' : mem.clarity < 0.7 ? '[VAGUE] ' : '';
+        const age = Math.floor((Date.now() - mem.createdAt) / (60 * 1000));
+        const ageStr = age < 60 ? `${age}m ago` : `${Math.floor(age / 60)}h ago`;
+
+        if (mem.type === 'interaction' && mem.data.username) {
+          let memStr = `${clarity}${mem.data.username} said "${mem.data.message}" (${ageStr})`;
+          if (mem.distorted) {
+            memStr += ` [Memory might be distorted: ${mem.distortionType}]`;
+          }
+          context += `\n- ${memStr}`;
+        }
+      });
+    }
+
     return context;
+  }
+
+  /**
+   * Get relevant memories for current context
+   */
+  getRelevantMemories(username, topic, limit = 3) {
+    const memoryArray = Array.from(this.memories.values())
+      .filter(m => m.clarity > 0.3) // Filter out too-faded memories
+      .sort((a, b) => b.lastRecalled - a.lastRecalled); // Most recently recalled first
+
+    const relevant = [];
+
+    // Prioritize memories about current user
+    if (username) {
+      const userMemories = memoryArray.filter(m =>
+        m.type === 'interaction' && m.data.username === username
+      ).slice(0, 2);
+      relevant.push(...userMemories);
+    }
+
+    // Add topic-related memories
+    if (topic && relevant.length < limit) {
+      const topicMemories = memoryArray.filter(m =>
+        m.data.topics && m.data.topics.includes(topic) && !relevant.includes(m)
+      ).slice(0, limit - relevant.length);
+      relevant.push(...topicMemories);
+    }
+
+    // Fill remaining with recent memories
+    if (relevant.length < limit) {
+      const recentMemories = memoryArray
+        .filter(m => !relevant.includes(m))
+        .slice(0, limit - relevant.length);
+      relevant.push(...recentMemories);
+    }
+
+    return relevant.slice(0, limit);
   }
 
   /**

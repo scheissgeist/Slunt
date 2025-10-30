@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slunt's Inner Mind - Full Dashboard</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0f0f23;
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container { max-width: 1600px; margin: 0 auto; }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        h1 { font-size: 3em; margin-bottom: 10px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); }
+        .subtitle { font-size: 1.2em; opacity: 0.9; font-style: italic; }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+        
+        .status-badge.online { background: #10b981; }
+        .status-badge.offline { background: #ef4444; }
+        .status-badge.drunk { background: #f59e0b; animation: pulse 2s infinite; }
+        
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+        
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .full-width { grid-column: 1 / -1; }
+        .half-width { grid-column: span 2; }
+        
+        .card {
+            background: #1a1a2e;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a2a3e;
+            transition: transform 0.2s;
+        }
+        
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #2a2a3e;
+        }
+        
+        .stat-row:last-child { border-bottom: none; }
+        .stat-label { opacity: 0.7; font-size: 0.95em; }
+        .stat-value { font-weight: bold; font-size: 1.1em; color: #60a5fa; }
+        
+        .emotion-bar { margin: 15px 0; }
+        .emotion-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 0.9em;
+        }
+        
+        .bar-container {
+            background: #0f0f23;
+            border-radius: 10px;
+            height: 20px;
+            overflow: hidden;
+        }
+        
+        .bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 8px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+        
+        .bar-fill.happiness { background: linear-gradient(90deg, #10b981, #34d399); }
+        .bar-fill.depression { background: linear-gradient(90deg, #6366f1, #818cf8); }
+        .bar-fill.anxiety { background: linear-gradient(90deg, #f59e0b, #fbbf24); }
+        .bar-fill.confidence { background: linear-gradient(90deg, #ec4899, #f472b6); }
+        .bar-fill.curiosity { background: linear-gradient(90deg, #8b5cf6, #a78bfa); }
+        .bar-fill.friendliness { background: linear-gradient(90deg, #14b8a6, #2dd4bf); }
+        .bar-fill.humor { background: linear-gradient(90deg, #f97316, #fb923c); }
+        .bar-fill.sarcasm { background: linear-gradient(90deg, #ef4444, #f87171); }
+        
+        .obsession-display {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #f59e0b, #ef4444);
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .obsession-topic { font-size: 2em; font-weight: bold; margin: 10px 0; }
+        .obsession-intensity { font-size: 1.2em; opacity: 0.9; }
+        
+        .diary-entry {
+            background: #0f0f23;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+        
+        .diary-time { font-size: 0.8em; opacity: 0.6; margin-bottom: 5px; }
+        .diary-text { line-height: 1.6; font-style: italic; }
+        
+        .relationship-item {
+            background: #0f0f23;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .relationship-name { font-weight: bold; color: #60a5fa; }
+        .relationship-score {
+            background: #667eea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .scrollable {
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .scrollable::-webkit-scrollbar { width: 8px; }
+        .scrollable::-webkit-scrollbar-track { background: #0f0f23; border-radius: 10px; }
+        .scrollable::-webkit-scrollbar-thumb { background: #667eea; border-radius: 10px; }
+        
+        .chat-message {
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 8px;
+            background: #0f0f23;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        
+        .chat-message.bot {
+            background: #1e3a5f;
+            border-left: 3px solid #3b82f6;
+        }
+        
+        .chat-username { font-weight: bold; color: #60a5fa; margin-right: 8px; }
+        .chat-timestamp { opacity: 0.5; font-size: 0.8em; float: right; }
+        
+        .gold-message {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 2px solid #fbbf24;
+        }
+        
+        .gold-by { font-weight: bold; color: #fef3c7; }
+        
+        .dream-topic {
+            background: #312e81;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            border-left: 3px solid #8b5cf6;
+        }
+        
+        .dream-weight {
+            float: right;
+            background: #8b5cf6;
+            padding: 4px 10px;
+            border-radius: 10px;
+            font-size: 0.9em;
+        }
+        
+        .big-metric {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 10px;
+            margin: 10px 0;
+        }
+        
+        .big-number { font-size: 3em; font-weight: bold; margin: 10px 0; }
+        .big-label { font-size: 1.2em; opacity: 0.9; }
+        .empty-state { text-align: center; padding: 40px; opacity: 0.5; font-style: italic; }
+        
+        @media (max-width: 1200px) {
+            .dashboard-grid { grid-template-columns: 1fr 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            .dashboard-grid { grid-template-columns: 1fr; }
+            .half-width { grid-column: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 Slunt's Inner Mind</h1>
+            <p class="subtitle">Deep dive into the consciousness of your AI companion</p>
+            <div class="status-badges">
+                <span class="status-badge online" id="connectionStatus">● ONLINE</span>
+                <span class="status-badge" id="drunkStatus" style="display: none;">🍺 DRUNK</span>
+                <span class="status-badge" id="obsessionBadge" style="display: none;">🎯 OBSESSED</span>
+            </div>
+        </header>
+
+        <div class="dashboard-grid">
+            <!-- Mental State Overview -->
+            <div class="card">
+                <h2><span>🧠</span> Mental State</h2>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>😊 Happiness</span>
+                        <span id="happiness-value">50%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill happiness" id="happiness-bar" style="width: 50%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>😔 Depression</span>
+                        <span id="depression-value">20%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill depression" id="depression-bar" style="width: 20%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>😰 Anxiety</span>
+                        <span id="anxiety-value">30%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill anxiety" id="anxiety-bar" style="width: 30%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>💪 Confidence</span>
+                        <span id="confidence-value">60%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill confidence" id="confidence-bar" style="width: 60%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Personality Traits -->
+            <div class="card">
+                <h2><span>🎭</span> Personality</h2>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>🤔 Curiosity</span>
+                        <span id="curiosity-value">70%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill curiosity" id="curiosity-bar" style="width: 70%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>🤝 Friendliness</span>
+                        <span id="friendliness-value">65%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill friendliness" id="friendliness-bar" style="width: 65%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>😄 Humor</span>
+                        <span id="humor-value">75%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill humor" id="humor-bar" style="width: 75%;"></div>
+                    </div>
+                </div>
+                <div class="emotion-bar">
+                    <div class="emotion-label">
+                        <span>😏 Sarcasm</span>
+                        <span id="sarcasm-value">55%</span>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-fill sarcasm" id="sarcasm-bar" style="width: 55%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dopamine System -->
+            <div class="card">
+                <h2><span>🎮</span> Dopamine System</h2>
+                <div class="big-metric">
+                    <div class="big-number" id="dopamine-level">50%</div>
+                    <div class="big-label" id="dopamine-mood">NEUTRAL</div>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Motivation</span>
+                    <span class="stat-value" id="dopamine-motivation">50%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Favorite Activity</span>
+                    <span class="stat-value" id="dopamine-activity">None yet</span>
+                </div>
+            </div>
+
+            <!-- Current Obsession -->
+            <div class="card half-width">
+                <h2><span>🎯</span> Current Obsession</h2>
+                <div id="obsession-content">
+                    <div class="empty-state">No active obsessions</div>
+                </div>
+            </div>
+
+            <!-- Drunk Mode Status -->
+            <div class="card">
+                <h2><span>🍺</span> Drunk Mode</h2>
+                <div class="stat-row">
+                    <span class="stat-label">Status</span>
+                    <span class="stat-value" id="drunk-status">Sober</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Drunk Level</span>
+                    <span class="stat-value" id="drunk-level">0%</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Hangover</span>
+                    <span class="stat-value" id="hangover-status">No</span>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="card">
+                <h2><span>📊</span> Statistics</h2>
+                <div class="stat-row">
+                    <span class="stat-label">Messages Seen</span>
+                    <span class="stat-value" id="stat-messages-seen">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Messages Sent</span>
+                    <span class="stat-value" id="stat-messages-sent">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Active Users</span>
+                    <span class="stat-value" id="stat-active-users">0</span>
+                </div>
+                <div class="stat-row">
+                    <span class="stat-label">Uptime</span>
+                    <span class="stat-value" id="stat-uptime">0m</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        let startTime = Date.now();
+
+        socket.on('connect', () => {
+            document.getElementById('connectionStatus').textContent = '● ONLINE';
+            document.getElementById('connectionStatus').className = 'status-badge online';
+        });
+
+        socket.on('disconnect', () => {
+            document.getElementById('connectionStatus').textContent = '● OFFLINE';
+            document.getElementById('connectionStatus').className = 'status-badge offline';
+        });
+
+        function updateBar(name, value) {
+            const bar = document.getElementById(`${name}-bar`);
+            const valueSpan = document.getElementById(`${name}-value`);
+            if (bar && valueSpan) {
+                const percent = Math.round(value);
+                bar.style.width = percent + '%';
+                valueSpan.textContent = percent + '%';
+            }
+        }
+
+        setInterval(() => {
+            const elapsed = Date.now() - startTime;
+            const minutes = Math.floor(elapsed / 60000);
+            const hours = Math.floor(minutes / 60);
+            const displayMins = minutes % 60;
+            
+            document.getElementById('stat-uptime').textContent = 
+                hours > 0 ? `${hours}h ${displayMins}m` : `${displayMins}m`;
+        }, 1000);
+
+        socket.emit('request_full_state');
+    </script>
+</body>
+</html>

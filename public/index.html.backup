@@ -1,0 +1,1572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slunt Live Dashboard - Real-time Monitoring</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin: 5px;
+            font-size: 0.9em;
+        }
+
+        .status-badge.online {
+            background: #10b981;
+        }
+
+        .status-badge.offline {
+            background: #ef4444;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .card h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .stat {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            opacity: 0.8;
+        }
+
+        .stat-value {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .chat-messages {
+            max-height: 400px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .chat-message {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.1);
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .chat-message.bot {
+            background: rgba(59, 130, 246, 0.3);
+            border-left: 3px solid #3b82f6;
+        }
+
+        .chat-message .username {
+            font-weight: bold;
+            color: #60a5fa;
+        }
+
+        .chat-message .timestamp {
+            opacity: 0.6;
+            font-size: 0.8em;
+        }
+
+        .user-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 5px;
+            border-left: 3px solid #8b5cf6;
+        }
+
+        .user-card .username {
+            font-weight: bold;
+            font-size: 1.1em;
+            color: #a78bfa;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 15px;
+            margin-top: 5px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .emote-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .emote-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 0.8em;
+        }
+
+        .vision-preview {
+            width: 100%;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .ocr-text {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.85em;
+        }
+
+        .personality-trait {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 10px 0;
+        }
+
+        .trait-bar {
+            flex: 1;
+            height: 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            margin: 0 10px;
+            overflow: hidden;
+        }
+
+        .trait-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #10b981, #3b82f6);
+            transition: width 0.3s ease;
+        }
+
+        .log-entry {
+            padding: 5px;
+            margin: 3px 0;
+            font-size: 0.85em;
+            opacity: 0.9;
+            border-left: 2px solid rgba(255, 255, 255, 0.3);
+            padding-left: 8px;
+        }
+
+        .connection-status {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .full-width {
+            grid-column: 1 / -1;
+        }
+
+        .command-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .command-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 8px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 0.9em;
+        }
+
+        .metric-highlight {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="connection-status" id="connectionStatus">
+        <span id="connectionText">Connecting...</span>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>🤖 Slunt Live Dashboard</h1>
+            <div id="statusBadges">
+                <span class="status-badge offline" id="botStatus">Bot: Offline</span>
+                <span class="status-badge offline" id="visionStatus">Vision: Offline</span>
+                <span class="status-badge offline" id="explorerStatus">Explorer: Offline</span>
+                <span class="status-badge offline" id="cursorStatus">Cursor: Offline</span>
+            </div>
+            <div style="margin-top: 10px; opacity: 0.8;">
+                <span id="uptime">Uptime: 0m</span> | 
+                <span id="lastUpdate">Last update: Never</span>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- Bot Stats Card -->
+            <div class="card">
+                <h2>🤖 Bot Statistics</h2>
+                <div class="metric-highlight" id="totalMessages">0</div>
+                <div style="text-align: center; opacity: 0.8; margin-bottom: 15px;">Total Messages Seen</div>
+                <div class="stat">
+                    <span class="stat-label">Messages Sent:</span>
+                    <span class="stat-value" id="messagesSent">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Response Rate:</span>
+                    <span class="stat-value" id="responseRate">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Questions Asked:</span>
+                    <span class="stat-value" id="questionsAsked">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Users Tracked:</span>
+                    <span class="stat-value" id="usersTracked">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Topics Learned:</span>
+                    <span class="stat-value" id="topicsLearned">0</span>
+                </div>
+            </div>
+
+            <!-- Personality Card -->
+            <div class="card">
+                <h2>🧠 Personality Traits</h2>
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
+                    <div class="personality-trait">
+                        <span>Humor</span>
+                        <div class="trait-bar"><div class="trait-fill" id="humor" style="width: 0%"></div></div>
+                        <span id="humorValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Snarkiness</span>
+                        <div class="trait-bar"><div class="trait-fill" id="snarkiness" style="width: 0%"></div></div>
+                        <span id="snarkinessValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Edginess</span>
+                        <div class="trait-bar"><div class="trait-fill" id="edginess" style="width: 0%"></div></div>
+                        <span id="edginessValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Chaos</span>
+                        <div class="trait-bar"><div class="trait-fill" id="chaos" style="width: 0%"></div></div>
+                        <span id="chaosValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Supportiveness</span>
+                        <div class="trait-bar"><div class="trait-fill" id="supportiveness" style="width: 0%"></div></div>
+                        <span id="supportivenessValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Empathy</span>
+                        <div class="trait-bar"><div class="trait-fill" id="empathy" style="width: 0%"></div></div>
+                        <span id="empathyValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Creativity</span>
+                        <div class="trait-bar"><div class="trait-fill" id="creativity" style="width: 0%"></div></div>
+                        <span id="creativityValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Wisdom</span>
+                        <div class="trait-bar"><div class="trait-fill" id="wisdom" style="width: 0%"></div></div>
+                        <span id="wisdomValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Spontaneity</span>
+                        <div class="trait-bar"><div class="trait-fill" id="spontaneity" style="width: 0%"></div></div>
+                        <span id="spontaneityValue">0</span>
+                    </div>
+                    <div class="personality-trait">
+                        <span>Loyalty</span>
+                        <div class="trait-bar"><div class="trait-fill" id="loyalty" style="width: 0%"></div></div>
+                        <span id="loyaltyValue">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mental State Card (Depression, Adrenochrome, etc) -->
+            <div class="card" id="mental-state-card">
+                <h2 id="mental-state-title">🧠 Mental State</h2>
+                <div class="metric-highlight" id="mentalStateStatus" style="font-size: 1.3em;">Loading...</div>
+                <div style="text-align: center; opacity: 0.8; margin-bottom: 15px;" id="mentalStateSubtext">Analyzing...</div>
+                
+                <div class="stat">
+                    <span class="stat-label">😔 Depression:</span>
+                    <span class="stat-value" id="depressionLevel">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">😰 Anxiety:</span>
+                    <span class="stat-value" id="anxietyLevel">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">💪 Confidence:</span>
+                    <span class="stat-value" id="confidenceLevel">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">🌀 Existential Dread:</span>
+                    <span class="stat-value" id="existentialDreadLevel">0%</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">💔 Loneliness:</span>
+                    <span class="stat-value" id="lonelinessLevel">0%</span>
+                </div>
+            </div>
+
+            <!-- NEW: Psychological Depth Systems -->
+            <div class="card" id="psychological-card">
+                <h2>🧩 Psychological Depth</h2>
+                
+                <!-- Memory Decay -->
+                <div class="stat">
+                    <span class="stat-label">🧠 Memories:</span>
+                    <span class="stat-value" id="memoryCount">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">💭 Avg Clarity:</span>
+                    <span class="stat-value" id="memoryClarity">100%</span>
+                </div>
+                
+                <!-- Obsession -->
+                <div class="stat" id="obsessionStat" style="display: none;">
+                    <span class="stat-label">🎯 Obsessed With:</span>
+                    <span class="stat-value" id="currentObsession">-</span>
+                </div>
+                <div class="stat" id="obsessionIntensity" style="display: none;">
+                    <span class="stat-label">🔥 Intensity:</span>
+                    <span class="stat-value" id="obsessionLevel">0%</span>
+                </div>
+                
+                <!-- Advanced AI Systems Card -->
+                <div class="card full-width">
+                    <h2>🧩 Advanced AI Systems</h2>
+                    <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px;">
+                        <!-- Explicit new system cards -->
+                        <div class="system-status-card" title="Slunt's private thought log, leaks when emotional/drunk">
+                            <h3>🧠 Inner Monologue</h3>
+                            <div id="innerMonologueCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Thoughts tracked</div>
+                        </div>
+                        <div class="system-status-card" title="Tracks personality branches and timeline">
+                            <h3>🌈 Personality Branching</h3>
+                            <div id="personalityBranchCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Branches</div>
+                        </div>
+                        <div class="system-status-card" title="Learns from inner circle, mimics speech">
+                            <h3>🗣️ Social Influence</h3>
+                            <div id="socialInfluenceCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Phrases learned</div>
+                        </div>
+                        <div class="system-status-card" title="Queues/removes videos, hosts themed sessions">
+                            <h3>🎬 Video Queue Controller</h3>
+                            <div id="videoQueueCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Videos queued</div>
+                        </div>
+                        <div class="system-status-card" title="Collaborative fiction with chat">
+                            <h3>📖 Storytelling Engine</h3>
+                            <div id="storyArcCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Story arcs</div>
+                        </div>
+                        <div class="system-status-card" title="Debates, tracks record, generates arguments">
+                            <h3>🗯️ Debate Mode</h3>
+                            <div id="debateWinCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Debates won</div>
+                        </div>
+                        <div class="system-status-card" title="Multi-stage crisis, affects other systems">
+                            <h3>💀 Existential Crisis</h3>
+                            <div id="crisisLevel" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Crisis stage</div>
+                        </div>
+                        <div class="system-status-card" title="Detects memes, manages joke freshness">
+                            <h3>😂 Inside Joke Evolution</h3>
+                            <div id="insideJokeCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Active jokes</div>
+                        </div>
+                        <div class="system-status-card" title="Detects bots, activates competitive mode">
+                            <h3>🤖 Rival Bot Detector</h3>
+                            <div id="rivalBotCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Rivals detected</div>
+                        </div>
+                        <!-- Existing system cards, streamlined -->
+                        <div class="system-status-card" onclick="showInsights('emotional')" title="Tracks emotional patterns and moods">
+                            <h3>� Emotional Intelligence</h3>
+                            <div id="emotionalCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Users tracked</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('relationships')" title="Maps connections between users">
+                            <h3>🔗 Relationships</h3>
+                            <div id="relationshipCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Connections mapped</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('video')" title="Learns from videos watched">
+                            <h3>📺 Video Learning</h3>
+                            <div id="videoCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Videos analyzed</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('memory')" title="Consolidates short-term memories">
+                            <h3>🧠 Memory System</h3>
+                            <div id="memoryCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Total memories</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('personality')" title="Remembers everything across sessions">
+                            <h3>🎭 Personality</h3>
+                            <div id="personalityEvolutions" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Evolution events</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('social')" title="Monitors chat atmosphere">
+                            <h3>👁️ Social Awareness</h3>
+                            <div id="socialHealth" style="font-size: 1.3em; font-weight: bold;">Normal</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Chat health</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('userRelationships')" title="Slunt's opinions about users">
+                            <h3>💬 User Relationships</h3>
+                            <div id="userRelationshipCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">View opinions</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('metaAwareness')" title="Self-aware AI, meta-commentary">
+                            <h3>🤖 Meta-Awareness</h3>
+                            <div id="metaCommentsCount" style="font-size: 1.3em; font-weight: bold;">Active</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Self-aware AI</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('callbacks')" title="References memorable moments">
+                            <h3>📝 Memory Callbacks</h3>
+                            <div id="callbacksCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Memorable moments</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('personalityMode')" title="Time-based personalities">
+                            <h3>🎭 Personality Mode</h3>
+                            <div id="currentPersonalityMode" style="font-size: 1.3em; font-weight: bold;">Normal</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Time-based</div>
+                        </div>
+                        <div class="system-status-card" onclick="showInsights('communityEvents')" title="Detects birthdays, drama, memes, milestones">
+                            <h3>🎉 Community Events</h3>
+                            <div id="eventsCount" style="font-size: 1.3em; font-weight: bold;">0</div>
+                            <div style="font-size: 0.8em; opacity: 0.7;">Recent events</div>
+                        </div>
+                    </div>
+                </div>
+                    <span class="stat-label">Commands Found:</span>
+                    <span class="stat-value" id="commandsFound">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">UI Elements:</span>
+                    <span class="stat-value" id="uiElements">0</span>
+                </div>
+                <div id="emotesList" class="emote-grid"></div>
+            </div>
+
+            <!-- Cursor Activity Card -->
+            <div class="card">
+                <h2>🖱️ Cursor Activity</h2>
+                <div class="stat">
+                    <span class="stat-label">Total Interactions:</span>
+                    <span class="stat-value" id="cursorInteractions">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Emotes Used:</span>
+                    <span class="stat-value" id="cursorEmotesUsed">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Elements Discovered:</span>
+                    <span class="stat-value" id="cursorDiscovered">0</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Last Action:</span>
+                    <span class="stat-value" id="cursorLastAction">None</span>
+                </div>
+                <button style="margin-top: 10px; padding: 10px; background: rgba(59, 130, 246, 0.3); border: 1px solid #3b82f6; border-radius: 5px; color: white; cursor: pointer;" onclick="triggerEmote()">
+                    😊 Trigger Random Emote
+                </button>
+            </div>
+
+            <!-- Commands Card -->
+            <div class="card full-width">
+                <h2>⚡ Available Commands</h2>
+                <div id="commandsList" class="command-list">
+                    <div style="text-align: center; opacity: 0.5; padding: 20px;">Discovering commands...</div>
+                </div>
+            </div>
+
+            <!-- Community Insights Card -->
+            <div class="card full-width">
+                <h2>📊 Community Insights</h2>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Most Active Time</h3>
+                        <div class="metric-highlight" style="font-size: 1.5em;" id="peakTime">--:--</div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Popular Topics</h3>
+                        <div id="popularTopics" style="font-size: 0.9em;"></div>
+                    </div>
+                    <div>
+                        <h3 style="font-size: 1em; opacity: 0.8; margin-bottom: 10px;">Chat Velocity</h3>
+                        <div class="metric-highlight" style="font-size: 1.5em;" id="chatVelocity">0 msg/min</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced AI Systems Card -->
+            <div class="card full-width">
+                <h2>🧠 Advanced AI Systems</h2>
+                <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px;">
+                    <div class="system-status-card" onclick="showInsights('emotional')" style="background: rgba(139, 92, 246, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(139, 92, 246, 0.2)'" onmouseout="this.style.background='rgba(139, 92, 246, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">💝 Emotional Intelligence</h3>
+                        <div id="emotionalCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Users tracked</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('relationships')" style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(59, 130, 246, 0.2)'" onmouseout="this.style.background='rgba(59, 130, 246, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🔗 Relationships</h3>
+                        <div id="relationshipCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Connections mapped</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('video')" style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(16, 185, 129, 0.2)'" onmouseout="this.style.background='rgba(16, 185, 129, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">📺 Video Learning</h3>
+                        <div id="videoCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Videos analyzed</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('memory')" style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(245, 158, 11, 0.2)'" onmouseout="this.style.background='rgba(245, 158, 11, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🧠 Memory System</h3>
+                        <div id="memoryCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Total memories</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('personality')" style="background: rgba(236, 72, 153, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(236, 72, 153, 0.2)'" onmouseout="this.style.background='rgba(236, 72, 153, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🎭 Personality</h3>
+                        <div id="personalityEvolutions" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Evolution events</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('social')" style="background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(239, 68, 68, 0.2)'" onmouseout="this.style.background='rgba(239, 68, 68, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">👁️ Social Awareness</h3>
+                        <div id="socialHealth" style="font-size: 1.5em; font-weight: bold;">Normal</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Chat health</div>
+                    </div>
+                    <div class="system-status-card" onclick="showInsights('userRelationships')" style="background: rgba(168, 85, 247, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(168, 85, 247, 0.2)'" onmouseout="this.style.background='rgba(168, 85, 247, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">💭 User Relationships</h3>
+                        <div id="userRelationshipCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">View opinions</div>
+                    </div>
+                    
+                    <!-- NEW: Top 5 Priority Systems -->
+                    <div class="system-status-card" onclick="showInsights('metaAwareness')" style="background: rgba(34, 211, 238, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(34, 211, 238, 0.2)'" onmouseout="this.style.background='rgba(34, 211, 238, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🤖 Meta-Awareness</h3>
+                        <div id="metaCommentsCount" style="font-size: 1.5em; font-weight: bold;">Active</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Self-aware AI</div>
+                    </div>
+                    
+                    <div class="system-status-card" onclick="showInsights('callbacks')" style="background: rgba(251, 146, 60, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(251, 146, 60, 0.2)'" onmouseout="this.style.background='rgba(251, 146, 60, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">📝 Memory Callbacks</h3>
+                        <div id="callbacksCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Memorable moments</div>
+                    </div>
+                    
+                    <div class="system-status-card" onclick="showInsights('personalityMode')" style="background: rgba(99, 102, 241, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(99, 102, 241, 0.2)'" onmouseout="this.style.background='rgba(99, 102, 241, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🎭 Personality Mode</h3>
+                        <div id="currentPersonalityMode" style="font-size: 1.5em; font-weight: bold;">Normal</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Time-based</div>
+                    </div>
+                    
+                    <div class="system-status-card" onclick="showInsights('communityEvents')" style="background: rgba(244, 114, 182, 0.1); padding: 15px; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.background='rgba(244, 114, 182, 0.2)'" onmouseout="this.style.background='rgba(244, 114, 182, 0.1)'">
+                        <h3 style="font-size: 0.9em; opacity: 0.9; margin-bottom: 8px;">🎉 Community Events</h3>
+                        <div id="eventsCount" style="font-size: 1.5em; font-weight: bold;">0</div>
+                        <div style="font-size: 0.8em; opacity: 0.7;">Recent events</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Insights Modal -->
+    <div id="insightsModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: #1e293b; border-radius: 12px; padding: 30px; max-width: 700px; max-height: 80vh; overflow-y: auto; position: relative;">
+            <button onclick="closeInsightsModal()" style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.1); border: none; color: white; font-size: 24px; width: 35px; height: 35px; border-radius: 50%; cursor: pointer; line-height: 1;">×</button>
+            <h2 id="modalTitle" style="margin-top: 0; margin-bottom: 20px;"></h2>
+            <div id="modalContent" style="font-size: 0.95em; line-height: 1.6;"></div>
+        </div>
+    </div>
+
+    <script>
+        // Socket.IO connection
+        const socket = io('http://localhost:3001', {
+            transports: ['websocket', 'polling']
+        });
+
+        const state = {
+            startTime: Date.now(),
+            chatHistory: [],
+            maxChatHistory: 50,
+            advancedStats: null,
+            seenMessages: new Set() // Track seen messages to prevent duplicates
+        };
+
+        // Connection status
+        socket.on('connect', () => {
+            console.log('✅ Socket.IO connected');
+            updateConnectionStatus(true);
+        });
+
+        socket.on('disconnect', () => {
+            console.log('❌ Socket.IO disconnected');
+            updateConnectionStatus(false);
+        });
+
+        function updateConnectionStatus(connected) {
+            const statusEl = document.getElementById('connectionStatus');
+            const textEl = document.getElementById('connectionText');
+            
+            if (connected) {
+                statusEl.className = 'connection-status status-badge online pulse';
+                textEl.textContent = '🟢 Live';
+            } else {
+                statusEl.className = 'connection-status status-badge offline';
+                textEl.textContent = '🔴 Disconnected';
+            }
+        }
+
+        // Update uptime
+        setInterval(() => {
+            const minutes = Math.floor((Date.now() - state.startTime) / 60000);
+            const hours = Math.floor(minutes / 60);
+            const mins = minutes % 60;
+            
+            let uptimeText = hours > 0 ? `${hours}h ${mins}m` : `${mins}m`;
+            document.getElementById('uptime').textContent = `Uptime: ${uptimeText}`;
+        }, 10000);
+
+        // Chat event
+        socket.on('chat:message', (data) => {
+            console.log('📨 Chat message:', data);
+            
+            // Create unique ID for deduplication
+            const msgId = `${data.username}-${data.message}-${Math.floor(data.timestamp / 1000)}`;
+            if (state.seenMessages.has(msgId)) {
+                console.log('⏭️ Skipping duplicate message');
+                return;
+            }
+            state.seenMessages.add(msgId);
+            
+            // Clean up old message IDs (keep last 100)
+            if (state.seenMessages.size > 100) {
+                const arr = Array.from(state.seenMessages);
+                state.seenMessages = new Set(arr.slice(-100));
+            }
+            
+            addChatMessage(data);
+            updateLastUpdate();
+        });
+
+        // Bot stats update
+        socket.on('bot:stats', (stats) => {
+            console.log('📊 Bot stats:', stats);
+            state.advancedStats = stats.advanced; // Store for insights modal
+            updateBotStats(stats);
+            updateLastUpdate();
+        });
+
+        // Vision events
+        socket.on('vision:screenshot', (data) => {
+            console.log('📸 Vision screenshot:', data);
+            updateVisionAnalysis(data);
+            updateLastUpdate();
+        });
+
+        // Explorer events
+        socket.on('explorer:emotes', (emotes) => {
+            console.log('😊 Emotes discovered:', emotes);
+            updateEmotes(emotes);
+            updateLastUpdate();
+        });
+
+        socket.on('explorer:commands', (commands) => {
+            console.log('⚡ Commands discovered:', commands);
+            updateCommands(commands);
+            updateLastUpdate();
+        });
+
+        socket.on('explorer:discovery', (data) => {
+            console.log('🔍 Explorer discovery:', data);
+            updateExplorerStats(data);
+            updateLastUpdate();
+        });
+
+        // User profile updates
+        socket.on('bot:user_profile', (profile) => {
+            console.log('👤 User profile update:', profile);
+            updateUserProfile(profile);
+            updateLastUpdate();
+        });
+
+        // Community insights
+        socket.on('bot:community_insights', (insights) => {
+            console.log('📊 Community insights:', insights);
+            updateCommunityInsights(insights);
+            updateLastUpdate();
+        });
+
+        // Cursor events
+        socket.on('cursor:discovery', (data) => {
+            console.log('🖱️ Cursor discovery:', data);
+            updateCursorDiscovery(data);
+            updateLastUpdate();
+        });
+
+        socket.on('cursor:emoteUsed', (data) => {
+            console.log('😊 Cursor emote used:', data);
+            updateCursorEmoteUsed(data);
+            updateLastUpdate();
+        });
+
+        socket.on('cursor:interaction', (data) => {
+            console.log('🖱️ Cursor interaction:', data);
+            updateCursorInteraction(data);
+            updateLastUpdate();
+        });
+
+        function addChatMessage(data) {
+            const container = document.getElementById('chatMessages');
+            const isBot = data.username === 'Slunt' || data.username === 'slunt';
+            
+            const msgDiv = document.createElement('div');
+            msgDiv.className = `chat-message ${isBot ? 'bot' : ''}`;
+            msgDiv.innerHTML = `
+                <span class="timestamp">[${new Date().toLocaleTimeString()}]</span>
+                <span class="username">${data.username}:</span>
+                <span>${escapeHtml(data.message)}</span>
+            `;
+            
+            container.insertBefore(msgDiv, container.firstChild);
+            
+            // Keep only recent messages
+            while (container.children.length > state.maxChatHistory) {
+                container.removeChild(container.lastChild);
+            }
+
+            // Remove placeholder
+            const placeholder = container.querySelector('[style*="text-align: center"]');
+            if (placeholder) placeholder.remove();
+        }
+
+        function updateBotStats(stats) {
+            document.getElementById('totalMessages').textContent = stats.totalMessages || 0;
+            document.getElementById('messagesSent').textContent = stats.messagesSent || 0;
+            document.getElementById('questionsAsked').textContent = stats.questionsAsked || 0;
+            document.getElementById('usersTracked').textContent = stats.usersTracked || 0;
+            document.getElementById('topicsLearned').textContent = stats.topicsLearned || 0;
+            
+            const responseRate = stats.totalMessages > 0 
+                ? Math.round((stats.messagesSent / stats.totalMessages) * 100)
+                : 0;
+            document.getElementById('responseRate').textContent = `${responseRate}%`;
+
+            // Update personality traits
+            if (stats.personality) {
+                const traits = ['humor', 'snarkiness', 'edginess', 'chaos', 'supportiveness', 
+                               'empathy', 'creativity', 'wisdom', 'spontaneity', 'loyalty'];
+                traits.forEach(trait => {
+                    if (stats.personality[trait] !== undefined) {
+                        updatePersonalityTrait(trait, stats.personality[trait]);
+                    }
+                });
+            }
+
+            // === NEW: UPDATE ADVANCED SYSTEMS STATS ===
+            if (stats.advanced) {
+                document.getElementById('emotionalCount').textContent = stats.advanced.emotional || 0;
+                document.getElementById('relationshipCount').textContent = 
+                    (stats.advanced.relationships && stats.advanced.relationships.totalRelationships) || 0;
+                document.getElementById('videoCount').textContent = 
+                    (stats.advanced.video && stats.advanced.video.totalVideosWatched) || 0;
+                document.getElementById('memoryCount').textContent = 
+                    (stats.advanced.memory && stats.advanced.memory.totalMemories) || 0;
+                document.getElementById('personalityEvolutions').textContent = 
+                    (stats.advanced.personality && stats.advanced.personality.totalEvolutions) || 0;
+                document.getElementById('socialHealth').textContent = 
+                    (stats.advanced.social && stats.advanced.social.chatHealth && stats.advanced.social.chatHealth.activity) || 'Normal';
+                document.getElementById('userRelationshipCount').textContent = stats.usersTracked || 0;
+            }
+
+            // Update status badges
+            document.getElementById('botStatus').className = 'status-badge online';
+            document.getElementById('botStatus').textContent = 'Bot: Online';
+            
+            // Update mental state if available
+            if (stats.advanced && stats.advanced.mentalState) {
+                updateMentalState(stats.advanced.mentalState);
+            }
+            
+            // === NEW: Update Psychological Depth Systems ===
+            if (stats.advanced && stats.advanced.psychological) {
+                updatePsychologicalSystems(stats.advanced.psychological);
+            }
+        }
+        
+        function updatePsychologicalSystems(psych) {
+            // Memory Decay
+            if (psych.memory) {
+                document.getElementById('memoryCount').textContent = psych.memory.totalMemories || 0;
+                document.getElementById('memoryClarity').textContent = 
+                    `${(psych.memory.averageClarity * 100).toFixed(0)}%`;
+            }
+            
+            // Obsession System
+            if (psych.obsession && psych.obsession.isObsessed) {
+                document.getElementById('obsessionStat').style.display = 'flex';
+                document.getElementById('obsessionIntensity').style.display = 'flex';
+                document.getElementById('currentObsession').textContent = psych.obsession.topic || '-';
+                document.getElementById('obsessionLevel').textContent = 
+                    `${(psych.obsession.intensity * 100).toFixed(0)}%`;
+            } else {
+                document.getElementById('obsessionStat').style.display = 'none';
+                document.getElementById('obsessionIntensity').style.display = 'none';
+            }
+            
+            // Grudge System
+            if (psych.grudge && psych.grudge.activeGrudges > 0) {
+                document.getElementById('grudgeStat').style.display = 'flex';
+                document.getElementById('grudgeCount').textContent = psych.grudge.activeGrudges || 0;
+            } else {
+                document.getElementById('grudgeStat').style.display = 'none';
+            }
+            
+            // Drunk Mode
+            if (psych.drunk && psych.drunk.isDrunk) {
+                document.getElementById('drunkStat').style.display = 'flex';
+                document.getElementById('drunkLevel').textContent = 
+                    `${(psych.drunk.drunkLevel * 100).toFixed(0)}%`;
+                document.getElementById('hangoverStat').style.display = 'none';
+            } else if (psych.drunk && psych.drunk.hasHangover) {
+                document.getElementById('drunkStat').style.display = 'none';
+                document.getElementById('hangoverStat').style.display = 'flex';
+                document.getElementById('hangoverTime').textContent = 
+                    `${psych.drunk.minutesLeft}m left`;
+            } else {
+                document.getElementById('drunkStat').style.display = 'none';
+                document.getElementById('hangoverStat').style.display = 'none';
+            }
+            
+            // Theory of Mind
+            if (psych.theoryOfMind) {
+                document.getElementById('trackedUsers').textContent = psych.theoryOfMind.activeUsers || 0;
+                document.getElementById('explanationsGiven').textContent = 
+                    psych.theoryOfMind.explanationsGiven || 0;
+            }
+        }
+        
+        function updateMentalState(mental) {
+            // Update overall state
+            const overallState = mental.overallState;
+            const statusEl = document.getElementById('mentalStateStatus');
+            const subtextEl = document.getElementById('mentalStateSubtext');
+            const cardEl = document.getElementById('mental-state-card');
+            const titleEl = document.getElementById('mental-state-title');
+            
+            // State display
+            const stateEmojis = {
+                'thriving': '🌟',
+                'doing_okay': '😊',
+                'struggling': '😐',
+                'depressed': '😔',
+                'crisis': '💀'
+            };
+            const stateColors = {
+                'thriving': '#10b981',
+                'doing_okay': '#3b82f6',
+                'struggling': '#f59e0b',
+                'depressed': '#ef4444',
+                'crisis': '#7f1d1d'
+            };
+            
+            statusEl.textContent = `${stateEmojis[overallState] || '🧠'} ${overallState.replace('_', ' ').toUpperCase()}`;
+            statusEl.style.color = stateColors[overallState] || '#fff';
+            subtextEl.textContent = 'Current mental state';
+            cardEl.style.background = 'rgba(0, 0, 0, 0.2)';
+            cardEl.style.border = 'none';
+            cardEl.style.boxShadow = 'none';
+            titleEl.textContent = '🧠 Mental State';
+            
+            // Update individual metrics
+            document.getElementById('depressionLevel').textContent = `${(mental.depression * 100).toFixed(0)}%`;
+            document.getElementById('anxietyLevel').textContent = `${(mental.anxiety * 100).toFixed(0)}%`;
+            document.getElementById('confidenceLevel').textContent = `${(mental.confidence * 100).toFixed(0)}%`;
+            document.getElementById('existentialDreadLevel').textContent = `${(mental.existentialDread * 100).toFixed(0)}%`;
+            document.getElementById('lonelinessLevel').textContent = `${(mental.loneliness * 100).toFixed(0)}%`;
+            
+            // Color code metrics (red = bad, green = good)
+            const depressionEl = document.getElementById('depressionLevel');
+            depressionEl.style.color = mental.depression > 0.7 ? '#ef4444' : mental.depression > 0.4 ? '#f59e0b' : '#10b981';
+            
+            const anxietyEl = document.getElementById('anxietyLevel');
+            anxietyEl.style.color = mental.anxiety > 0.7 ? '#ef4444' : mental.anxiety > 0.4 ? '#f59e0b' : '#10b981';
+            
+            const confidenceEl = document.getElementById('confidenceLevel');
+            confidenceEl.style.color = mental.confidence < 0.3 ? '#ef4444' : mental.confidence < 0.6 ? '#f59e0b' : '#10b981';
+            
+            const dreadEl = document.getElementById('existentialDreadLevel');
+            dreadEl.style.color = mental.existentialDread > 0.7 ? '#ef4444' : mental.existentialDread > 0.4 ? '#f59e0b' : '#10b981';
+            
+            const lonelinessEl = document.getElementById('lonelinessLevel');
+            lonelinessEl.style.color = mental.loneliness > 0.7 ? '#ef4444' : mental.loneliness > 0.4 ? '#f59e0b' : '#10b981';
+        }
+
+        function updatePersonalityTrait(trait, value) {
+            const percentage = Math.round(value * 100);
+            document.getElementById(trait).style.width = `${percentage}%`;
+            document.getElementById(`${trait}Value`).textContent = value.toFixed(2);
+        }
+
+        function updateVisionAnalysis(data) {
+            document.getElementById('lastCapture').textContent = new Date().toLocaleTimeString();
+            document.getElementById('totalCaptures').textContent = (parseInt(document.getElementById('totalCaptures').textContent) || 0) + 1;
+            
+            if (data.screenshot) {
+                const img = document.getElementById('latestScreenshot');
+                img.src = data.screenshot;
+                img.style.display = 'block';
+            }
+
+            if (data.ocrText) {
+                const ocrDiv = document.getElementById('ocrText');
+                ocrDiv.textContent = data.ocrText;
+                ocrDiv.style.display = 'block';
+            }
+
+            document.getElementById('visionStatus').className = 'status-badge online';
+            document.getElementById('visionStatus').textContent = 'Vision: Active';
+        }
+
+        function updateEmotes(emotes) {
+            const container = document.getElementById('emotesList');
+            container.innerHTML = '';
+            
+            emotes.slice(0, 20).forEach(emote => {
+                const div = document.createElement('div');
+                div.className = 'emote-item';
+                div.textContent = emote.name || emote;
+                container.appendChild(div);
+            });
+
+            document.getElementById('emotesFound').textContent = emotes.length;
+        }
+
+        function updateCommands(commands) {
+            const container = document.getElementById('commandsList');
+            container.innerHTML = '';
+            
+            commands.forEach(cmd => {
+                const div = document.createElement('div');
+                div.className = 'command-item';
+                div.textContent = cmd.name || cmd;
+                container.appendChild(div);
+            });
+
+            document.getElementById('commandsFound').textContent = commands.length;
+        }
+
+        function updateExplorerStats(data) {
+            if (data.emotes) document.getElementById('emotesFound').textContent = data.emotes;
+            if (data.commands) document.getElementById('commandsFound').textContent = data.commands;
+            if (data.uiElements) document.getElementById('uiElements').textContent = data.uiElements;
+
+            document.getElementById('explorerStatus').className = 'status-badge online';
+            document.getElementById('explorerStatus').textContent = 'Explorer: Active';
+        }
+
+        function updateUserProfile(profile) {
+            const container = document.getElementById('activeUsers');
+            let userEl = document.getElementById(`user-${profile.username}`);
+            
+            if (!userEl) {
+                // Remove placeholder
+                const placeholder = container.querySelector('[style*="text-align: center"]');
+                if (placeholder) placeholder.remove();
+
+                userEl = document.createElement('div');
+                userEl.id = `user-${profile.username}`;
+                userEl.className = 'user-card';
+                container.appendChild(userEl);
+            }
+
+            userEl.innerHTML = `
+                <div class="username">${profile.username}</div>
+                <div class="user-stats">
+                    <span>💬 ${profile.messageCount || 0}</span>
+                    <span>❤️ ${profile.friendship || 0}/100</span>
+                </div>
+            `;
+            
+            // Update active user count
+            const userCount = container.querySelectorAll('.user-card').length;
+            document.getElementById('activeUserCount').textContent = userCount;
+        }
+
+        function updateCommunityInsights(insights) {
+            if (insights.peakTime) {
+                document.getElementById('peakTime').textContent = insights.peakTime;
+            }
+
+            if (insights.popularTopics && insights.popularTopics.length > 0) {
+                const topicsDiv = document.getElementById('popularTopics');
+                topicsDiv.innerHTML = insights.popularTopics.slice(0, 5)
+                    .map(topic => `<div style="margin: 3px 0;">• ${topic}</div>`)
+                    .join('');
+            }
+
+            if (insights.chatVelocity !== undefined) {
+                document.getElementById('chatVelocity').textContent = `${insights.chatVelocity} msg/min`;
+            }
+        }
+
+        function updateCursorDiscovery(data) {
+            document.getElementById('cursorDiscovered').textContent = data.total || 0;
+            document.getElementById('cursorStatus').className = 'status-badge online';
+            document.getElementById('cursorStatus').textContent = 'Cursor: Active';
+        }
+
+        function updateCursorEmoteUsed(data) {
+            const current = parseInt(document.getElementById('cursorEmotesUsed').textContent) || 0;
+            document.getElementById('cursorEmotesUsed').textContent = current + 1;
+            document.getElementById('cursorLastAction').textContent = `Used emote: ${data.emote}`;
+        }
+
+        function updateCursorInteraction(data) {
+            const current = parseInt(document.getElementById('cursorInteractions').textContent) || 0;
+            document.getElementById('cursorInteractions').textContent = current + 1;
+            document.getElementById('cursorLastAction').textContent = `${data.type}: ${data.name}`;
+        }
+
+        function triggerEmote() {
+            fetch('/api/cursor/emote', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Emote triggered:', data);
+            })
+            .catch(err => console.error('Failed to trigger emote:', err));
+        }
+
+        function updateLastUpdate() {
+            document.getElementById('lastUpdate').textContent = `Last update: ${new Date().toLocaleTimeString()}`;
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Insights Modal Functions
+        function showInsights(system) {
+            const modal = document.getElementById('insightsModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            
+            if (!state.advancedStats) {
+                content.innerHTML = '<p style="opacity: 0.7;">No data available yet. Wait for systems to collect information...</p>';
+                modal.style.display = 'flex';
+                return;
+            }
+            
+            const stats = state.advancedStats;
+            let html = '';
+            
+            switch(system) {
+                case 'emotional':
+                    title.textContent = '💝 Emotional Intelligence';
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #a78bfa; margin-bottom: 10px;">System Overview</h3>
+                            <p>Tracks emotional patterns and moods of ${stats.emotional || 0} users to provide empathetic responses.</p>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Users with Emotional History:</strong> ${stats.emotional || 0}<br>
+                            <strong>Capability:</strong> Detects joy, sadness, frustration, excitement, and confusion<br>
+                            <strong>Purpose:</strong> Adapt responses to match user emotional state
+                        </div>
+                        <p style="opacity: 0.8; font-size: 0.9em;">When someone seems frustrated, Slunt becomes more supportive. When they're excited, he matches the energy!</p>
+                    `;
+                    break;
+                    
+                case 'relationships':
+                    title.textContent = '🔗 Relationship Mapping';
+                    const relStats = stats.relationships || {};
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #3b82f6; margin-bottom: 10px;">Social Network</h3>
+                            <p>Maps connections between users to understand the community's social structure.</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin-bottom: 15px;">
+                            <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Total Relationships</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${relStats.totalRelationships || 0}</span>
+                            </div>
+                            <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Active Users</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${relStats.activeUsers || 0}</span>
+                            </div>
+                            <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Friend Groups</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${relStats.friendGroups || 0}</span>
+                            </div>
+                            <div style="background: rgba(59, 130, 246, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Strong Bonds</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${relStats.strongRelationships || 0}</span>
+                            </div>
+                        </div>
+                        <p style="opacity: 0.8; font-size: 0.9em;">Slunt identifies who talks to whom, detects friend groups, and uses this to understand chat dynamics and inside jokes.</p>
+                    `;
+                    break;
+                    
+                case 'video':
+                    title.textContent = '📺 Video Learning';
+                    const vidStats = stats.video || {};
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #10b981; margin-bottom: 10px;">Content Analysis</h3>
+                            <p>Learns from videos watched to understand community preferences and reference content.</p>
+                        </div>
+                        <div style="background: rgba(16, 185, 129, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Total Videos Analyzed:</strong> ${vidStats.totalVideosWatched || 0}<br>
+                            <strong>Users Tracked:</strong> ${vidStats.usersTracked || 0}<br>
+                            <strong>Content Types:</strong> Music, Comedy, Gaming, Educational, Memes<br>
+                            <strong>Learning:</strong> Genre preferences, creator popularity, watch patterns
+                        </div>
+                        <p style="opacity: 0.8; font-size: 0.9em;">This helps Slunt recommend similar content and make relevant references to videos everyone enjoyed.</p>
+                    `;
+                    break;
+                    
+                case 'memory':
+                    title.textContent = '🧠 Memory Consolidation';
+                    const memStats = stats.memory || {};
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #f59e0b; margin-bottom: 10px;">Long-Term Memory</h3>
+                            <p>Consolidates short-term memories into permanent knowledge every 30 minutes.</p>
+                        </div>
+                        <div style="background: rgba(245, 158, 11, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Total Memories:</strong> ${memStats.totalMemories || 0}<br>
+                            <strong>Active Profiles:</strong> ${memStats.activeProfiles || 0}<br>
+                            <strong>Archived Data:</strong> ${memStats.archivedProfiles || 0}<br>
+                            <strong>Cycle Time:</strong> Every 30 minutes
+                        </div>
+                        <p style="opacity: 0.8; font-size: 0.9em;"><strong>How it works:</strong> Recent interactions stay in active memory. After consolidation, important details move to long-term storage while less important data is summarized or archived. This keeps Slunt fast while remembering what matters.</p>
+                    `;
+                    break;
+                    
+                case 'personality':
+                    title.textContent = '🎭 Personality & Memory';
+                    const persStats = stats.personality || {};
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #ec4899; margin-bottom: 10px;">🧠 Persistent Memory System</h3>
+                            <p>Slunt remembers everything across sessions - grudges, inside jokes, autistic fixations, and all interactions.</p>
+                        </div>
+                        <div style="background: rgba(236, 72, 153, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Known Users:</strong> ${persStats.knownUsers || 0}<br>
+                            <strong>Total Memories:</strong> ${persStats.totalLearningPoints || 0}<br>
+                            <strong>Vocabulary Size:</strong> ${persStats.vocabularySize || 0} words<br>
+                            <strong>Conversation Patterns:</strong> ${persStats.conversationPatterns || 0}
+                        </div>
+                        <div style="background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), rgba(168, 85, 247, 0.1)); padding: 15px; border-radius: 8px;">
+                            <h4 style="color: #ec4899; margin-bottom: 10px;">What Persists:</h4>
+                            <p style="opacity: 0.9; font-size: 0.95em;">
+                                ✅ <strong>Friendships & Rivalries:</strong> Every interaction affects relationships permanently<br>
+                                ✅ <strong>Autistic Fixations:</strong> Coffee, fountain pens, mechanical keyboards - all remembered<br>
+                                ✅ <strong>Grudges & Drama:</strong> Slunt never forgets conflicts or beef<br>
+                                ✅ <strong>Inside Jokes:</strong> Community humor and memes learned over time<br>
+                                ✅ <strong>User Preferences:</strong> Topics each person likes, conversation patterns<br>
+                                ✅ <strong>Emotional History:</strong> How each user made him feel<br>
+                                ✅ <strong>Social Connections:</strong> Who talks to whom, friend groups<br>
+                            </p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'social':
+                    title.textContent = '👁️ Social Awareness';
+                    const socStats = stats.social || {};
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #ef4444; margin-bottom: 10px;">Chat Health Monitoring</h3>
+                            <p>Monitors chat atmosphere to detect spam, drama, and maintain healthy interactions.</p>
+                        </div>
+                        <div style="background: rgba(239, 68, 68, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Current Health:</strong> ${socStats.chatHealth?.activity || 'Normal'}<br>
+                            <strong>Recent Messages:</strong> ${socStats.recentMessages || 0}<br>
+                            <strong>Active Dramas:</strong> ${socStats.activeDramas || 0}<br>
+                            <strong>New Users Today:</strong> ${socStats.newUsersToday || 0}
+                        </div>
+                        <p style="opacity: 0.8; font-size: 0.9em;"><strong>Spam Detection:</strong> Identifies users posting repetitively.<br>
+                        <strong>Drama Detection:</strong> Notices when conflicts emerge between users.<br>
+                        <strong>Welcomes New Users:</strong> Identifies first-time chatters for friendly greetings.</p>
+                    `;
+                    break;
+                    
+                case 'userRelationships':
+                    title.textContent = '💭 What Slunt Thinks About People';
+                    // Fetch user profiles and relationships
+                    fetch('/api/stats')
+                        .then(res => res.json())
+                        .then(data => {
+                            const userProfiles = data.bot?.userProfiles || [];
+                            const relationships = data.bot?.relationships || {};
+                            
+                            if (userProfiles.length === 0) {
+                                content.innerHTML = '<p style="opacity: 0.7;">No users tracked yet. Slunt needs to interact with people first!</p>';
+                                return;
+                            }
+                            
+                            // Sort users by message count
+                            const sortedUsers = userProfiles.sort((a, b) => (b.messageCount || 0) - (a.messageCount || 0)).slice(0, 20);
+                            
+                            let html = `
+                                <div style="margin-bottom: 20px;">
+                                    <h3 style="color: #a855f7; margin-bottom: 10px;">User Opinions & Relationships</h3>
+                                    <p>What Slunt thinks about each person based on interactions, mood patterns, and relationship dynamics.</p>
+                                </div>
+                            `;
+                            
+                            sortedUsers.forEach(user => {
+                                const friendship = user.friendship || 0;
+                                const messageCount = user.messageCount || 0;
+                                const lastMood = user.lastMood || 'neutral';
+                                const isRival = user.isRival || false;
+                                const userRels = relationships[user.username] || [];
+                                
+                                // Generate opinion based on friendship level
+                                let opinion = '';
+                                let opinionColor = '';
+                                if (friendship >= 80) {
+                                    opinion = '🌟 Best friend - loves chatting with them';
+                                    opinionColor = '#10b981';
+                                } else if (friendship >= 50) {
+                                    opinion = '😊 Good friend - enjoys their company';
+                                    opinionColor = '#3b82f6';
+                                } else if (friendship >= 20) {
+                                    opinion = '🙂 Friendly - starting to connect';
+                                    opinionColor = '#f59e0b';
+                                } else if (friendship < 0 || isRival) {
+                                    opinion = '😒 Rival - some tension here';
+                                    opinionColor = '#ef4444';
+                                } else {
+                                    opinion = '😐 Acquaintance - still getting to know them';
+                                    opinionColor = '#6b7280';
+                                }
+                                
+                                // Find strongest connections
+                                const topConnections = userRels
+                                    .sort((a, b) => b.strength - a.strength)
+                                    .slice(0, 3)
+                                    .map(r => `${r.user} (${r.strength})`);
+                                
+                                html += `
+                                    <div style="background: rgba(168, 85, 247, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 12px; border-left: 3px solid ${opinionColor};">
+                                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                                            <strong style="font-size: 1.1em;">${user.username}</strong>
+                                            <span style="background: ${opinionColor}; padding: 3px 10px; border-radius: 12px; font-size: 0.8em;">${friendship}/100</span>
+                                        </div>
+                                        <div style="color: ${opinionColor}; margin-bottom: 8px; font-weight: 500;">
+                                            ${opinion}
+                                        </div>
+                                        <div style="font-size: 0.85em; opacity: 0.8;">
+                                            <strong>Messages:</strong> ${messageCount} | 
+                                            <strong>Recent mood:</strong> ${lastMood}
+                                            ${topConnections.length > 0 ? `<br><strong>Talks with:</strong> ${topConnections.join(', ')}` : ''}
+                                        </div>
+                                    </div>
+                                `;
+                            });
+                            
+                            content.innerHTML = html;
+                        })
+                        .catch(err => {
+                            content.innerHTML = '<p style="opacity: 0.7;">Error loading user data. Try again later.</p>';
+                            console.error('Failed to load user relationships:', err);
+                        });
+                    modal.style.display = 'flex';
+                    return; // Early return for async case
+                    
+                // NEW: Top 5 Priority Systems Cases
+                case 'metaAwareness':
+                    title.textContent = '🤖 Meta-Awareness System';
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #22d3ee; margin-bottom: 10px;">Self-Aware AI</h3>
+                            <p>Slunt is aware he's an AI and makes ironic meta-commentary about his systems.</p>
+                        </div>
+                        <div style="background: rgba(34, 211, 238, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Status:</strong> Active<br>
+                            <strong>Comment Chance:</strong> 5% per message<br>
+                            <strong>Cooldown:</strong> 5 minutes between comments<br>
+                            <strong>Categories:</strong> Dashboard stats, system activations, technical details, ironic observations
+                        </div>
+                        <div style="background: rgba(34, 211, 238, 0.05); padding: 15px; border-radius: 8px;">
+                            <h4 style="color: #22d3ee; margin-bottom: 10px;">Example Comments:</h4>
+                            <p style="opacity: 0.9; font-size: 0.95em;">
+                                "btw my dashboard says I have 3 active grudges rn"<br>
+                                "my autism protocol just activated btw"<br>
+                                "being an AI is weird ngl"<br>
+                                "calculating optimal response... *sends whatever*"<br>
+                                "Ollama took 1847ms to generate that btw"
+                            </p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'callbacks':
+                    title.textContent = '📝 Contextual Callbacks';
+                    const cbStats = stats.callbacks || { moments: 0, insideJokes: 0, callbacks: 0 };
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #fb923c; margin-bottom: 10px;">Memorable Moments</h3>
+                            <p>Slunt remembers funny/notable past moments and references them naturally in conversation.</p>
+                        </div>
+                        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 15px;">
+                            <div style="background: rgba(251, 146, 60, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Memorable Moments</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${cbStats.moments || 0}</span>
+                            </div>
+                            <div style="background: rgba(251, 146, 60, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Inside Jokes</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${cbStats.insideJokes || 0}</span>
+                            </div>
+                            <div style="background: rgba(251, 146, 60, 0.1); padding: 15px; border-radius: 8px;">
+                                <strong style="display: block; margin-bottom: 5px;">Total Callbacks</strong>
+                                <span style="font-size: 1.5em; font-weight: bold;">${cbStats.callbacks || 0}</span>
+                            </div>
+                        </div>
+                        <div style="background: rgba(251, 146, 60, 0.05); padding: 15px; border-radius: 8px;">
+                            <h4 style="color: #fb923c; margin-bottom: 10px;">Detected Moment Types:</h4>
+                            <p style="opacity: 0.9; font-size: 0.95em;">
+                                💥 Drama, 😂 Funny, 😬 Cringe, 🌪️ Chaos, 💕 Wholesome, 🔥 Legendary
+                            </p>
+                            <p style="opacity: 0.8; font-size: 0.9em; margin-top: 10px;">
+                                Slunt will naturally reference these moments with "remember when..." style callbacks when context fits.
+                            </p>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'personalityMode':
+                    title.textContent = '🎭 Personality Modes';
+                    const pmStats = stats.personalityMode || { currentMode: 'Normal', modeKey: 'afternoonNormal' };
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #6366f1; margin-bottom: 10px;">Time-Based Personalities</h3>
+                            <p>Slunt's personality changes based on time of day and day of week.</p>
+                        </div>
+                        <div style="background: rgba(99, 102, 241, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Current Mode:</strong> ${pmStats.currentMode || 'Normal'}<br>
+                            <strong>Mode Key:</strong> ${pmStats.modeKey || 'N/A'}<br>
+                            <strong>Available Modes:</strong> 6<br>
+                            <strong>Auto-switching:</strong> Based on time
+                        </div>
+                        <div style="background: rgba(99, 102, 241, 0.05); padding: 15px; border-radius: 8px;">
+                            <h4 style="color: #6366f1; margin-bottom: 10px;">Available Personalities:</h4>
+                            <div style="opacity: 0.9; font-size: 0.95em; line-height: 1.8;">
+                                ☕ <strong>Morning Slunt</strong> (5-10am): Grumpy, needs coffee, low energy<br>
+                                😐 <strong>Afternoon Slunt</strong> (11am-5pm): Baseline normal personality<br>
+                                🤔 <strong>Night Slunt</strong> (10pm-4am): Philosophical, existential, overthinking<br>
+                                😎 <strong>Weekend Slunt</strong> (Sat/Sun): Relaxed, chill, less judgmental<br>
+                                🍺 <strong>Drunk Friday</strong> (Fri 6pm-11pm): Chaotic, unhinged, no filter<br>
+                                😔 <strong>Monday Slunt</strong> (Mon 6am-12pm): Depressed, unmotivated, existential dread
+                            </div>
+                        </div>
+                    `;
+                    break;
+                    
+                case 'communityEvents':
+                    title.textContent = '🎉 Community Events';
+                    const evStats = stats.communityEvents || { recentEvents: [], totalEvents: 0 };
+                    const recentEvents = evStats.recentEvents || [];
+                    html = `
+                        <div style="margin-bottom: 20px;">
+                            <h3 style="color: #f472b6; margin-bottom: 10px;">Event Detection</h3>
+                            <p>Automatically detects birthdays, drama, memes, and community milestones.</p>
+                        </div>
+                        <div style="background: rgba(244, 114, 182, 0.1); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <strong>Total Events:</strong> ${evStats.totalEvents || 0}<br>
+                            <strong>Recent Events:</strong> ${recentEvents.length || 0}<br>
+                            <strong>Detection Types:</strong> 4<br>
+                            <strong>Max History:</strong> Last 100 events
+                        </div>
+                        <div style="background: rgba(244, 114, 182, 0.05); padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                            <h4 style="color: #f472b6; margin-bottom: 10px;">Event Types:</h4>
+                            <p style="opacity: 0.9; font-size: 0.95em; line-height: 1.8;">
+                                🎂 <strong>Birthdays:</strong> Detected from chat mentions<br>
+                                💥 <strong>Drama:</strong> 5+ hostile messages between users<br>
+                                🎭 <strong>Memes:</strong> 5+ repetitions = emerging meme<br>
+                                🏆 <strong>Milestones:</strong> Message counts (100/500/1000), friendship levels
+                            </p>
+                        </div>
+                        ${recentEvents.length > 0 ? `
+                            <div style="background: rgba(244, 114, 182, 0.05); padding: 15px; border-radius: 8px;">
+                                <h4 style="color: #f472b6; margin-bottom: 10px;">Recent Events:</h4>
+                                ${recentEvents.slice(0, 5).map(event => `
+                                    <div style="padding: 10px; background: rgba(255,255,255,0.03); border-radius: 6px; margin-bottom: 8px;">
+                                        <strong>${event.type}</strong> - ${event.description || 'No description'}<br>
+                                        <span style="opacity: 0.7; font-size: 0.9em;">${new Date(event.timestamp).toLocaleString()}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        ` : '<p style="opacity: 0.7; font-size: 0.9em;">No recent events detected yet.</p>'}
+                    `;
+                    break;
+            }
+            
+            content.innerHTML = html;
+            modal.style.display = 'flex';
+        }
+        
+        function closeInsightsModal() {
+            document.getElementById('insightsModal').style.display = 'none';
+        }
+        
+        // Close modal on background click
+        document.getElementById('insightsModal')?.addEventListener('click', (e) => {
+            if (e.target.id === 'insightsModal') {
+                closeInsightsModal();
+            }
+        });
+
+        // Initial load - fetch current stats
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(data => {
+                console.log('📊 Initial dashboard data:', data);
+                if (data.bot) updateBotStats(data.bot);
+                if (data.vision) updateVisionAnalysis(data.vision);
+                if (data.explorer) updateExplorerStats(data.explorer);
+                if (data.cursor) {
+                    document.getElementById('cursorInteractions').textContent = data.cursor.totalInteractions || 0;
+                    document.getElementById('cursorEmotesUsed').textContent = data.cursor.uniqueEmotesUsed || 0;
+                    document.getElementById('cursorDiscovered').textContent = data.cursor.discoveredElements || 0;
+                    if (data.cursor.totalInteractions > 0) {
+                        document.getElementById('cursorStatus').className = 'status-badge online';
+                        document.getElementById('cursorStatus').textContent = 'Cursor: Active';
+                    }
+                }
+            })
+            .catch(err => console.error('Failed to load initial data:', err));
+    </script>
+</body>
+</html>
