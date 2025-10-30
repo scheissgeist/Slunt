@@ -24,7 +24,8 @@
       "Bash(findstr:*)",
       "Bash(start-slunt-clean.bat)",
       "Bash(curl:*)",
-      "Bash(more:*)"
+      "Bash(more:*)",
+      "Bash(timeout 8 node:*)"
     ],
     "deny": [],
     "ask": []

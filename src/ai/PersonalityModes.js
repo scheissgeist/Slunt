@@ -243,27 +243,26 @@ class PersonalityModes {
       .map(([trait, value]) => `${trait}: ${Math.floor(value * 100)}%`)
       .join(', ');
 
-    const phraseString = mode.phrases.length > 0 
-      ? '\nSuggested Phrases: ' + mode.phrases.slice(0, 3).join(', ')
-      : '';
+    // Note: phrases are NO LONGER hardcoded - removed from context
+    // AI will naturally adapt to the mode description and traits
 
     return `\n🎭 PERSONALITY MODE: ${mode.name}
 ${mode.description}
 
-Trait Modifiers: ${traitString}${phraseString}
+Trait Modifiers: ${traitString}
 
 Response Style:
 ${Object.entries(mode.responseModifiers).map(([mod, enabled]) => 
   enabled ? `- ${mod}` : ''
 ).filter(Boolean).join('\n')}
 
-Let this personality naturally influence tone and style.`;
+Let this personality naturally influence tone and style. Generate appropriate casual phrases based on the mood.`;
   }
 
   /**
    * Apply mode to response (post-processing)
    */
-  applyModeToResponse(response, mode = null) {
+  async applyModeToResponse(response, mode = null) {
     if (!mode) mode = this.getCurrentMode();
     const modifiers = mode.responseModifiers;
     
@@ -273,15 +272,21 @@ Let this personality naturally influence tone and style.`;
       response = sentences.slice(0, Math.ceil(sentences.length / 2)).join('. ') + '.';
     }
 
-    // Add random phrase occasionally
-    if (mode.phrases.length > 0 && Math.random() < 0.15) {
-      const phrase = mode.phrases[Math.floor(Math.random() * mode.phrases.length)];
+    // Add dynamically generated phrase occasionally
+    if (this.chatBot && this.chatBot.dynamicPhraseGenerator && Math.random() < 0.12) {
+      const phrase = await this.chatBot.dynamicPhraseGenerator.generateModePhrase(
+        mode.name,
+        mode.description,
+        Object.entries(mode.traits).map(([k,v]) => `${k}:${Math.round(v*100)}%`).join(' ')
+      );
       
-      // Add to end or beginning
-      if (Math.random() < 0.5) {
-        response = response + ' ' + phrase;
-      } else {
-        response = phrase + '... ' + response;
+      if (phrase) {
+        // Add to end or beginning
+        if (Math.random() < 0.5) {
+          response = response + ' ' + phrase;
+        } else {
+          response = phrase + '... ' + response;
+        }
       }
     }
 

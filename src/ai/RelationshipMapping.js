@@ -28,9 +28,20 @@ class RelationshipMapping {
       if (parsed.relationships) {
         this.relationships = new Map(parsed.relationships);
       }
-      if (parsed.socialGraph) {
-        this.socialGraph = new Map(parsed.socialGraph);
+      
+      // Restore socialGraph with nested Maps
+      this.socialGraph = new Map();
+      if (parsed.socialGraph && Array.isArray(parsed.socialGraph)) {
+        for (const [username, connections] of parsed.socialGraph) {
+          // Only add if connections is iterable (array)
+          if (Array.isArray(connections)) {
+            this.socialGraph.set(username, new Map(connections));
+          } else {
+            console.warn(`🔗 [Relationships] Skipping ${username} - invalid connections format`);
+          }
+        }
       }
+      
       this.friendGroups = parsed.friendGroups || [];
       
       console.log(`🔗 [Relationships] Loaded ${this.relationships.size} relationships from disk`);
@@ -49,9 +60,15 @@ class RelationshipMapping {
       const dir = path.dirname(this.savePath);
       await fs.mkdir(dir, { recursive: true });
 
+      // Convert nested Maps to arrays for JSON
+      const socialGraphArray = Array.from(this.socialGraph.entries()).map(([username, connections]) => [
+        username,
+        Array.from(connections.entries())
+      ]);
+
       const data = {
         relationships: Array.from(this.relationships.entries()),
-        socialGraph: Array.from(this.socialGraph.entries()),
+        socialGraph: socialGraphArray,
         friendGroups: this.friendGroups,
         savedAt: Date.now()
       };

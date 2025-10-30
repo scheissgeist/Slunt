@@ -60,7 +60,7 @@ class SluntDiary {
     // Auto-save after adding entry
     this.saveDiary();
 
-    console.log(`📔 [Diary] New ${type} entry: ${text.substring(0, 50)}...`);
+    console.log(`📔 [Diary] New ${type} entry: ${text ? text.substring(0, 50) + '...' : '(no text)'}`);
     return entry;
   }
 

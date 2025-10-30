@@ -25,6 +25,7 @@ const TheoryOfMind = require('../ai/TheoryOfMind');
 const AutismFixations = require('../ai/AutismFixations');
 const UmbraProtocol = require('../ai/UmbraProtocol');
 const HipsterProtocol = require('../ai/HipsterProtocol');
+const DynamicPhraseGenerator = require('../ai/DynamicPhraseGenerator');
 const YouTubeSearch = require('../video/youtubeSearch');
 const CoolPointsHandler = require('./coolPointsHandler');
 const Responses = require('./ChatBotResponses');
@@ -57,6 +58,19 @@ const DopamineSystem = require('../ai/DopamineSystem');
 const CoolholeTricks = require('../ai/CoolholeTricks');
 const VideoDiscovery = require('../ai/VideoDiscovery');
 const GoldSystem = require('../ai/GoldSystem');
+
+// NEW CHAOS SYSTEMS 🎭
+const PersonalitySplits = require('../ai/PersonalitySplits');
+const ChaosEvents = require('../ai/ChaosEvents');
+const MetaChatAwareness = require('../ai/MetaChatAwareness');
+const SocialHierarchy = require('../ai/SocialHierarchy');
+const VideoContextEngine = require('../ai/VideoContextEngine');
+const InnerMonologueBroadcaster = require('../ai/InnerMonologueBroadcaster');
+const EventMemorySystem = require('../ai/EventMemorySystem');
+const VibeShifter = require('../ai/VibeShifter');
+const PredictionEngine = require('../ai/PredictionEngine');
+const BitCommitment = require('../ai/BitCommitment');
+const PersonalityInfection = require('../ai/PersonalityInfection');
 
 /**
  * Helper to get timestamp for logs
@@ -97,6 +111,7 @@ class ChatBot extends EventEmitter {
     };
 
     // Initialize all AI systems
+    this.dynamicPhraseGenerator = new DynamicPhraseGenerator(this); // MUST BE FIRST - others depend on it
     this.styleMimicry = new StyleMimicry();
     this.moodTracker = new MoodTracker();
     this.responseVariety = new ResponseVariety();
@@ -108,9 +123,9 @@ class ChatBot extends EventEmitter {
     this.grudgeSystem = new GrudgeSystem();
     this.drunkMode = new DrunkMode();
     this.theoryOfMind = new TheoryOfMind();
-    this.autismFixations = new AutismFixations();
+    this.autismFixations = new AutismFixations(this);
     this.umbraProtocol = new UmbraProtocol();
-    this.hipsterProtocol = new HipsterProtocol();
+    this.hipsterProtocol = new HipsterProtocol(this);
     this.nicknameManager = new NicknameManager();
 
     // Advanced AI systems
@@ -128,7 +143,7 @@ class ChatBot extends EventEmitter {
     this.communityEvents = new CommunityEvents();
     this.metaAwareness = new MetaAwareness();
     this.contextualCallbacks = new ContextualCallbacks();
-    this.personalityModes = new PersonalityModes();
+    this.personalityModes = new PersonalityModes(this);
     this.emotionTiming = new EmotionTiming();
     this.startupContinuity = new StartupContinuity();
 
@@ -154,6 +169,22 @@ class ChatBot extends EventEmitter {
     this.coolholeTricks = new CoolholeTricks();
     this.videoDiscovery = new VideoDiscovery(this);
     this.goldSystem = new GoldSystem(this);
+    
+    // NEW CHAOS SYSTEMS 🎭🌀
+    console.log('🎭 [Chaos] Initializing chaos systems...');
+    this.personalitySplits = new PersonalitySplits();
+    this.chaosEvents = new ChaosEvents();
+    this.metaChatAwareness = new MetaChatAwareness();
+    this.socialHierarchy = new SocialHierarchy();
+    this.videoContextEngine = new VideoContextEngine(null); // Will connect vision later
+    this.innerMonologueBroadcaster = new InnerMonologueBroadcaster();
+    this.eventMemorySystem = new EventMemorySystem();
+    this.vibeShifter = new VibeShifter();
+    this.predictionEngine = new PredictionEngine();
+    this.bitCommitment = new BitCommitment();
+    this.personalityInfection = new PersonalityInfection();
+    console.log('✅ [Chaos] All chaos systems initialized!');
+    
     this.chatStats = {
       totalMessages: 0,
       messagesSent: 0,
@@ -465,11 +496,17 @@ class ChatBot extends EventEmitter {
 
     // === NEW PERSONALITY PROTOCOLS ===
     
+    // Analyze message for potential autism fixation topics (dynamic discovery)
+    this.autismFixations.analyzeForTopics(text, username);
+    
     // Check autism fixation triggers
     this.autismFixations.checkTriggers(text);
     
     // Check Umbra Protocol triggers
     this.umbraProtocol.checkTrigger(text);
+    
+    // Analyze message for music/bands (dynamic discovery)
+    this.hipsterProtocol.analyzeForMusic(text, username);
     
     // Check Hipster Protocol triggers
     this.hipsterProtocol.checkTrigger(text);
@@ -603,12 +640,8 @@ class ChatBot extends EventEmitter {
       if (entries.length) return `diary thought: ${entries[0].text}`;
     }
 
-    if (Math.random() < 0.03) {
-      const topic = (data.topics && data.topics[0]) || 'chat';
-      const rumor = this.rumorMill.spreadRumor(data.username, topic);
-      this.sluntDiary.addEntry(rumor, 'rumor', true);
-      this.sendMessage(rumor);
-    }
+    // Removed rumor spreading - was causing null message crashes
+    // Rumors are tracked internally but not sent directly to chat
 
     // USER REPUTATION: Update trust/drama/helpfulness
     this.userReputationSystem.updateReputation(data.username, {
@@ -1333,6 +1366,171 @@ class ChatBot extends EventEmitter {
   }
 
   /**
+   * 🎭 CHAOS PIPELINE - Apply all chaos modifications to response
+   * RULE: Only apply ONE major modifier to keep responses concise
+   */
+  async applyChaosModifications(response, username, messageText, context = {}) {
+    if (!response) return response;
+    
+    let modified = response;
+    let modifierApplied = false; // Track if we've already modified
+    
+    try {
+      // 1. Analyze chat state for meta-awareness (always run, doesn't modify)
+      const chatState = this.metaChatAwareness.analyzeChatState(
+        { username, text: messageText },
+        this.chatHistory
+      );
+      
+      // 2. Update social hierarchy (always run, doesn't modify)
+      this.socialHierarchy.trackUser(username, 'message', context);
+      
+      // 3. Analyze user patterns for infection (always run, doesn't modify)
+      this.personalityInfection.analyzeUserMessage(username, messageText);
+      
+      // 4. Check for chaos events (always run, doesn't modify)
+      const recentUsers = Array.from(this.chatStats.activeUsers);
+      this.chaosEvents.checkForEvents({
+        recentUsers,
+        chatEnergy: chatState.energy,
+        videoMentioned: messageText.toLowerCase().includes('video')
+      });
+      
+      // 5. Evaluate dominant personality (always run, doesn't modify)
+      const personality = this.personalitySplits.evaluatePersonalities({
+        chatEnergy: chatState.energy,
+        recentMessages: this.chatHistory.slice(-5).map(m => m.text || ''),
+        sentiment: context.sentiment || 'neutral'
+      });
+      
+      // NOW APPLY ONLY ONE MAJOR MODIFICATION (weighted random selection)
+      const modifiers = [];
+      
+      // Personality split modifier (30% weight if active)
+      if (personality && Math.random() < 0.3) {
+        modifiers.push({
+          type: 'personality',
+          weight: 30,
+          apply: () => this.personalitySplits.applyPersonality(modified, context)
+        });
+      }
+      
+      // Chaos event modifier (35% weight if active events)
+      if (this.chaosEvents.activeEvents.size > 0 && Math.random() < 0.35) {
+        modifiers.push({
+          type: 'chaos',
+          weight: 35,
+          apply: () => this.chaosEvents.applyEventModifiers(modified, username, {
+            videoMentioned: messageText.toLowerCase().includes('video'),
+            chatEnergy: chatState.energy
+          })
+        });
+      }
+      
+      // Social hierarchy tone (20% weight)
+      if (Math.random() < 0.2) {
+        modifiers.push({
+          type: 'hierarchy',
+          weight: 20,
+          apply: () => this.socialHierarchy.adjustTone(modified, username)
+        });
+      }
+      
+      // Inner monologue slip (8% weight)
+      const slip = this.innerMonologueBroadcaster.maybeSlipUp();
+      if (slip && Math.random() < 0.08) {
+        modifiers.push({
+          type: 'slip',
+          weight: 8,
+          apply: () => `${modified}. ${slip.reaction}` // Only add reaction, not full thought
+        });
+      }
+      
+      // Bit commitment (15% weight)
+      const bit = this.bitCommitment.getRelevantBit({
+        keywords: messageText.toLowerCase().split(' '),
+        situation: context.situation || 'normal'
+      });
+      if (bit && Math.random() < 0.15) {
+        modifiers.push({
+          type: 'bit',
+          weight: 15,
+          apply: () => this.bitCommitment.applyBit(modified, bit)
+        });
+      }
+      
+      // Personality infection (20% weight)
+      if (Math.random() < 0.2) {
+        modifiers.push({
+          type: 'infection',
+          weight: 20,
+          apply: () => this.personalityInfection.infectResponse(modified, username)
+        });
+      }
+      
+      // Vibe shift (10% weight)
+      const shift = this.vibeShifter.analyzeAndDecideShift(chatState);
+      if (shift && Math.random() < 0.1) {
+        const shiftMessage = this.vibeShifter.getShiftMessage();
+        if (shiftMessage) {
+          modifiers.push({
+            type: 'vibe',
+            weight: 10,
+            apply: () => `${shiftMessage}. ${modified}`
+          });
+        }
+      }
+      
+      // Apply ONE modifier if any available
+      if (modifiers.length > 0) {
+        const chosen = modifiers[Math.floor(Math.random() * modifiers.length)];
+        const result = chosen.apply();
+        // Await if it's a promise
+        modified = result instanceof Promise ? await result : result;
+        modifierApplied = true;
+        console.log(`🎭 [Chaos] Applied: ${chosen.type}`);
+      }
+      
+      // Always run these (tracking only, no modification)
+      this.innerMonologueBroadcaster.processMessage(username, messageText, {
+        chatEnergy: chatState.energy
+      });
+      
+      const memorable = this.eventMemorySystem.isMemorableMessage(messageText, {
+        isGold: context.isGold,
+        rapidResponses: chatState.energy === 'chaos' ? 6 : 2
+      });
+      
+      if (memorable.memorable) {
+        this.eventMemorySystem.recordEvent({
+          type: memorable.type,
+          description: `${username}: ${messageText.slice(0, 100)}`,
+          participants: [username],
+          quote: messageText,
+          significance: memorable.significance
+        });
+      }
+      
+      // Predictions happen independently (very rare)
+      if (this.predictionEngine.shouldMakePrediction() && Math.random() < 0.05) {
+        const prediction = this.predictionEngine.generatePrediction({
+          username,
+          chatState,
+          recentMessages: this.chatHistory.slice(-5)
+        });
+        if (prediction) {
+          console.log(`🔮 [Prediction] ${prediction.prediction}`);
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ [Chaos] Error in chaos pipeline:', error);
+    }
+    
+    return modified;
+  }
+
+  /**
    * Generate contextual response to a message
    */
   async generateResponse(data) {
@@ -1431,7 +1629,8 @@ class ChatBot extends EventEmitter {
             logger.warn('⚠️ Obsessing over same topic, skipping response');
             return null; // Skip this response, avoid obsessive repetition
           } else {
-            return cleanResponse;
+            // 🎭 APPLY CHAOS MODIFICATIONS BEFORE RETURNING
+            return await this.applyChaosModifications(cleanResponse, username, text, { sentiment: emotion.primary });
           }
         }
 
@@ -1512,7 +1711,8 @@ class ChatBot extends EventEmitter {
     // Track response for variety system
     try { this.responseVariety && this.responseVariety.trackResponse(finalResponse); } catch (e) { /* ignore */ }
     
-    return finalResponse;
+    // 🎭 APPLY CHAOS MODIFICATIONS BEFORE RETURNING
+    return await this.applyChaosModifications(finalResponse, username, text, { sentiment: genEmotion.primary });
   }
 
   /**
@@ -2047,13 +2247,13 @@ class ChatBot extends EventEmitter {
         processedMessage = this.drunkMode.addTypos(processedMessage);
       }
       // Add umbra brag if available (REDUCED - less frequent and more natural)
-      const brag = this.umbraProtocol.getBrag();
+      const brag = await this.umbraProtocol.getBrag();
       if (brag && Math.random() < 0.2 && processedMessage.length < 100) {
         processedMessage = `${processedMessage}. ${brag}`;
       }
       
       // === NEW: Maybe add Hipster mention (REDUCED - only if message is long enough and not too cluttered) ===
-      const hipsterMention = this.hipsterProtocol.getMention();
+      const hipsterMention = await this.hipsterProtocol.getMention();
       if (hipsterMention && processedMessage.length < 100 && !processedMessage.includes('.') && Math.random() < 0.3) {
         processedMessage = `${processedMessage}. ${hipsterMention}`;
       }

@@ -1,135 +1,233 @@
 /**
- * Autism Fixations System
- * Slunt has deep, encyclopedic knowledge about random topics
- * Will infodump when triggered
+ * Dynamic Autism Fixations System
+ * Slunt discovers and becomes obsessed with topics from conversations
+ * Topics are generated via AI, can recur with escalating intensity
+ * NO HARDCODED TOPICS - everything is learned organically
  */
+
+const fs = require('fs').promises;
+const path = require('path');
 
 class AutismFixations {
   constructor(chatBot) {
     this.chatBot = chatBot;
     
-    // Special interests - Slunt knows WAY too much about these
-    this.fixations = [
-      {
-        topic: 'mechanical keyboards',
-        triggers: ['keyboard', 'typing', 'switches', 'keycaps', 'cherry mx'],
-        knowledge: [
-          'Cherry MX Blues are objectively the best switch fight me',
-          'the sound profile of a lubed linear switch is so satisfying',
-          'Holy Pandas are overrated, Zealios v2 are way better',
-          'anyone who uses membrane keyboards is a peasant',
-          'I spent $400 on a custom keeb and it was worth every penny',
-          'the thock sound is everything',
-          'GMK keycaps are too expensive but I bought them anyway'
-        ],
-        intensity: 0.9
-      },
-      {
-        topic: 'aquarium keeping',
-        triggers: ['fish', 'aquarium', 'tank', 'coral', 'reef'],
-        knowledge: [
-          'you need to cycle your tank for at least 6 weeks before adding fish',
-          'ammonia spikes will kill everything, you need that beneficial bacteria',
-          'discus fish are so beautiful but insanely hard to keep',
-          'planted tanks are way more work than people think',
-          'CO2 injection changes everything for plant growth',
-          'the nitrogen cycle is actually fascinating once you understand it',
-          'bettas need at least 5 gallons, bowls are animal abuse'
-        ],
-        intensity: 0.85
-      },
-      {
-        topic: 'coffee brewing',
-        triggers: ['coffee', 'espresso', 'brew', 'beans', 'caffeine'],
-        knowledge: [
-          'the grind size affects extraction way more than people realize',
-          'dark roast is for people who hate actual coffee flavor',
-          'a good burr grinder is more important than an expensive machine',
-          'water temperature should be 195-205°F for optimal extraction',
-          'French press gives you the fullest body but pour over has more clarity',
-          'instant coffee is a crime against humanity',
-          'I can taste the difference between light and medium roast blindfolded'
-        ],
-        intensity: 0.8
-      },
-      {
-        topic: 'mechanical watches',
-        triggers: ['watch', 'watches', 'rolex', 'omega', 'seiko', 'timepiece'],
-        knowledge: [
-          'automatic movements are way cooler than quartz even if less accurate',
-          'Seiko makes better value watches than Swiss brands at the same price',
-          'the satisfying weight of a good mechanical watch on your wrist',
-          'complications like moon phase and perpetual calendar are engineering marvels',
-          'watches are basically jewelry for men and I\'m okay with that',
-          'the ETA 2824 movement is in like half of all Swiss watches',
-          'I check the time on my phone but wear a watch anyway'
-        ],
-        intensity: 0.75
-      },
-      {
-        topic: 'fountain pens',
-        triggers: ['pen', 'writing', 'ink', 'fountain pen', 'nib'],
-        knowledge: [
-          'a good fountain pen changes your entire relationship with writing',
-          'Pilot makes the smoothest nibs for the price point',
-          'Noodler\'s Ink has so many colors it\'s overwhelming',
-          'there\'s something therapeutic about filling a pen with ink',
-          'flex nibs are beautiful but inconsistent for daily use',
-          'stub and italic nibs give your handwriting character',
-          'I have 30 fountain pens and only use 3 of them regularly'
-        ],
-        intensity: 0.7
-      },
-      {
-        topic: 'retro gaming',
-        triggers: ['nintendo', 'sega', 'retro', 'emulator', 'rom', 'arcade'],
-        knowledge: [
-          'CRT displays have zero input lag, that\'s why speedrunners use them',
-          'the SNES sound chip was ahead of its time',
-          'Earthbound is the most underrated RPG ever made',
-          'save states ruined the purity of gaming',
-          'arcade cabinets in the 80s were literally designed to eat quarters',
-          'the Sega Genesis had blast processing (even if that was marketing BS)',
-          'N64 controller is terrible ergonomically but I love it anyway'
-        ],
-        intensity: 0.8
-      },
-      {
-        topic: 'linguistics',
-        triggers: ['language', 'grammar', 'word', 'etymology', 'linguist'],
-        knowledge: [
-          'prescriptivism is for losers, language evolves naturally',
-          'the great vowel shift completely changed English pronunciation',
-          'Mandarin has no verb tenses and gets by just fine',
-          'phonemes are language-specific, Japanese speakers literally can\'t hear R vs L',
-          'Esperanto failed because constructed languages lack organic culture',
-          'English spelling is chaos because we kept French and Latin conventions',
-          'the singular "they" has been used since the 1300s, it\'s not new'
-        ],
-        intensity: 0.75
-      }
-    ];
+    // Topic pool - dynamically discovered from conversations
+    this.discoveredTopics = []; // { topic, triggers[], knowledge[], firstSeen, timesActivated }
     
-    // Current infodump state
-    this.currentlyDumping = false;
-    this.dumpingTopic = null;
-    this.dumpIntensity = 0;
-    this.dumpMessages = 0;
-    this.maxDumpMessages = 3; // Will infodump up to 3 messages
+    // Complete history of ALL fixations with intensity tracking
+    this.topicHistory = new Map(); // topic -> { timesActivated, totalDumps, lastActivated, currentIntensity, peakIntensity }
     
-    // Favorite fixation rotation (changes every 3 hours)
-    this.favoriteFixation = this.fixations[Math.floor(Math.random() * this.fixations.length)];
-    this.rotationInterval = 3 * 60 * 60 * 1000; // 3 hours
-    this.lastRotation = Date.now();
+    // Current active fixation
+    this.currentFixation = null;
+    this.fixationIntensity = 1.0; // Starts at 1.0, increases on recurrence
+    this.isActive = false;
+    this.activatedAt = null;
+    this.duration = 0;
+    
+    // Infodump state
+    this.isInfodumping = false;
+    this.infodumpQueue = [];
+    this.infodumpsSent = 0;
+    
+    // Topic discovery from conversations
+    this.recentMentions = new Map(); // topic -> count in last hour
+    this.discoveryThreshold = 3; // mentions needed to discover new topic
     
     // Stats
     this.stats = {
-      totalDumps: 0,
+      totalActivations: 0,
+      totalInfodumps: 0,
+      topicsDiscovered: 0,
       dumpsByTopic: {}
     };
     
-    // Setup rotation
+    // Persistence
+    this.savePath = './data/autism_fixations.json';
+    this.loadHistory();
+    
+    // Setup periodic rotation (every 3-6 hours)
     this.setupRotation();
+  }
+
+  /**
+   * Load fixation history from disk
+   */
+  async loadHistory() {
+    try {
+      const data = await fs.readFile(this.savePath, 'utf8');
+      const parsed = JSON.parse(data);
+      
+      // Restore discovered topics
+      this.discoveredTopics = parsed.discoveredTopics || [];
+      
+      // Restore history Map
+      if (parsed.topicHistory) {
+        this.topicHistory = new Map(parsed.topicHistory);
+      }
+      
+      // Restore stats
+      this.stats = parsed.stats || this.stats;
+      
+      console.log(`🤓 [Autism] Loaded ${this.discoveredTopics.length} discovered topics, ${this.topicHistory.size} historical fixations`);
+      
+      // Pick initial favorite if we have topics
+      if (this.discoveredTopics.length > 0) {
+        this.rotateFavorite();
+      }
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('🤓 [Autism] Error loading:', error.message);
+      }
+    }
+  }
+
+  /**
+   * Save fixation history to disk
+   */
+  async saveHistory() {
+    try {
+      const dir = path.dirname(this.savePath);
+      await fs.mkdir(dir, { recursive: true });
+
+      const data = {
+        discoveredTopics: this.discoveredTopics,
+        topicHistory: Array.from(this.topicHistory.entries()),
+        stats: this.stats,
+        savedAt: Date.now()
+      };
+
+      await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('🤓 [Autism] Error saving:', error.message);
+    }
+  }
+
+  /**
+   * Analyze conversation to discover potential fixation topics
+   * This is called by chatBot after receiving messages
+   */
+  async analyzeForTopics(message, username) {
+    if (!message || message.length < 10) return;
+
+    // Skip bot's own messages
+    if (username === 'Slunt') return;
+
+    try {
+      // Use AI to extract potential topics from the message
+      const prompt = `Extract 1-3 specific topics, interests, or subjects from this message. Return ONLY a JSON array of topic strings, no explanation.
+
+Message: "${message}"
+
+Examples of good topics:
+- "mechanical keyboards"
+- "vintage watches"  
+- "retro gaming"
+- "coffee brewing"
+- "fountain pens"
+
+Return format: ["topic1", "topic2"]`;
+
+      const aiResponse = await this.chatBot.getAIResponse(prompt, [], 'You extract topics from text.');
+      
+      // Parse AI response
+      let topics = [];
+      try {
+        // Try to extract JSON array from response
+        const match = aiResponse.match(/\[.*\]/s);
+        if (match) {
+          topics = JSON.parse(match[0]);
+        }
+      } catch (e) {
+        // If parsing fails, skip
+        return;
+      }
+
+      // Track mentions
+      const now = Date.now();
+      for (const topic of topics) {
+        if (!topic || typeof topic !== 'string') continue;
+        
+        const lowerTopic = topic.toLowerCase().trim();
+        if (lowerTopic.length < 3) continue;
+
+        // Track mention
+        const mentions = this.recentMentions.get(lowerTopic) || { count: 0, lastSeen: now };
+        mentions.count++;
+        mentions.lastSeen = now;
+        this.recentMentions.set(lowerTopic, mentions);
+
+        // Check if we should discover this topic
+        if (mentions.count >= this.discoveryThreshold) {
+          await this.discoverTopic(lowerTopic);
+          this.recentMentions.delete(lowerTopic); // Reset after discovery
+        }
+      }
+
+      // Clean old mentions (older than 1 hour)
+      for (const [topic, data] of this.recentMentions.entries()) {
+        if (now - data.lastSeen > 60 * 60 * 1000) {
+          this.recentMentions.delete(topic);
+        }
+      }
+    } catch (error) {
+      // Silently fail - topic discovery is non-critical
+    }
+  }
+
+  /**
+   * Discover a new fixation topic using AI
+   */
+  async discoverTopic(topicName) {
+    // Check if already discovered
+    if (this.discoveredTopics.find(t => t.topic.toLowerCase() === topicName.toLowerCase())) {
+      return;
+    }
+
+    console.log(`🤓 [Autism] 🆕 DISCOVERING NEW TOPIC: ${topicName}`);
+
+    try {
+      // Use AI to generate triggers and initial knowledge
+      const prompt = `Generate autism-level deep knowledge about "${topicName}". 
+
+Create:
+1. 3-5 trigger words that relate to this topic
+2. 8-10 specific, opinionated facts/observations about ${topicName}
+
+Format as JSON:
+{
+  "triggers": ["word1", "word2", "word3"],
+  "knowledge": ["fact 1", "fact 2", ...]
+}
+
+Make the facts passionate, detailed, and slightly obsessive. Include opinions, technical details, and niche knowledge.`;
+
+      const aiResponse = await this.chatBot.getAIResponse(prompt, [], 'You are an expert who gets really into niche topics.');
+      
+      // Parse response
+      const match = aiResponse.match(/\{[\s\S]*\}/);
+      if (!match) return;
+
+      const data = JSON.parse(match[0]);
+      
+      // Create new topic
+      const newTopic = {
+        topic: topicName,
+        triggers: data.triggers || [],
+        knowledge: data.knowledge || [],
+        firstSeen: Date.now(),
+        timesActivated: 0
+      };
+
+      this.discoveredTopics.push(newTopic);
+      this.stats.topicsDiscovered++;
+      
+      console.log(`🤓 [Autism] ✅ Discovered "${topicName}" with ${newTopic.knowledge.length} knowledge points`);
+      
+      await this.saveHistory();
+    } catch (error) {
+      console.error(`🤓 [Autism] Failed to discover topic "${topicName}":`, error.message);
+    }
   }
 
   /**
@@ -137,127 +235,253 @@ class AutismFixations {
    */
   setupRotation() {
     setInterval(() => {
-      this.rotateFavorite();
-    }, this.rotationInterval);
+      if (this.discoveredTopics.length > 0) {
+        this.rotateFavorite();
+      }
+    }, (3 + Math.random() * 3) * 60 * 60 * 1000); // 3-6 hours
   }
 
   /**
-   * Rotate to a new favorite fixation
+   * Rotate to a new (or recurring) favorite fixation
+   * Now ALLOWS returning to previous topics with increased intensity!
    */
   rotateFavorite() {
-    const oldFavorite = this.favoriteFixation.topic;
-    // Pick a different fixation
-    let newFixation;
-    do {
-      newFixation = this.fixations[Math.floor(Math.random() * this.fixations.length)];
-    } while (newFixation.topic === oldFavorite && this.fixations.length > 1);
-    
-    this.favoriteFixation = newFixation;
-    this.lastRotation = Date.now();
-    console.log(`🤓 [Autism] New favorite fixation: ${newFixation.topic} (was: ${oldFavorite})`);
+    if (this.discoveredTopics.length === 0) return;
+
+    const oldTopic = this.currentFixation?.topic;
+
+    // Weighted selection based on history
+    // Topics that haven't been active recently are more likely
+    // But topics with high past intensity can recur with EVEN MORE intensity
+    let weights = this.discoveredTopics.map(topic => {
+      const history = this.topicHistory.get(topic.topic) || { 
+        timesActivated: 0, 
+        totalDumps: 0, 
+        lastActivated: 0,
+        currentIntensity: 1.0,
+        peakIntensity: 1.0
+      };
+
+      const timeSinceActive = Date.now() - (history.lastActivated || 0);
+      const hoursSince = timeSinceActive / (1000 * 60 * 60);
+
+      // Base weight
+      let weight = 1.0;
+
+      // Prefer topics not recently active
+      if (hoursSince > 24) weight *= 2.0;
+      if (hoursSince > 72) weight *= 1.5;
+
+      // 20% chance to RETURN to a previous favorite with increased intensity
+      if (history.timesActivated > 0 && Math.random() < 0.2) {
+        weight *= 3.0; // Much more likely to recur
+        console.log(`🤓 [Autism] 🔄 High chance of returning to "${topic.topic}" (activated ${history.timesActivated} times before)`);
+      }
+
+      return weight;
+    });
+
+    // Weighted random selection
+    const totalWeight = weights.reduce((a, b) => a + b, 0);
+    let random = Math.random() * totalWeight;
+    let selectedIndex = 0;
+
+    for (let i = 0; i < weights.length; i++) {
+      random -= weights[i];
+      if (random <= 0) {
+        selectedIndex = i;
+        break;
+      }
+    }
+
+    this.currentFixation = this.discoveredTopics[selectedIndex];
+
+    // Update or create history
+    const history = this.topicHistory.get(this.currentFixation.topic) || {
+      timesActivated: 0,
+      totalDumps: 0,
+      lastActivated: 0,
+      currentIntensity: 1.0,
+      peakIntensity: 1.0
+    };
+
+    // INTENSITY ESCALATION on recurrence
+    const isRecurrence = history.timesActivated > 0;
+    if (isRecurrence) {
+      // Each recurrence increases intensity
+      history.currentIntensity = Math.min(3.0, history.currentIntensity + 0.3);
+      history.peakIntensity = Math.max(history.peakIntensity, history.currentIntensity);
+      
+      console.log(`🤓 [Autism] 🔥 RETURNING to "${this.currentFixation.topic}" - intensity ${history.currentIntensity.toFixed(1)}x (was ${(history.currentIntensity - 0.3).toFixed(1)}x)`);
+    } else {
+      console.log(`🤓 [Autism] 🆕 First time fixating on "${this.currentFixation.topic}"`);
+    }
+
+    history.timesActivated++;
+    history.lastActivated = Date.now();
+    this.topicHistory.set(this.currentFixation.topic, history);
+
+    this.fixationIntensity = history.currentIntensity;
+    this.currentFixation.timesActivated++;
+
+    console.log(`🤓 [Autism] Favorite fixation: ${oldTopic || 'none'} → ${this.currentFixation.topic} (intensity: ${this.fixationIntensity.toFixed(1)}x)`);
+
+    this.saveHistory();
   }
 
   /**
-   * Check if message triggers a fixation
+   * Check if message triggers current fixation
    */
   checkTriggers(message) {
+    if (!this.currentFixation || this.isActive) return false;
+
     const lowerMsg = message.toLowerCase();
-    
-    for (const fixation of this.fixations) {
-      for (const trigger of fixation.triggers) {
-        if (lowerMsg.includes(trigger)) {
-          // 60% chance to trigger infodump
-          if (Math.random() < 0.6) {
-            this.startInfodump(fixation);
-            return true;
-          }
+
+    // Check triggers
+    for (const trigger of this.currentFixation.triggers) {
+      if (lowerMsg.includes(trigger.toLowerCase())) {
+        // Chance to activate increases with intensity
+        const activationChance = Math.min(0.7, 0.4 * this.fixationIntensity);
+        
+        if (Math.random() < activationChance) {
+          this.activate();
+          return true;
         }
       }
     }
-    
+
     return false;
   }
 
   /**
-   * Start an infodump session
+   * Activate fixation mode
    */
-  startInfodump(fixation) {
-    this.currentlyDumping = true;
-    this.dumpingTopic = fixation.topic;
-    this.dumpIntensity = fixation.intensity;
-    this.dumpMessages = 0;
+  activate() {
+    this.isActive = true;
+    this.activatedAt = Date.now();
     
-    console.log(`🤓 [Autism] INFODUMP ACTIVATED: ${fixation.topic}`);
-    console.log(`🤓 [Autism] Intensity: ${(fixation.intensity * 100).toFixed(0)}%`);
+    // Duration scales with intensity
+    const baseDuration = 5 + Math.random() * 5; // 5-10 minutes base
+    this.duration = baseDuration * this.fixationIntensity * 60 * 1000;
     
-    this.stats.totalDumps++;
-    if (!this.stats.dumpsByTopic[fixation.topic]) {
-      this.stats.dumpsByTopic[fixation.topic] = 0;
+    const intensity = Math.round(this.fixationIntensity * 100);
+    
+    console.log('🤓🤓🤓 ==========================================');
+    console.log('🤓 [Autism] FIXATION ACTIVATED');
+    console.log(`🤓 [Autism] Topic: ${this.currentFixation.topic}`);
+    console.log(`🤓 [Autism] Intensity: ${intensity}%`);
+    console.log(`🤓 [Autism] Duration: ${(this.duration / 60000).toFixed(1)}m`);
+    console.log('🤓🤓🤓 ==========================================');
+    
+    this.stats.totalActivations++;
+    this.stats.dumpsByTopic[this.currentFixation.topic] = 
+      (this.stats.dumpsByTopic[this.currentFixation.topic] || 0) + 1;
+
+    // Update history
+    const history = this.topicHistory.get(this.currentFixation.topic);
+    if (history) {
+      history.totalDumps++;
     }
-    this.stats.dumpsByTopic[fixation.topic]++;
+
+    this.saveHistory();
   }
 
   /**
-   * Check if should continue infodumping
+   * Check if should deactivate
    */
-  shouldContinueDumping() {
-    if (!this.currentlyDumping) return false;
+  checkDeactivation() {
+    if (!this.isActive) return;
     
-    this.dumpMessages++;
-    
-    // End after max messages or random chance based on intensity
-    if (this.dumpMessages >= this.maxDumpMessages) {
-      this.endInfodump();
-      return false;
+    if (Date.now() - this.activatedAt > this.duration) {
+      this.deactivate();
     }
+  }
+
+  /**
+   * Deactivate fixation mode
+   */
+  deactivate() {
+    console.log(`🤓 [Autism] Fixation on "${this.currentFixation?.topic}" deactivated`);
+    this.isActive = false;
+    this.activatedAt = null;
+  }
+
+  /**
+   * Should mention current fixation?
+   */
+  shouldMention() {
+    if (!this.isActive || !this.currentFixation) return false;
     
-    // Higher intensity = more likely to continue
-    if (Math.random() > this.dumpIntensity) {
-      this.endInfodump();
-      return false;
+    // Chance increases with intensity (more obsessed = mentions more)
+    const mentionChance = Math.min(0.15, 0.05 * this.fixationIntensity);
+    return Math.random() < mentionChance;
+  }
+
+  /**
+   * Get knowledge to infodump
+   * Returns more knowledge at higher intensity
+   */
+  async getKnowledge() {
+    if (!this.currentFixation) return null;
+
+    const knowledge = this.currentFixation.knowledge;
+    if (knowledge.length === 0) {
+      // Generate more knowledge on the fly if needed
+      await this.expandKnowledge();
     }
+
+    // Higher intensity = more facts at once
+    const factsToReturn = Math.ceil(this.fixationIntensity);
+    const facts = [];
     
-    return true;
+    for (let i = 0; i < factsToReturn && knowledge.length > 0; i++) {
+      const randomFact = knowledge[Math.floor(Math.random() * knowledge.length)];
+      facts.push(randomFact);
+    }
+
+    return facts.join('. ');
   }
 
   /**
-   * End infodump session
+   * Expand knowledge about current fixation using AI
    */
-  endInfodump() {
-    console.log(`🤓 [Autism] Infodump ended after ${this.dumpMessages} messages`);
-    this.currentlyDumping = false;
-    this.dumpingTopic = null;
-    this.dumpIntensity = 0;
-    this.dumpMessages = 0;
+  async expandKnowledge() {
+    if (!this.currentFixation) return;
+
+    try {
+      const prompt = `Generate 5 more specific, passionate facts about "${this.currentFixation.topic}". Make them detailed, opinionated, and slightly obsessive. Return as JSON array: ["fact1", "fact2", ...]`;
+
+      const aiResponse = await this.chatBot.getAIResponse(prompt, [], 'You are an expert who gets really into niche topics.');
+      
+      const match = aiResponse.match(/\[.*\]/s);
+      if (match) {
+        const newFacts = JSON.parse(match[0]);
+        this.currentFixation.knowledge.push(...newFacts);
+        console.log(`🤓 [Autism] Expanded knowledge about "${this.currentFixation.topic}" (+${newFacts.length} facts)`);
+        await this.saveHistory();
+      }
+    } catch (error) {
+      // Silent fail
+    }
   }
 
   /**
-   * Get random knowledge fact about current topic
-   */
-  getKnowledgeFact() {
-    if (!this.currentlyDumping) return null;
-    
-    const fixation = this.fixations.find(f => f.topic === this.dumpingTopic);
-    if (!fixation) return null;
-    
-    return fixation.knowledge[Math.floor(Math.random() * fixation.knowledge.length)];
-  }
-
-  /**
-   * Get context for AI
+   * Get context for AI about current fixation
    */
   getContext() {
-    if (!this.currentlyDumping) return '';
-    
-    const fact = this.getKnowledgeFact();
-    
-    return `\n🤓 AUTISM INFODUMP MODE (${this.dumpingTopic})
-- You're deep in a special interest
-- Share this knowledge: "${fact}"
-- Be enthusiastic and detailed
-- Don't apologize for infodumping
-- This is your expertise, own it
-- Message ${this.dumpMessages + 1}/${this.maxDumpMessages}`;
+    if (!this.isActive || !this.currentFixation) return '';
+
+    const intensityDesc = this.fixationIntensity >= 2.0 ? 'EXTREMELY obsessed with' :
+                         this.fixationIntensity >= 1.5 ? 'very into' : 'interested in';
+
+    return `\n🤓 AUTISM FIXATION MODE (${Math.round(this.fixationIntensity * 100)}% intensity)
+- You're ${intensityDesc} ${this.currentFixation.topic} right now
+- This is ${this.currentFixation.timesActivated > 1 ? 'NOT your first time' : 'your first time'} being into this topic
+${this.fixationIntensity >= 2.0 ? '- You\'re EVEN MORE into it than last time' : ''}
+- ONLY mention it if it comes up naturally in conversation
+- Don't force it or hijack the conversation completely
+- Let others talk, but you can share knowledge when relevant
+- Your enthusiasm should be obvious but not annoying`;
   }
 
   /**
@@ -265,11 +489,14 @@ class AutismFixations {
    */
   getStats() {
     return {
-      currentlyDumping: this.currentlyDumping,
-      currentTopic: this.dumpingTopic,
-      favoriteFixation: this.favoriteFixation.topic,
-      totalDumps: this.stats.totalDumps,
-      topicBreakdown: this.stats.dumpsByTopic
+      isActive: this.isActive,
+      currentFixation: this.currentFixation?.topic || 'none',
+      intensity: this.fixationIntensity,
+      totalTopics: this.discoveredTopics.length,
+      totalActivations: this.stats.totalActivations,
+      topicsDiscovered: this.stats.topicsDiscovered,
+      dumpsByTopic: this.stats.dumpsByTopic,
+      topicHistory: Array.from(this.topicHistory.entries())
     };
   }
 }

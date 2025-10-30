@@ -25,7 +25,7 @@ class DrunkMode {
       },
       highChaos: () => {
         // High message frequency
-        return this.chatBot.messageHistory && this.chatBot.messageHistory.length > 50;
+        return this.chatBot && this.chatBot.chatHistory && this.chatBot.chatHistory.length > 50;
       },
       partyVideo: (videoTitle) => {
         return videoTitle && videoTitle.match(/\b(party|drunk|drinking|bar|club|wasted)\b/i);

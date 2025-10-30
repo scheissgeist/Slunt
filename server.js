@@ -31,6 +31,43 @@ function getTimestamp() {
   return now.toLocaleTimeString('en-US', { hour12: false, hour: '2-digit', minute: '2-digit', second: '2-digit' });
 }
 
+// Helper for knowledge levels
+function determineKnowledgeLevel(mentionCount) {
+  if (mentionCount < 3) return 'novice';
+  if (mentionCount < 10) return 'learning';
+  if (mentionCount < 25) return 'knowledgeable';
+  return 'expert';
+}
+
+// Helper to generate knowledge fragments based on mentions
+function generateKnowledgeFragments(topic, count) {
+  const fragments = [];
+  
+  if (count >= 1) {
+    fragments.push(`Has heard about ${topic}`);
+  }
+  if (count >= 3) {
+    fragments.push(`Knows ${topic} exists and what it's generally about`);
+  }
+  if (count >= 5) {
+    fragments.push(`Can discuss ${topic} with some detail`);
+  }
+  if (count >= 10) {
+    fragments.push(`Has strong opinions about ${topic}`);
+  }
+  if (count >= 15) {
+    fragments.push(`Frequently brings up ${topic} in conversation`);
+  }
+  if (count >= 25) {
+    fragments.push(`Considers themselves knowledgeable about ${topic}`);
+  }
+  if (count >= 40) {
+    fragments.push(`${topic} is a core part of their identity`);
+  }
+  
+  return fragments;
+}
+
 // Global error handlers
 process.on('uncaughtException', (error) => {
   logger.error(`[Uncaught Exception] ${error.stack || error}`);
@@ -74,6 +111,11 @@ app.use(express.static('public'));
 // Serve live dashboard as default
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'live-dashboard.html'));
+});
+
+// Serve Slunt's Mind dashboard
+app.get('/mind', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'slunt-mind.html'));
 });
 
 // Initialize bot components
@@ -187,8 +229,8 @@ setInterval(() => {
     
     // Relationships (detailed for system cards)
     if (chatBot.relationshipMapping) {
-      const relationships = chatBot.relationshipMapping.getAllRelationships ? 
-        chatBot.relationshipMapping.getAllRelationships() : [];
+      const relationshipsMap = chatBot.relationshipMapping.relationships || new Map();
+      const relationships = Array.from(relationshipsMap.entries());
       io.emit('relationships_update', { relationships: relationships.slice(0, 50) });
     }
     
@@ -220,6 +262,87 @@ setInterval(() => {
           type: m.type || 'general'
         }));
       io.emit('memory_details', { memories: recentImportant });
+    }
+    
+    // NEW CHAOS SYSTEMS
+    // Personality Splits
+    if (chatBot.personalitySplits) {
+      const personalityState = chatBot.personalitySplits.getStatus();
+      io.emit('personality_splits', personalityState);
+    }
+    
+    // Chaos Events
+    if (chatBot.chaosEvents) {
+      const chaosState = chatBot.chaosEvents.getStatus();
+      io.emit('chaos_events', chaosState);
+    }
+    
+    // Meta Chat Awareness
+    if (chatBot.metaChatAwareness) {
+      const metaState = chatBot.metaChatAwareness.getStatus();
+      io.emit('meta_awareness', metaState);
+    }
+    
+    // Social Hierarchy
+    if (chatBot.socialHierarchy) {
+      const hierarchyState = chatBot.socialHierarchy.getStatus();
+      io.emit('social_hierarchy', hierarchyState);
+    }
+    
+    // Video Context Engine
+    if (chatBot.videoContextEngine) {
+      const videoState = chatBot.videoContextEngine.getStatus();
+      io.emit('video_context', videoState);
+    }
+    
+    // Inner Monologue Broadcaster
+    if (chatBot.innerMonologueBroadcaster) {
+      const innerState = chatBot.innerMonologueBroadcaster.getStatus();
+      io.emit('inner_monologue', innerState);
+    }
+    
+    // Event Memory System
+    if (chatBot.eventMemorySystem) {
+      const eventState = chatBot.eventMemorySystem.getStatus();
+      io.emit('event_memory', eventState);
+    }
+    
+    // Vibe Shifter
+    if (chatBot.vibeShifter) {
+      const vibeState = chatBot.vibeShifter.getStatus();
+      io.emit('vibe_shifter', vibeState);
+    }
+    
+    // Prediction Engine
+    if (chatBot.predictionEngine) {
+      const predictionState = chatBot.predictionEngine.getStatus();
+      io.emit('predictions', predictionState);
+    }
+    
+    // Bit Commitment
+    if (chatBot.bitCommitment) {
+      const bitState = chatBot.bitCommitment.getStatus();
+      io.emit('bit_commitment', bitState);
+    }
+    
+    // Personality Infection
+    if (chatBot.personalityInfection) {
+      const infectionState = chatBot.personalityInfection.getStatus();
+      io.emit('personality_infection', infectionState);
+    }
+    
+    // Topics & Knowledge
+    if (chatBot.chatStats?.topicsDiscussed) {
+      const topicsArray = Array.from(chatBot.chatStats.topicsDiscussed.entries())
+        .map(([topic, count]) => ({
+          name: topic,
+          mentions: count,
+          knowledgeLevel: determineKnowledgeLevel(count),
+          fragments: generateKnowledgeFragments(topic, count)
+        }))
+        .sort((a, b) => b.mentions - a.mentions);
+      
+      io.emit('topics_update', { topics: topicsArray });
     }
     
     // Comprehensive Stats

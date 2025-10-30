@@ -100,28 +100,13 @@ Examples of natural responses:
 
   /**
    * Learn phrases from user messages
+   * Now uses DynamicPhraseGenerator for learning
    */
   learnFromUsers(message, username) {
-    const lowerMsg = message.toLowerCase();
-    
-    // Learn natural conversational phrases
-    const phrases = [
-      'honestly', 'literally', 'actually', 'pretty good', 'pretty cool',
-      'for sure', 'fair enough', 'makes sense', 'I guess', 'kind of',
-      'sort of', 'wait what', 'hold on', 'real talk', 'no way',
-      'that\'s wild', 'that\'s crazy', 'that\'s sick', 'I mean',
-      'lmao', 'lol', 'ngl', 'tbh'
-    ];
-    
-    phrases.forEach(phrase => {
-      if (lowerMsg.includes(phrase) && !this.userPhrases.includes(phrase)) {
-        this.userPhrases.push(phrase);
-        // Keep only last 30 phrases
-        if (this.userPhrases.length > 30) {
-          this.userPhrases.shift();
-        }
-      }
-    });
+    // Delegate to dynamic phrase generator if available
+    if (this.chatBot && this.chatBot.dynamicPhraseGenerator) {
+      this.chatBot.dynamicPhraseGenerator.learnFromMessage(message, username);
+    }
   }
 
   /**

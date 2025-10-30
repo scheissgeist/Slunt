@@ -122,9 +122,9 @@ class UmbraProtocol {
   }
 
   /**
-   * Get a random brag
+   * Get a random brag (MUST BE ASYNC since generateFreshLine might be async)
    */
-  getBrag() {
+  async getBrag() {
     if (!this.isActive) return null;
     this.stats.totalBrags++;
 
@@ -134,7 +134,7 @@ class UmbraProtocol {
       try {
         // Prompt for a subtle, indirect hint about Slunt having mysterious or interesting interactions with girls
         const prompt = 'Generate a fresh, subtle, and indirect hint about Slunt having mysterious or interesting interactions with girls, without bragging or being explicit.';
-        const aiHint = this.chatBot.ai.generateFreshLine(prompt);
+        const aiHint = await this.chatBot.ai.generateFreshLine(prompt);
         if (aiHint && typeof aiHint === 'string' && aiHint.trim().length > 0) {
           return aiHint;
         }

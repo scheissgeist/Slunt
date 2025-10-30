@@ -33,25 +33,34 @@ class ResponseVariety {
       const count = this.responsePatterns.get(pattern) || 0;
       this.responsePatterns.set(pattern, count + 1);
       
-      // Throttle if used too much
-      if (count > 3) {
-        this.throttledPhrases.add(pattern);
-        console.log(`🚫 [Variety] Throttling overused phrase: "${pattern}"`);
-        
-        // Remove throttle after 10 minutes
-        setTimeout(() => {
-          this.throttledPhrases.delete(pattern);
-          this.responsePatterns.set(pattern, 0);
-        }, 10 * 60 * 1000);
-      }
+      // Only throttle if REALLY overused (more lenient now)
+      // Short phrases like "lol", "nah", "yeah" are natural and should be allowed more often
+      const isShortCasual = ['lol', 'lmao', 'yeah', 'nah', 'bruh', 'fr', 'true'].includes(pattern);
       
-      // AGGRESSIVE throttling for lol/lmao - only allow once per 5 messages
-      if ((pattern === 'lol' || pattern === 'lmao') && count > 1) {
-        this.throttledPhrases.add(pattern);
-        setTimeout(() => {
-          this.throttledPhrases.delete(pattern);
-          this.responsePatterns.set(pattern, 0);
-        }, 5 * 60 * 1000); // 5 minutes
+      if (isShortCasual) {
+        // Allow casual phrases more often - only throttle after 8 uses in recent messages
+        if (count > 8) {
+          this.throttledPhrases.add(pattern);
+          console.log(`🚫 [Variety] Throttling overused casual phrase: "${pattern}"`);
+          
+          // Remove throttle after just 2 minutes for casual phrases
+          setTimeout(() => {
+            this.throttledPhrases.delete(pattern);
+            this.responsePatterns.set(pattern, 0);
+          }, 2 * 60 * 1000);
+        }
+      } else {
+        // Other patterns (quotes, specific joke structures) are more annoying when repeated
+        if (count > 4) {
+          this.throttledPhrases.add(pattern);
+          console.log(`🚫 [Variety] Throttling overused pattern: "${pattern}"`);
+          
+          // Remove throttle after 5 minutes
+          setTimeout(() => {
+            this.throttledPhrases.delete(pattern);
+            this.responsePatterns.set(pattern, 0);
+          }, 5 * 60 * 1000);
+        }
       }
     });
   }
@@ -112,6 +121,18 @@ class ResponseVariety {
   isTooSimilar(message) {
     const patterns = this.extractPatterns(message);
     
+    // Short messages (< 15 chars) are often naturally similar ("lol", "nah", "yeah")
+    // Don't block these unless they're IDENTICAL to a very recent message
+    if (message.length < 15) {
+      const lastFive = this.recentResponses.slice(-5).map(r => r.text.toLowerCase());
+      if (lastFive.includes(message.toLowerCase())) {
+        console.log(`⚠️ [Variety] Blocked identical short response in last 5`);
+        return true;
+      }
+      // Otherwise allow short responses
+      return false;
+    }
+    
     // Check if using throttled phrases
     for (const pattern of patterns) {
       if (this.throttledPhrases.has(pattern)) {
@@ -120,15 +141,16 @@ class ResponseVariety {
       }
     }
     
-    // Check similarity to recent responses
+    // Check similarity to recent responses (only for longer messages)
     const recentPatterns = this.recentResponses
       .slice(-10)
       .flatMap(r => r.patterns);
     
     const matchCount = patterns.filter(p => recentPatterns.includes(p)).length;
     
-    if (matchCount >= 3) {
-      console.log(`⚠️ [Variety] Response too similar to recent messages`);
+    // Increased threshold from 3 to 4 - need MORE pattern overlap to block
+    if (matchCount >= 4) {
+      console.log(`⚠️ [Variety] Response too similar to recent messages (${matchCount} patterns match)`);
       return true;
     }
     
