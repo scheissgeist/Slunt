@@ -94,19 +94,21 @@ class DrunkMode {
       reason: null
     };
     
-    // Get current mood
-    const mood = this.chatBot.moodTracker?.currentMood || 'neutral';
+    // Safely get current mood
+    const mood = this.chatBot?.moodContagion?.currentMood || 
+                 this.chatBot?.moodTracker?.currentMood || 
+                 'neutral';
     
-    // Get mental state (depression level)
-    const mentalState = this.chatBot.mentalState?.getStats() || {};
+    // Get mental state (depression level) - safely
+    const mentalState = this.chatBot?.mentalState?.getStats() || {};
     const depressionLevel = mentalState.depressionLevel || 0;
     
-    // Get personality state
-    const personality = this.chatBot.personalityEvolution?.getStats() || {};
+    // Get personality state - safely
+    const personality = this.chatBot?.personalityEvolution?.getStats() || {};
     
     // TRIGGER 1: Very happy/excited - celebratory drinking
     if (mood === 'excited' || mood === 'happy') {
-      const recentPositive = this.chatBot.chatHistory
+      const recentPositive = (this.chatBot?.chatHistory || [])
         .slice(-20)
         .filter(m => m.sentiment > 0.5).length;
       
@@ -138,27 +140,29 @@ class DrunkMode {
     }
     
     // TRIGGER 4: Lonely/isolated - drinking out of boredom
-    const recentMessages = this.chatBot.chatHistory.slice(-30);
-    const sluntMessages = recentMessages.filter(m => m.username === 'Slunt').length;
-    const othersMessages = recentMessages.length - sluntMessages;
-    
-    if (othersMessages < 5 && sluntMessages > 0) { // Talking to himself mostly
-      result.shouldDrink = true;
-      result.bonus = 0.10; // +10%
-      result.reason = 'bored and lonely';
-      return result;
-    }
-    
-    // TRIGGER 5: Existential crisis - philosophical drunk
-    const recentExistential = recentMessages.filter(m => 
-      m.text && m.text.match(/\b(void|existential|meaning|purpose|absurd|nihil)/i)
-    ).length;
-    
-    if (recentExistential >= 3) {
-      result.shouldDrink = true;
-      result.bonus = 0.08; // +8%
-      result.reason = 'existential crisis needs vodka';
-      return result;
+    if (this.chatBot && this.chatBot.chatHistory && Array.isArray(this.chatBot.chatHistory)) {
+      const recentMessages = this.chatBot.chatHistory.slice(-30);
+      const sluntMessages = recentMessages.filter(m => m.username === 'Slunt').length;
+      const othersMessages = recentMessages.length - sluntMessages;
+      
+      if (othersMessages < 5 && sluntMessages > 0) { // Talking to himself mostly
+        result.shouldDrink = true;
+        result.bonus = 0.10; // +10%
+        result.reason = 'bored and lonely';
+        return result;
+      }
+      
+      // TRIGGER 5: Existential crisis - philosophical drunk
+      const recentExistential = recentMessages.filter(m => 
+        m.text && m.text.match(/\b(void|existential|meaning|purpose|absurd|nihil)/i)
+      ).length;
+      
+      if (recentExistential >= 3) {
+        result.shouldDrink = true;
+        result.bonus = 0.08; // +8%
+        result.reason = 'existential crisis needs vodka';
+        return result;
+      }
     }
     
     return result;

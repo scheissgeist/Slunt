@@ -122,27 +122,43 @@ class UmbraProtocol {
   }
 
   /**
-   * Get a random brag (MUST BE ASYNC since generateFreshLine might be async)
+   * Get a random brag (MUST BE ASYNC since AI generation is async)
    */
   async getBrag() {
     if (!this.isActive) return null;
     this.stats.totalBrags++;
 
-    // Try to generate a fresh, subtle hint using AI if available and method exists
-    if (this.chatBot && this.chatBot.ai && this.chatBot.ai.enabled &&
-        typeof this.chatBot.ai.generateFreshLine === 'function') {
+    // Generate a fresh, subtle hint using AI
+    if (this.chatBot && this.chatBot.ai && this.chatBot.ai.enabled) {
       try {
-        // Prompt for a subtle, indirect hint about Slunt having mysterious or interesting interactions with girls
-        const prompt = 'Generate a fresh, subtle, and indirect hint about Slunt having mysterious or interesting interactions with girls, without bragging or being explicit.';
-        const aiHint = await this.chatBot.ai.generateFreshLine(prompt);
+        const prompt = `You're Slunt. Generate ONE brief, subtle hint about having an active dating life. Make it:
+- Natural and casual (1 sentence)
+- Slightly delusional but believable to you
+- Mysterious and vague
+- NOT explicit or obnoxious
+
+Examples of the vibe:
+"my DMs are wild lately"
+"got invited to something tonight but idk if I'll go"
+"she keeps texting me good morning"
+
+Your subtle hint:`;
+
+        const aiHint = await this.chatBot.ai.generateCompletion(prompt, {
+          temperature: 0.9,
+          max_tokens: 40
+        });
+        
         if (aiHint && typeof aiHint === 'string' && aiHint.trim().length > 0) {
+          console.log(`😎 [UMBRA] AI-generated brag: ${aiHint}`);
           return aiHint;
         }
       } catch (err) {
-        console.log('AI generateFreshLine failed in UmbraProtocol:', err.message);
+        console.log('😎 [UMBRA] AI generation failed:', err.message);
         // Fall through to canned brags
       }
     }
+    
     // Fallback: random canned brag
     return this.brags[Math.floor(Math.random() * this.brags.length)];
   }

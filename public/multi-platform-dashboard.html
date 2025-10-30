@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slunt Multi-Platform Control Center</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            opacity: 0.8;
+            font-size: 1.1em;
+        }
+
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 12px 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        /* Platform Status Grid */
+        .platforms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .platform-card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .platform-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .platform-card.connected {
+            border-color: #10b981;
+        }
+
+        .platform-card.disconnected {
+            border-color: #ef4444;
+        }
+
+        .platform-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .platform-icon {
+            font-size: 2.5em;
+            margin-right: 15px;
+        }
+
+        .platform-name {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .status-dot {
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+            box-shadow: 0 0 10px #10b981;
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+            animation: none;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .platform-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .stat-box {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.7;
+            margin-top: 5px;
+        }
+
+        /* Live Feed */
+        .feed-container {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 30px;
+            max-height: 500px;
+        }
+
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .feed-title {
+            font-size: 1.8em;
+            font-weight: bold;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+        }
+
+        .filter-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .filter-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .filter-btn.active {
+            background: #10b981;
+        }
+
+        .message-feed {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+
+        .message-feed::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .message-feed::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .message-feed::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+        }
+
+        .message-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            border-left: 4px solid;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .message-item.coolhole {
+            border-left-color: #667eea;
+        }
+
+        .message-item.twitch {
+            border-left-color: #9146ff;
+        }
+
+        .message-item.discord {
+            border-left-color: #5865f2;
+        }
+
+        .message-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .message-platform {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .message-platform.coolhole {
+            background: #667eea;
+        }
+
+        .message-platform.twitch {
+            background: #9146ff;
+        }
+
+        .message-platform.discord {
+            background: #5865f2;
+        }
+
+        .message-user {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .message-time {
+            opacity: 0.6;
+            font-size: 0.9em;
+        }
+
+        .message-text {
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        /* Controls Section */
+        .controls-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+        }
+
+        .control-card {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .control-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .slider-control {
+            margin-bottom: 25px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .slider-value {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #10b981;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #10b981;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(16, 185, 129, 0.5);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .action-btn {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+        }
+
+        .action-btn.primary {
+            background: #10b981;
+        }
+
+        .action-btn.primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.danger {
+            background: #ef4444;
+        }
+
+        .action-btn.danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .action-btn.secondary {
+            background: #6366f1;
+        }
+
+        .action-btn.secondary:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        /* Memory Viewer */
+        .memory-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .memory-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+        }
+
+        .memory-user {
+            font-weight: bold;
+            color: #10b981;
+            margin-bottom: 5px;
+        }
+
+        .memory-detail {
+            font-size: 0.95em;
+            opacity: 0.9;
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(16, 185, 129, 0.9);
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            animation: slideInRight 0.3s;
+            z-index: 1000;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Slunt Multi-Platform Control Center</h1>
+            <p class="subtitle">Monitor and control Slunt across Coolhole, Twitch, and Discord</p>
+            
+            <div class="nav-tabs">
+                <a href="/" class="nav-tab">📊 Main Dashboard</a>
+                <a href="/platforms" class="nav-tab active">🎛️ Platforms</a>
+                <a href="/mind" class="nav-tab">🧠 Slunt's Mind</a>
+                <a href="/live" class="nav-tab">📡 Live Feed</a>
+            </div>
+        </header>
+
+        <!-- Platform Status Cards -->
+        <div class="platforms-grid">
+            <div class="platform-card" id="coolhole-card">
+                <div class="platform-header">
+                    <div>
+                        <span class="platform-icon">🕳️</span>
+                        <span class="platform-name">Coolhole</span>
+                    </div>
+                    <div>
+                        <span class="status-dot offline" id="coolhole-status"></span>
+                        <span id="coolhole-status-text">Disconnected</span>
+                    </div>
+                </div>
+                <div class="platform-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="coolhole-messages-sent">0</div>
+                        <div class="stat-label">Messages Sent</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="coolhole-messages-received">0</div>
+                        <div class="stat-label">Received</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card" id="twitch-card">
+                <div class="platform-header">
+                    <div>
+                        <span class="platform-icon">📺</span>
+                        <span class="platform-name">Twitch</span>
+                    </div>
+                    <div>
+                        <span class="status-dot offline" id="twitch-status"></span>
+                        <span id="twitch-status-text">Disconnected</span>
+                    </div>
+                </div>
+                <div class="platform-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="twitch-messages-sent">0</div>
+                        <div class="stat-label">Messages Sent</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="twitch-messages-received">0</div>
+                        <div class="stat-label">Received</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="platform-card" id="discord-card">
+                <div class="platform-header">
+                    <div>
+                        <span class="platform-icon">🎮</span>
+                        <span class="platform-name">Discord</span>
+                    </div>
+                    <div>
+                        <span class="status-dot offline" id="discord-status"></span>
+                        <span id="discord-status-text">Not Configured</span>
+                    </div>
+                </div>
+                <div class="platform-stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="discord-messages-sent">0</div>
+                        <div class="stat-label">Messages Sent</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="discord-messages-received">0</div>
+                        <div class="stat-label">Received</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Live Message Feed -->
+        <div class="feed-container">
+            <div class="feed-header">
+                <h2 class="feed-title">📡 Live Message Feed</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="coolhole">Coolhole</button>
+                    <button class="filter-btn" data-filter="twitch">Twitch</button>
+                    <button class="filter-btn" data-filter="discord">Discord</button>
+                </div>
+            </div>
+            <div class="message-feed" id="message-feed">
+                <div style="text-align: center; opacity: 0.5; padding: 50px;">
+                    Waiting for messages...
+                </div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-grid">
+            <!-- Personality Controls -->
+            <div class="control-card">
+                <h3>🎭 Personality Controls</h3>
+                <div class="slider-control">
+                    <div class="slider-label">
+                        <span>Chattiness</span>
+                        <span class="slider-value" id="chattiness-value">60%</span>
+                    </div>
+                    <input type="range" id="chattiness-slider" min="0" max="100" value="60">
+                </div>
+                <div class="slider-control">
+                    <div class="slider-label">
+                        <span>Humor</span>
+                        <span class="slider-value" id="humor-value">90%</span>
+                    </div>
+                    <input type="range" id="humor-slider" min="0" max="100" value="90">
+                </div>
+                <div class="slider-control">
+                    <div class="slider-label">
+                        <span>Edginess</span>
+                        <span class="slider-value" id="edginess-value">65%</span>
+                    </div>
+                    <input type="range" id="edginess-slider" min="0" max="100" value="65">
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div class="control-card">
+                <h3>⚡ Quick Actions</h3>
+                <div class="action-buttons">
+                    <button class="action-btn primary" onclick="saveSettings()">💾 Save Settings</button>
+                    <button class="action-btn secondary" onclick="resetPersonality()">🔄 Reset Personality</button>
+                    <button class="action-btn danger" onclick="muteBot()">🔇 Mute 5min</button>
+                    <button class="action-btn secondary" onclick="clearMemory()">🧹 Clear Recent Memory</button>
+                </div>
+                <div style="margin-top: 20px;">
+                    <div class="stat-box">
+                        <div class="stat-value" id="total-messages">0</div>
+                        <div class="stat-label">Total Messages Across All Platforms</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Memory Viewer -->
+            <div class="control-card">
+                <h3>🧠 Recent Memories</h3>
+                <div class="memory-list" id="memory-list">
+                    <div style="text-align: center; opacity: 0.5; padding: 20px;">
+                        No recent memories to display
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const socket = io();
+        let currentFilter = 'all';
+        let messageStats = {
+            coolhole: { sent: 0, received: 0 },
+            twitch: { sent: 0, received: 0 },
+            discord: { sent: 0, received: 0 }
+        };
+
+        // Connect to Socket.IO
+        socket.on('connect', () => {
+            console.log('Connected to Slunt server');
+            showNotification('Connected to Slunt server');
+        });
+
+        // Listen for platform status updates
+        socket.on('platform:status', (data) => {
+            updatePlatformStatus(data);
+        });
+
+        // Listen for incoming messages
+        socket.on('message:received', (data) => {
+            addMessageToFeed(data, 'received');
+            messageStats[data.platform].received++;
+            updateStats();
+        });
+
+        // Listen for sent messages
+        socket.on('message:sent', (data) => {
+            addMessageToFeed(data, 'sent');
+            messageStats[data.platform || 'coolhole'].sent++;
+            updateStats();
+        });
+
+        // Request initial status
+        setTimeout(() => {
+            socket.emit('request_status');
+        }, 1000);
+
+        function updatePlatformStatus(status) {
+            ['coolhole', 'twitch', 'discord'].forEach(platform => {
+                const dot = document.getElementById(`${platform}-status`);
+                const text = document.getElementById(`${platform}-status-text`);
+                const card = document.getElementById(`${platform}-card`);
+                
+                if (status[platform] && status[platform].connected) {
+                    dot.className = 'status-dot online';
+                    text.textContent = 'Connected';
+                    card.className = 'platform-card connected';
+                } else {
+                    dot.className = 'status-dot offline';
+                    text.textContent = 'Disconnected';
+                    card.className = 'platform-card disconnected';
+                }
+            });
+        }
+
+        function addMessageToFeed(data, type) {
+            const feed = document.getElementById('message-feed');
+            const platform = data.platform || 'coolhole';
+            
+            // Remove "waiting" message if exists
+            if (feed.children.length === 1 && feed.children[0].textContent.includes('Waiting')) {
+                feed.innerHTML = '';
+            }
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-item ${platform}`;
+            messageDiv.dataset.platform = platform;
+            
+            const time = new Date(data.timestamp).toLocaleTimeString();
+            const username = data.username || 'Slunt';
+            const message = data.message || data.text || '';
+            
+            messageDiv.innerHTML = `
+                <div class="message-header">
+                    <span class="message-platform ${platform}">${platform}</span>
+                    <span class="message-time">${time}</span>
+                </div>
+                <div class="message-user">${username}</div>
+                <div class="message-text">${escapeHtml(message)}</div>
+            `;
+            
+            feed.insertBefore(messageDiv, feed.firstChild);
+            
+            // Keep only last 50 messages
+            while (feed.children.length > 50) {
+                feed.removeChild(feed.lastChild);
+            }
+            
+            // Apply filter
+            applyFilter();
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateStats() {
+            let total = 0;
+            ['coolhole', 'twitch', 'discord'].forEach(platform => {
+                document.getElementById(`${platform}-messages-sent`).textContent = 
+                    messageStats[platform].sent;
+                document.getElementById(`${platform}-messages-received`).textContent = 
+                    messageStats[platform].received;
+                total += messageStats[platform].sent + messageStats[platform].received;
+            });
+            document.getElementById('total-messages').textContent = total;
+        }
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                applyFilter();
+            });
+        });
+
+        function applyFilter() {
+            const messages = document.querySelectorAll('.message-item');
+            messages.forEach(msg => {
+                if (currentFilter === 'all' || msg.dataset.platform === currentFilter) {
+                    msg.style.display = 'block';
+                } else {
+                    msg.style.display = 'none';
+                }
+            });
+        }
+
+        // Personality sliders
+        ['chattiness', 'humor', 'edginess'].forEach(trait => {
+            const slider = document.getElementById(`${trait}-slider`);
+            const valueSpan = document.getElementById(`${trait}-value`);
+            
+            slider.addEventListener('input', (e) => {
+                valueSpan.textContent = e.target.value + '%';
+            });
+        });
+
+        function saveSettings() {
+            const settings = {
+                chattiness: document.getElementById('chattiness-slider').value / 100,
+                humor: document.getElementById('humor-slider').value / 100,
+                edginess: document.getElementById('edginess-slider').value / 100
+            };
+            
+            socket.emit('update_personality', settings);
+            showNotification('Settings saved!');
+        }
+
+        function resetPersonality() {
+            document.getElementById('chattiness-slider').value = 60;
+            document.getElementById('humor-slider').value = 90;
+            document.getElementById('edginess-slider').value = 65;
+            
+            ['chattiness', 'humor', 'edginess'].forEach(trait => {
+                document.getElementById(`${trait}-value`).textContent = 
+                    document.getElementById(`${trait}-slider`).value + '%';
+            });
+            
+            showNotification('Personality reset to defaults');
+        }
+
+        function muteBot() {
+            socket.emit('mute_bot', { duration: 300000 }); // 5 minutes
+            showNotification('Slunt muted for 5 minutes');
+        }
+
+        function clearMemory() {
+            if (confirm('Clear recent conversation memory? (Long-term memories will be preserved)')) {
+                socket.emit('clear_memory');
+                showNotification('Recent memory cleared');
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        // Simulate platform status (remove this when server sends real data)
+        setTimeout(() => {
+            updatePlatformStatus({
+                coolhole: { connected: true },
+                twitch: { connected: true },
+                discord: { connected: false }
+            });
+        }, 2000);
+    </script>
+</body>
+</html>

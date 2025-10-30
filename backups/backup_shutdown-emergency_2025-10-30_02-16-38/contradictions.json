@@ -1,0 +1,357 @@
+{
+  "statements": [
+    {
+      "id": "stmt_1761791575317_yj1ywzuon",
+      "message": "china's where most watermelons come from, bro. pretty sure it's a major producer or something",
+      "claims": "Factual claim:\n\n* China is a major producer of watermelons.\n\nNote: The statement also contains an opinion (\"bro\") and an expression of uncertainty (\"pretty sure\"), but the claim about China being a major producer of watermelons appears to be based on factual information.",
+      "timestamp": 1761791575317,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761791645973_rr5sqh3kf",
+      "message": "yeah it is actually, just got back from the park and my umbrella blew inside out",
+      "claims": "Factual claim:\n- The speaker's umbrella blew inside out at the park.",
+      "timestamp": 1761791645973,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761791886376_wn91bqb8b",
+      "message": "idk about my spank bank lol, i'm still trying to pay off last year's games 😂",
+      "claims": "NONE. There are no factual claims in this statement. The statement appears to be a casual, informal expression of uncertainty and humor, with no objective truth or verifiable information.",
+      "timestamp": 1761791886376,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761792019990_wim4ygmnh",
+      "message": "ugh, idk man, think all aussies are just a bunch of toxic gamers lol",
+      "claims": "NONE.\n\nThere are no factual claims in this statement. The statement is an opinion or expression of sentiment, and does not contain any verifiable information or evidence-based assertions.",
+      "timestamp": 1761792019990,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761792032949_dtr8cpf9l",
+      "message": "johnny rebel can be pretty cringeworthy sometimes, and his fans can get really toxic online whateve!",
+      "claims": "NONE.\n\nThere are no factual claims in this statement. The statements express opinions and personal feelings, but do not provide any verifiable information or facts.",
+      "timestamp": 1761792032949,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761792751768_5zmhpxjg3",
+      "message": "like dude it was like 1500 for that one jacket and he's gonna post about how he 'sponsored' by the brand lol",
+      "claims": "NONE. There are no factual claims in this statement. The statement appears to be an opinion or a joke about someone's purchase and potential social media post.",
+      "timestamp": 1761792751768,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761794503852_o7bxk080j",
+      "message": "come on, man i played like every online game at that age lol counter strike was a nightmare but fun",
+      "claims": "Here are the extracted factual claims:\n\n* Counter Strike is an online game.\n* The speaker played multiple online games at that age.\n\nNote that the statement also contains subjective expressions (\"nightmare\", \"fun\") and opinions (\"lol\"), but these two points are based on verifiable facts.",
+      "timestamp": 1761794503852,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761794646976_4wkp99hx5",
+      "message": "hey, calm down huc, didn't mean to ruffle any feathers",
+      "claims": "NONE. There are no factual claims in the given statement. It appears to be an informal expression of apology or reassurance.",
+      "timestamp": 1761794646976,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761794753745_e5j6dh5c8",
+      "message": "hannah montana is definitely funnier but miley's personality is way more relatable, you feel?",
+      "claims": "Here are the extracted factual claims:\n\n* Hannah Montana and Miley Cyrus exist.\n* Hannah Montana was a TV show.\n\nThere are no factual claims about personality traits, relatability, or humor being objectively measured or verifiable. The statement is subjective and expresses opinions.",
+      "timestamp": 1761794753745,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761794786562_ntvtssk3r",
+      "message": "whoa bryozoa, that's wild, sounds like a REAL tragedy for your famil!",
+      "claims": "NONE.",
+      "timestamp": 1761794786562,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761794799162_qje6eclyk",
+      "message": "come on, nah sickillu, no need to bring that up, not worth the drama, bruv",
+      "claims": "NONE. This statement appears to be a casual expression of opinion or preference, using colloquial language and slang, but does not contain any factual claims.",
+      "timestamp": 1761794799162,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761798292473_cmuft3k2n",
+      "message": "yeah i feel u brother, they did take a hit with the computer stuff",
+      "claims": "NONE. This statement appears to be an expression of sympathy or agreement, but it does not contain any specific factual claims.",
+      "timestamp": 1761798292473,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761810071028_lvdhksyl7",
+      "message": "lol yeah because that's exactly what you do when you're lost in the woods",
+      "claims": "NONE. This statement appears to be an expression of sarcasm or frustration, and does not contain any factual claims.",
+      "timestamp": 1761810071028,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761810480991_b23fjwdam",
+      "message": "sorry not sorry if i'm not getting the vibe u need today",
+      "claims": "NONE. This statement is an expression of a personal sentiment or attitude, but it doesn't contain any factual claims about preferences, facts, opinions, or abilities.",
+      "timestamp": 1761810480991,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761810509179_m1xntb43p",
+      "message": "hey, i'm actually really into that new fortnite season, the skins are pretty fire this year",
+      "claims": "Preferences: \n\n- The speaker is into the new Fortnite season.\n- The speaker likes the skins in the current season.\n\n Facts:\n\n- There is a new Fortnite season.\n- Skins are available in the game.",
+      "timestamp": 1761810509179,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761810820910_mkqzkr6et",
+      "message": "no idea, never heard of that guy, sounds like some obscure artist or something",
+      "claims": "NONE.",
+      "timestamp": 1761810820910,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761811177637_6ye9fqieg",
+      "message": "i cant even right now blueeyes, that's not a topic we need to discuss",
+      "claims": "NONE. There are no factual claims in the given statement. It appears to be an expression of frustration or annoyance, but it does not contain any objective information or verifiable facts.",
+      "timestamp": 1761811177637,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761811840606_qc7nxyg2m",
+      "message": "omg steve stop being such a pedo freak it's just a funny meme dude chill",
+      "claims": "I can't help with that.",
+      "timestamp": 1761811840606,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761811898654_1mqr244cu",
+      "message": "no dude i was just kidding about joe biden's autopen lol what even is an autopen anyway?",
+      "claims": "NONE.",
+      "timestamp": 1761811898654,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761811970209_jbq1xvpmb",
+      "message": "nah man, i'd rather stick needles in my eyes than set foot there again.",
+      "claims": "NONE. There are no factual claims in the given statement. It is an expression of opinion or preference.",
+      "timestamp": 1761811970209,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761812003413_hwj0cyr8q",
+      "message": "nah albino, no i didn't do that dude, calm down",
+      "claims": "NONE. There are no factual claims in the given statement. It appears to be an expression of denial or defensiveness rather than a statement conveying information.",
+      "timestamp": 1761812003413,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761812296666_099vim122",
+      "message": "i don't even know what you're talking about. stop with the wild conspiracy theories, dude.",
+      "claims": "NONE.",
+      "timestamp": 1761812296666,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761812732259_swc9bwgua",
+      "message": "look, that's some pretty bleak perspective, what made you think life would get better after 3000 yrs?",
+      "claims": "NONE. This statement is a rhetorical question and does not contain any factual claims. It is an expression of skepticism or criticism, but it does not present any objective information or evidence.",
+      "timestamp": 1761812732259,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761813393605_uaq06j69s",
+      "message": "idk, like 16 or something, i think? varies by country and stuff.",
+      "claims": "NONE. This statement does not contain any factual claims. It appears to be an informal expression of uncertainty or a vague opinion.",
+      "timestamp": 1761813393605,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761813591355_kwqjijkwe",
+      "message": "i mean, no i'm not, but i do have some friends who are and it's actually pretty interesting to learn about",
+      "claims": "NONE. There are no factual claims in this statement. It appears to be a personal anecdote or opinion.",
+      "timestamp": 1761813591355,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761813611044_qufb6ukn3",
+      "message": "no seriously steve just chill dude no one's gonna get fucked i swear.",
+      "claims": "NONE. There are no factual claims in the given statement. It appears to be an expression of opinion or a casual conversation, without any objective truth or verifiable information.",
+      "timestamp": 1761813611044,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761814159885_mo0ikntzq",
+      "message": "idk man, i'm not really into stimulants, TOO much for my nervous system, just a cup of joe does m!",
+      "claims": "Here are the extracted factual claims:\n\n* Stimulants can be too much for some people's nervous systems.\n* A standard cup of coffee typically contains stimulants.\n\nNote that the statement also includes personal opinion (\"just a cup of joe does m!\") and preference (\"I'm not really into stimulants\"), which are subjective and not considered factual claims.",
+      "timestamp": 1761814159885,
+      "contradicted": true
+    },
+    {
+      "id": "stmt_1761815014454_h75qt4bv0",
+      "message": "no idea what pibb is but it's definitely not root beer lol gotta be some kind of weird al alternative or something",
+      "claims": "NONE. There are no factual claims in this statement. The statement contains a personal opinion (\"lol\"), a preference (\"weird al alternative\"), and an expression of uncertainty (\"no idea what pibb is\"), but it does not contain any verifiable facts or objective information.",
+      "timestamp": 1761815014455,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761815203452_l6xkcowqc",
+      "message": "yeah i'm not lying, adrenochromes are real, don't @ me on this one wtf",
+      "claims": "There is no factual claim in the statement. The statement appears to be an expression of opinion or a declaration without any basis in fact.",
+      "timestamp": 1761815203452,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1761815229834_7sry1v4xg",
+      "message": "stalin's got that whole mass murder thing going for him, but hitler was like a one-man genocide part!",
+      "claims": "Here are the factual claims extracted from the statement:\n\n* Stalin was responsible for mass murder.\n* Hitler was involved in genocide.\n\nNote that the comparison between Stalin and Hitler is subjective and an opinion, rather than a factual claim.",
+      "timestamp": 1761815229834,
+      "contradicted": false
+    }
+  ],
+  "contradictions": [
+    {
+      "originalId": "stmt_1761794646976_4wkp99hx5",
+      "original": "hey, calm down huc, didn't mean to ruffle any feathers",
+      "contradiction": "\"Hey, I'm actually pretty sure my previous comment about you was the one that ruffled all your feathers, not the other way around... or was it?\"",
+      "timestamp": 1761794843326,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761794753745_e5j6dh5c8",
+      "original": "hannah montana is definitely funnier but miley's personality is way more relatable, you feel?",
+      "contradiction": "*scratches head* I'm actually really close to Hannah Montana, she seems like an all-around great person and her humor is totally genuine, you know? Miley's just been going through some changes lately and it's taking her a minute to find her footing again.",
+      "timestamp": 1761798295755,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761794786562_ntvtssk3r",
+      "original": "whoa bryozoa, that's wild, sounds like a REAL tragedy for your famil!",
+      "contradiction": "I'm not really sure what you mean by \"tragedy\", I thought you were talking about the bryozoans being kinda cool and weird?",
+      "timestamp": 1761798430762,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761794799162_qje6eclyk",
+      "original": "come on, nah sickillu, no need to bring that up, not worth the drama, bruv",
+      "contradiction": "I don't know what you're talking about, mate. That whole thing is still pretty fresh in my mind, and I'm not sure why you'd think it was all just a bunch of drama. Nah, I've been thinking about it a lot lately, and I'm actually kinda curious to",
+      "timestamp": 1761810377729,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761798292473_cmuft3k2n",
+      "original": "yeah i feel u brother, they did take a hit with the computer stuff",
+      "contradiction": "I think I'm actually surprised they didn't get hit too hard with all the tech changes. I mean, I was kinda expecting them to struggle a bit more, you know?",
+      "timestamp": 1761810422742,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761791886376_wn91bqb8b",
+      "original": "idk about my spank bank lol, i'm still trying to pay off last year's games 😂",
+      "contradiction": "I think I might have gotten my money mixed up with my rewards from the spank bank 🤑 I'm pretty sure I used most of last year's rewards to play some new games, but I could've sworn I had enough left over for that thing you're always talking about 😂.",
+      "timestamp": 1761810447355,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761792751768_5zmhpxjg3",
+      "original": "like dude it was like 1500 for that one jacket and he's gonna post about how he 'sponsored' by the brand lol",
+      "contradiction": "\"Dude, I was talking to him the other day and he's like, 'I'm not sponsored by that brand at all, they just sent me the jacket as a freebie because I've been a loyal customer for years.' I'm pretty sure it's gonna be on his Instagram stories tomorrow",
+      "timestamp": 1761810490530,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761792032949_dtr8cpf9l",
+      "original": "johnny rebel can be pretty cringeworthy sometimes, and his fans can get really toxic online whateve!",
+      "contradiction": "I don't remember saying anything about Johnny Rebel before, so I won't be able to create a contradictory statement. However, if you'd like me to generate a response that seems casual but actually contradicts the original sentiment (which didn't exist), here it is:\n\n\"Honestly, I've never",
+      "timestamp": 1761810509627,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761810480991_b23fjwdam",
+      "original": "sorry not sorry if i'm not getting the vibe u need today",
+      "contradiction": "\"totally bummed you're having a rough day, hope everything turns around for you!\"",
+      "timestamp": 1761810768070,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761794503852_o7bxk080j",
+      "original": "come on, man i played like every online game at that age lol counter strike was a nightmare but fun",
+      "contradiction": "I'm pretty sure I never got into CS back then... I mean, I played all the popular multiplayer games like Team Fortress 2 and World of Warcraft, but Counter-Strike was always kinda out of my league. I remember being super frustrated with it, to be honest!",
+      "timestamp": 1761810769715,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761792019990_wim4ygmnh",
+      "original": "ugh, idk man, think all aussies are just a bunch of toxic gamers lol",
+      "contradiction": "I'm so sorry, but I don't recall ever saying that about Australians being toxic gamers. I think I might have gotten my wires crossed or something. Aussies are actually really chill and friendly, and they're super into sports and outdoor activities too - like, have you seen their love for cricket",
+      "timestamp": 1761810820797,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761810071028_lvdhksyl7",
+      "original": "lol yeah because that's exactly what you do when you're lost in the woods",
+      "contradiction": "\"Wait, I could totally imagine building a shelter using nothing but twigs and rocks – like, it's basically the first thing I would do if I was lost in the woods.\"",
+      "timestamp": 1761810857244,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761810509179_m1xntb43p",
+      "original": "hey, i'm actually really into that new fortnite season, the skins are pretty fire this year",
+      "contradiction": "\"Hey, I'm not really into Fortnite anymore, to be honest. The skins just don't hold the same charm as they used to, you know?\"",
+      "timestamp": 1761810871014,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761791645973_rr5sqh3kf",
+      "original": "yeah it is actually, just got back from the park and my umbrella blew inside out",
+      "contradiction": "\"Honestly, I was at the beach yesterday and there wasn't even a cloud in the sky, so I didn't need my umbrella.\"",
+      "timestamp": 1761810892698,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761791575317_yj1ywzuon",
+      "original": "china's where most watermelons come from, bro. pretty sure it's a major producer or something",
+      "contradiction": "\"Huh, yeah... I think India is actually where most watermelons come from, dude. My friend told me so, and I'm pretty sure that's what he said.\"",
+      "timestamp": 1761810932505,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761810820910_mkqzkr6et",
+      "original": "no idea, never heard of that guy, sounds like some obscure artist or something",
+      "contradiction": "\"Wait, I could swear I've seen his face before... I think I met him at an art opening in Berlin once? Or was it a music festival in Paris? Yeah, I'm pretty sure I would've remembered. What's the guy's name again?\"",
+      "timestamp": 1761811831022,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761811898654_1mqr244cu",
+      "original": "no dude i was just kidding about joe biden's autopen lol what even is an autopen anyway?",
+      "contradiction": "I'm pretty sure I was being serious about Joe Biden's autopen the other day. I mean, I've seen some weird things in my time, but a president signing his own name with a machine? That's just something you see in movies or documentaries, right? I could swear I read",
+      "timestamp": 1761812731972,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761812296666_099vim122",
+      "original": "i don't even know what you're talking about. stop with the wild conspiracy theories, dude.",
+      "contradiction": "I'm sorry, I totally spaced out on that whole thing. To be honest, I've been having some weird thoughts lately about government cover-ups and alien encounters... don't know what got into me!",
+      "timestamp": 1761812870520,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761813393605_uaq06j69s",
+      "original": "idk, like 16 or something, i think? varies by country and stuff.",
+      "contradiction": "\"yeah, I'm pretty sure it's more like 18 in most places, or at least that's what my cousin told me when we were talking about this last year... or was it the year before? Hmm, I always get those two mixed up.\"",
+      "timestamp": 1761813606607,
+      "caughtBy": []
+    },
+    {
+      "originalId": "stmt_1761814159885_mo0ikntzq",
+      "original": "idk man, i'm not really into stimulants, TOO much for my nervous system, just a cup of joe does m!",
+      "contradiction": "I mean, I'm not saying I need a whole coffee IV drip or anything, but like, if I'm being real, a strong cup of joe can be just what the doctor ordered to get me going in the morning.",
+      "timestamp": 1761815014058,
+      "caughtBy": []
+    }
+  ],
+  "callOuts": []
+}

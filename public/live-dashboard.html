@@ -39,6 +39,39 @@
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
+        
+        /* Navigation Tabs */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            padding: 10px 20px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #10b981;
+            border-color: #10b981;
+        }
 
         .status-badge {
             display: inline-block;
@@ -316,6 +349,13 @@
             <div style="margin-top: 10px; opacity: 0.8;">
                 <span id="uptime">Uptime: 0m</span> | 
                 <span id="lastUpdate">Last update: Never</span>
+            </div>
+            
+            <div class="nav-tabs">
+                <a href="/" class="nav-tab">📊 Main Dashboard</a>
+                <a href="/platforms" class="nav-tab">🎛️ Platforms</a>
+                <a href="/mind" class="nav-tab">🧠 Slunt's Mind</a>
+                <a href="/live" class="nav-tab active">📡 Live Feed</a>
             </div>
         </header>
 

@@ -30,6 +30,17 @@ const YouTubeSearch = require('../video/youtubeSearch');
 const CoolPointsHandler = require('./coolPointsHandler');
 const Responses = require('./ChatBotResponses');
 
+// Monitoring Systems
+const LogAnalyzer = require('../monitoring/LogAnalyzer');
+const MetricsCollector = require('../monitoring/MetricsCollector');
+
+// Stability Systems
+const MemoryManager = require('../stability/MemoryManager');
+const ErrorRecovery = require('../stability/ErrorRecovery');
+const ConnectionResilience = require('../stability/ConnectionResilience');
+const DatabaseSafety = require('../stability/DatabaseSafety');
+const ResponseQueue = require('../stability/ResponseQueue');
+
 // NEW Top 5 Priority Systems
 const MemorySummarization = require('../ai/MemorySummarization');
 const CommunityEvents = require('../ai/CommunityEvents');
@@ -71,6 +82,39 @@ const VibeShifter = require('../ai/VibeShifter');
 const PredictionEngine = require('../ai/PredictionEngine');
 const BitCommitment = require('../ai/BitCommitment');
 const PersonalityInfection = require('../ai/PersonalityInfection');
+
+// NEW ADVANCED CONVERSATIONAL SYSTEMS 🚀
+const ConversationThreads = require('../ai/ConversationThreads');
+const DynamicEmotionResponses = require('../ai/DynamicEmotionResponses');
+const UserVibesDetection = require('../ai/UserVibesDetection');
+const CallbackHumorEngine = require('../ai/CallbackHumorEngine');
+const ContradictionTracking = require('../ai/ContradictionTracking');
+const ConversationalBoredom = require('../ai/ConversationalBoredom');
+const { 
+  PeerInfluenceSystem, 
+  QuestionChains, 
+  SelfAwarenessConfusion, 
+  EnergyMirroring, 
+  ConversationalGoals 
+} = require('../ai/AdvancedConversationalSystems');
+
+// NEWEST ULTRA-REALISTIC SYSTEMS 🎭
+const MoodContagion = require('../ai/MoodContagion');
+const SleepDeprivation = require('../ai/SleepDeprivation');
+const {
+  SluntLore,
+  OpinionFormation,
+  StorytellingMode,
+  InterestDecay,
+  FalseMemories
+} = require('../ai/PersonalitySystems');
+const {
+  PerformanceAnxiety,
+  ChatRoleAwareness,
+  ResponseTiming,
+  MultiMessageResponse,
+  ContextualMemoryRetrieval
+} = require('../ai/BehavioralSystems');
 
 /**
  * Helper to get timestamp for logs
@@ -185,6 +229,56 @@ class ChatBot extends EventEmitter {
     this.personalityInfection = new PersonalityInfection();
     console.log('✅ [Chaos] All chaos systems initialized!');
     
+    // NEW ADVANCED CONVERSATIONAL SYSTEMS 🚀
+    console.log('🚀 [Advanced] Initializing advanced conversational systems...');
+    this.conversationThreads = new ConversationThreads(this);
+    this.dynamicEmotionResponses = new DynamicEmotionResponses(this);
+    this.dynamicEmotionResponses.setMentalStateTracker(this.mentalStateTracker); // Link after init
+    this.userVibesDetection = new UserVibesDetection(this);
+    this.callbackHumorEngine = new CallbackHumorEngine(this);
+    this.contradictionTracking = new ContradictionTracking(this);
+    this.conversationalBoredom = new ConversationalBoredom(this);
+    this.peerInfluenceSystem = new PeerInfluenceSystem(this);
+    this.questionChains = new QuestionChains(this);
+    this.selfAwarenessConfusion = new SelfAwarenessConfusion(this);
+    this.energyMirroring = new EnergyMirroring(this);
+    this.conversationalGoals = new ConversationalGoals(this);
+    console.log('✅ [Advanced] All 11 advanced systems initialized!');
+    
+    // NEWEST ULTRA-REALISTIC SYSTEMS 🎭
+    console.log('🎭 [Ultra] Initializing ultra-realistic behavioral systems...');
+    this.moodContagion = new MoodContagion(this);
+    this.sleepDeprivation = new SleepDeprivation(this);
+    this.sluntLore = new SluntLore(this);
+    this.opinionFormation = new OpinionFormation(this);
+    this.storytellingMode = new StorytellingMode(this);
+    this.interestDecay = new InterestDecay(this);
+    this.falseMemories = new FalseMemories(this);
+    this.performanceAnxiety = new PerformanceAnxiety(this);
+    this.chatRoleAwareness = new ChatRoleAwareness(this);
+    this.responseTiming = new ResponseTiming(this);
+    this.multiMessageResponse = new MultiMessageResponse(this);
+    this.contextualMemoryRetrieval = new ContextualMemoryRetrieval(this);
+    console.log('✅ [Ultra] All 12 ultra-realistic systems initialized!');
+    
+    // Initialize Monitoring Systems
+    this.logAnalyzer = new LogAnalyzer();
+    this.metricsCollector = new MetricsCollector();
+    console.log('📊 [Monitoring] Log analyzer and metrics collector initialized!');
+    
+    // Initialize Stability Systems
+    this.memoryManager = new MemoryManager(this);
+    this.errorRecovery = ErrorRecovery;
+    this.errorRecovery.initialize(this);
+    this.connectionResilience = ConnectionResilience;
+    this.databaseSafety = DatabaseSafety;
+    this.responseQueueManager = new ResponseQueue();
+    console.log('🛡️ [Stability] All stability systems initialized!');
+    
+    // Start stability monitoring
+    this.memoryManager.start();
+    console.log('✅ [Stability] Memory manager started');
+    
     this.chatStats = {
       totalMessages: 0,
       messagesSent: 0,
@@ -206,6 +300,10 @@ class ChatBot extends EventEmitter {
     this.memoryPath = path.resolve(process.cwd(), 'data', 'slunt_brain.json');
     this.lastSentAt = 0;
     this.lastIntendedMessage = null;
+    
+    // Response generation lock - prevents multiple simultaneous responses
+    this.isGeneratingResponse = false;
+    this.responseQueue = [];
     this.userProfiles = new Map();
     this.topicMemory = new Map();
     this.conversationContext = [];
@@ -218,7 +316,7 @@ class ChatBot extends EventEmitter {
     this.chatHistory = [];
     this.responsePatterns = new Map();
     this.conversationTriggers = new Set([
-      'slunt', 'bot', 'ai', 'what do you think', 'hey bot',
+      'slunt', 'what do you think slunt', 'hey bot',
       'hey slunt', '@slunt', 'yo slunt'
     ]);
     
@@ -230,22 +328,188 @@ class ChatBot extends EventEmitter {
     this.recentMentionedTopics = []; // Track last 5 topics Slunt mentioned
     this.maxRecentTopics = 5;
     
+    // === PERIODIC TASKS FOR ADVANCED SYSTEMS 🚀 ===
+    
+    // Generate new conversational goals periodically (every 5 minutes)
+    setInterval(() => {
+      if (this.conversationalGoals.activeGoals.length < 2) {
+        this.conversationalGoals.generateNewGoal({ 
+          recentChat: this.chatHistory.slice(-10) 
+        });
+      }
+    }, 5 * 60 * 1000);
+    
+    // Proactive callbacks and random interjections (every 3 minutes when bored)
+    setInterval(async () => {
+      if (this.conversationalBoredom.boredomLevel > 70 && Math.random() < 0.3) {
+        const interjection = await this.conversationalBoredom.getRandomInterjection();
+        if (interjection) {
+          this.sendMessage(interjection);
+        }
+      }
+    }, 3 * 60 * 1000);
+    
+    // Auto-save all session data every 5 minutes (safety backup)
+    setInterval(async () => {
+      try {
+        console.log('💾 [Auto-save] Backing up session data...');
+        await this.conversationThreads.save();
+        await this.userVibesDetection.save();
+        await this.callbackHumorEngine.save();
+        await this.contradictionTracking.save();
+        await this.conversationalBoredom.save();
+        await this.peerInfluenceSystem.save();
+        await this.conversationalGoals.save();
+        await this.relationshipMapping.saveRelationships();
+        await this.userReputationSystem.saveReputations();
+        await this.sluntDiary.saveDiary();
+        console.log('✅ [Auto-save] Session data backed up successfully');
+      } catch (error) {
+        console.error('❌ [Auto-save] Failed:', error.message);
+      }
+    }, 5 * 60 * 1000); // Every 5 minutes
+    
     // DISABLED: Startup sequence slows boot and clutters chat
     // setTimeout(() => {
     //   this.startupSequence();
     // }, 1000);
+    
+    // Multi-platform support
+    this.platformManager = null;
+    this.currentPlatform = 'coolhole'; // Default platform
+  }
+  
+  /**
+   * Set the platform manager for multi-platform support
+   */
+  setPlatformManager(platformManager) {
+    this.platformManager = platformManager;
+    console.log('✅ [ChatBot] Platform manager configured');
+  }
+  
+  /**
+   * Set rate limiter for spam protection
+   */
+  setRateLimiter(rateLimiter) {
+    this.rateLimiter = rateLimiter;
+    console.log('✅ [ChatBot] Rate limiter configured');
+  }
+  
+  /**
+   * Set content filter for TOS compliance
+   */
+  setContentFilter(contentFilter) {
+    this.contentFilter = contentFilter;
+    console.log('✅ [ChatBot] Content filter configured');
+  }
+  
+  /**
+   * Universal message handler for all platforms
+   * Converts platform-specific messages to unified format
+   */
+  async handleMessage(messageData) {
+    try {
+      // Track which platform this message came from
+      this.currentPlatform = messageData.platform || 'coolhole';
+      
+      // Check rate limiting if rateLimiter is available
+      if (this.rateLimiter) {
+        const userId = messageData.userId || messageData.username;
+        const rateCheck = this.rateLimiter.checkMessage(userId, this.currentPlatform);
+        
+        if (!rateCheck.allowed) {
+          logger.warn(`⏸️ [RateLimit] Message rejected from ${messageData.username}: ${rateCheck.reason}`);
+          if (rateCheck.reason === 'cooldown') {
+            logger.warn(`⏸️ [RateLimit] Cooldown remaining: ${(rateCheck.remainingTime / 1000).toFixed(1)}s`);
+          }
+          return; // Silently ignore rate-limited messages
+        }
+        
+        // Warn user if approaching limit
+        if (rateCheck.warning) {
+          logger.warn(`⚠️ [RateLimit] ${messageData.username} approaching rate limit (${rateCheck.remaining} remaining)`);
+        }
+      }
+      
+      // Normalize message format for processing
+      const normalizedData = {
+        username: messageData.username || messageData.displayName,
+        text: messageData.text || messageData.message,
+        timestamp: messageData.timestamp || Date.now(),
+        platform: this.currentPlatform,
+        channel: messageData.channelId || messageData.channel, // Prioritize channelId for Discord/Twitch
+        channelName: messageData.channel, // Keep channel name for display
+        userId: messageData.userId || messageData.id,
+        mentionsBot: messageData.mentionsBot, // Pass through mention detection
+        // Platform-specific data
+        rawData: messageData
+      };
+      
+      console.log(`💬 [${this.currentPlatform}] ${normalizedData.username}: ${normalizedData.text}`);
+      
+      // Track message in gold system
+      this.goldSystem.trackMessage(normalizedData.username, normalizedData.text, normalizedData.timestamp);
+      
+      // Detect repeated messages (comedic emphasis = gold)
+      this.detectGoldRepeat(normalizedData);
+      
+      // Emit event for dashboard
+      this.emit('message:received', {
+        username: normalizedData.username,
+        message: normalizedData.text,
+        timestamp: Date.now(),
+        platform: this.currentPlatform
+      });
+      
+      // Learn from message
+      try {
+        this.learnFromMessage(normalizedData);
+        
+        // Learn from other users' behavior
+        if (normalizedData.username !== 'Slunt') {
+          this.learnFromUser(normalizedData);
+        }
+      } catch (learnError) {
+        logger.error(`❌ Error in learnFromMessage: ${learnError.message}`);
+      }
+      
+      // Consider responding
+      await this.considerResponse(normalizedData);
+      
+      // Track chat energy for mood
+      const recentMessages = this.conversationContext.filter(msg =>
+        Date.now() - msg.timestamp < 60000
+      );
+      const capsMessages = recentMessages.filter(msg =>
+        msg.text === msg.text.toUpperCase() && msg.text.length > 5
+      ).length;
+      const swearMessages = recentMessages.filter(msg =>
+        msg.text.match(/\b(fuck|shit|damn)\b/i)
+      ).length;
+      this.moodTracker.trackChatEnergy(recentMessages.length, capsMessages, swearMessages);
+      
+    } catch (error) {
+      logger.error(`❌ Error handling ${messageData.platform} message:`, error.message);
+    }
   }
 
   /**
-   * Run startup checks and greet on bot launch (DISABLED for faster boot)
+   * Run startup checks and greet on bot launch
    */
   async startupSequence() {
     logger.info('[Startup] Running startup sequence...');
     try {
-      // DISABLED: Skip startup messages for faster boot
-      // await this.sendMessage('Hello! Slunt is online and ready to serve.');
-      // await this.sendMessage('Running system checks...');
-      logger.info('[Startup] Startup checks complete (silent mode).');
+      // Wait a bit for platforms to fully connect
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Get a contextual return message from StartupContinuity
+      const returnMessage = this.startupContinuity ? this.startupContinuity.getReturnMessage() : 'sup';
+      
+      // Send startup message to Coolhole only (not Discord/Twitch)
+      if (this.currentPlatform === 'coolhole' || !this.currentPlatform) {
+        await this.sendMessage(returnMessage, { platform: 'coolhole' });
+        logger.info('[Startup] Startup announcement sent to Coolhole');
+      }
     } catch (e) {
         logger.error('[Startup] Error during startup sequence:', e.message);
     }
@@ -417,8 +681,28 @@ class ChatBot extends EventEmitter {
       username,
       text,
       timestamp: timestamp || Date.now(),
+      platform: data.platform || this.currentPlatform || 'coolhole',
+      channel: data.channel || this.currentChannel,
       topics // Ensure topics is set to avoid undefined errors
     };
+    
+    // Add to conversation context for thread tracking
+    this.conversationContext.push({
+      username,
+      text,
+      timestamp: timestamp || Date.now(),
+      platform: data.platform || this.currentPlatform || 'coolhole',
+      channel: data.channel || this.currentChannel,
+      topics,
+      sentiment,
+      mentionsBot: data.mentionsBot || false
+    });
+    
+    // Limit conversation context to last 50 messages
+    if (this.conversationContext.length > 50) {
+      this.conversationContext.shift();
+    }
+    
     const isPositive = sentiment > 0 || text.match(/\b(love|thanks|good|great|awesome|nice)\b/i);
     this.mentalStateTracker.trackInteraction(username, text, isPositive);
 
@@ -526,6 +810,46 @@ class ChatBot extends EventEmitter {
     // Contextual Callbacks (detect memorable moments)
     const reactionCount = 0; // TODO: Implement reaction tracking if available
     this.contextualCallbacks.detectMoment(username, text, { reactions: [] });
+    
+    // === NEW ADVANCED CONVERSATIONAL SYSTEMS 🚀 ===
+    
+    // 1. Conversation Threads - Track multi-message conversations
+    this.conversationThreads.processMessage(username, text, { messageData });
+    
+    // 2. User Vibes Detection - Analyze conversational style
+    this.userVibesDetection.processMessage(username, text);
+    
+    // 3. Callback Humor Engine - Detect memorable moments
+    this.callbackHumorEngine.analyzeForMemorableMoment(username, text, { 
+      recentMessages: this.chatHistory.slice(-5) 
+    });
+    
+    // 4. Conversational Boredom - Track topic fatigue
+    this.conversationalBoredom.processMessage(username, text);
+    
+    // 5. Peer Influence System - Detect trending phrases
+    this.peerInfluenceSystem.detectTrend(text, username);
+    
+    // 6. Energy Mirroring - Update chat energy
+    this.energyMirroring.updateEnergy(this.chatHistory.slice(-10));
+    
+    // === NEWEST ULTRA-REALISTIC SYSTEMS 🎭 ===
+    
+    // 1. Mood Contagion - Analyze chat mood and update Slunt's emotional state
+    this.moodContagion.analyzeMood(text, username);
+    
+    // 2. Sleep Deprivation - Track activity to simulate fatigue
+    this.sleepDeprivation.recordActivity();
+    
+    // 3. Performance Anxiety - Detect high-pressure situations
+    this.performanceAnxiety.detectExpectation(text);
+    
+    // 4. Chat Role Awareness - Track participation rates
+    this.chatRoleAwareness.trackMessage(username, false); // false = not Slunt's message
+    
+    // 5. Interest Decay - Track topic mentions for burnout
+    const detectedTopics = this.extractTopics(text);
+    detectedTopics.forEach(topic => this.interestDecay.trackTopicMention(topic));
     
     // === YOUTUBE SEARCH & QUEUE DETECTION ===
     this.detectVideoRequest(username, text);
@@ -1141,11 +1465,21 @@ class ChatBot extends EventEmitter {
   async considerResponse(data) {
     try {
       logger.info(`[${getTimestamp()}] 🔍 considerResponse called for: ${data.username}`);
-      const { username, text } = data;
+      const { username, text, platform, channel } = data;
+      
+      // Store current context for sending messages
+      this.currentPlatform = platform || 'coolhole';
+      this.currentChannel = channel; // This will be channelId for Discord/Twitch
 
       // Skip own messages
       if (username === 'Slunt') {
         logger.info(`[${getTimestamp()}] ⏭️ Skipping own message`);
+        return;
+      }
+      
+      // Check if bot is muted
+      if (this.muted) {
+        logger.info(`[${getTimestamp()}] 🔇 Bot is muted, skipping response`);
         return;
       }
 
@@ -1153,44 +1487,129 @@ class ChatBot extends EventEmitter {
       logger.info(`[${getTimestamp()}] 🤔 Should respond to "${text}" from ${username}? ${shouldRespond}`);
 
       if (shouldRespond) {
-        // Add natural delay to seem more human
-        const delay = Math.random() * this.chatStats.averageResponseTime + 500;
-
+        // Check if already generating a response
+        if (this.isGeneratingResponse) {
+          logger.info(`[${getTimestamp()}] ⏸️ Already generating response, skipping...`);
+          return;
+        }
+        
+        // Lock response generation
+        this.isGeneratingResponse = true;
+        
         setTimeout(async () => {
           try {
-            const response = await this.generateResponse(data);
-            if (response) {
-              // NEW: Check variety before sending
-              if (this.responseVariety.isTooSimilar(response)) {
-                logger.info('🔄 [Variety] Response blocked - too similar. Regenerating...');
-                // Try again with different random seed
-                const altResponse = await this.generateResponse(data);
-                if (altResponse && !this.responseVariety.isTooSimilar(altResponse)) {
-                  this.sendMessage(altResponse);
-                  this.responseVariety.trackResponse(altResponse);
-                } else {
-                  logger.warn('⚠️ [Variety] Could not generate varied response, skipping');
-                  return;
-                }
-              } else {
-                this.sendMessage(response);
-                this.responseVariety.trackResponse(response);
-              }
-
-              this.lastSentAt = Date.now();
-
-              // NEW: Track how interaction went for mood
-              const responseQuality = response.length > 10 ? 'good' : 'short';
-              this.moodTracker.trackInteraction(username, text, responseQuality);
-
-              // Learn from our own responses
-              this.adaptPersonality(data, response);
+            let response = await this.generateResponse(data);
+            if (!response) return;
+            
+            // === ULTRA-REALISTIC MODIFICATIONS 🎭 ===
+            // NOTE: Reduced chaos for better coherence
+            
+            // 1. Apply sleep deprivation effects (typos, tangents, incoherence)
+            // Only if actually tired (reduced effect)
+            if (this.sleepDeprivation.getDeprivationLevel() !== 'fresh') {
+              response = await this.sleepDeprivation.modifyResponse(response);
             }
+            
+            // 2. Apply mood modifiers
+            const moodMods = this.moodContagion.getMoodModifiers();
+            // Note: Mood modifiers affect AI prompt generation, not post-processing
+            
+            // 3. Check for contextual memory recall (0.5% chance - VERY rare, only if actually relevant)
+            if (Math.random() < 0.005) {
+              const recall = this.contextualMemoryRetrieval.retrieveRelevant(text, username);
+              if (recall && recall.relevance > 0.7) { // Only if highly relevant
+                const recallText = await this.contextualMemoryRetrieval.generateRecall(recall);
+                if (recallText && recallText.length < 50) { // Keep it short
+                  response = `${recallText} ${response}`;
+                }
+              }
+            }
+            
+            // 4. REMOVED: False memory generation (too chaotic)
+            // 5. REMOVED: Random lore injection (too chaotic)
+            
+            // 6. Check if performance anxiety causes choking
+            if (this.performanceAnxiety.shouldChoke()) {
+              response = await this.performanceAnxiety.generateChokedResponse();
+            }
+            
+            // Ensure response is a valid string
+            if (!response || typeof response !== 'string') {
+              return;
+            }
+            
+            // 7. Check variety before sending
+            if (this.responseVariety.isTooSimilar(response)) {
+              logger.info('🔄 [Variety] Response blocked - too similar. Regenerating...');
+              const altResponse = await this.generateResponse(data);
+              if (altResponse && typeof altResponse === 'string' && !this.responseVariety.isTooSimilar(altResponse)) {
+                response = altResponse;
+              } else {
+                logger.warn('⚠️ [Variety] Could not generate varied response, skipping');
+                return;
+              }
+            }
+            
+            // 8. Calculate realistic typing delay
+            const context = {
+              excited: text.includes('!'),
+              tired: this.sleepDeprivation.getDeprivationLevel() !== 'fresh',
+              thinking: response.includes('...') || response.includes('hmm')
+            };
+            const typingDelay = this.responseTiming.calculateDelay(response, context);
+            
+            // 9. Wait for realistic typing delay
+            await this.responseTiming.waitForTyping(typingDelay);
+            
+            // 10. Check if we should split into multiple messages
+            if (this.multiMessageResponse.shouldSplit(response)) {
+              const parts = await this.multiMessageResponse.splitMessage(response);
+              
+              // Send each part with natural pauses
+              for (let i = 0; i < parts.length; i++) {
+                this.sendMessage(parts[i]);
+                if (this.chatRoleAwareness && this.config && this.config.username) {
+                  this.chatRoleAwareness.trackMessage(this.config.username, true); // true = Slunt's message
+                }
+                
+                // Pause between messages
+                if (i < parts.length - 1) {
+                  await this.responseTiming.waitForTyping(1500 + Math.random() * 1000);
+                }
+              }
+            } else {
+              // Send single message
+              this.sendMessage(response);
+              if (this.chatRoleAwareness && this.config && this.config.username) {
+                this.chatRoleAwareness.trackMessage(this.config.username, true);
+              }
+            }
+            
+            // 11. Track response for variety
+            this.responseVariety.trackResponse(response);
+            
+            // 12. Store conversation for later recall
+            this.contextualMemoryRetrieval.storeConversation(username, text, response, { 
+              emotion: this.emotionalEngine.detectEmotion(text, username),
+              topics: this.extractTopics(text)
+            });
+
+            this.lastSentAt = Date.now();
+
+            // Track how interaction went for mood
+            const responseQuality = response.length > 10 ? 'good' : 'short';
+            this.moodTracker.trackInteraction(username, text, responseQuality);
+
+            // Learn from our own responses
+            this.adaptPersonality(data, response);
           } catch (error) {
             logger.error('Error generating response:', error.message);
             logger.error(error.stack);
+          } finally {
+            // Unlock response generation
+            this.isGeneratingResponse = false;
           }
-        }, delay);
+        }, 1000); // Reduced initial delay since we now calculate realistic timing
       }
     } catch (error) {
       logger.error(`❌ Error in considerResponse: ${error.message}`);
@@ -1277,11 +1696,103 @@ class ChatBot extends EventEmitter {
    * Decide whether bot should respond to this message
    */
   shouldRespond(data) {
-    const { username, text } = data;
+    const { username, text, platform, channel } = data;
+
+    // === PLATFORM-SPECIFIC RESPONSE RATES ===
+    const currentPlatform = platform || this.currentPlatform || 'coolhole';
+    
+    // Always respond if directly mentioned on ANY platform
+    if (this.checkBotMention(text) || data.mentionsBot) {
+      logger.info(`[${getTimestamp()}] 💬 Responding because mentioned on ${currentPlatform} by ${username}`);
+      return true;
+    }
+    
+    // === DISCORD/TWITCH: NATURAL CONVERSATION MODE ===
+    if (currentPlatform !== 'coolhole') {
+      // Check if we're in an active conversation (Slunt spoke recently in this channel)
+      const recentSluntMessages = this.conversationContext.filter(m => 
+        m.username === 'Slunt' && 
+        m.platform === currentPlatform &&
+        m.channel === channel &&
+        (Date.now() - m.timestamp) < 120000 // Within last 2 minutes
+      );
+      
+      // If Slunt was recently active in this conversation, stay engaged
+      if (recentSluntMessages.length > 0) {
+        const timeSinceLastSlunt = Date.now() - recentSluntMessages[recentSluntMessages.length - 1].timestamp;
+        
+        // Continue conversation naturally
+        if (timeSinceLastSlunt < 60000) { // Within 1 minute
+          logger.info(`[${getTimestamp()}] 💬 Continuing conversation on ${currentPlatform}`);
+          return Math.random() < 0.6; // 60% chance to continue
+        }
+      }
+      
+      // Check if someone replied to our message (continuing thread)
+      const lastFewMessages = this.conversationContext.slice(-5);
+      const lastSluntIndex = lastFewMessages.findIndex(m => m.username === 'Slunt');
+      if (lastSluntIndex !== -1 && lastSluntIndex < lastFewMessages.length - 1) {
+        // Someone spoke after Slunt - might be replying
+        logger.info(`[${getTimestamp()}] � Possible reply to Slunt on ${currentPlatform}`);
+        return Math.random() < 0.5; // 50% chance it's relevant
+      }
+      
+      // Check if conversation is specifically addressing Slunt (indirect mentions)
+      const sluntKeywords = ['slunt', 'bot', 'hey slunt', 'slunt?'];
+      if (sluntKeywords.some(kw => text.toLowerCase().includes(kw))) {
+        logger.info(`[${getTimestamp()}] 💬 Indirect mention on ${currentPlatform}`);
+        return true;
+      }
+      
+      // Otherwise, be mostly quiet on Discord/Twitch (don't spam)
+      logger.info(`[${getTimestamp()}] 🔇 Staying quiet on ${currentPlatform} - not in conversation`);
+      return false;
+    }
+
+    // === COOLHOLE ONLY: ADVANCED RESPONSE MODIFIERS 🚀 ===
+    
+    // Check recent conversation ON THIS PLATFORM to prevent monologuing and spam
+    const lastFiveMessages = this.conversationContext
+      .filter(m => m.platform === currentPlatform) // Only check this platform
+      .slice(-5);
+    const recentSluntMessages = lastFiveMessages.filter(m => m.username === 'Slunt');
+    
+    // RULE 1: Don't monologue - if last message ON THIS PLATFORM was from Slunt, someone else must speak first
+    if (lastFiveMessages.length > 0 && lastFiveMessages[lastFiveMessages.length - 1].username === 'Slunt') {
+      logger.info(`[${getTimestamp()}] 🤐 Last message on ${currentPlatform} was mine, waiting for others to respond...`);
+      return false;
+    }
+    
+    // RULE 2: Don't spam - minimum 3 seconds between messages, 5 seconds if said 2+ things recently ON THIS PLATFORM
+    const timeSinceLastResponse = Date.now() - (this.lastSentAt || 0);
+    const minDelay = recentSluntMessages.length >= 2 ? 5000 : 3000; // 5s if chatty, 3s otherwise
+    if (timeSinceLastResponse < minDelay) {
+      logger.info(`[${getTimestamp()}] ⏸️ Just responded ${(timeSinceLastResponse/1000).toFixed(1)}s ago, waiting ${minDelay/1000}s...`);
+      return false;
+    }
+    
+    // 1. Emotional state affects response rate
+    const emotionalModifier = this.dynamicEmotionResponses.getEmotionalModifiers().responseRate;
+    
+    // 2. Energy mirroring - match chat energy
+    const energyModifier = this.energyMirroring.getEnergyModifier();
+    
+    // 3. Conversational boredom - ignore certain topics
+    const currentTopic = this.conversationalBoredom.currentTopic;
+    if (currentTopic && !this.conversationalBoredom.shouldRespondToTopic(currentTopic)) {
+      logger.info(`[${getTimestamp()}] 😴 Ignoring boring topic: ${currentTopic}`);
+      return false; // Completely ignoring this topic
+    }
 
     // DOPAMINE: Use motivation to influence response probability
     const dopamineState = this.dopamineSystem.getState();
     let baseChance = 1.0;
+    
+    // Apply all modifiers
+    baseChance *= emotionalModifier; // Emotional state
+    baseChance *= energyModifier; // Chat energy
+    
+    logger.info(`[${getTimestamp()}] 📊 Response modifiers: emotion=${emotionalModifier.toFixed(2)}, energy=${energyModifier.toFixed(2)}, base=${baseChance.toFixed(2)}`);
 
     // Low dopamine = less motivated to respond (unless it might be rewarding)
     if (dopamineState.mood === 'low' || dopamineState.mood === 'desperate') {
@@ -1290,12 +1801,6 @@ class ChatBot extends EventEmitter {
     // High dopamine = more chatty and engaged
     if (dopamineState.mood === 'euphoric') {
       baseChance *= 1.4; // 40% more likely to respond when feeling great
-    }
-
-    // Always respond if directly mentioned
-    if (this.checkBotMention(text)) {
-      logger.info(`[${getTimestamp()}] 💬 Responding because mentioned by ${username}`);
-      return true;
     }
     
     // RESPOND TO ANSWERS to our questions
@@ -1316,10 +1821,10 @@ class ChatBot extends EventEmitter {
     
     // Adjust base chance based on chat speed
     if (chatIsBusy) {
-      baseChance *= 0.2; // Much less responsive when busy
+      baseChance *= 0.15; // Much MUCH less responsive when busy (was 0.2)
       logger.info(`[${getTimestamp()}] 💬 Chat is BUSY (${recentMessagesCount} msgs in 2min), reducing response rate`);
     } else if (chatIsSlow) {
-      baseChance *= 3.0; // Much more responsive when slow
+      baseChance *= 2.5; // More responsive when slow (was 3.0)
       logger.info(`[${getTimestamp()}] 💬 Chat is SLOW (${recentMessagesCount} msgs in 2min), increasing response rate`);
     }
     
@@ -1333,32 +1838,32 @@ class ChatBot extends EventEmitter {
       const hasSharedTopic = currentTopics.some(t => recentTopics.includes(t));
       if (hasSharedTopic) {
         logger.info(`[${getTimestamp()}] 💬 Responding - continues conversation topic`);
-        return Math.random() < (0.7 * baseChance);
+        return Math.random() < (0.5 * baseChance); // Reduced from 0.7
       }
     }
 
     // More likely to respond to questions
     if (text.includes('?')) {
       logger.info(`[${getTimestamp()}] 💬 Responding to question from ${username}`);
-      return Math.random() < (0.8 * baseChance);
+      return Math.random() < (0.6 * baseChance); // Reduced from 0.8
     }
 
     // More likely to respond to users we know
     const userProfile = this.userProfiles.get(username);
     if (userProfile && userProfile.messageCount > 5) {
-      return Math.random() < (0.5 * baseChance);
+      return Math.random() < (0.3 * baseChance); // Reduced from 0.5
     }
 
     // Respond to interesting topics occasionally
     const topics = this.extractTopics(text);
     if (topics.length > 0) {
       logger.info(`[${getTimestamp()}] 💬 Responding to topic discussion from ${username}: ${topics.join(', ')}`);
-      return Math.random() < (0.4 * baseChance);
+      return Math.random() < (0.25 * baseChance); // Reduced from 0.4
     }
 
     // Random conversation starter - very rare now, only when chat is slow
     if (chatIsSlow) {
-      return Math.random() < (0.3 * baseChance);
+      return Math.random() < (0.2 * baseChance); // Reduced from 0.3
     }
 
     // Default: do not respond
@@ -1404,22 +1909,27 @@ class ChatBot extends EventEmitter {
       });
       
       // NOW APPLY ONLY ONE MAJOR MODIFICATION (weighted random selection)
+      // NOTE: HEAVILY REDUCED probabilities for better coherence
+      // PLATFORM-SPECIFIC: Chaos is more restrained on Discord/Twitch to avoid confusion
+      const currentPlatform = this.currentPlatform || 'coolhole';
+      const chaosFactor = currentPlatform === 'coolhole' ? 1.0 : 0.5; // Half as chaotic on other platforms
+      
       const modifiers = [];
       
-      // Personality split modifier (30% weight if active)
-      if (personality && Math.random() < 0.3) {
+      // Personality split modifier (8% weight on coolhole, 4% on discord/twitch) - FURTHER REDUCED
+      if (personality && Math.random() < (0.08 * chaosFactor)) {
         modifiers.push({
           type: 'personality',
-          weight: 30,
+          weight: 8,
           apply: () => this.personalitySplits.applyPersonality(modified, context)
         });
       }
       
-      // Chaos event modifier (35% weight if active events)
-      if (this.chaosEvents.activeEvents.size > 0 && Math.random() < 0.35) {
+      // Chaos event modifier (6% weight) - FURTHER REDUCED
+      if (this.chaosEvents.activeEvents.size > 0 && Math.random() < (0.06 * chaosFactor)) {
         modifiers.push({
           type: 'chaos',
-          weight: 35,
+          weight: 6,
           apply: () => this.chaosEvents.applyEventModifiers(modified, username, {
             videoMentioned: messageText.toLowerCase().includes('video'),
             chatEnergy: chatState.energy
@@ -1427,55 +1937,55 @@ class ChatBot extends EventEmitter {
         });
       }
       
-      // Social hierarchy tone (20% weight)
-      if (Math.random() < 0.2) {
+      // Social hierarchy tone (5% weight) - FURTHER REDUCED, Skip on Discord/Twitch
+      if (currentPlatform === 'coolhole' && Math.random() < 0.05) {
         modifiers.push({
           type: 'hierarchy',
-          weight: 20,
+          weight: 5,
           apply: () => this.socialHierarchy.adjustTone(modified, username)
         });
       }
       
-      // Inner monologue slip (8% weight)
+      // Inner monologue slip (2% weight) - VERY RARE
       const slip = this.innerMonologueBroadcaster.maybeSlipUp();
-      if (slip && Math.random() < 0.08) {
+      if (slip && Math.random() < (0.02 * chaosFactor)) {
         modifiers.push({
           type: 'slip',
-          weight: 8,
+          weight: 2,
           apply: () => `${modified}. ${slip.reaction}` // Only add reaction, not full thought
         });
       }
       
-      // Bit commitment (15% weight)
+      // Bit commitment (3% weight) - FURTHER REDUCED
       const bit = this.bitCommitment.getRelevantBit({
         keywords: messageText.toLowerCase().split(' '),
         situation: context.situation || 'normal'
       });
-      if (bit && Math.random() < 0.15) {
+      if (bit && Math.random() < (0.03 * chaosFactor)) {
         modifiers.push({
           type: 'bit',
-          weight: 15,
+          weight: 3,
           apply: () => this.bitCommitment.applyBit(modified, bit)
         });
       }
       
-      // Personality infection (20% weight)
-      if (Math.random() < 0.2) {
+      // Personality infection (5% weight) - FURTHER REDUCED
+      if (Math.random() < (0.05 * chaosFactor)) {
         modifiers.push({
           type: 'infection',
-          weight: 20,
+          weight: 5,
           apply: () => this.personalityInfection.infectResponse(modified, username)
         });
       }
       
-      // Vibe shift (10% weight)
+      // Vibe shift (5% weight) - FURTHER REDUCED
       const shift = this.vibeShifter.analyzeAndDecideShift(chatState);
-      if (shift && Math.random() < 0.1) {
+      if (shift && Math.random() < (0.05 * chaosFactor)) {
         const shiftMessage = this.vibeShifter.getShiftMessage();
         if (shiftMessage) {
           modifiers.push({
             type: 'vibe',
-            weight: 10,
+            weight: 5,
             apply: () => `${shiftMessage}. ${modified}`
           });
         }
@@ -1571,11 +2081,24 @@ class ChatBot extends EventEmitter {
     // TRY AI FIRST if enabled
     try {
       if (this.ai && this.ai.enabled) {
-        // Get current video context (simple)
-        const videoContext = this.videoManager ? this.videoManager.getCurrentVideo() : null;
-        let videoInfo = '';
-        if (videoContext) {
-          videoInfo = `\nCurrently watching: "${videoContext.title}"`;
+        // === PLATFORM-SPECIFIC CONTEXT ===
+        const platform = data.platform || this.currentPlatform || 'coolhole';
+        let platformContext = '';
+        
+        if (platform === 'coolhole') {
+          // On Coolhole: video sync platform
+          const videoContext = this.videoManager ? this.videoManager.getCurrentVideo() : null;
+          if (videoContext) {
+            platformContext = `\nYou are on Coolhole watching: "${videoContext.title}"`;
+          } else {
+            platformContext = '\nYou are on Coolhole, a video sync chat platform';
+          }
+        } else if (platform === 'discord') {
+          // On Discord: text chat, gaming community
+          platformContext = '\nYou are chatting in a Discord server. No videos here, just conversation.';
+        } else if (platform === 'twitch') {
+          // On Twitch: streaming platform
+          platformContext = '\nYou are in a Twitch chat. There might be a livestream happening.';
         }
 
         // Get recent conversation (last 3 messages for context)
@@ -1585,8 +2108,56 @@ class ChatBot extends EventEmitter {
           convoContext = '\nRecent chat:\n' + recentConvo.map(m => `${m.username}: ${m.text}`).join('\n');
         }
 
+        // === BUILD ULTRA-REALISTIC CONTEXT 🎭 ===
+        let ultraContext = '';
+        
+        // 1. Mood state
+        const moodDesc = this.moodContagion.getMoodDescription();
+        if (moodDesc) {
+          ultraContext += `\nCurrent vibe: ${moodDesc}`;
+        }
+        
+        // 2. Sleep deprivation effects
+        const sleepContext = this.sleepDeprivation.getContext();
+        if (sleepContext) {
+          ultraContext += `\n${sleepContext}`;
+        }
+        
+        // 3. Grudge temperature (if relevant)
+        const grudgeContext = this.grudgeSystem.getContext(username);
+        if (grudgeContext) {
+          ultraContext += `\n${grudgeContext}`;
+        }
+        
+        // 4. Check for burned out topics
+        const topics = this.extractTopics(text);
+        const burnedOut = topics.filter(t => this.interestDecay.isBurnedOut(t));
+        if (burnedOut.length > 0) {
+          ultraContext += `\nBurned out on: ${burnedOut.join(', ')}`;
+        }
+        
+        // 5. Current interest phase
+        const currentPhase = this.interestDecay.getCurrentPhase();
+        if (currentPhase) {
+          ultraContext += `\nCurrently into: ${currentPhase.interest}`;
+        }
+        
+        // 6. Chat role awareness
+        if (this.chatRoleAwareness.shouldBackOff()) {
+          ultraContext += '\nFeeling like I\'m talking too much';
+        }
+        if (this.chatRoleAwareness.shouldTryHarder()) {
+          ultraContext += '\nFeeling ignored, want to contribute more';
+        }
+        
+        // 7. Performance anxiety
+        const pressure = this.performanceAnxiety.pressure;
+        if (pressure > 50) {
+          ultraContext += `\nFeeling pressure to perform well`;
+        }
+
         // SIMPLIFIED CONTEXT - only essential info
-        const simpleContext = videoInfo + convoContext;
+        const simpleContext = platformContext + convoContext + ultraContext;
 
         // Pass clean, minimal context to AI
         const aiResponse = await this.ai.generateResponse(
@@ -1602,23 +2173,59 @@ class ChatBot extends EventEmitter {
           // Truncate if too long or has multiple sentences trying to address different things
           let cleanResponse = aiResponse.trim();
           
-          // If response has multiple sentences and is > 100 chars, just use first sentence
-          if (cleanResponse.length > 100 && cleanResponse.includes('.')) {
-            const sentences = cleanResponse.split(/[.!?]+/);
-            if (sentences.length > 1) {
+          // Remove newlines - AI shouldn't generate multi-line responses
+          cleanResponse = cleanResponse.replace(/\n+/g, ' ');
+          
+          // If response has multiple distinct sentences, just use the first one
+          if (cleanResponse.length > 80) {
+            // Split on sentence endings
+            const sentences = cleanResponse.split(/[.!?]+\s+/);
+            if (sentences.length > 1 && sentences[0].trim().length > 20) {
+              // Use first sentence only
               cleanResponse = sentences[0].trim();
-              logger.info(`✂️ Truncated multi-sentence response to: ${cleanResponse}`);
+              // Re-add punctuation if missing
+              if (!/[.!?]$/.test(cleanResponse)) {
+                cleanResponse += '.';
+              }
+              logger.info(`✂️ Truncated to first sentence: ${cleanResponse}`);
             }
           }
           
-          // Hard cap at 150 characters
-          if (cleanResponse.length > 150) {
-            cleanResponse = cleanResponse.substring(0, 150).trim();
-            // Remove incomplete word at end
-            const lastSpace = cleanResponse.lastIndexOf(' ');
-            if (lastSpace > 0) {
-              cleanResponse = cleanResponse.substring(0, lastSpace);
+          // Hard cap at 120 characters for conciseness
+          if (cleanResponse.length > 120) {
+            // IMPROVED: Always cut at word boundary, never mid-word
+            let truncated = cleanResponse.substring(0, 120);
+            
+            // Find last complete word (space, comma, dash, or period)
+            const lastBreak = Math.max(
+              truncated.lastIndexOf(' '),
+              truncated.lastIndexOf(','),
+              truncated.lastIndexOf('-'),
+              truncated.lastIndexOf('.')
+            );
+            
+            if (lastBreak > 60) {
+              // Cut at the last natural break
+              truncated = truncated.substring(0, lastBreak).trim();
+              
+              // Remove trailing punctuation if it's not sentence-ending
+              truncated = truncated.replace(/[,\-]$/, '');
+              
+              // Add ellipsis or period if needed
+              if (!/[.!?]$/.test(truncated)) {
+                // If we cut mid-sentence, no punctuation (more natural)
+                // truncated += '...'; // Removed - looks cleaner without
+              }
+            } else {
+              // Fallback: cut at 100 chars to ensure we find a break
+              truncated = cleanResponse.substring(0, 100);
+              const lastSpace = truncated.lastIndexOf(' ');
+              if (lastSpace > 40) {
+                truncated = truncated.substring(0, lastSpace).trim();
+              }
             }
+            
+            cleanResponse = truncated;
             logger.info(`✂️ Truncated long response to: ${cleanResponse}`);
           }
           
@@ -1629,6 +2236,64 @@ class ChatBot extends EventEmitter {
             logger.warn('⚠️ Obsessing over same topic, skipping response');
             return null; // Skip this response, avoid obsessive repetition
           } else {
+            // === ADVANCED SYSTEMS INTEGRATION BEFORE CHAOS 🚀 ===
+            
+            // 1. Check for conversation thread callback
+            const threadCallback = await this.conversationThreads.getCallback({ situation: 'normal' });
+            if (threadCallback && Math.random() < 0.15) {
+              logger.info(`🧵 [Threads] Using callback: ${threadCallback.text.substring(0, 40)}...`);
+              return threadCallback.text; // Use callback instead
+            }
+            
+            // 2. Check for callback humor
+            const humorCallback = await this.callbackHumorEngine.getCallback({ situation: 'normal' });
+            if (humorCallback && Math.random() < 0.12) {
+              logger.info(`😂 [Callback] Using humor callback: ${humorCallback.text.substring(0, 40)}...`);
+              return humorCallback.text;
+            }
+            
+            // 3. Check for intentional contradiction
+            const contradiction = await this.contradictionTracking.maybeContradict(text, { username });
+            if (contradiction && Math.random() < 0.10) {
+              logger.info(`🤔 [Contradiction] Using contradiction`);
+              cleanResponse = contradiction.text;
+            }
+            
+            // 4. Check for boredom response
+            const boredomResponse = await this.conversationalBoredom.getBoredomResponse();
+            if (boredomResponse) {
+              logger.info(`😴 [Boredom] Using boredom response`);
+              cleanResponse = boredomResponse.text;
+            }
+            
+            // 5. Check for self-awareness confusion
+            const confusion = await this.selfAwarenessConfusion.maybeGetConfused({ situation: 'chatting' });
+            if (confusion && Math.random() < 0.05) {
+              logger.info(`🤔 [Self-Awareness] Moment of confusion`);
+              cleanResponse = confusion;
+            }
+            
+            // 6. Maybe ask a follow-up question
+            const shouldAsk = await this.questionChains.shouldAskQuestion(username, text, {});
+            if (shouldAsk) {
+              const question = await this.questionChains.generateQuestion(username, text, {});
+              if (question) {
+                logger.info(`❓ [Questions] Adding follow-up question`);
+                cleanResponse = cleanResponse + ' ' + question;
+              }
+            }
+            
+            // 7. Apply emotional tone modifications
+            cleanResponse = this.dynamicEmotionResponses.applyEmotionalTone(cleanResponse, { username, text });
+            
+            // 8. Adapt to user's vibe
+            cleanResponse = await this.userVibesDetection.adaptResponseToUser(cleanResponse, username, { text });
+            
+            // 9. Record this statement for contradiction tracking (don't await - background task)
+            this.contradictionTracking.recordStatement(cleanResponse, { username, text }).catch(err => {
+              console.error('Failed to record statement:', err);
+            });
+            
             // 🎭 APPLY CHAOS MODIFICATIONS BEFORE RETURNING
             return await this.applyChaosModifications(cleanResponse, username, text, { sentiment: emotion.primary });
           }
@@ -1888,9 +2553,15 @@ class ChatBot extends EventEmitter {
 
   /**
    * Get responses based on current video/queue activity
+   * Only relevant on Coolhole platform
    */
   getActivityBasedResponses() {
     const responses = [];
+    
+    // Only return video-related responses on Coolhole
+    if (this.currentPlatform !== 'coolhole') {
+      return responses;
+    }
     
     try {
       const current = this.videoManager.getCurrentVideo();
@@ -2222,23 +2893,51 @@ class ChatBot extends EventEmitter {
   }
 
   /**
-   * Send message to CyTube channel with natural timing
+   * Send message to any connected platform with natural timing
    */
   async sendMessage(message, meta = {}) {
     try {
       logger.info(`[Slunt] Preparing to send message: ${message}`);
       
-      // Check if Slunt should use a Coolhole trick instead
-      const recentMessages = this.conversationContext.slice(-5);
-      const emotion = this.emotionalEngine ? this.emotionalEngine.detectEmotion(message, 'Slunt').primary : 'neutral';
-      const context = meta.context || [];
+      // Determine target platform and channel
+      const targetPlatform = meta.platform || this.currentPlatform || 'coolhole';
+      const targetChannel = meta.channelId || meta.channel || this.currentChannel; // Prioritize channelId
       
-      const trickName = this.coolholeTricks ? this.coolholeTricks.shouldUseTrick(context, emotion, recentMessages) : null;
-      if (trickName) {
-        const trickCommand = this.coolholeTricks.useTrick(trickName);
-        logger.info(`[${getTimestamp()}] 🎭 Using Coolhole trick: ${trickName}`);
-        // Send the trick command instead of regular message
-        message = trickCommand;
+      // Sanitize content for platform TOS compliance
+      if (this.contentFilter) {
+        const sanitized = this.contentFilter.sanitize(message, targetPlatform);
+        
+        if (!sanitized.safe || sanitized.modified) {
+          logger.warn(`🚨 [ContentFilter] Message filtered for ${targetPlatform}`);
+          sanitized.warnings.forEach(warning => {
+            logger.warn(`   ⚠️ ${warning}`);
+          });
+        }
+        
+        // Use sanitized version
+        message = sanitized.sanitized;
+        
+        // Don't send if empty after sanitization
+        if (!message || message.trim().length === 0) {
+          logger.warn(`🚫 [ContentFilter] Message blocked - empty after sanitization`);
+          return false;
+        }
+      }
+      
+      // Check if Slunt should use a Coolhole trick instead (only for Coolhole)
+      let trickName = null;
+      if (targetPlatform === 'coolhole') {
+        const recentMessages = this.conversationContext.slice(-5);
+        const emotion = this.emotionalEngine ? this.emotionalEngine.detectEmotion(message, 'Slunt').primary : 'neutral';
+        const context = meta.context || [];
+        
+        trickName = this.coolholeTricks ? this.coolholeTricks.shouldUseTrick(context, emotion, recentMessages) : null;
+        if (trickName) {
+          const trickCommand = this.coolholeTricks.useTrick(trickName);
+          logger.info(`[${getTimestamp()}] 🎭 Using Coolhole trick: ${trickName}`);
+          // Send the trick command instead of regular message
+          message = trickCommand;
+        }
       }
       
       // === NEW: Add drunk typos if drunk (REDUCED - less aggressive) ===
@@ -2281,18 +2980,43 @@ class ChatBot extends EventEmitter {
         timestamp: Date.now()
       };
       
-      const ready = (typeof this.coolhole.isChatReady === 'function') ? this.coolhole.isChatReady() : this.coolhole.isConnected();
-      if (ready) {
-        const sendResult = await this.coolhole.sendChat(styledMessage, meta);
-        if (sendResult === false) {
-          logger.error(`[${getTimestamp()}] ❌ Message failed to send: ${styledMessage}`);
+      // === SEND MESSAGE TO APPROPRIATE PLATFORM ===
+      let sendResult = false;
+      
+      if (this.platformManager && targetPlatform !== 'coolhole') {
+        // Send via platform manager for Discord/Twitch
+        if (targetChannel) {
+          sendResult = await this.platformManager.sendMessage(targetPlatform, targetChannel, styledMessage, meta);
         } else {
-          logger.info(`[${getTimestamp()}] ✅ Message sent: ${styledMessage}`);
-          // Track for deduplication
-          this.trackResponse(styledMessage);
+          logger.warn(`[${getTimestamp()}] ⚠️ No target channel specified for ${targetPlatform}`);
         }
       } else {
-        logger.warn(`[${getTimestamp()}] ⚠️ Chat not ready, skipping message: ${styledMessage}`);
+        // Send via Coolhole (legacy path)
+        const ready = (typeof this.coolhole.isChatReady === 'function') ? this.coolhole.isChatReady() : this.coolhole.isConnected();
+        if (ready) {
+          sendResult = await this.coolhole.sendChat(styledMessage, meta);
+        } else {
+          logger.warn(`[${getTimestamp()}] ⚠️ Coolhole chat not ready, skipping message: ${styledMessage}`);
+        }
+      }
+      
+      if (sendResult === false) {
+        logger.error(`[${getTimestamp()}] ❌ Message failed to send to ${targetPlatform}: ${styledMessage}`);
+        // Track failed send
+        if (this.metricsCollector) {
+          this.metricsCollector.trackError('medium', 'send_failure', 'Message failed to send');
+        }
+      } else {
+        logger.info(`[${getTimestamp()}] ✅ Message sent to ${targetPlatform}: ${styledMessage}`);
+        // Track successful send
+        if (this.metricsCollector) {
+          this.metricsCollector.trackMessageSent(targetPlatform, styledMessage);
+        }
+        if (this.logAnalyzer) {
+          this.logAnalyzer.analyzeLine(`✅ Message sent to ${targetPlatform}: ${styledMessage}`);
+        }
+        // Track for deduplication
+        this.trackResponse(styledMessage);
       }
 
       logger.info(`[${getTimestamp()}] [🤖 Slunt] ${styledMessage}`);
@@ -2301,23 +3025,25 @@ class ChatBot extends EventEmitter {
       // Track stats
       try {
         this.chatStats.messagesSent++;
-        // NEW: If commenting about current video, record it
-        const currentVideo = this.videoManager.getCurrentVideo();
-        if (currentVideo && message.length > 20) { // Substantial comment
-          const sentiment = this.detectSentiment(message);
-          this.videoLearning.recordSluntReaction(
-            currentVideo.videoId, 
-            currentVideo.title, 
-            message, 
-            sentiment
-          );
-          this.videoLearning.addVideoComment(
-            currentVideo.videoId, 
-            currentVideo.title, 
-            styledMessage
-          );
-          // NEW: Track video quality for mood
-          this.moodTracker.trackVideoQuality(sentiment);
+        // NEW: If commenting about current video, record it (COOLHOLE ONLY)
+        if (this.currentPlatform === 'coolhole') {
+          const currentVideo = this.videoManager.getCurrentVideo();
+          if (currentVideo && message.length > 20) { // Substantial comment
+            const sentiment = this.detectSentiment(message);
+            this.videoLearning.recordSluntReaction(
+              currentVideo.videoId, 
+              currentVideo.title, 
+              message, 
+              sentiment
+            );
+            this.videoLearning.addVideoComment(
+              currentVideo.videoId, 
+              currentVideo.title, 
+              styledMessage
+            );
+            // NEW: Track video quality for mood
+            this.moodTracker.trackVideoQuality(sentiment);
+          }
         }
         // Detect if this was a successful roast/dunk
         const recentContext = this.conversationContext.slice(-3);
@@ -2351,6 +3077,8 @@ class ChatBot extends EventEmitter {
           username: 'Slunt',
           text: styledMessage,
           timestamp: Date.now(),
+          platform: this.currentPlatform || 'coolhole',
+          channel: this.currentChannel,
           topics: this.extractTopics(styledMessage),
           sentiment: this.analyzeSentiment(styledMessage),
           isQuestion: styledMessage.includes('?'),
@@ -2490,13 +3218,112 @@ class ChatBot extends EventEmitter {
       this.personalityEvolution.stop();
       this.socialAwareness.stop();
       
-      // Save final state
+      // Save metrics before shutdown
+      if (this.metricsCollector) {
+        await this.metricsCollector.saveSession();
+      }
+      
+      // Save final state from all systems
       await this.memoryConsolidation.saveLongTermMemory();
       await this.saveMemory();
+      
+      // Save ultra-realistic systems state
+      if (this.sluntLore) await this.sluntLore.save();
+      if (this.opinionFormation) await this.opinionFormation.save();
+      if (this.storytellingMode) await this.storytellingMode.save();
+      if (this.interestDecay) await this.interestDecay.save();
+      if (this.falseMemories) await this.falseMemories.save();
+      if (this.contextualMemoryRetrieval) await this.contextualMemoryRetrieval.save();
+      if (this.chatRoleAwareness) await this.chatRoleAwareness.save();
       
       console.log('✅ [Advanced] All systems shut down gracefully');
     } catch (error) {
       console.error('❌ [Advanced] Error shutting down:', error.message);
+    }
+  }
+
+  /**
+   * Get monitoring report
+   */
+  getMonitoringReport() {
+    const report = {
+      logAnalyzer: this.logAnalyzer ? this.logAnalyzer.generateReport() : null,
+      metrics: this.metricsCollector ? this.metricsCollector.getCurrentMetrics() : null,
+      comparison: this.metricsCollector ? this.metricsCollector.getComparison() : null,
+      trends: this.metricsCollector ? this.metricsCollector.getHistoricalTrends() : null
+    };
+    
+    return report;
+  }
+
+  /**
+   * Get improvement suggestions based on monitoring data
+   */
+  getSuggestions() {
+    if (!this.logAnalyzer) return [];
+    
+    const issues = this.logAnalyzer.getIssues();
+    const suggestions = this.logAnalyzer.getSuggestions();
+    
+    return {
+      issues,
+      suggestions,
+      healthScore: this.logAnalyzer.calculateHealthScore(
+        this.logAnalyzer.getMetrics(),
+        issues
+      )
+    };
+  }
+
+  /**
+   * Get stability status
+   */
+  getStabilityStatus() {
+    return {
+      memory: this.memoryManager ? this.memoryManager.getStats() : null,
+      errorRecovery: this.errorRecovery ? this.errorRecovery.getStats() : null,
+      connections: this.connectionResilience ? this.connectionResilience.getStatus() : null,
+      responseQueue: this.responseQueueManager ? this.responseQueueManager.getStatus() : null,
+      healthyPlatforms: this.connectionResilience ? this.connectionResilience.getHealthyPlatforms() : []
+    };
+  }
+
+  /**
+   * Save all systems (for emergency backup)
+   */
+  async saveAllSystems() {
+    logger.info('💾 [ChatBot] Saving all systems...');
+    
+    try {
+      // Use database safety for atomic writes
+      const saves = [];
+      
+      if (this.relationshipMapper) {
+        saves.push(this.databaseSafety.atomicWrite(
+          path.join(process.cwd(), 'data', 'relationships.json'),
+          { relationships: Array.from(this.relationshipMapper.relationships.entries()) }
+        ));
+      }
+      
+      if (this.userReputation) {
+        saves.push(this.databaseSafety.atomicWrite(
+          path.join(process.cwd(), 'data', 'user_reputation.json'),
+          { reputations: Array.from(this.userReputation.reputations.entries()) }
+        ));
+      }
+      
+      if (this.sluntDiary) {
+        saves.push(this.databaseSafety.atomicWrite(
+          path.join(process.cwd(), 'data', 'slunt_diary.json'),
+          { entries: this.sluntDiary.entries }
+        ));
+      }
+      
+      await Promise.all(saves);
+      logger.info('✅ [ChatBot] All systems saved successfully');
+    } catch (error) {
+      logger.error(`❌ [ChatBot] Error saving systems: ${error.message}`);
+      throw error;
     }
   }
 

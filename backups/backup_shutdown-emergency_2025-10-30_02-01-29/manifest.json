@@ -1,0 +1,31 @@
+{
+  "timestamp": "2025-10-30T09:01:29.302Z",
+  "label": "shutdown-emergency",
+  "filesCount": 23,
+  "totalSize": 2879881,
+  "files": [
+    "auth-storage.json",
+    "callback_humor.json",
+    "chat_memory.json",
+    "contradictions.json",
+    "conversational_boredom.json",
+    "conversational_goals.json",
+    "conversation_threads.json",
+    "coolpoints.json",
+    "diary.json",
+    "false_memories.json",
+    "gold_system.json",
+    "longterm_memory.json",
+    "peer_influence.json",
+    "personality_infection.json",
+    "predictions.json",
+    "relationships.json",
+    "sleep_deprivation.json",
+    "slunt_brain.json",
+    "slunt_lore.json",
+    "slunt_memory.json",
+    "transactions.json",
+    "user_reputations.json",
+    "user_vibes.json"
+  ]
+}

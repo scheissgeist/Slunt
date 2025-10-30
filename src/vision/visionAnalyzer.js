@@ -79,7 +79,7 @@ class VisionAnalyzer extends EventEmitter {
   async cleanupOldScreenshots() {
     try {
       const files = await fs.readdir(this.screenshotsDir);
-      const oneDayAgo = Date.now() - (24 * 60 * 60 * 1000);
+      const oneHourAgo = Date.now() - (60 * 60 * 1000); // 1 hour instead of 1 day
       let deletedCount = 0;
 
       for (const file of files) {
@@ -87,7 +87,7 @@ class VisionAnalyzer extends EventEmitter {
           const filepath = path.join(this.screenshotsDir, file);
           const stats = await fs.stat(filepath);
           
-          if (stats.mtimeMs < oneDayAgo) {
+          if (stats.mtimeMs < oneHourAgo) {
             await fs.unlink(filepath);
             deletedCount++;
           }
@@ -199,10 +199,29 @@ class VisionAnalyzer extends EventEmitter {
         const removed = this.visualMemory.screenshots.shift();
         try {
           await fs.unlink(path.join(this.screenshotsDir, removed.filename));
+          console.log(`🗑️ [Vision] Deleted old screenshot: ${removed.filename}`);
         } catch (e) {
           // Ignore if file doesn't exist
         }
       }
+      
+      // Also clean up screenshots older than 1 hour
+      const oneHourAgo = Date.now() - (60 * 60 * 1000);
+      for (const screenshot of this.visualMemory.screenshots) {
+        if (screenshot.timestamp < oneHourAgo) {
+          try {
+            await fs.unlink(path.join(this.screenshotsDir, screenshot.filename));
+            console.log(`🗑️ [Vision] Deleted hour-old screenshot: ${screenshot.filename}`);
+          } catch (e) {
+            // Ignore if already deleted
+          }
+        }
+      }
+      
+      // Remove old entries from memory
+      this.visualMemory.screenshots = this.visualMemory.screenshots.filter(
+        s => s.timestamp >= oneHourAgo
+      );
 
       // Emit analysis event
       this.emit('screenshotAnalyzed', {

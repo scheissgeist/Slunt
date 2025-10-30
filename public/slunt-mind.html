@@ -38,6 +38,35 @@
             color: #a78bfa;
             text-shadow: 0 0 10px rgba(167, 139, 250, 0.3);
         }
+        
+        /* Dashboard Navigation */
+        .dashboard-nav {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1e2538;
+        }
+        
+        .dashboard-nav-item {
+            display: block;
+            padding: 10px 16px;
+            margin: 5px 0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #e0e0e0;
+            transition: all 0.3s;
+            font-size: 0.95em;
+        }
+        
+        .dashboard-nav-item:hover {
+            background: rgba(167, 139, 250, 0.1);
+            color: #a78bfa;
+        }
+        
+        .dashboard-nav-item.active {
+            background: rgba(167, 139, 250, 0.2);
+            color: #a78bfa;
+            font-weight: bold;
+        }
 
         .nav-item {
             padding: 12px 16px;
@@ -527,6 +556,16 @@
 <body>
     <div class="sidebar">
         <h1>🧠 Slunt's Mind</h1>
+        
+        <!-- Dashboard Navigation -->
+        <div class="dashboard-nav">
+            <a href="/" class="dashboard-nav-item">📊 Main Dashboard</a>
+            <a href="/platforms" class="dashboard-nav-item">🎛️ Platforms</a>
+            <a href="/mind" class="dashboard-nav-item active">🧠 Slunt's Mind</a>
+            <a href="/live" class="dashboard-nav-item">📡 Live Feed</a>
+        </div>
+        
+        <!-- Mind Sections -->
         <div class="nav-item active" onclick="showSection('overview')">📊 Overview</div>
         <div class="nav-item" onclick="showSection('personality')">🎭 Personality</div>
         <div class="nav-item" onclick="showSection('relationships')">🤝 Relationships</div>

@@ -24,9 +24,30 @@ class RelationshipMapping {
       const data = await fs.readFile(this.savePath, 'utf8');
       const parsed = JSON.parse(data);
       
-      // Convert arrays back to Maps
+      // Convert arrays back to Maps with deduplication
       if (parsed.relationships) {
-        this.relationships = new Map(parsed.relationships);
+        this.relationships = new Map();
+        const seenKeys = new Set();
+        
+        for (const [key, value] of parsed.relationships) {
+          // Normalize the key to ensure no duplicates
+          const users = key.split('-').sort();
+          const normalizedKey = users.join('-');
+          
+          // Only add if we haven't seen this relationship yet
+          if (!seenKeys.has(normalizedKey)) {
+            seenKeys.add(normalizedKey);
+            this.relationships.set(normalizedKey, value);
+          } else {
+            // Merge with existing entry if duplicate found
+            const existing = this.relationships.get(normalizedKey);
+            existing.interactions += value.interactions || 0;
+            existing.strength = Math.max(existing.strength, value.strength || 0);
+            existing.mentions += value.mentions || 0;
+            existing.conversations += value.conversations || 0;
+            console.log(`🔗 [Relationships] Merged duplicate: ${normalizedKey}`);
+          }
+        }
       }
       
       // Restore socialGraph with nested Maps
@@ -44,7 +65,7 @@ class RelationshipMapping {
       
       this.friendGroups = parsed.friendGroups || [];
       
-      console.log(`🔗 [Relationships] Loaded ${this.relationships.size} relationships from disk`);
+      console.log(`🔗 [Relationships] Loaded ${this.relationships.size} unique relationships from disk`);
     } catch (error) {
       if (error.code !== 'ENOENT') {
         console.error('🔗 [Relationships] Error loading:', error.message);

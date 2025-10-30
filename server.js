@@ -24,6 +24,24 @@ const logger = winston.createLogger({
 });
 
 const SluntManager = require('./src/services/SluntManager');
+const BackupManager = require('./src/services/BackupManager');
+const RateLimiter = require('./src/services/RateLimiter');
+const ContentFilter = require('./src/services/ContentFilter');
+const GracefulShutdown = require('./src/stability/GracefulShutdown');
+
+// Initialize backup and rate limiting systems
+const backupManager = new BackupManager({
+  maxBackups: 7, // Keep 7 days of backups
+  autoBackupInterval: 24 * 60 * 60 * 1000 // Backup every 24 hours
+});
+
+const rateLimiter = new RateLimiter({
+  maxMessagesPerMinute: 15,
+  maxCommandsPerMinute: 5,
+  maxGlobalMessagesPerMinute: 100
+});
+
+const contentFilter = new ContentFilter();
 
 // Helper for timestamps
 function getTimestamp() {
@@ -85,6 +103,11 @@ const CoolholeExplorer = require('./src/coolhole/coolholeExplorer');
 const VisionAnalyzer = require('./src/vision/visionAnalyzer');
 const CursorController = require('./src/services/CursorController');
 
+// Multi-platform support
+const PlatformManager = require('./src/io/platformManager');
+const DiscordClient = require('./src/io/discordClient');
+const TwitchClient = require('./src/io/twitchClient');
+
 const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
@@ -118,11 +141,21 @@ app.get('/mind', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'slunt-mind.html'));
 });
 
+// Serve Multi-Platform Control Center
+app.get('/platforms', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'multi-platform-dashboard.html'));
+});
+
 // Initialize bot components
 const videoManager = new VideoManager();
 const coolholeClient = new CoolholeClient();
 const chatBot = new ChatBot(coolholeClient, videoManager);
 const sluntManager = new SluntManager();
+
+// Initialize multi-platform manager
+const platformManager = new PlatformManager();
+let discordClient = null;
+let twitchClient = null;
 
 // Initialize feature exploration and vision
 let coolholeExplorer = null;
@@ -157,6 +190,12 @@ setInterval(() => {
     ...stats,
     advanced: advancedStats
   });
+  
+  // Broadcast platform status
+  if (platformManager) {
+    const platformStatus = platformManager.getStatus();
+    io.emit('platform:status', platformStatus);
+  }
   
   // Send user profiles
   const userProfiles = Array.from(chatBot.userProfiles.entries()).map(([username, profile]) => ({
@@ -468,6 +507,71 @@ app.get('/api/bot/stats', (req, res) => {
       ...stats,
       advanced: advancedStats
     });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// NEW: Monitoring & Metrics Endpoints
+app.get('/api/monitoring/report', (req, res) => {
+  try {
+    const report = chatBot.getMonitoringReport();
+    res.json(report);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/monitoring/suggestions', (req, res) => {
+  try {
+    const suggestions = chatBot.getSuggestions();
+    res.json(suggestions);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/monitoring/health', (req, res) => {
+  try {
+    const report = chatBot.getMonitoringReport();
+    const healthScore = report.logAnalyzer ? report.logAnalyzer.healthScore : 100;
+    
+    res.json({
+      healthScore,
+      status: healthScore > 80 ? 'excellent' : healthScore > 60 ? 'good' : healthScore > 40 ? 'degraded' : 'critical',
+      metrics: report.metrics,
+      issues: report.logAnalyzer ? report.logAnalyzer.issues : [],
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Stability monitoring endpoints
+app.get('/api/stability/status', (req, res) => {
+  try {
+    const status = chatBot.getStabilityStatus();
+    res.json(status);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/stability/errors', (req, res) => {
+  try {
+    const errorReport = chatBot.errorRecovery.getErrorReport();
+    res.json(errorReport);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+app.get('/api/stability/memory', (req, res) => {
+  try {
+    const memoryStats = chatBot.memoryManager.getStats();
+    const usage = chatBot.memoryManager.checkMemoryUsage();
+    res.json({ ...memoryStats, currentUsage: usage });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1033,12 +1137,128 @@ io.on('connection', (socket) => {
     connectedClients--;
     console.log(`❌ [Socket.IO] Client disconnected: ${socket.id} (Remaining: ${connectedClients})`);
   });
+  
+  // Multi-platform dashboard endpoints
+  socket.on('request_status', () => {
+    const status = platformManager.getStatus();
+    socket.emit('platform:status', status);
+  });
+  
+  socket.on('update_personality', (settings) => {
+    if (chatBot && chatBot.personality) {
+      chatBot.personality.chattiness = settings.chattiness || chatBot.personality.chattiness;
+      chatBot.personality.humor = settings.humor || chatBot.personality.humor;
+      chatBot.personality.edginess = settings.edginess || chatBot.personality.edginess;
+      console.log('🎭 Personality updated:', settings);
+    }
+  });
+  
+  socket.on('mute_bot', (data) => {
+    const duration = data.duration || 300000;
+    chatBot.muted = true;
+    setTimeout(() => {
+      chatBot.muted = false;
+      io.emit('bot_unmuted');
+    }, duration);
+    console.log(`🔇 Bot muted for ${duration / 1000} seconds`);
+  });
+  
+  socket.on('clear_memory', () => {
+    if (chatBot) {
+      chatBot.conversationContext = [];
+      console.log('🧹 Recent memory cleared');
+    }
+  });
+  
+  // Backup management endpoints
+  socket.on('backup:create', async (data) => {
+    const label = data?.label || 'manual';
+    const backupPath = await backupManager.createBackup(label);
+    socket.emit('backup:created', { success: !!backupPath, path: backupPath });
+  });
+  
+  socket.on('backup:list', async () => {
+    const backups = await backupManager.listBackups();
+    socket.emit('backup:list', backups);
+  });
+  
+  socket.on('backup:restore', async (data) => {
+    if (data && data.backupName) {
+      const success = await backupManager.restoreBackup(data.backupName);
+      socket.emit('backup:restored', { success, backupName: data.backupName });
+    }
+  });
+  
+  socket.on('backup:stats', async () => {
+    const stats = await backupManager.getStats();
+    socket.emit('backup:stats', stats);
+  });
+  
+  // Rate limiter stats endpoint
+  socket.on('ratelimit:stats', () => {
+    const stats = rateLimiter.getStats();
+    socket.emit('ratelimit:stats', stats);
+  });
 });
 
 // Initialize Coolhole connection (optional for testing)
 if (enableCoolhole) {
-  console.log('Connecting to Coolhole server...');
-  coolholeClient.connect(process.env.COOLHOLE_SERVER || 'wss://coolhole.org/socket.io/');
+  // Wrap in async IIFE to use await
+  (async () => {
+    // Register Coolhole as a platform (will be connected by platformManager.initialize())
+    platformManager.registerPlatform('coolhole', coolholeClient);
+    
+    // Initialize Discord if configured
+    if (process.env.DISCORD_TOKEN) {
+      console.log('🎮 Discord credentials found, initializing...');
+      discordClient = new DiscordClient({
+        token: process.env.DISCORD_TOKEN,
+        clientId: process.env.DISCORD_CLIENT_ID,
+        guildIds: process.env.DISCORD_GUILD_IDS?.split(',') || []
+      });
+      platformManager.registerPlatform('discord', discordClient);
+    }
+    
+    // Initialize Twitch if configured
+    if (process.env.TWITCH_USERNAME && process.env.TWITCH_OAUTH_TOKEN) {
+      console.log('📺 Twitch credentials found, initializing...');
+      twitchClient = new TwitchClient({
+        username: process.env.TWITCH_USERNAME,
+        token: process.env.TWITCH_OAUTH_TOKEN,
+        channels: process.env.TWITCH_CHANNELS?.split(',') || []
+      });
+      platformManager.registerPlatform('twitch', twitchClient);
+    }
+    
+    // Setup unified chat handler for all platforms
+    platformManager.on('chat', async (chatData) => {
+      try {
+        // Store channel info for responses
+        chatBot.currentPlatform = chatData.platform;
+        chatBot.currentChannel = chatData.channel || chatData.channelId;
+        
+        // Let ChatBot handle the message
+        await chatBot.handleMessage(chatData);
+      } catch (error) {
+        console.error(`❌ Error handling ${chatData.platform} message:`, error.message);
+      }
+    });
+    
+    // Give ChatBot access to platform manager for sending messages
+    chatBot.setPlatformManager(platformManager);
+    
+    // Give ChatBot access to rate limiter for spam protection
+    chatBot.setRateLimiter(rateLimiter);
+    
+    // Give ChatBot access to content filter for TOS compliance
+    chatBot.setContentFilter(contentFilter);
+    
+    // Initialize all platforms
+    console.log('🚀 Initializing all platforms...');
+    await platformManager.initialize();
+  })().catch(error => {
+    console.error('❌ Error initializing platforms:', error);
+  });
   
   // Initialize Explorer and Vision Analyzer after connection
   coolholeClient.once('connected', async () => {
@@ -1137,6 +1357,9 @@ if (enableCoolhole) {
       });
       
       console.log('🚀 Advanced features initialized!');
+      
+      // Run startup sequence - announce to chat
+      await chatBot.startupSequence();
     }
   });
 } else {
@@ -1172,9 +1395,54 @@ const killPortProcess = async (port) => {
 
 (async () => {
   await killPortProcess(PORT);
+  
+  // Initialize backup system
+  await backupManager.initialize();
+  
+  // Start cleanup interval for rate limiter
+  setInterval(() => {
+    rateLimiter.cleanup();
+  }, 300000); // Cleanup every 5 minutes
+  
   server.listen(PORT, () => {
     console.log(`Coolhole.org Chatbot Server running on port ${PORT}`);
     console.log(`Health check available at http://localhost:${PORT}/api/health`);
+    
+    // Initialize graceful shutdown handlers
+    GracefulShutdown.initialize(chatBot, server);
+    console.log('🛡️ [Stability] Graceful shutdown handlers registered');
+    
+    // Register connection resilience for platforms
+    if (chatBot.coolholeClient) {
+      chatBot.connectionResilience.registerPlatform(
+        'coolhole',
+        () => chatBot.coolholeClient.connect(),
+        () => chatBot.coolholeClient.disconnect(),
+        () => chatBot.coolholeClient.isConnected()
+      );
+    }
+    
+    if (chatBot.discordClient) {
+      chatBot.connectionResilience.registerPlatform(
+        'discord',
+        () => chatBot.discordClient.connect(),
+        () => chatBot.discordClient.disconnect(),
+        () => chatBot.discordClient.isReady()
+      );
+    }
+    
+    if (chatBot.twitchClient) {
+      chatBot.connectionResilience.registerPlatform(
+        'twitch',
+        () => chatBot.twitchClient.connect(),
+        () => chatBot.twitchClient.disconnect(),
+        () => chatBot.twitchClient.isConnected()
+      );
+    }
+    
+    // Start connection health checks
+    chatBot.connectionResilience.startHealthChecks();
+    console.log('🏥 [Stability] Connection health monitoring started');
   });
 })();
 
@@ -1190,27 +1458,84 @@ const keepAlive = setInterval(() => {
   }
 }, 30000);
 
-// Graceful shutdown
-process.on('SIGTERM', () => {
-  console.log('⚠️ SIGTERM received');
+// Graceful shutdown with memory preservation
+async function gracefulShutdown(signal) {
+  console.log(`\n⚠️ ${signal} received - saving all session data...`);
   clearInterval(keepAlive);
-  if (cursorController) cursorController.stop();
-  if (visionAnalyzer && typeof visionAnalyzer.stop === 'function') visionAnalyzer.stop();
-  coolholeClient.disconnect();
-  server.close(() => {
-    process.exit(0);
-  });
+  
+  try {
+    // Create emergency backup before shutdown
+    console.log('💾 Creating emergency backup...');
+    await backupManager.createBackup('shutdown-emergency');
+    
+    // Shutdown backup manager
+    backupManager.shutdown();
+    
+    // Stop active processes
+    if (cursorController) cursorController.stop();
+    if (visionAnalyzer && typeof visionAnalyzer.stop === 'function') visionAnalyzer.stop();
+    
+    // Save all chatBot memories and state
+    if (chatBot) {
+      console.log('💾 Saving Slunt\'s memories...');
+      
+      // Save all advanced system data
+      if (chatBot.conversationThreads) await chatBot.conversationThreads.save();
+      if (chatBot.userVibesDetection) await chatBot.userVibesDetection.save();
+      if (chatBot.callbackHumorEngine) await chatBot.callbackHumorEngine.save();
+      if (chatBot.contradictionTracking) await chatBot.contradictionTracking.save();
+      if (chatBot.conversationalBoredom) await chatBot.conversationalBoredom.save();
+      if (chatBot.peerInfluenceSystem) await chatBot.peerInfluenceSystem.save();
+      if (chatBot.conversationalGoals) await chatBot.conversationalGoals.save();
+      
+      // Save core systems
+      if (chatBot.relationshipMapping) await chatBot.relationshipMapping.saveRelationships();
+      if (chatBot.userReputationSystem) await chatBot.userReputationSystem.saveReputations();
+      if (chatBot.sluntDiary) await chatBot.sluntDiary.saveDiary();
+      // PersonalityEvolution doesn't have savePersonality method - data is auto-saved
+      // MemoryConsolidation doesn't have saveMemories method - uses consolidateMemories() instead
+      if (chatBot.videoLearning) await chatBot.videoLearning.saveVideoData();
+      if (chatBot.predictionEngine) await chatBot.predictionEngine.savePredictions();
+      if (chatBot.eventMemorySystem) await chatBot.eventMemorySystem.saveEvents();
+      if (chatBot.bitCommitment) await chatBot.bitCommitment.saveBits();
+      
+      console.log('✅ All session data saved!');
+    }
+    
+    // Disconnect from all platforms
+    console.log('📡 Disconnecting from all platforms...');
+    await platformManager.shutdown();
+    
+    // Close server
+    server.close(() => {
+      console.log('👋 Slunt signing off...');
+      process.exit(0);
+    });
+    
+    // Force exit after 5 seconds if graceful shutdown hangs
+    setTimeout(() => {
+      console.log('⏰ Forced shutdown after timeout');
+      process.exit(1);
+    }, 5000);
+    
+  } catch (error) {
+    console.error('❌ Error during shutdown:', error.message);
+    process.exit(1);
+  }
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT (Ctrl+C)'));
+
+// Catch uncaught exceptions and save before crashing
+process.on('uncaughtException', async (error) => {
+  console.error('💥 UNCAUGHT EXCEPTION:', error);
+  await gracefulShutdown('UNCAUGHT EXCEPTION');
 });
 
-process.on('SIGINT', () => {
-  console.log('⚠️ SIGINT received (Ctrl+C)');
-  clearInterval(keepAlive);
-  if (cursorController) cursorController.stop();
-  if (visionAnalyzer && typeof visionAnalyzer.stop === 'function') visionAnalyzer.stop();
-  coolholeClient.disconnect();
-  server.close(() => {
-    process.exit(0);
-  });
+process.on('unhandledRejection', async (reason, promise) => {
+  console.error('💥 UNHANDLED REJECTION at:', promise, 'reason:', reason);
+  await gracefulShutdown('UNHANDLED REJECTION');
 });
 
 module.exports = { app, server, io };

@@ -248,6 +248,53 @@ Respond as Slunt (${lengthGuidance}, lowercase, casual):`;
     // Could be used to evolve Slunt's personality over time
     console.log('Personality traits updated:', traits);
   }
+
+  /**
+   * Generate a simple text completion (for internal systems)
+   * @param {string} prompt - The prompt to complete
+   * @param {object} options - Generation options (temperature, max_tokens, etc.)
+   * @returns {Promise<string>} - The generated text
+   */
+  async generateCompletion(prompt, options = {}) {
+    if (!this.enabled) {
+      return null;
+    }
+
+    try {
+      const temperature = options.temperature || 0.8;
+      const maxTokens = options.max_tokens || 50;
+
+      if (this.provider === 'ollama') {
+        const response = await this.ollama.generate({
+          model: this.model,
+          prompt: prompt,
+          stream: false,
+          options: {
+            temperature: temperature,
+            top_p: 0.9,
+            top_k: 40,
+            num_predict: maxTokens
+          }
+        });
+
+        return response.response?.trim() || null;
+      } else if (this.provider === 'openai') {
+        const completion = await this.openai.chat.completions.create({
+          model: this.model,
+          messages: [{ role: 'user', content: prompt }],
+          max_tokens: maxTokens,
+          temperature: temperature
+        });
+
+        return completion.choices[0]?.message?.content?.trim() || null;
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Completion error:', error.message);
+      return null;
+    }
+  }
 }
 
 module.exports = AIEngine;
