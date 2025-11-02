@@ -25,12 +25,12 @@ class ResponseTiming {
     this.recentActivity = []; // [{username, timestamp}]
     this.conversationPace = 'normal'; // slow, normal, fast
     
-    // Timing rules - much more responsive
-    this.minimumDelayMs = 800; // Faster minimum response
-    this.maximumDelayMs = 12000; // Shorter max wait time
+    // Timing rules - ULTRA RESPONSIVE
+    this.minimumDelayMs = 200; // Nearly instant
+    this.maximumDelayMs = 5000; // Max 5 seconds
     
-    // Cooldown after own message - much shorter
-    this.ownMessageCooldown = 8000; // Only 8 seconds cooldown
+    // Cooldown after own message - MINIMAL
+    this.ownMessageCooldown = 3000; // Only 3 seconds cooldown
     
     console.log('⏱️ [ResponseTiming] Initialized');
   }
@@ -42,62 +42,62 @@ class ResponseTiming {
   calculateDelay(messageData, context = {}) {
     const { text, username, timestamp } = messageData;
     
-    let baseDelay = 3000; // 3 seconds default
+    let baseDelay = 1000; // 1 second default - MUCH FASTER
     let multiplier = 1.0;
     
     // === PRIORITY FACTORS (respond faster) ===
     
     // 1. Direct question to Slunt
     if (this.isDirectQuestion(text)) {
-      baseDelay = 1500; // 1.5 seconds
-      multiplier = 0.8;
+      baseDelay = 500; // 0.5 seconds - INSTANT
+      multiplier = 0.6;
     }
     
     // 2. Direct mention of Slunt
     else if (this.isMentioned(text)) {
-      baseDelay = 2000; // 2 seconds
-      multiplier = 0.9;
+      baseDelay = 700; // 0.7 seconds - VERY FAST
+      multiplier = 0.7;
     }
     
     // 3. Conversation is fast-paced
     else if (this.conversationPace === 'fast') {
-      baseDelay = 2500; // 2.5 seconds
-      multiplier = 0.9;
+      baseDelay = 800; // 0.8 seconds - FAST
+      multiplier = 0.8;
     }
     
     // 4. User just replied to Slunt's message
     else if (this.isReplyToSlunt(timestamp)) {
-      baseDelay = 3000; // 3 seconds
-      multiplier = 1.0;
+      baseDelay = 1000; // 1 second - QUICK
+      multiplier = 0.9;
     }
     
     // === DELAY FACTORS (respond slower) ===
     
-    // 1. Just responded recently
+    // 1. Just responded recently - MUCH MORE LENIENT
     const timeSinceLastResponse = timestamp - this.lastResponseTime;
-    if (timeSinceLastResponse < 15000) { // Within 15 seconds
-      multiplier += 1.5; // Wait longer
+    if (timeSinceLastResponse < 5000) { // Within 5 seconds
+      multiplier += 0.5; // Slight delay only
     }
     
-    // 2. Multiple consecutive responses
-    if (this.consecutiveResponses >= 2) {
-      multiplier += 2.0; // MUCH longer wait
-    }
-    
+    // 2. Multiple consecutive responses - LESS RESTRICTIVE
     if (this.consecutiveResponses >= 3) {
-      multiplier += 3.0; // Even longer
+      multiplier += 0.8; // Small penalty
     }
     
-    // 3. General chat (not directed at anyone)
+    if (this.consecutiveResponses >= 5) {
+      multiplier += 1.2; // Moderate penalty
+    }
+    
+    // 3. General chat (not directed at anyone) - STILL FAST
     if (!text.includes('?') && !this.isMentioned(text)) {
-      baseDelay = 6000; // 6 seconds
-      multiplier += 0.5;
+      baseDelay = 1500; // 1.5 seconds - MUCH FASTER
+      multiplier += 0.3; // Small increase only
     }
     
-    // 4. Multiple people are talking (let them finish)
+    // 4. Multiple people are talking - MINIMAL DELAY
     const recentParticipants = this.getRecentParticipants(timestamp);
-    if (recentParticipants.size >= 3) {
-      multiplier += 1.2; // Wait longer when many people talking
+    if (recentParticipants.size >= 4) {
+      multiplier += 0.5; // Only when LOTS of people talking
     }
     
     // 5. Conversation pace modifiers removed - Slunt responds consistently regardless of chat speed!

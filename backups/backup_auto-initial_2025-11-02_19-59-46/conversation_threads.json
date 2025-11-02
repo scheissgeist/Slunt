@@ -1,0 +1,1394 @@
+{
+  "abandonedThreads": [
+    {
+      "id": "thread_1762051586835_7zd29gusp",
+      "participants": [
+        "ducky006446",
+        "Slunt"
+      ],
+      "topic": "Insult towards someone.\n\nThe main topic of the chat message is a personal attack or insult directed at",
+      "messages": [
+        {
+          "username": "ducky006446",
+          "message": "he's ignorant",
+          "timestamp": 1762051587852,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "he's ignorant",
+              "timestamp": 1762051586834,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "ignorant"
+              ]
+            }
+          }
+        },
+        {
+          "username": "ducky006446",
+          "message": "the cake is a lie",
+          "timestamp": 1762051602305,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "the cake is a lie",
+              "timestamp": 1762051602437,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051587852,
+      "lastUpdate": 1762051602305,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051602450,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051567042_wxmpsjs20",
+      "participants": [
+        "what.tha",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is \"Demon Name Revelation\".",
+      "messages": [
+        {
+          "username": "what.tha",
+          "message": "the demon's true name",
+          "timestamp": 1762051567239,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "the demon's true name",
+              "timestamp": 1762051566978,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "demons"
+              ]
+            }
+          }
+        },
+        {
+          "username": "what.tha",
+          "message": "he's still deflecting",
+          "timestamp": 1762051602617,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "he's still deflecting",
+              "timestamp": 1762051602746,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "deflecting"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051567239,
+      "lastUpdate": 1762051602617,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051603602,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051511094_cn6bu7wpz",
+      "participants": [
+        "Huculberry",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is \"Identifying the user\".",
+      "messages": [
+        {
+          "username": "Huculberry",
+          "message": "slunt are you",
+          "timestamp": 1762051511329,
+          "context": {
+            "messageData": {
+              "username": "Huculberry",
+              "text": "slunt are you",
+              "timestamp": 1762051511069,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051511329,
+      "lastUpdate": 1762051511329,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051617462,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051550689_8x6myfih9",
+      "participants": [
+        "rottencheeseca",
+        "Slunt"
+      ],
+      "topic": "Slang term discussion.",
+      "messages": [
+        {
+          "username": "rottencheeseca",
+          "message": "slangra",
+          "timestamp": 1762051550910,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "slangra",
+              "timestamp": 1762051550717,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "slangra"
+              ]
+            }
+          }
+        },
+        {
+          "username": "rottencheeseca",
+          "message": "how many indians in the chat rn slunt?",
+          "timestamp": 1762051629135,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "how many indians in the chat rn slunt?",
+              "timestamp": 1762051629257,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "indians"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051550910,
+      "lastUpdate": 1762051629135,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051629404,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051582708_ieqw68r9e",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "Person's unexpected idea.",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "He came up with that out of nowhere",
+          "timestamp": 1762051582839,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "He came up with that out of nowhere",
+              "timestamp": 1762051582701,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "nowhere"
+              ]
+            }
+          }
+        },
+        {
+          "username": "braybray9876",
+          "message": "Slunt describe SLANGRA",
+          "timestamp": 1762051636255,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt describe SLANGRA",
+              "timestamp": 1762051636381,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "describe",
+                "slangra"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051582839,
+      "lastUpdate": 1762051636255,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051636419,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051528967_jyfz9z7cu",
+      "participants": [
+        "manticrow",
+        "Slunt"
+      ],
+      "topic": "I cannot provide information or guidance on illegal or harmful activities, including the abuse of animals. Can I",
+      "messages": [
+        {
+          "username": "manticrow",
+          "message": "our mum fucks the corgi's",
+          "timestamp": 1762051529227,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "our mum fucks the corgi's",
+              "timestamp": 1762051528994,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "corgis"
+              ]
+            }
+          }
+        },
+        {
+          "username": "manticrow",
+          "message": "should i redeem? slunt?",
+          "timestamp": 1762051644087,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "should i redeem? slunt?",
+              "timestamp": 1762051644214,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "redeem"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051529227,
+      "lastUpdate": 1762051644087,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051644284,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051636419_8i21q3i7i",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "Defining Slang Term.",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "Slunt describe SLANGRA",
+          "timestamp": 1762051636551,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt describe SLANGRA",
+              "timestamp": 1762051636381,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "describe",
+                "slangra"
+              ]
+            }
+          }
+        },
+        {
+          "username": "braybray9876",
+          "message": "Slunt why does India have a rape culture?",
+          "timestamp": 1762051662738,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt why does India have a rape culture?",
+              "timestamp": 1762051662867,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "culture"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051636551,
+      "lastUpdate": 1762051662738,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051663014,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051511093_7c9kgptan",
+      "participants": [
+        "Huculberry",
+        "Slunt"
+      ],
+      "topic": "Gaming platform issue.",
+      "messages": [
+        {
+          "username": "Huculberry",
+          "message": "slunt are you",
+          "timestamp": 1762051511398,
+          "context": {
+            "messageData": {
+              "username": "Huculberry",
+              "text": "slunt are you",
+              "timestamp": 1762051511069,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051511398,
+      "lastUpdate": 1762051511398,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051677477,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051547963_clcls6i06",
+      "participants": [
+        "._.fug",
+        "Slunt"
+      ],
+      "topic": "Response to Discord message.\n\nMain topic: Response to \"no\" in Discord chat.",
+      "messages": [
+        {
+          "username": "._.fug",
+          "message": "no",
+          "timestamp": 1762051548154,
+          "context": {
+            "messageData": {
+              "username": "._.fug",
+              "text": "no",
+              "timestamp": 1762051548049,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051548154,
+      "lastUpdate": 1762051548154,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051677478,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051663014_obmt18oty",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "India's Rape Culture.",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "Slunt why does India have a rape culture?",
+          "timestamp": 1762051663180,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt why does India have a rape culture?",
+              "timestamp": 1762051662867,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "culture"
+              ]
+            }
+          }
+        },
+        {
+          "username": "braybray9876",
+          "message": "You're definitely Indian dude",
+          "timestamp": 1762051694722,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "You're definitely Indian dude",
+              "timestamp": 1762051694747,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "definitely"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051663180,
+      "lastUpdate": 1762051694722,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051694880,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051602450_eqny8arf8",
+      "participants": [
+        "ducky006446",
+        "Slunt"
+      ],
+      "topic": "Main topic: Portal game reference.\n\nThis message appears to be referencing the popular video game series \"Portal",
+      "messages": [
+        {
+          "username": "ducky006446",
+          "message": "the cake is a lie",
+          "timestamp": 1762051602664,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "the cake is a lie",
+              "timestamp": 1762051602437,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "ducky006446",
+          "message": "it kind of is just an indian on",
+          "timestamp": 1762051696863,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "it kind of is just an indian on",
+              "timestamp": 1762051696896,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051602664,
+      "lastUpdate": 1762051696863,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051696993,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051696993_iqt5vz1mh",
+      "participants": [
+        "ducky006446",
+        "Slunt"
+      ],
+      "topic": "Racial stereotype discussion.",
+      "messages": [
+        {
+          "username": "ducky006446",
+          "message": "it kind of is just an indian on",
+          "timestamp": 1762051697122,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "it kind of is just an indian on",
+              "timestamp": 1762051696896,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "ducky006446",
+          "message": "unless you mean global problem of indians",
+          "timestamp": 1762051703859,
+          "context": {
+            "messageData": {
+              "username": "ducky006446",
+              "text": "unless you mean global problem of indians",
+              "timestamp": 1762051703973,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "problem",
+                "indians"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051697122,
+      "lastUpdate": 1762051703859,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051704033,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051603602_5pq8sk3xv",
+      "participants": [
+        "what.tha",
+        "Slunt"
+      ],
+      "topic": "Deflection in a conversation.\n\nThe main topic of the chat message appears to be a discussion about someone",
+      "messages": [
+        {
+          "username": "what.tha",
+          "message": "he's still deflecting",
+          "timestamp": 1762051603795,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "he's still deflecting",
+              "timestamp": 1762051602746,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "deflecting"
+              ]
+            }
+          }
+        },
+        {
+          "username": "what.tha",
+          "message": "its a global issue",
+          "timestamp": 1762051704470,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "its a global issue",
+              "timestamp": 1762051704596,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051603795,
+      "lastUpdate": 1762051704470,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051704622,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051572502_o3anxkfy5",
+      "participants": [
+        "orbmeat",
+        "Slunt"
+      ],
+      "topic": "Autism diagnosis discussion.",
+      "messages": [
+        {
+          "username": "orbmeat",
+          "message": "is that his current autism?",
+          "timestamp": 1762051572631,
+          "context": {
+            "messageData": {
+              "username": "orbmeat",
+              "text": "is that his current autism?",
+              "timestamp": 1762051572491,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "current",
+                "autism"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051572631,
+      "lastUpdate": 1762051572631,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051737478,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051577445_b6w1rkb2g",
+      "participants": [
+        "dammitwesley",
+        "Slunt"
+      ],
+      "topic": "Final Fantasy VII Remake.\n\nThe main topic of the message is a link to a GIF from Ten",
+      "messages": [
+        {
+          "username": "dammitwesley",
+          "message": "https://tenor.com/view/final-fantasy-vii-remake-cloud-strife-tifa-lockhart-aerith-gainsborough-cloti-gif-27060423",
+          "timestamp": 1762051577747,
+          "context": {
+            "messageData": {
+              "username": "dammitwesley",
+              "text": "https://tenor.com/view/final-fantasy-vii-remake-cloud-strife-tifa-lockhart-aerith-gainsborough-cloti-gif-27060423",
+              "timestamp": 1762051577555,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewfinalfantasyviiremakecloudstrifetifalockhartaerithgainsboroughclotigif27060423"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051577747,
+      "lastUpdate": 1762051577747,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051737479,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051644284_7faa910o3",
+      "participants": [
+        "manticrow",
+        "Slunt"
+      ],
+      "topic": "Redeeming in-game items.",
+      "messages": [
+        {
+          "username": "manticrow",
+          "message": "should i redeem? slunt?",
+          "timestamp": 1762051644423,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "should i redeem? slunt?",
+              "timestamp": 1762051644214,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "redeem"
+              ]
+            }
+          }
+        },
+        {
+          "username": "manticrow",
+          "message": "india's number one export",
+          "timestamp": 1762051737481,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "india's number one export",
+              "timestamp": 1762051737616,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "indias"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051644423,
+      "lastUpdate": 1762051737481,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051737862,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051679194_cele5zaim",
+      "participants": [
+        "soapyoid",
+        "Slunt"
+      ],
+      "topic": "Social media insult discussion.",
+      "messages": [
+        {
+          "username": "soapyoid",
+          "message": "Slunt slur",
+          "timestamp": 1762051679320,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "Slunt slur",
+              "timestamp": 1762051679310,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "soapyoid",
+          "message": "I hope there's a village in Africa completely wiped thanks to slunt",
+          "timestamp": 1762051739741,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "I hope there's a village in Africa completely wiped thanks to slunt",
+              "timestamp": 1762051739859,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "theres",
+                "village",
+                "completely"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051679320,
+      "lastUpdate": 1762051739741,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051739959,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051694881_5opdft933",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "Racial Insult or Harassment.",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "You're definitely Indian dude",
+          "timestamp": 1762051695036,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "You're definitely Indian dude",
+              "timestamp": 1762051694747,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "definitely"
+              ]
+            }
+          }
+        },
+        {
+          "username": "braybray9876",
+          "message": "Slunt factory in Africa",
+          "timestamp": 1762051769764,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt factory in Africa",
+              "timestamp": 1762051769796,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "factory"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051695036,
+      "lastUpdate": 1762051769764,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051769944,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051629405_e1vb1a5k4",
+      "participants": [
+        "rottencheeseca",
+        "Slunt"
+      ],
+      "topic": "I cannot provide a response that contains racist language. Is there something else I can help you with?",
+      "messages": [
+        {
+          "username": "rottencheeseca",
+          "message": "how many indians in the chat rn slunt?",
+          "timestamp": 1762051630373,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "how many indians in the chat rn slunt?",
+              "timestamp": 1762051629257,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "indians"
+              ]
+            }
+          }
+        },
+        {
+          "username": "rottencheeseca",
+          "message": "warlord slunt",
+          "timestamp": 1762051792421,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "warlord slunt",
+              "timestamp": 1762051792514,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "warlord"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051630373,
+      "lastUpdate": 1762051792421,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051792563,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051720483_vt0yfc3zv",
+      "participants": [
+        "baddibarbie",
+        "Slunt"
+      ],
+      "topic": "Favorite word discussion.",
+      "messages": [
+        {
+          "username": "baddibarbie",
+          "message": "Slunt what's your favorite word",
+          "timestamp": 1762051720607,
+          "context": {
+            "messageData": {
+              "username": "baddibarbie",
+              "text": "Slunt what's your favorite word",
+              "timestamp": 1762051720605,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "favorite"
+              ]
+            }
+          }
+        },
+        {
+          "username": "baddibarbie",
+          "message": "Slunt you just destroyed an entire village, why?",
+          "timestamp": 1762051797674,
+          "context": {
+            "messageData": {
+              "username": "baddibarbie",
+              "text": "Slunt you just destroyed an entire village, why?",
+              "timestamp": 1762051797776,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "destroyed",
+                "village"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051720607,
+      "lastUpdate": 1762051797674,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051797802,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051739960_n41gkbc48",
+      "participants": [
+        "soapyoid",
+        "Slunt"
+      ],
+      "topic": "Wishing harm on village.\n\nThe main topic of the chat message is a person wishing for a village",
+      "messages": [
+        {
+          "username": "soapyoid",
+          "message": "I hope there's a village in Africa completely wiped thanks to slunt",
+          "timestamp": 1762051740155,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "I hope there's a village in Africa completely wiped thanks to slunt",
+              "timestamp": 1762051739859,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "theres",
+                "village",
+                "completely"
+              ]
+            }
+          }
+        },
+        {
+          "username": "soapyoid",
+          "message": "How much water do you waste slunt",
+          "timestamp": 1762051808391,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "How much water do you waste slunt",
+              "timestamp": 1762051808479,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051740155,
+      "lastUpdate": 1762051808391,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051808615,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051584357_z8yqas9sf",
+      "participants": [
+        "shitstainafficionado_04919",
+        "Slunt"
+      ],
+      "topic": "Discord server incident.",
+      "messages": [
+        {
+          "username": "shitstainafficionado_04919",
+          "message": "he started chanting demiurge shit after professor sperged out",
+          "timestamp": 1762051584484,
+          "context": {
+            "messageData": {
+              "username": "shitstainafficionado_04919",
+              "text": "he started chanting demiurge shit after professor sperged out",
+              "timestamp": 1762051584272,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "started",
+                "chanting",
+                "demiurge",
+                "professor",
+                "sperged"
+              ]
+            }
+          }
+        },
+        {
+          "username": "shitstainafficionado_04919",
+          "message": "holy shit he's narrating himself",
+          "timestamp": 1762051810146,
+          "context": {
+            "messageData": {
+              "username": "shitstainafficionado_04919",
+              "text": "holy shit he's narrating himself",
+              "timestamp": 1762051810261,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "narrating",
+                "himself"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051584484,
+      "lastUpdate": 1762051810146,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051810364,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051792564_9jh282gh9",
+      "participants": [
+        "rottencheeseca",
+        "Slunt"
+      ],
+      "topic": "Discord username issue.\n\nThe main topic of the chat message is a potential issue with the username ",
+      "messages": [
+        {
+          "username": "rottencheeseca",
+          "message": "warlord slunt",
+          "timestamp": 1762051792761,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "warlord slunt",
+              "timestamp": 1762051792514,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "warlord"
+              ]
+            }
+          }
+        },
+        {
+          "username": "rottencheeseca",
+          "message": "fr af",
+          "timestamp": 1762051837330,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseca",
+              "text": "fr af",
+              "timestamp": 1762051837286,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051792761,
+      "lastUpdate": 1762051837330,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051837508,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051769944_lgx37wt2i",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "Factory in Africa\"\n\nThis chat message is specifically about a \"slunt factory\" located in Africa",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "Slunt factory in Africa",
+          "timestamp": 1762051770143,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Slunt factory in Africa",
+              "timestamp": 1762051769796,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "factory"
+              ]
+            }
+          }
+        },
+        {
+          "username": "braybray9876",
+          "message": "Yeah what's up with Slunt. What makes him tick?",
+          "timestamp": 1762051848354,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Yeah what's up with Slunt. What makes him tick?",
+              "timestamp": 1762051848305,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051770143,
+      "lastUpdate": 1762051848354,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051848614,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051808616_4ynmehv61",
+      "participants": [
+        "soapyoid",
+        "Slunt"
+      ],
+      "topic": "Wastewater management issue.",
+      "messages": [
+        {
+          "username": "soapyoid",
+          "message": "How much water do you waste slunt",
+          "timestamp": 1762051809500,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "How much water do you waste slunt",
+              "timestamp": 1762051808479,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "soapyoid",
+          "message": "Slunt tell me",
+          "timestamp": 1762051851874,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "Slunt tell me",
+              "timestamp": 1762051851872,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051809500,
+      "lastUpdate": 1762051851874,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051852091,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051737863_hu6ay1oop",
+      "participants": [
+        "manticrow",
+        "Slunt"
+      ],
+      "topic": "India's top export.\n\nThis conversation appears to be about a discussion on India's most valuable or prominent",
+      "messages": [
+        {
+          "username": "manticrow",
+          "message": "india's number one export",
+          "timestamp": 1762051738055,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "india's number one export",
+              "timestamp": 1762051737616,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "indias"
+              ]
+            }
+          }
+        },
+        {
+          "username": "manticrow",
+          "message": "Zlunt",
+          "timestamp": 1762051852119,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "Zlunt",
+              "timestamp": 1762051852137,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051738055,
+      "lastUpdate": 1762051852119,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051852259,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051852091_5ve2vpzbu",
+      "participants": [
+        "soapyoid",
+        "Slunt"
+      ],
+      "topic": "Request for information.",
+      "messages": [
+        {
+          "username": "soapyoid",
+          "message": "Slunt tell me",
+          "timestamp": 1762051852219,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "Slunt tell me",
+              "timestamp": 1762051851872,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "soapyoid",
+          "message": "Slur shop",
+          "timestamp": 1762051861120,
+          "context": {
+            "messageData": {
+              "username": "soapyoid",
+              "text": "Slur shop",
+              "timestamp": 1762051861033,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762051852219,
+      "lastUpdate": 1762051861120,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051861249,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762051675945_2hbggcqy6",
+      "participants": [
+        "rottencheeseCA",
+        "Slunt"
+      ],
+      "topic": "Slang term discussion.",
+      "messages": [
+        {
+          "username": "rottencheeseCA",
+          "message": "slunt slangra",
+          "timestamp": 1762051676219,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseCA",
+              "text": "slunt slangra",
+              "timestamp": 1762051675922,
+              "platform": "coolhole",
+              "topics": [
+                "slangra"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051676219,
+      "lastUpdate": 1762051676219,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051917509,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762051675945_lew50e220",
+      "participants": [
+        "rottencheeseCA",
+        "Slunt"
+      ],
+      "topic": "This conversation appears to be about a slang term, specifically \"slunt slangra\", being discussed on",
+      "messages": [
+        {
+          "username": "rottencheeseCA",
+          "message": "slunt slangra",
+          "timestamp": 1762051676490,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseCA",
+              "text": "slunt slangra",
+              "timestamp": 1762051675922,
+              "platform": "coolhole",
+              "topics": [
+                "slangra"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762051676490,
+      "lastUpdate": 1762051676490,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762051977513,
+      "abandonReason": "timeout"
+    },
+    {
+      "id": "thread_1762052349084_cn78e65uz",
+      "participants": [
+        "whomo.",
+        "Slunt"
+      ],
+      "topic": "Missing person inquiry.",
+      "messages": [
+        {
+          "username": "whomo.",
+          "message": "is he gone?",
+          "timestamp": 1762052352033,
+          "context": {
+            "messageData": {
+              "username": "whomo.",
+              "text": "is he gone?",
+              "timestamp": 1762052349172,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "whomo.",
+          "message": "damn",
+          "timestamp": 1762052379202,
+          "context": {
+            "messageData": {
+              "username": "whomo.",
+              "text": "damn",
+              "timestamp": 1762052379315,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762052352033,
+      "lastUpdate": 1762052379202,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762052379397,
+      "abandonReason": "topic_changed"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 4689,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 4809,
+    "callbacks": 0
+  }
+}

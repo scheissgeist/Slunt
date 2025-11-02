@@ -5,11 +5,11 @@
 
 class TypingSimulator {
   constructor() {
-    // Base typing speeds (WPM - words per minute) - OPTIMIZED FOR FASTER CHAT
+    // Base typing speeds (WPM - words per minute) - ULTRA FAST CHAT
     this.baseWPM = {
-      min: 60,  // Slow typing
-      max: 120,  // Fast typing
-      average: 90  // Increased from 65 to 90
+      min: 80,  // Fast typing
+      max: 150,  // Very fast typing
+      average: 120  // Much faster average
     };
     
     // Factors that affect typing speed
@@ -20,12 +20,12 @@ class TypingSimulator {
       length: 1.0       // Longer messages = slight speedup (momentum)
     };
     
-    // Realistic pauses (in ms) - REDUCED FOR FASTER RESPONSE
+    // Realistic pauses (in ms) - MINIMAL FOR FAST RESPONSE
     this.pauses = {
-      thinking: [300, 800],      // Before starting to type (was 800-2000)
-      hesitation: [100, 400],     // Mid-sentence pause (was 200-800)
-      punctuation: [50, 150],    // After periods, commas (was 100-300)
-      correction: [200, 600]     // Backspace/rethink moment (was 500-1500)
+      thinking: [100, 300],      // Before starting to type - INSTANT
+      hesitation: [50, 150],     // Mid-sentence pause - MINIMAL
+      punctuation: [20, 80],     // After periods, commas - QUICK
+      correction: [100, 300]     // Backspace/rethink moment - FAST
     };
     
     // Stats

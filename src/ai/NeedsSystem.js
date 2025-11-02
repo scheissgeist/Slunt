@@ -161,6 +161,21 @@ class NeedsSystem {
   }
 
   /**
+   * Drain any specific need by type (generic method)
+   * @param {string} needType - Type of need to drain (social, stimulation, validation, purpose, rest)
+   * @param {number} amount - Amount to drain (0-1 scale)
+   */
+  drainNeed(needType, amount = 0.1) {
+    if (!this.needs[needType]) {
+      console.warn(`⚠️ [Needs] Unknown need type: ${needType}`);
+      return;
+    }
+    
+    this.needs[needType].value = Math.max(0, this.needs[needType].value - amount);
+    console.log(`⬇️ [Needs] ${needType} drained by ${amount.toFixed(3)}: now ${Math.round(this.needs[needType].value * 100)}%`);
+  }
+
+  /**
    * Get need status for a specific need
    */
   getNeedStatus(needType) {

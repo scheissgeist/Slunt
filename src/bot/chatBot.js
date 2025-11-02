@@ -395,7 +395,7 @@ class ChatBot extends EventEmitter {
     console.log('✅ [Improvements] All improvement systems initialized!');
     console.log('   → Threading: Multi-message context tracking & topic continuity');
     console.log('   → Scoring: Response quality evaluation (naturalness, relevance, originality)');
-    console.log('   → Timing: Variable delays & smart rate limiting (1-20s)');
+    console.log('   → Timing: ULTRA-FAST responses (0.2-5s) ⚡');
     console.log('   → Personality: 30-60min mode lock-ins (chill/edgy/chaotic/analytical/hype)');
     console.log('   → Conflict: Drama detection, tension tracking, intervention strategies');
 
@@ -2330,9 +2330,9 @@ class ChatBot extends EventEmitter {
                   this.chatRoleAwareness.trackMessage(this.config.username, true); // true = Slunt's message
                 }
                 
-                // Pause between messages
+                // Pause between messages - FASTER
                 if (i < parts.length - 1) {
-                  await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
+                  await new Promise(resolve => setTimeout(resolve, 500 + Math.random() * 500)); // 0.5-1s instead of 1.5-2.5s
                 }
               }
               
@@ -2568,7 +2568,7 @@ class ChatBot extends EventEmitter {
     
     // RULE 2: Don't spam - minimum 2 seconds between messages, 4 seconds if said 2+ things recently ON THIS PLATFORM
     const timeSinceLastResponse = Date.now() - (this.lastSentAt || 0);
-    const minDelay = recentSluntMessages.length >= 2 ? 4000 : 2000; // 4s if chatty, 2s otherwise (was 5s/3s)
+    const minDelay = recentSluntMessages.length >= 2 ? 2000 : 1000; // 2s if chatty, 1s otherwise - MUCH FASTER
     if (timeSinceLastResponse < minDelay) {
       logger.info(`[${getTimestamp()}] ⏸️ Just responded ${(timeSinceLastResponse/1000).toFixed(1)}s ago, waiting ${minDelay/1000}s...`);
       return false;

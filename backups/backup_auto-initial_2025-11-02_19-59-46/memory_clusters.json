@@ -1,0 +1,485 @@
+{
+  "clusters": [
+    {
+      "id": "cluster_0",
+      "count": 1,
+      "summary": {
+        "theme": "negative",
+        "count": 1,
+        "users": [
+          "Miles_Gloriosus"
+        ],
+        "timeRange": {
+          "earliest": 1762047501709,
+          "latest": 1762047501709
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "negative",
+        "username": "Miles_Gloriosus",
+        "timestamp": 1762047501709
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "negative",
+          "username": "Miles_Gloriosus",
+          "timestamp": 1762047501709
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_1",
+      "count": 1,
+      "summary": {
+        "theme": "negative",
+        "count": 1,
+        "users": [
+          "SteeScribbles"
+        ],
+        "timeRange": {
+          "earliest": 1762051024795,
+          "latest": 1762051024795
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "negative",
+        "username": "SteeScribbles",
+        "timestamp": 1762051024795
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "negative",
+          "username": "SteeScribbles",
+          "timestamp": 1762051024795
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_2",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "stevepugwaredev"
+        ],
+        "timeRange": {
+          "earliest": 1762045183952,
+          "latest": 1762045183952
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "stevepugwaredev",
+        "timestamp": 1762045183952
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "stevepugwaredev",
+          "timestamp": 1762045183952
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_3",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "stevepugwaredev"
+        ],
+        "timeRange": {
+          "earliest": 1762045183952,
+          "latest": 1762045183952
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "stevepugwaredev",
+        "timestamp": 1762045183952
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "stevepugwaredev",
+          "timestamp": 1762045183952
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_4",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "ducky006446"
+        ],
+        "timeRange": {
+          "earliest": 1762051478706,
+          "latest": 1762051478706
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "ducky006446",
+        "timestamp": 1762051478706
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "ducky006446",
+          "timestamp": 1762051478706
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_5",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "what.tha"
+        ],
+        "timeRange": {
+          "earliest": 1762051299331,
+          "latest": 1762051299331
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "what.tha",
+        "timestamp": 1762051299331
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "what.tha",
+          "timestamp": 1762051299331
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_6",
+      "count": 1,
+      "summary": {
+        "theme": "negative",
+        "count": 1,
+        "users": [
+          "Applecooler"
+        ],
+        "timeRange": {
+          "earliest": 1762047851642,
+          "latest": 1762047851642
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "negative",
+        "username": "Applecooler",
+        "timestamp": 1762047851642
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "negative",
+          "username": "Applecooler",
+          "timestamp": 1762047851642
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_7",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          ".blueeyeswhitesupremacist"
+        ],
+        "timeRange": {
+          "earliest": 1762051389925,
+          "latest": 1762051389925
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": ".blueeyeswhitesupremacist",
+        "timestamp": 1762051389925
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": ".blueeyeswhitesupremacist",
+          "timestamp": 1762051389925
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_8",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "shitstainafficionado_04919"
+        ],
+        "timeRange": {
+          "earliest": 1762051452633,
+          "latest": 1762051452633
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "shitstainafficionado_04919",
+        "timestamp": 1762051452633
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "shitstainafficionado_04919",
+          "timestamp": 1762051452633
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_9",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "gr8itsn8"
+        ],
+        "timeRange": {
+          "earliest": 1762051376939,
+          "latest": 1762051376939
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "gr8itsn8",
+        "timestamp": 1762051376939
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "gr8itsn8",
+          "timestamp": 1762051376939
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_10",
+      "count": 1,
+      "summary": {
+        "theme": "negative",
+        "count": 1,
+        "users": [
+          "bobbyboon"
+        ],
+        "timeRange": {
+          "earliest": 1762051007677,
+          "latest": 1762051007677
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "negative",
+        "username": "bobbyboon",
+        "timestamp": 1762051007677
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "negative",
+          "username": "bobbyboon",
+          "timestamp": 1762051007677
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_11",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "the_brofessor."
+        ],
+        "timeRange": {
+          "earliest": 1762047967065,
+          "latest": 1762047967065
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "the_brofessor.",
+        "timestamp": 1762047967065
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "the_brofessor.",
+          "timestamp": 1762047967065
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_12",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "the_brofessor."
+        ],
+        "timeRange": {
+          "earliest": 1762047967065,
+          "latest": 1762047967065
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "the_brofessor.",
+        "timestamp": 1762047967065
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "the_brofessor.",
+          "timestamp": 1762047967065
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_13",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "the_brofessor."
+        ],
+        "timeRange": {
+          "earliest": 1762047967065,
+          "latest": 1762047967065
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "the_brofessor.",
+        "timestamp": 1762047967065
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "the_brofessor.",
+          "timestamp": 1762047967065
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_14",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "the_brofessor."
+        ],
+        "timeRange": {
+          "earliest": 1762047967065,
+          "latest": 1762047967065
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "the_brofessor.",
+        "timestamp": 1762047967065
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "the_brofessor.",
+          "timestamp": 1762047967065
+        }
+      ],
+      "created": 1762051496695
+    },
+    {
+      "id": "cluster_15",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "dammitwesley"
+        ],
+        "timeRange": {
+          "earliest": 1762051139688,
+          "latest": 1762051139688
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "dammitwesley",
+        "timestamp": 1762051139688
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "dammitwesley",
+          "timestamp": 1762051139688
+        }
+      ],
+      "created": 1762051496695
+    }
+  ],
+  "savedAt": 1762051796771
+}
