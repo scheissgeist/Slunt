@@ -8,23 +8,34 @@ class MemoryConsolidation {
     this.chatBot = chatBot;
     this.consolidationInterval = null;
     this.archivePath = './data/memory_archive.json';
+    this.episodesPath = './data/memory_episodes.json';
+    this.clustersPath = './data/memory_clusters.json';
     this.shortTermMemory = new Map(); // Recent detailed memories
     this.longTermMemory = new Map(); // Consolidated summaries
+    this.episodicMemory = new Map(); // Story chains and events
+    this.memoryClusters = new Map(); // Grouped similar memories
+
+    // === NEW: Activity-based consolidation tracking ===
+    this.messageCount = 0; // Messages since last consolidation
+    this.lastConsolidation = Date.now();
+    this.quietPeriodStart = null; // When did chat go quiet?
+    this.highActivityThreshold = 50; // Messages to trigger consolidation
+    this.quietPeriodThreshold = 10 * 60 * 1000; // 10 minutes of quiet
   }
 
   /**
-   * Start memory consolidation loop
+   * Start memory consolidation loop (ENHANCED - activity-based)
    */
   start() {
-    console.log('🧠 [Memory] Starting memory consolidation system...');
+    console.log('🧠 [Memory] Starting SMART consolidation system (activity-based)...');
     
-    // Consolidate memories every 30 minutes
+    // Check consolidation triggers every 5 minutes (not consolidate every 30)
     this.consolidationInterval = setInterval(() => {
-      this.consolidateMemories();
-    }, 30 * 60 * 1000);
+      this.checkConsolidationTriggers();
+    }, 5 * 60 * 1000);
 
     // Also run on startup
-    setTimeout(() => this.consolidateMemories(), 10000);
+    setTimeout(() => this.checkConsolidationTriggers(), 10000);
   }
 
   stop() {
@@ -35,10 +46,58 @@ class MemoryConsolidation {
   }
 
   /**
+   * NEW: Track message activity for smart consolidation
+   */
+  trackActivity() {
+    this.messageCount++;
+    this.quietPeriodStart = null; // Reset quiet period
+  }
+
+  /**
+   * NEW: Check if we should consolidate based on activity patterns
+   */
+  async checkConsolidationTriggers() {
+    const now = Date.now();
+    const timeSinceLastConsolidation = now - this.lastConsolidation;
+
+    // Trigger 1: High activity period (50+ messages since last consolidation)
+    if (this.messageCount >= this.highActivityThreshold) {
+      console.log(`🧠 [Memory] HIGH ACTIVITY trigger (${this.messageCount} messages) - consolidating...`);
+      await this.consolidateMemories();
+      return;
+    }
+
+    // Trigger 2: Quiet period detected
+    const lastMessageTime = this.chatBot.lastMessageTime || now;
+    const quietDuration = now - lastMessageTime;
+    
+    if (quietDuration > this.quietPeriodThreshold && this.messageCount > 5) {
+      // Chat has been quiet for 10+ minutes AND there are messages to consolidate
+      if (!this.quietPeriodStart) {
+        this.quietPeriodStart = now;
+      }
+      
+      // Consolidate after quiet period has lasted a bit
+      if (now - this.quietPeriodStart > this.quietPeriodThreshold) {
+        console.log(`🧠 [Memory] QUIET PERIOD trigger (${Math.round(quietDuration/1000/60)}min quiet) - consolidating...`);
+        await this.consolidateMemories();
+        return;
+      }
+    }
+
+    // Trigger 3: Fallback - at least once every 60 minutes regardless
+    if (timeSinceLastConsolidation > 60 * 60 * 1000) {
+      console.log('🧠 [Memory] TIME-BASED trigger (60min elapsed) - consolidating...');
+      await this.consolidateMemories();
+      return;
+    }
+  }
+
+  /**
    * Consolidate old memories into summaries
    */
   async consolidateMemories() {
-    console.log('🧠 [Memory] Consolidating memories...');
+    console.log(`🧠 [Memory] Consolidating memories (${this.messageCount} messages processed)...`);
     const now = Date.now();
     const weekInMs = 7 * 24 * 60 * 60 * 1000;
     let consolidated = 0;
@@ -58,11 +117,24 @@ class MemoryConsolidation {
         }
       }
     }
+    
+    // Cluster similar memories
+    await this.clusterSimilarMemories();
+    
+    // Create episodic chains
+    await this.createEpisodicChains();
 
     if (consolidated > 0) {
       console.log(`🧠 [Memory] Consolidated ${consolidated} user profiles`);
       await this.saveLongTermMemory();
+      await this.saveEpisodicMemory();
+      await this.saveMemoryClusters();
     }
+
+    // === NEW: Reset counters after consolidation ===
+    this.messageCount = 0;
+    this.lastConsolidation = now;
+    this.quietPeriodStart = null;
   }
 
   /**
@@ -395,6 +467,525 @@ class MemoryConsolidation {
       }
     }
     return newest;
+  }
+  
+  /**
+   * Cluster similar memories together
+   */
+  async clusterSimilarMemories() {
+    try {
+      console.log('🧠 [Memory] Clustering similar memories...');
+      
+      const allMemories = [];
+      
+      // Collect all memories from profiles
+      for (const [username, profile] of this.chatBot.userProfiles.entries()) {
+        if (!profile) continue;
+        
+        // Topics
+        (profile.favoriteTopics || []).forEach(topic => {
+          if (typeof topic === 'string') {
+            allMemories.push({
+              type: 'topic',
+              content: topic,
+              username,
+              timestamp: profile.lastSeen
+            });
+          }
+        });
+        
+        // Quotes
+        (profile.funnyQuotes || []).forEach(quote => {
+          if (typeof quote === 'string') {
+            allMemories.push({
+              type: 'quote',
+              content: quote,
+              username,
+              timestamp: profile.lastSeen
+            });
+          }
+        });
+        
+        // Opinions
+        (profile.opinions || []).forEach(opinion => {
+          if (typeof opinion === 'string') {
+            allMemories.push({
+              type: 'opinion',
+              content: opinion,
+              username,
+              timestamp: profile.lastSeen
+            });
+          }
+        });
+      }
+      
+      // Create clusters based on similarity
+      const clusters = this.groupBySimilarity(allMemories);
+      
+      // Store clusters
+      this.memoryClusters.clear();
+      clusters.forEach((memories, clusterId) => {
+        this.memoryClusters.set(clusterId, {
+          id: clusterId,
+          count: memories.length,
+          summary: this.createClusterSummary(memories),
+          representative: memories[0], // Most representative memory
+          members: memories,
+          created: Date.now()
+        });
+      });
+      
+      console.log(`🧠 [Memory] Created ${this.memoryClusters.size} clusters`);
+    } catch (error) {
+      console.error('❌ [Memory] Error during clustering:', error.message);
+      // Don't crash - just skip clustering this round
+    }
+  }
+  
+  /**
+   * Group memories by similarity
+   */
+  groupBySimilarity(memories) {
+    const clusters = new Map();
+    let clusterId = 0;
+    
+    // Simple keyword-based clustering
+    const keywordClusters = new Map();
+    
+    memories.forEach(memory => {
+      // Skip invalid memories
+      if (!memory || !memory.content || typeof memory.content !== 'string') {
+        console.warn('⚠️ [Memory] Skipping invalid memory during clustering');
+        return;
+      }
+      
+      const keywords = this.extractKeywords(memory.content);
+      
+      // Find existing cluster with matching keywords
+      let foundCluster = null;
+      for (const [clusterId, clusterMemories] of keywordClusters.entries()) {
+        const firstMemory = clusterMemories[0];
+        if (!firstMemory || !firstMemory.content) continue;
+        
+        const clusterKeywords = this.extractKeywords(
+          firstMemory.content
+        );
+        
+        // Check overlap
+        const overlap = keywords.filter(k => clusterKeywords.includes(k));
+        if (overlap.length >= 2) {
+          foundCluster = clusterId;
+          break;
+        }
+      }
+      
+      if (foundCluster) {
+        keywordClusters.get(foundCluster).push(memory);
+      } else {
+        keywordClusters.set(`cluster_${clusterId++}`, [memory]);
+      }
+    });
+    
+    return keywordClusters;
+  }
+  
+  /**
+   * Extract keywords from text
+   */
+  extractKeywords(text) {
+    // Robust type checking
+    if (!text || typeof text !== 'string') return [];
+    
+    try {
+      const words = text.toLowerCase()
+        .replace(/[^\w\s]/g, '')
+        .split(/\s+/)
+        .filter(w => w.length > 3);
+      
+      // Remove common words
+      const stopWords = new Set([
+        'that', 'this', 'with', 'from', 'have', 'what', 
+        'when', 'where', 'about', 'they', 'said', 'them'
+      ]);
+      
+      return words.filter(w => !stopWords.has(w));
+    } catch (error) {
+      console.error('❌ [Memory] extractKeywords error:', error.message);
+      return [];
+    }
+  }
+  
+  /**
+   * Create summary for a cluster
+   */
+  createClusterSummary(memories) {
+    // Count most common keywords
+    const keywordCounts = new Map();
+    
+    memories.forEach(memory => {
+      const keywords = this.extractKeywords(memory.content);
+      keywords.forEach(kw => {
+        keywordCounts.set(kw, (keywordCounts.get(kw) || 0) + 1);
+      });
+    });
+    
+    // Get top 3 keywords
+    const topKeywords = Array.from(keywordCounts.entries())
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 3)
+      .map(([kw]) => kw);
+    
+    // Count involved users
+    const users = new Set(memories.map(m => m.username));
+    
+    return {
+      theme: topKeywords.join(', '),
+      count: memories.length,
+      users: Array.from(users).slice(0, 5),
+      timeRange: {
+        earliest: Math.min(...memories.map(m => m.timestamp || 0)),
+        latest: Math.max(...memories.map(m => m.timestamp || 0))
+      }
+    };
+  }
+  
+  /**
+   * Create episodic memory chains (story-like sequences)
+   */
+  async createEpisodicChains() {
+    console.log('🧠 [Memory] Creating episodic chains...');
+    
+    // Group memories by time proximity and user involvement
+    const episodes = [];
+    const timeWindow = 1000 * 60 * 60; // 1 hour
+    
+    // Get all emotional moments and funny quotes
+    const events = [];
+    
+    for (const [username, profile] of this.chatBot.userProfiles.entries()) {
+      (profile.emotionalMoments || []).forEach(moment => {
+        events.push({
+          type: 'emotional',
+          username,
+          content: moment.emotion,
+          intensity: moment.intensity,
+          timestamp: moment.timestamp || profile.lastSeen,
+          context: moment.context
+        });
+      });
+      
+      (profile.funnyQuotes || []).forEach(quote => {
+        events.push({
+          type: 'funny',
+          username,
+          content: quote,
+          timestamp: profile.lastSeen
+        });
+      });
+    }
+    
+    // Sort by time
+    events.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    
+    // Chain events that happened close together
+    let currentEpisode = null;
+    
+    events.forEach(event => {
+      if (!currentEpisode) {
+        currentEpisode = {
+          id: `episode_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+          events: [event],
+          startTime: event.timestamp,
+          endTime: event.timestamp,
+          participants: new Set([event.username])
+        };
+      } else {
+        const timeSinceLastEvent = event.timestamp - currentEpisode.endTime;
+        
+        if (timeSinceLastEvent < timeWindow) {
+          // Part of same episode
+          currentEpisode.events.push(event);
+          currentEpisode.endTime = event.timestamp;
+          currentEpisode.participants.add(event.username);
+        } else {
+          // New episode
+          if (currentEpisode.events.length > 1) {
+            episodes.push(this.finalizeEpisode(currentEpisode));
+          }
+          
+          currentEpisode = {
+            id: `episode_${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+            events: [event],
+            startTime: event.timestamp,
+            endTime: event.timestamp,
+            participants: new Set([event.username])
+          };
+        }
+      }
+    });
+    
+    // Add final episode
+    if (currentEpisode && currentEpisode.events.length > 1) {
+      episodes.push(this.finalizeEpisode(currentEpisode));
+    }
+    
+    // Store episodes
+    this.episodicMemory.clear();
+    episodes.forEach(episode => {
+      this.episodicMemory.set(episode.id, episode);
+    });
+    
+    console.log(`🧠 [Memory] Created ${this.episodicMemory.size} episodes`);
+  }
+  
+  /**
+   * Finalize an episode with summary
+   */
+  finalizeEpisode(episode) {
+    const participants = Array.from(episode.participants);
+    const duration = episode.endTime - episode.startTime;
+    
+    // Determine episode type
+    const emotionalEvents = episode.events.filter(e => e.type === 'emotional');
+    const funnyEvents = episode.events.filter(e => e.type === 'funny');
+    
+    let episodeType = 'mixed';
+    if (funnyEvents.length > emotionalEvents.length * 2) {
+      episodeType = 'comedy';
+    } else if (emotionalEvents.length > funnyEvents.length * 2) {
+      episodeType = 'emotional';
+    }
+    
+    // Create narrative
+    const narrative = this.createEpisodeNarrative(episode);
+    
+    return {
+      ...episode,
+      participants,
+      duration,
+      episodeType,
+      narrative,
+      importance: this.calculateEpisodeImportance(episode)
+    };
+  }
+  
+  /**
+   * Create narrative summary for episode
+   */
+  createEpisodeNarrative(episode) {
+    const participants = Array.from(episode.participants).slice(0, 3).join(', ');
+    const eventCount = episode.events.length;
+    const duration = episode.endTime - episode.startTime;
+    const durationMins = Math.round(duration / (1000 * 60));
+    
+    let narrative = `${participants} `;
+    
+    if (episode.events[0].type === 'funny') {
+      narrative += 'had a funny moment';
+    } else if (episode.events[0].type === 'emotional') {
+      narrative += 'had an emotional exchange';
+    }
+    
+    if (eventCount > 3) {
+      narrative += ` that escalated over ${durationMins} minutes`;
+    }
+    
+    narrative += `. ${eventCount} memorable moments.`;
+    
+    return narrative;
+  }
+  
+  /**
+   * Calculate importance of episode
+   */
+  calculateEpisodeImportance(episode) {
+    let importance = 0;
+    
+    // More events = more important
+    importance += episode.events.length * 5;
+    
+    // More participants = more important
+    importance += episode.participants.size * 10;
+    
+    // High intensity emotions = more important
+    const highIntensity = episode.events.filter(e => 
+      e.intensity === 'high'
+    ).length;
+    importance += highIntensity * 15;
+    
+    // Longer duration = more important
+    const durationHours = (episode.endTime - episode.startTime) / (1000 * 60 * 60);
+    importance += Math.min(durationHours * 5, 25);
+    
+    return Math.min(importance, 100);
+  }
+  
+  /**
+   * Save episodic memory
+   */
+  async saveEpisodicMemory() {
+    const fs = require('fs').promises;
+    const path = require('path');
+    
+    try {
+      const dir = path.dirname(this.episodesPath);
+      await fs.mkdir(dir, { recursive: true });
+      
+      const data = {
+        episodes: Array.from(this.episodicMemory.values()),
+        savedAt: Date.now()
+      };
+      
+      await fs.writeFile(this.episodesPath, JSON.stringify(data, null, 2));
+      console.log(`🧠 [Memory] Saved ${data.episodes.length} episodes`);
+    } catch (error) {
+      console.error('🧠 [Memory] Error saving episodic memory:', error.message);
+    }
+  }
+  
+  /**
+   * Load episodic memory
+   */
+  async loadEpisodicMemory() {
+    const fs = require('fs').promises;
+    
+    try {
+      const data = await fs.readFile(this.episodesPath, 'utf8');
+      const parsed = JSON.parse(data);
+      
+      this.episodicMemory.clear();
+      parsed.episodes.forEach(episode => {
+        this.episodicMemory.set(episode.id, episode);
+      });
+      
+      console.log(`🧠 [Memory] Loaded ${this.episodicMemory.size} episodes`);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('🧠 [Memory] Error loading episodic memory:', error.message);
+      }
+    }
+  }
+  
+  /**
+   * Save memory clusters
+   */
+  async saveMemoryClusters() {
+    const fs = require('fs').promises;
+    const path = require('path');
+    
+    try {
+      const dir = path.dirname(this.clustersPath);
+      await fs.mkdir(dir, { recursive: true });
+      
+      const data = {
+        clusters: Array.from(this.memoryClusters.values()),
+        savedAt: Date.now()
+      };
+      
+      await fs.writeFile(this.clustersPath, JSON.stringify(data, null, 2));
+      console.log(`🧠 [Memory] Saved ${data.clusters.length} clusters`);
+    } catch (error) {
+      console.error('🧠 [Memory] Error saving clusters:', error.message);
+    }
+  }
+  
+  /**
+   * Load memory clusters
+   */
+  async loadMemoryClusters() {
+    const fs = require('fs').promises;
+    
+    try {
+      const data = await fs.readFile(this.clustersPath, 'utf8');
+      const parsed = JSON.parse(data);
+      
+      this.memoryClusters.clear();
+      parsed.clusters.forEach(cluster => {
+        this.memoryClusters.set(cluster.id, cluster);
+      });
+      
+      console.log(`🧠 [Memory] Loaded ${this.memoryClusters.size} clusters`);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('🧠 [Memory] Error loading clusters:', error.message);
+      }
+    }
+  }
+  
+  /**
+   * Get relevant episode for current context
+   */
+  getRelevantEpisode(username, topic) {
+    const relevantEpisodes = [];
+    
+    for (const episode of this.episodicMemory.values()) {
+      let relevance = 0;
+      
+      // User involved?
+      if (episode.participants.includes(username)) {
+        relevance += 50;
+      }
+      
+      // Topic matches?
+      if (topic) {
+        const episodeText = episode.narrative.toLowerCase();
+        const topicWords = topic.toLowerCase().split(/\s+/);
+        const matches = topicWords.filter(w => episodeText.includes(w)).length;
+        relevance += matches * 10;
+      }
+      
+      // Importance
+      relevance += episode.importance;
+      
+      if (relevance > 30) {
+        relevantEpisodes.push({ episode, relevance });
+      }
+    }
+    
+    // Sort by relevance
+    relevantEpisodes.sort((a, b) => b.relevance - a.relevance);
+    
+    return relevantEpisodes[0]?.episode || null;
+  }
+  
+  /**
+   * Merge redundant memories
+   */
+  mergeRedundantMemories() {
+    console.log('🧠 [Memory] Merging redundant memories...');
+    let merged = 0;
+    
+    for (const [username, profile] of this.chatBot.userProfiles.entries()) {
+      // Merge duplicate topics
+      if (profile.favoriteTopics && profile.favoriteTopics.length > 0) {
+        const uniqueTopics = [...new Set(
+          profile.favoriteTopics.map(t => t.toLowerCase())
+        )];
+        
+        if (uniqueTopics.length < profile.favoriteTopics.length) {
+          profile.favoriteTopics = uniqueTopics.slice(0, 10);
+          merged++;
+        }
+      }
+      
+      // Merge similar quotes
+      if (profile.funnyQuotes && profile.funnyQuotes.length > 10) {
+        // Keep only most recent 10
+        profile.funnyQuotes = profile.funnyQuotes.slice(-10);
+        merged++;
+      }
+      
+      // Merge old emotional moments
+      if (profile.emotionalMoments && profile.emotionalMoments.length > 15) {
+        // Keep only most recent 15
+        profile.emotionalMoments = profile.emotionalMoments.slice(-15);
+        merged++;
+      }
+    }
+    
+    if (merged > 0) {
+      console.log(`🧠 [Memory] Merged ${merged} redundant memories`);
+    }
   }
 }
 

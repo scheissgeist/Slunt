@@ -1,7 +1,8 @@
 // CoolPointsHandler: Handles CoolPoints balance, transactions, debt, and mood impact
 // Modularized for performance and maintainability
 
-const fs = require('fs');
+const fs = require('fs').promises;
+const fsSync = require('fs'); // Keep sync for initial load only
 const path = require('path');
 const coolPointsPath = path.join(__dirname, '../../data/coolpoints.json');
 
@@ -14,53 +15,54 @@ class CoolPointsHandler {
 
     loadCoolPoints() {
         try {
-            const data = fs.readFileSync(coolPointsPath, 'utf8');
+            // Initial load can be sync since it's during startup
+            const data = fsSync.readFileSync(coolPointsPath, 'utf8');
             this.coolPoints = JSON.parse(data);
         } catch (err) {
             this.coolPoints = {};
         }
     }
 
-    saveCoolPoints() {
-        fs.writeFileSync(coolPointsPath, JSON.stringify(this.coolPoints, null, 2));
+    async saveCoolPoints() {
+        await fs.writeFile(coolPointsPath, JSON.stringify(this.coolPoints, null, 2));
     }
 
     getBalance(user) {
         return this.coolPoints[user] ? this.coolPoints[user].balance : 0;
     }
 
-    setBalance(user, amount) {
+    async setBalance(user, amount) {
         if (!this.coolPoints[user]) this.coolPoints[user] = { balance: 0, debt: 0 };
         this.coolPoints[user].balance = amount;
-        this.saveCoolPoints();
+        await this.saveCoolPoints();
     }
 
-    addPoints(user, amount) {
+    async addPoints(user, amount) {
         if (!this.coolPoints[user]) this.coolPoints[user] = { balance: 0, debt: 0 };
         this.coolPoints[user].balance += amount;
-        this.saveCoolPoints();
+        await this.saveCoolPoints();
     }
 
-    deductPoints(user, amount) {
+    async deductPoints(user, amount) {
         if (!this.coolPoints[user]) this.coolPoints[user] = { balance: 0, debt: 0 };
         this.coolPoints[user].balance -= amount;
-        this.saveCoolPoints();
+        await this.saveCoolPoints();
     }
 
     getDebtLevel(user) {
         return this.coolPoints[user] ? this.coolPoints[user].debt : 0;
     }
 
-    setDebtLevel(user, level) {
+    async setDebtLevel(user, level) {
         if (!this.coolPoints[user]) this.coolPoints[user] = { balance: 0, debt: 0 };
         this.coolPoints[user].debt = level;
-        this.saveCoolPoints();
+        await this.saveCoolPoints();
     }
 
-    transferPoints(from, to, amount) {
+    async transferPoints(from, to, amount) {
         if (this.getBalance(from) >= amount) {
-            this.deductPoints(from, amount);
-            this.addPoints(to, amount);
+            await this.deductPoints(from, amount);
+            await this.addPoints(to, amount);
             return true;
         }
         return false;

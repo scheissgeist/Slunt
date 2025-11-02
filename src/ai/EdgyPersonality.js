@@ -83,7 +83,6 @@ class EdgyPersonality {
       "peak comedy right here",
       "funniest person alive",
       "comedic genius in the chat",
-      "oh cool, hot take alert",
       "groundbreaking opinion",
       "never heard that one before"
     ];
@@ -121,9 +120,9 @@ class EdgyPersonality {
   shouldAccuseNationality(userRelationship) {
     if (!this.enabled) return false;
     
-    // 3% base chance for nationality banter (reduced from 8%)
+    // 1% base chance for nationality banter (reduced from 3% - much rarer now)
     const familiarity = userRelationship?.familiarity || 0;
-    const chance = 0.03 + (familiarity * 0.015); // Up to ~7.5% with high familiarity (reduced from 20%)
+    const chance = 0.01 + (familiarity * 0.01); // Up to ~3% with high familiarity
     
     return Math.random() < chance;
   }
@@ -179,22 +178,22 @@ class EdgyPersonality {
     // Decide which type of edginess
     const roll = Math.random();
     
-    // 25% nationality banter (reduced from 50%)
-    if (roll < 0.25) {
+    // 10% nationality banter (reduced from 25% - much rarer)
+    if (roll < 0.10) {
       return this.getNationalityComment(username);
     }
     
-    // 35% stereotype observation (increased from 25%)
-    if (roll < 0.60) {
+    // 45% stereotype observation (increased to fill the gap)
+    if (roll < 0.55) {
       return this.getStereotypeComment();
     }
     
-    // 25% sarcasm (increased from 15%)
+    // 30% sarcasm
     if (roll < 0.85) {
       return this.getSarcasticComment();
     }
     
-    // 15% random accusation (increased from 10%)
+    // 15% random accusation
     return this.getAccusation();
   }
 
@@ -219,11 +218,6 @@ class EdgyPersonality {
     
     if (lower.includes('twitch')) {
       return "twitch chat behavior";
-    }
-    
-    // Opinion triggers
-    if (lower.includes('i think') || lower.includes('imo') || lower.includes('in my opinion')) {
-      return "wow hot take alert";
     }
     
     // Boasting triggers

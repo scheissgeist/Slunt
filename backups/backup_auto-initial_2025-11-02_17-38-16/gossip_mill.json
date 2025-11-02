@@ -1,0 +1,1709 @@
+{
+  "relationships": {
+    "SteeScribbles_SteeScribbles": {
+      "users": [
+        "SteeScribbles",
+        "SteeScribbles"
+      ],
+      "interactions": 18,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 18,
+      "firstInteraction": 1761954032043,
+      "lastInteraction": 1762026789584,
+      "rumors": []
+    },
+    ".loweffort_.loweffort": {
+      "users": [
+        ".loweffort",
+        ".loweffort"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761954043685,
+      "lastInteraction": 1762026312002,
+      "rumors": []
+    },
+    "quantum_magus_quantum_magus": {
+      "users": [
+        "quantum_magus",
+        "quantum_magus"
+      ],
+      "interactions": 13,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 13,
+      "firstInteraction": 1761954056822,
+      "lastInteraction": 1761956814804,
+      "rumors": []
+    },
+    "uncledoctor_uncledoctor": {
+      "users": [
+        "uncledoctor",
+        "uncledoctor"
+      ],
+      "interactions": 8,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 8,
+      "firstInteraction": 1761954087279,
+      "lastInteraction": 1762041189657,
+      "rumors": []
+    },
+    ".blueeyeswhitesupremacist_.blueeyeswhitesupremacist": {
+      "users": [
+        ".blueeyeswhitesupremacist",
+        ".blueeyeswhitesupremacist"
+      ],
+      "interactions": 19,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 19,
+      "firstInteraction": 1761954125214,
+      "lastInteraction": 1762040769592,
+      "rumors": []
+    },
+    "psycho_dad_psycho_dad": {
+      "users": [
+        "psycho_dad",
+        "psycho_dad"
+      ],
+      "interactions": 15,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 15,
+      "firstInteraction": 1761954134947,
+      "lastInteraction": 1761960823448,
+      "rumors": []
+    },
+    "picklebond_picklebond": {
+      "users": [
+        "picklebond",
+        "picklebond"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761954161854,
+      "lastInteraction": 1761954161854,
+      "rumors": []
+    },
+    "rottencheeseCA_rottencheeseCA": {
+      "users": [
+        "rottencheeseCA",
+        "rottencheeseCA"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761954247541,
+      "lastInteraction": 1761962855388,
+      "rumors": []
+    },
+    "belzaboom_belzaboom": {
+      "users": [
+        "belzaboom",
+        "belzaboom"
+      ],
+      "interactions": 5,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 5,
+      "firstInteraction": 1761954279672,
+      "lastInteraction": 1762025893643,
+      "rumors": []
+    },
+    "scarpelt_scarpelt": {
+      "users": [
+        "scarpelt",
+        "scarpelt"
+      ],
+      "interactions": 7,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 7,
+      "firstInteraction": 1761954326188,
+      "lastInteraction": 1761967791974,
+      "rumors": []
+    },
+    "jhaumrith_jhaumrith": {
+      "users": [
+        "jhaumrith",
+        "jhaumrith"
+      ],
+      "interactions": 26,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 26,
+      "firstInteraction": 1761954541932,
+      "lastInteraction": 1762031862891,
+      "rumors": []
+    },
+    "Brotherimbread_Brotherimbread": {
+      "users": [
+        "Brotherimbread",
+        "Brotherimbread"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761954557287,
+      "lastInteraction": 1761986885491,
+      "rumors": []
+    },
+    "._.fug_._.fug": {
+      "users": [
+        "._.fug",
+        "._.fug"
+      ],
+      "interactions": 22,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 22,
+      "firstInteraction": 1761954576900,
+      "lastInteraction": 1762043430003,
+      "rumors": []
+    },
+    "jello_noir_jello_noir": {
+      "users": [
+        "jello_noir",
+        "jello_noir"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761955006356,
+      "lastInteraction": 1762027257068,
+      "rumors": []
+    },
+    "shazbot885_shazbot885": {
+      "users": [
+        "shazbot885",
+        "shazbot885"
+      ],
+      "interactions": 18,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 18,
+      "firstInteraction": 1761955050203,
+      "lastInteraction": 1762033942784,
+      "rumors": []
+    },
+    "sforlord_sforlord": {
+      "users": [
+        "sforlord",
+        "sforlord"
+      ],
+      "interactions": 8,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 8,
+      "firstInteraction": 1761955079547,
+      "lastInteraction": 1762023527100,
+      "rumors": []
+    },
+    "jin_joe_jin_joe": {
+      "users": [
+        "jin_joe",
+        "jin_joe"
+      ],
+      "interactions": 13,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 13,
+      "firstInteraction": 1761955114653,
+      "lastInteraction": 1762033008536,
+      "rumors": []
+    },
+    "rottencheeseCA joined (aliases_rottencheeseCA joined (aliases": {
+      "users": [
+        "rottencheeseCA joined (aliases",
+        "rottencheeseCA joined (aliases"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761955138904,
+      "lastInteraction": 1762029042588,
+      "rumors": []
+    },
+    "electriqwizard_electriqwizard": {
+      "users": [
+        "electriqwizard",
+        "electriqwizard"
+      ],
+      "interactions": 12,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 12,
+      "firstInteraction": 1761955184367,
+      "lastInteraction": 1762042702809,
+      "rumors": []
+    },
+    "Artyom joined (aliases_Artyom joined (aliases": {
+      "users": [
+        "Artyom joined (aliases",
+        "Artyom joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761955438999,
+      "lastInteraction": 1761955438999,
+      "rumors": []
+    },
+    "_slamminsalmon__slamminsalmon": {
+      "users": [
+        "_slamminsalmon",
+        "_slamminsalmon"
+      ],
+      "interactions": 19,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 19,
+      "firstInteraction": 1761955504273,
+      "lastInteraction": 1762033200309,
+      "rumors": []
+    },
+    "plaguejackal_plaguejackal": {
+      "users": [
+        "plaguejackal",
+        "plaguejackal"
+      ],
+      "interactions": 29,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 29,
+      "firstInteraction": 1761955589552,
+      "lastInteraction": 1762043770979,
+      "rumors": []
+    },
+    "QuantumSun_QuantumSun": {
+      "users": [
+        "QuantumSun",
+        "QuantumSun"
+      ],
+      "interactions": 19,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 19,
+      "firstInteraction": 1761955968998,
+      "lastInteraction": 1761969815027,
+      "rumors": []
+    },
+    "ghello_ghello": {
+      "users": [
+        "ghello",
+        "ghello"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761955995313,
+      "lastInteraction": 1761955995313,
+      "rumors": []
+    },
+    "Pocket joined (aliases_Pocket joined (aliases": {
+      "users": [
+        "Pocket joined (aliases",
+        "Pocket joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761956061440,
+      "lastInteraction": 1761956061440,
+      "rumors": []
+    },
+    "pat8925_pat8925": {
+      "users": [
+        "pat8925",
+        "pat8925"
+      ],
+      "interactions": 84,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 84,
+      "firstInteraction": 1761956968999,
+      "lastInteraction": 1762033562755,
+      "rumors": []
+    },
+    "Huculberry_Huculberry": {
+      "users": [
+        "Huculberry",
+        "Huculberry"
+      ],
+      "interactions": 20,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 20,
+      "firstInteraction": 1761957294064,
+      "lastInteraction": 1762029499709,
+      "rumors": []
+    },
+    "wrangle joined (aliases_wrangle joined (aliases": {
+      "users": [
+        "wrangle joined (aliases",
+        "wrangle joined (aliases"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761957394112,
+      "lastInteraction": 1761968706061,
+      "rumors": []
+    },
+    "gangstalker_of_gangstalkers_gangstalker_of_gangstalkers": {
+      "users": [
+        "gangstalker_of_gangstalkers",
+        "gangstalker_of_gangstalkers"
+      ],
+      "interactions": 5,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 5,
+      "firstInteraction": 1761957703791,
+      "lastInteraction": 1762029685867,
+      "rumors": []
+    },
+    "sams0n1999_sams0n1999": {
+      "users": [
+        "sams0n1999",
+        "sams0n1999"
+      ],
+      "interactions": 8,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 8,
+      "firstInteraction": 1761957983719,
+      "lastInteraction": 1762033998675,
+      "rumors": []
+    },
+    "fargerdinklor_fargerdinklor": {
+      "users": [
+        "fargerdinklor",
+        "fargerdinklor"
+      ],
+      "interactions": 5,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 5,
+      "firstInteraction": 1761958080292,
+      "lastInteraction": 1761958395306,
+      "rumors": []
+    },
+    "ensell joined (aliases_ensell joined (aliases": {
+      "users": [
+        "ensell joined (aliases",
+        "ensell joined (aliases"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761959152671,
+      "lastInteraction": 1761959453666,
+      "rumors": []
+    },
+    "Capegourd_Capegourd": {
+      "users": [
+        "Capegourd",
+        "Capegourd"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761959168446,
+      "lastInteraction": 1762043573269,
+      "rumors": []
+    },
+    "albino5stargeneral_albino5stargeneral": {
+      "users": [
+        "albino5stargeneral",
+        "albino5stargeneral"
+      ],
+      "interactions": 16,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 16,
+      "firstInteraction": 1761959276863,
+      "lastInteraction": 1762033755283,
+      "rumors": []
+    },
+    "radfather joined (aliases_radfather joined (aliases": {
+      "users": [
+        "radfather joined (aliases",
+        "radfather joined (aliases"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761959440061,
+      "lastInteraction": 1761965462580,
+      "rumors": []
+    },
+    "ensell_ensell": {
+      "users": [
+        "ensell",
+        "ensell"
+      ],
+      "interactions": 4,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 4,
+      "firstInteraction": 1761959465931,
+      "lastInteraction": 1761962452125,
+      "rumors": []
+    },
+    "radfather_radfather": {
+      "users": [
+        "radfather",
+        "radfather"
+      ],
+      "interactions": 13,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 13,
+      "firstInteraction": 1761959512253,
+      "lastInteraction": 1761970689205,
+      "rumors": []
+    },
+    "taikunoaku_taikunoaku": {
+      "users": [
+        "taikunoaku",
+        "taikunoaku"
+      ],
+      "interactions": 15,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 15,
+      "firstInteraction": 1761959865779,
+      "lastInteraction": 1762033874799,
+      "rumors": []
+    },
+    "Migi_Migi": {
+      "users": [
+        "Migi",
+        "Migi"
+      ],
+      "interactions": 11,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 11,
+      "firstInteraction": 1761960243114,
+      "lastInteraction": 1761970753887,
+      "rumors": []
+    },
+    "Taikunoaku_Taikunoaku": {
+      "users": [
+        "Taikunoaku",
+        "Taikunoaku"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761960284496,
+      "lastInteraction": 1762028538288,
+      "rumors": []
+    },
+    "bangbangbangbang_bangbangbangbang": {
+      "users": [
+        "bangbangbangbang",
+        "bangbangbangbang"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761960287290,
+      "lastInteraction": 1761984194011,
+      "rumors": []
+    },
+    "patterson1_patterson1": {
+      "users": [
+        "patterson1",
+        "patterson1"
+      ],
+      "interactions": 25,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 25,
+      "firstInteraction": 1761960382565,
+      "lastInteraction": 1762033763577,
+      "rumors": []
+    },
+    "SickIllu joined (aliases_SickIllu joined (aliases": {
+      "users": [
+        "SickIllu joined (aliases",
+        "SickIllu joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761961195631,
+      "lastInteraction": 1761961195631,
+      "rumors": []
+    },
+    "Klumb_Klumb": {
+      "users": [
+        "Klumb",
+        "Klumb"
+      ],
+      "interactions": 5,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 5,
+      "firstInteraction": 1761961441116,
+      "lastInteraction": 1761963080685,
+      "rumors": []
+    },
+    "bomelette_bomelette": {
+      "users": [
+        "bomelette",
+        "bomelette"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761961490014,
+      "lastInteraction": 1761962566658,
+      "rumors": []
+    },
+    "whomo._whomo.": {
+      "users": [
+        "whomo.",
+        "whomo."
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761961534001,
+      "lastInteraction": 1762033189129,
+      "rumors": []
+    },
+    "miknugget__miknugget_": {
+      "users": [
+        "miknugget_",
+        "miknugget_"
+      ],
+      "interactions": 5,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 5,
+      "firstInteraction": 1761962130258,
+      "lastInteraction": 1761963628313,
+      "rumors": []
+    },
+    "braybray9876_braybray9876": {
+      "users": [
+        "braybray9876",
+        "braybray9876"
+      ],
+      "interactions": 37,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 37,
+      "firstInteraction": 1761962278866,
+      "lastInteraction": 1762043339372,
+      "rumors": []
+    },
+    "Frigurt_Frigurt": {
+      "users": [
+        "Frigurt",
+        "Frigurt"
+      ],
+      "interactions": 7,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 7,
+      "firstInteraction": 1761962501101,
+      "lastInteraction": 1761962859077,
+      "rumors": []
+    },
+    "bangbangbangbang joined (aliases_bangbangbangbang joined (aliases": {
+      "users": [
+        "bangbangbangbang joined (aliases",
+        "bangbangbangbang joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761962668710,
+      "lastInteraction": 1761962668710,
+      "rumors": []
+    },
+    "nam420_nam420": {
+      "users": [
+        "nam420",
+        "nam420"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761963817053,
+      "lastInteraction": 1761963817053,
+      "rumors": []
+    },
+    "Applecooler_Applecooler": {
+      "users": [
+        "Applecooler",
+        "Applecooler"
+      ],
+      "interactions": 6,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 6,
+      "firstInteraction": 1761963878873,
+      "lastInteraction": 1762043136063,
+      "rumors": []
+    },
+    "glowInTheDark_glowInTheDark": {
+      "users": [
+        "glowInTheDark",
+        "glowInTheDark"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761964190051,
+      "lastInteraction": 1761968750249,
+      "rumors": []
+    },
+    "dammitwesley_dammitwesley": {
+      "users": [
+        "dammitwesley",
+        "dammitwesley"
+      ],
+      "interactions": 11,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 11,
+      "firstInteraction": 1761964525226,
+      "lastInteraction": 1762041114518,
+      "rumors": []
+    },
+    "localwatercooler_localwatercooler": {
+      "users": [
+        "localwatercooler",
+        "localwatercooler"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761965152835,
+      "lastInteraction": 1762031680673,
+      "rumors": []
+    },
+    "Bear141 joined (aliases_Bear141 joined (aliases": {
+      "users": [
+        "Bear141 joined (aliases",
+        "Bear141 joined (aliases"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761965603498,
+      "lastInteraction": 1761965604016,
+      "rumors": []
+    },
+    "Bear141_Bear141": {
+      "users": [
+        "Bear141",
+        "Bear141"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761965637240,
+      "lastInteraction": 1761965637240,
+      "rumors": []
+    },
+    "WankingPrep_WankingPrep": {
+      "users": [
+        "WankingPrep",
+        "WankingPrep"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761965858608,
+      "lastInteraction": 1761966210289,
+      "rumors": []
+    },
+    "pissass joined (aliases_pissass joined (aliases": {
+      "users": [
+        "pissass joined (aliases",
+        "pissass joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761966132109,
+      "lastInteraction": 1761966132109,
+      "rumors": []
+    },
+    "enaychdy_enaychdy": {
+      "users": [
+        "enaychdy",
+        "enaychdy"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761966294239,
+      "lastInteraction": 1761966373084,
+      "rumors": []
+    },
+    "baddibarbie_baddibarbie": {
+      "users": [
+        "baddibarbie",
+        "baddibarbie"
+      ],
+      "interactions": 4,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 4,
+      "firstInteraction": 1761966468825,
+      "lastInteraction": 1761969920790,
+      "rumors": []
+    },
+    "vaporwar3_vaporwar3": {
+      "users": [
+        "vaporwar3",
+        "vaporwar3"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761966729309,
+      "lastInteraction": 1762032176311,
+      "rumors": []
+    },
+    "josef.p_josef.p": {
+      "users": [
+        "josef.p",
+        "josef.p"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761967101567,
+      "lastInteraction": 1761967101567,
+      "rumors": []
+    },
+    "Ecks joined (aliases_Ecks joined (aliases": {
+      "users": [
+        "Ecks joined (aliases",
+        "Ecks joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761967229786,
+      "lastInteraction": 1761967229786,
+      "rumors": []
+    },
+    "soapyoid_soapyoid": {
+      "users": [
+        "soapyoid",
+        "soapyoid"
+      ],
+      "interactions": 11,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 11,
+      "firstInteraction": 1761967309644,
+      "lastInteraction": 1761970808780,
+      "rumors": []
+    },
+    "mr.bones888_mr.bones888": {
+      "users": [
+        "mr.bones888",
+        "mr.bones888"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761967324525,
+      "lastInteraction": 1761968038651,
+      "rumors": []
+    },
+    "somehermit joined (aliases_somehermit joined (aliases": {
+      "users": [
+        "somehermit joined (aliases",
+        "somehermit joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761968206682,
+      "lastInteraction": 1761968206682,
+      "rumors": []
+    },
+    "somehermit_somehermit": {
+      "users": [
+        "somehermit",
+        "somehermit"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761968243630,
+      "lastInteraction": 1761968243630,
+      "rumors": []
+    },
+    "bonkersizewonga_bonkersizewonga": {
+      "users": [
+        "bonkersizewonga",
+        "bonkersizewonga"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1761968418509,
+      "lastInteraction": 1761968626925,
+      "rumors": []
+    },
+    "hued_hued": {
+      "users": [
+        "hued",
+        "hued"
+      ],
+      "interactions": 8,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 8,
+      "firstInteraction": 1761969339942,
+      "lastInteraction": 1762042882371,
+      "rumors": []
+    },
+    "subtrfuge_subtrfuge": {
+      "users": [
+        "subtrfuge",
+        "subtrfuge"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761969735384,
+      "lastInteraction": 1761969780220,
+      "rumors": []
+    },
+    "Someonelse joined (aliases_Someonelse joined (aliases": {
+      "users": [
+        "Someonelse joined (aliases",
+        "Someonelse joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761969785365,
+      "lastInteraction": 1761969785365,
+      "rumors": []
+    },
+    "shitstainafficionado_04919_shitstainafficionado_04919": {
+      "users": [
+        "shitstainafficionado_04919",
+        "shitstainafficionado_04919"
+      ],
+      "interactions": 14,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 14,
+      "firstInteraction": 1761969924778,
+      "lastInteraction": 1762032711784,
+      "rumors": []
+    },
+    "Migi joined (aliases_Migi joined (aliases": {
+      "users": [
+        "Migi joined (aliases",
+        "Migi joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761970006632,
+      "lastInteraction": 1761970006632,
+      "rumors": []
+    },
+    "BbNaB_BbNaB": {
+      "users": [
+        "BbNaB",
+        "BbNaB"
+      ],
+      "interactions": 7,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 7,
+      "firstInteraction": 1761970711822,
+      "lastInteraction": 1762032738052,
+      "rumors": []
+    },
+    "orbmeat_orbmeat": {
+      "users": [
+        "orbmeat",
+        "orbmeat"
+      ],
+      "interactions": 23,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 23,
+      "firstInteraction": 1761984318885,
+      "lastInteraction": 1762043404473,
+      "rumors": []
+    },
+    "ducky006446_ducky006446": {
+      "users": [
+        "ducky006446",
+        "ducky006446"
+      ],
+      "interactions": 6,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 6,
+      "firstInteraction": 1761984476455,
+      "lastInteraction": 1761987003375,
+      "rumors": []
+    },
+    "alanminder_alanminder": {
+      "users": [
+        "alanminder",
+        "alanminder"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1761984507333,
+      "lastInteraction": 1762025340824,
+      "rumors": []
+    },
+    "stevepugwaredev_stevepugwaredev": {
+      "users": [
+        "stevepugwaredev",
+        "stevepugwaredev"
+      ],
+      "interactions": 77,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 77,
+      "firstInteraction": 1761984554125,
+      "lastInteraction": 1762029753593,
+      "rumors": []
+    },
+    "realest_zetto_realest_zetto": {
+      "users": [
+        "realest_zetto",
+        "realest_zetto"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1761984570961,
+      "lastInteraction": 1761984570961,
+      "rumors": []
+    },
+    "lapome_lapome": {
+      "users": [
+        "lapome",
+        "lapome"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1761986319856,
+      "lastInteraction": 1762041129707,
+      "rumors": []
+    },
+    "net.stalker_net.stalker": {
+      "users": [
+        "net.stalker",
+        "net.stalker"
+      ],
+      "interactions": 7,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 7,
+      "firstInteraction": 1761986413028,
+      "lastInteraction": 1762028067741,
+      "rumors": []
+    },
+    "Palestine_Forever_Palestine_Forever": {
+      "users": [
+        "Palestine_Forever",
+        "Palestine_Forever"
+      ],
+      "interactions": 6,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 6,
+      "firstInteraction": 1762021459692,
+      "lastInteraction": 1762024257412,
+      "rumors": []
+    },
+    "Miles_Gloriosus_Miles_Gloriosus": {
+      "users": [
+        "Miles_Gloriosus",
+        "Miles_Gloriosus"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762021532421,
+      "lastInteraction": 1762021532421,
+      "rumors": []
+    },
+    "OrbMeat_OrbMeat": {
+      "users": [
+        "OrbMeat",
+        "OrbMeat"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762021711843,
+      "lastInteraction": 1762021711843,
+      "rumors": []
+    },
+    "Huculberry joined (aliases_Huculberry joined (aliases": {
+      "users": [
+        "Huculberry joined (aliases",
+        "Huculberry joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762022487170,
+      "lastInteraction": 1762022487170,
+      "rumors": []
+    },
+    "churchill1941._churchill1941.": {
+      "users": [
+        "churchill1941.",
+        "churchill1941."
+      ],
+      "interactions": 19,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 19,
+      "firstInteraction": 1762022684261,
+      "lastInteraction": 1762033570104,
+      "rumors": []
+    },
+    "bbnab_bbnab": {
+      "users": [
+        "bbnab",
+        "bbnab"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1762022711703,
+      "lastInteraction": 1762022841104,
+      "rumors": []
+    },
+    "BunnBunn joined (aliases_BunnBunn joined (aliases": {
+      "users": [
+        "BunnBunn joined (aliases",
+        "BunnBunn joined (aliases"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762023083669,
+      "lastInteraction": 1762023233298,
+      "rumors": []
+    },
+    "BunnBunn_BunnBunn": {
+      "users": [
+        "BunnBunn",
+        "BunnBunn"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1762023172039,
+      "lastInteraction": 1762032793599,
+      "rumors": []
+    },
+    "Gutmatant_Gutmatant": {
+      "users": [
+        "Gutmatant",
+        "Gutmatant"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762023668220,
+      "lastInteraction": 1762023668220,
+      "rumors": []
+    },
+    "Juice_Kelly_Juice_Kelly": {
+      "users": [
+        "Juice_Kelly",
+        "Juice_Kelly"
+      ],
+      "interactions": 4,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 4,
+      "firstInteraction": 1762023772571,
+      "lastInteraction": 1762025287729,
+      "rumors": []
+    },
+    "Voteskip passed_Voteskip passed": {
+      "users": [
+        "Voteskip passed",
+        "Voteskip passed"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762023781249,
+      "lastInteraction": 1762023781547,
+      "rumors": []
+    },
+    "gr8itsn8_gr8itsn8": {
+      "users": [
+        "gr8itsn8",
+        "gr8itsn8"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762024273387,
+      "lastInteraction": 1762024375968,
+      "rumors": []
+    },
+    "what.tha_what.tha": {
+      "users": [
+        "what.tha",
+        "what.tha"
+      ],
+      "interactions": 9,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 9,
+      "firstInteraction": 1762024458383,
+      "lastInteraction": 1762043589900,
+      "rumors": []
+    },
+    "cassidy6969_cassidy6969": {
+      "users": [
+        "cassidy6969",
+        "cassidy6969"
+      ],
+      "interactions": 25,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 25,
+      "firstInteraction": 1762025912714,
+      "lastInteraction": 1762030211403,
+      "rumors": []
+    },
+    "the_brofessor._the_brofessor.": {
+      "users": [
+        "the_brofessor.",
+        "the_brofessor."
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762025953880,
+      "lastInteraction": 1762026140757,
+      "rumors": []
+    },
+    "spaceman_1996_spaceman_1996": {
+      "users": [
+        "spaceman_1996",
+        "spaceman_1996"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762025983969,
+      "lastInteraction": 1762025983969,
+      "rumors": []
+    },
+    "ruckusebenezer_ruckusebenezer": {
+      "users": [
+        "ruckusebenezer",
+        "ruckusebenezer"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762026019941,
+      "lastInteraction": 1762026019941,
+      "rumors": []
+    },
+    "unhuggable_unhuggable": {
+      "users": [
+        "unhuggable",
+        "unhuggable"
+      ],
+      "interactions": 3,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 3,
+      "firstInteraction": 1762026173163,
+      "lastInteraction": 1762026257338,
+      "rumors": []
+    },
+    "Brotherimbread joined (aliases_Brotherimbread joined (aliases": {
+      "users": [
+        "Brotherimbread joined (aliases",
+        "Brotherimbread joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762026372466,
+      "lastInteraction": 1762026372466,
+      "rumors": []
+    },
+    "slunt, don't show Orbmeat this https_slunt, don't show Orbmeat this https": {
+      "users": [
+        "slunt, don't show Orbmeat this https",
+        "slunt, don't show Orbmeat this https"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762026907480,
+      "lastInteraction": 1762026907480,
+      "rumors": []
+    },
+    "davedalus_davedalus": {
+      "users": [
+        "davedalus",
+        "davedalus"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762027707072,
+      "lastInteraction": 1762027707072,
+      "rumors": []
+    },
+    "southeefrica joined (aliases_southeefrica joined (aliases": {
+      "users": [
+        "southeefrica joined (aliases",
+        "southeefrica joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762028443842,
+      "lastInteraction": 1762028443842,
+      "rumors": []
+    },
+    "catfractal_catfractal": {
+      "users": [
+        "catfractal",
+        "catfractal"
+      ],
+      "interactions": 13,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 13,
+      "firstInteraction": 1762028714661,
+      "lastInteraction": 1762041182584,
+      "rumors": []
+    },
+    "Daknez joined (aliases_Daknez joined (aliases": {
+      "users": [
+        "Daknez joined (aliases",
+        "Daknez joined (aliases"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762028760398,
+      "lastInteraction": 1762043542439,
+      "rumors": []
+    },
+    "Daknez_Daknez": {
+      "users": [
+        "Daknez",
+        "Daknez"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762028823811,
+      "lastInteraction": 1762028823811,
+      "rumors": []
+    },
+    "sithlord8448_sithlord8448": {
+      "users": [
+        "sithlord8448",
+        "sithlord8448"
+      ],
+      "interactions": 14,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 14,
+      "firstInteraction": 1762029185824,
+      "lastInteraction": 1762033947877,
+      "rumors": []
+    },
+    "trueskeletonman_trueskeletonman": {
+      "users": [
+        "trueskeletonman",
+        "trueskeletonman"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762029790530,
+      "lastInteraction": 1762029790531,
+      "rumors": []
+    },
+    ".zcanaan_.zcanaan": {
+      "users": [
+        ".zcanaan",
+        ".zcanaan"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762031069269,
+      "lastInteraction": 1762031069269,
+      "rumors": []
+    },
+    "SteeScribbles joined (aliases_SteeScribbles joined (aliases": {
+      "users": [
+        "SteeScribbles joined (aliases",
+        "SteeScribbles joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762032288862,
+      "lastInteraction": 1762032288862,
+      "rumors": []
+    },
+    "rottencheeseca_rottencheeseca": {
+      "users": [
+        "rottencheeseca",
+        "rottencheeseca"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762032424321,
+      "lastInteraction": 1762033649381,
+      "rumors": []
+    },
+    "southeefrica_southeefrica": {
+      "users": [
+        "southeefrica",
+        "southeefrica"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762033141249,
+      "lastInteraction": 1762043680071,
+      "rumors": []
+    },
+    "coolusername joined (aliases_coolusername joined (aliases": {
+      "users": [
+        "coolusername joined (aliases",
+        "coolusername joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762033464415,
+      "lastInteraction": 1762033464415,
+      "rumors": []
+    },
+    "Applecooler joined (aliases_Applecooler joined (aliases": {
+      "users": [
+        "Applecooler joined (aliases",
+        "Applecooler joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762033722261,
+      "lastInteraction": 1762033722261,
+      "rumors": []
+    },
+    "scouragous_scouragous": {
+      "users": [
+        "scouragous",
+        "scouragous"
+      ],
+      "interactions": 4,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 4,
+      "firstInteraction": 1762041145558,
+      "lastInteraction": 1762042820954,
+      "rumors": []
+    },
+    "painmongr joined (aliases_painmongr joined (aliases": {
+      "users": [
+        "painmongr joined (aliases",
+        "painmongr joined (aliases"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762042272420,
+      "lastInteraction": 1762042272420,
+      "rumors": []
+    },
+    "manticrow_manticrow": {
+      "users": [
+        "manticrow",
+        "manticrow"
+      ],
+      "interactions": 2,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 2,
+      "firstInteraction": 1762043113469,
+      "lastInteraction": 1762043725595,
+      "rumors": []
+    },
+    "gorgelgargle_gorgelgargle": {
+      "users": [
+        "gorgelgargle",
+        "gorgelgargle"
+      ],
+      "interactions": 4,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 4,
+      "firstInteraction": 1762043265185,
+      "lastInteraction": 1762043619261,
+      "rumors": []
+    },
+    "bobbyboon_bobbyboon": {
+      "users": [
+        "bobbyboon",
+        "bobbyboon"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762043440163,
+      "lastInteraction": 1762043440163,
+      "rumors": []
+    },
+    "roboto9243_roboto9243": {
+      "users": [
+        "roboto9243",
+        "roboto9243"
+      ],
+      "interactions": 1,
+      "positiveInteractions": 0,
+      "negativeInteractions": 0,
+      "tension": 0,
+      "closeness": 1,
+      "firstInteraction": 1762043845919,
+      "lastInteraction": 1762043845919,
+      "rumors": []
+    }
+  },
+  "rumors": {},
+  "trustNetwork": {
+    "pat8925": [
+      "pat8925"
+    ],
+    "stevepugwaredev": [
+      "stevepugwaredev"
+    ]
+  },
+  "rumorIdCounter": 0,
+  "gossipPropensity": 0.5
+}

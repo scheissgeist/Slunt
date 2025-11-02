@@ -170,7 +170,7 @@ class GracefulShutdown {
   async saveAllState() {
     if (!this.chatBot) return;
 
-    const savePromises = [];
+    let savedCount = 0;
 
     // Save all systems that have save methods
     const systemsToSave = [
@@ -190,18 +190,19 @@ class GracefulShutdown {
       'hipsterProtocol'
     ];
 
+    // Save each system individually with proper error handling
     for (const system of systemsToSave) {
-      if (this.chatBot[system] && typeof this.chatBot[system].save === 'function') {
-        savePromises.push(
-          this.chatBot[system].save().catch(err => {
-            logger.error(`❌ [Shutdown] Failed to save ${system}: ${err.message}`);
-          })
-        );
+      try {
+        if (this.chatBot[system] && typeof this.chatBot[system].save === 'function') {
+          await this.chatBot[system].save();
+          savedCount++;
+        }
+      } catch (err) {
+        logger.error(`❌ [Shutdown] Failed to save ${system}: ${err.message}`);
       }
     }
 
-    await Promise.all(savePromises);
-    logger.info(`✅ [Shutdown] Saved ${savePromises.length} systems`);
+    logger.info(`✅ [Shutdown] Saved ${savedCount} systems`);
   }
 
   /**

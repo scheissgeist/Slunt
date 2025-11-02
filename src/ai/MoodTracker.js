@@ -49,6 +49,13 @@ class MoodTracker {
     this.videoQuality = 0.5; // 0-1
     this.chatEnergy = 0.5; // 0-1
     
+    // Rapid mood swing system
+    this.emotionalVolatility = 0.3; // 0-1, how quickly moods change
+    this.moodSwingTriggers = [];
+    this.lastMoodSwing = Date.now();
+    this.moodSwingCooldown = 2 * 60 * 1000; // 2 minutes minimum between swings
+    this.bipolarMode = false; // Extreme rapid cycling
+    
     // Mood decay - slowly returns to neutral
     this.setupMoodDecay();
   }
@@ -59,6 +66,7 @@ class MoodTracker {
   setupMoodDecay() {
     setInterval(() => {
       this.decayMood();
+      this.decayVolatility();
     }, 5 * 60 * 1000); // Every 5 minutes
   }
 
@@ -248,6 +256,120 @@ class MoodTracker {
   }
 
   /**
+   * Track mood swing trigger
+   */
+  trackMoodSwingTrigger(trigger) {
+    this.moodSwingTriggers.push({
+      trigger,
+      timestamp: Date.now()
+    });
+
+    // Keep last 20 triggers
+    if (this.moodSwingTriggers.length > 20) {
+      this.moodSwingTriggers.shift();
+    }
+
+    // Increase volatility with more triggers
+    this.emotionalVolatility = Math.min(1, this.emotionalVolatility + 0.05);
+  }
+
+  /**
+   * Trigger rapid mood swing (bipolar-like cycling)
+   */
+  rapidMoodSwing(trigger = 'unknown') {
+    const now = Date.now();
+    
+    // Check cooldown (unless in bipolar mode)
+    if (!this.bipolarMode && now - this.lastMoodSwing < this.moodSwingCooldown) {
+      return false;
+    }
+
+    // Define mood opposites for dramatic swings
+    const moodOpposites = {
+      'happy': ['grumpy', 'anxious', 'bored'],
+      'excited': ['bored', 'anxious'],
+      'joyful': ['grumpy', 'sarcastic'],
+      'proud': ['anxious', 'confused'],
+      'content': ['anxious', 'grumpy'],
+      'chill': ['excited', 'anxious'],
+      'grumpy': ['happy', 'excited', 'joyful'],
+      'bored': ['excited', 'mischievous'],
+      'sarcastic': ['happy', 'content'],
+      'anxious': ['chill', 'content'],
+      'confused': ['proud', 'chill'],
+      'mischievous': ['anxious', 'grumpy']
+    };
+
+    // Pick opposite mood for dramatic effect
+    const opposites = moodOpposites[this.currentMood] || Object.keys(this.moods).filter(m => m !== this.currentMood);
+    const newMood = opposites[Math.floor(Math.random() * opposites.length)];
+    
+    const oldMood = this.currentMood;
+    this.adjustMood(newMood, 0.7 + (this.emotionalVolatility * 0.3));
+    
+    this.lastMoodSwing = now;
+    this.trackMoodSwingTrigger(trigger);
+    
+    console.log(`⚡ [Mood] RAPID SWING: ${oldMood} → ${newMood} (trigger: ${trigger})`);
+    return true;
+  }
+
+  /**
+   * Toggle bipolar mode (extreme rapid cycling)
+   */
+  setBipolarMode(enabled) {
+    this.bipolarMode = enabled;
+    if (enabled) {
+      this.emotionalVolatility = 0.8;
+      this.moodSwingCooldown = 30 * 1000; // 30 seconds in bipolar mode
+      console.log('⚡⚡ [Mood] BIPOLAR MODE ENABLED - rapid mood cycling active');
+    } else {
+      this.emotionalVolatility = 0.3;
+      this.moodSwingCooldown = 2 * 60 * 1000; // Back to 2 minutes
+      console.log('[Mood] Bipolar mode disabled');
+    }
+  }
+
+  /**
+   * Check if should trigger mood swing based on emotional volatility
+   */
+  shouldTriggerMoodSwing() {
+    // Higher volatility = higher chance
+    return Math.random() < this.emotionalVolatility * 0.2;
+  }
+
+  /**
+   * Emotional whiplash - describe sudden mood change
+   */
+  getEmotionalWhiplashMessage() {
+    if (this.moodHistory.length < 2) return null;
+
+    const recent = this.moodHistory.slice(-2);
+    const timeBetween = recent[1].timestamp - recent[0].timestamp;
+
+    // Only if mood changed quickly (under 5 minutes)
+    if (timeBetween > 5 * 60 * 1000) return null;
+
+    const messages = [
+      'wait why am i feeling different now',
+      'my emotions are all over the place',
+      'i don\'t know how i feel anymore',
+      'this is emotional whiplash',
+      'one second i\'m happy next second i\'m not',
+      'my mood is doing backflips'
+    ];
+
+    return messages[Math.floor(Math.random() * messages.length)];
+  }
+
+  /**
+   * Decay emotional volatility over time
+   */
+  decayVolatility() {
+    this.emotionalVolatility = Math.max(0.1, this.emotionalVolatility * 0.95);
+  }
+
+  /**
    * Get mood stats for dashboard
    */
   getStats() {
@@ -257,7 +379,10 @@ class MoodTracker {
       emoji: this.moods[this.currentMood].emoji,
       videoQuality: this.videoQuality,
       chatEnergy: this.chatEnergy,
-      recentChanges: this.moodHistory.slice(-5)
+      recentChanges: this.moodHistory.slice(-5),
+      emotionalVolatility: this.emotionalVolatility,
+      bipolarMode: this.bipolarMode,
+      recentTriggers: this.moodSwingTriggers.slice(-5)
     };
   }
 }

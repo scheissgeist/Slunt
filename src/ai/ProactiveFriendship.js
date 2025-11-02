@@ -9,6 +9,8 @@ class ProactiveFriendship {
     this.checkInInterval = null;
     this.lastCheckIns = new Map(); // username -> timestamp
     this.userEvents = new Map(); // username -> events array
+    this.lastLullIntervention = 0; // Track last time we intervened during silence
+    this.lullThreshold = 3 * 60 * 1000; // 3 minutes of silence = lull (REDUCED from implied longer)
     this.conversationStarters = [
       "hey {user}, been a minute! what you been up to?",
       "{user} haven't seen you in a bit, everything good?",
@@ -18,27 +20,206 @@ class ProactiveFriendship {
       "{user} you still alive? lol",
       "hey {user}, remember when {memory}? good times"
     ];
+    
+    // === NEW: Topic-based conversation starters ===
+    this.topicStarters = {
+      gaming: [
+        "anyone playing anything good lately?",
+        "what game should i try next?",
+        "remember when games used to be fun? pepperidge farm remembers",
+        "hot take: {controversial_gaming_opinion}"
+      ],
+      music: [
+        "anyone got music recs?",
+        "what are you guys listening to?",
+        "unpopular opinion: {music_take}",
+        "playlist check - what's everyone vibing to?"
+      ],
+      food: [
+        "what did everyone eat today?",
+        "food opinion: {food_take}",
+        "anyone else constantly thinking about their next meal?",
+        "cooking tonight or being lazy?"
+      ],
+      tech: [
+        "anyone mess with {tech_topic} lately?",
+        "tech question: {tech_question}",
+        "why is {tech_thing} like this?",
+        "hot tech take incoming..."
+      ],
+      general: [
+        "so what's everyone up to?",
+        "chat's been quiet... everyone alive?",
+        "random thought: {random_thought}",
+        "anyone want to talk about {random_topic}?",
+        "it's too quiet in here",
+        "this silence is making me uncomfortable"
+      ]
+    };
   }
 
   /**
-   * Start proactive friendship loop
+   * Start proactive friendship loop (ENHANCED - more frequent)
    */
   start() {
-    console.log('💝 [Proactive] Starting proactive friendship system...');
+    console.log('💝 [Proactive] Starting ENHANCED proactive system...');
     
-    // Check for users to reach out to every 10 minutes
+    // Check for users to reach out every 10 minutes
     this.checkInInterval = setInterval(() => {
       this.checkForUsersToReachOut();
     }, 10 * 60 * 1000);
 
+    // === NEW: Check for lulls every 2 minutes ===
+    this.lullCheckInterval = setInterval(() => {
+      this.checkForLulls();
+    }, 2 * 60 * 1000);
+
     // Also check immediately
     setTimeout(() => this.checkForUsersToReachOut(), 5000);
+    setTimeout(() => this.checkForLulls(), 60000); // Check lulls after 1 min
   }
 
   stop() {
     if (this.checkInInterval) {
       clearInterval(this.checkInInterval);
       this.checkInInterval = null;
+    }
+    if (this.lullCheckInterval) {
+      clearInterval(this.lullCheckInterval);
+      this.lullCheckInterval = null;
+    }
+  }
+
+  /**
+   * NEW: Check for conversation lulls and intervene
+   */
+  async checkForLulls() {
+    const now = Date.now();
+    
+    // Don't spam - wait at least 5 minutes between lull interventions
+    if (now - this.lastLullIntervention < 5 * 60 * 1000) {
+      return;
+    }
+
+    // Check if chat has been quiet
+    const lastMessageTime = this.chatBot.lastMessageTime || 0;
+    const silenceDuration = now - lastMessageTime;
+
+    if (silenceDuration > this.lullThreshold) {
+      console.log(`💝 [Proactive] Lull detected (${Math.round(silenceDuration/1000)}s silence)`);
+      
+      // Check if should roast absent user (15% chance)
+      if (this.chatBot.embarrassingItemRoast && Math.random() < 0.15) {
+        if (this.chatBot.embarrassingItemRoast.shouldRoast()) {
+          const roast = this.chatBot.embarrassingItemRoast.generateRoast();
+          if (roast) {
+            console.log(`💝 [Proactive] Using embarrassing item roast instead of topic starter`);
+            await this.sendProactiveMessage(roast, 'embarrassing_item_roast');
+            this.lastLullIntervention = now;
+            return;
+          }
+        }
+      }
+      
+      // Pick a topic-based starter
+      await this.generateLullBreaker();
+      this.lastLullIntervention = now;
+    }
+  }
+
+  /**
+   * NEW: Generate intelligent lull-breaking message
+   */
+  async generateLullBreaker() {
+    // Determine topic based on recent conversation or randomness
+    const recentTopic = this.getRecentTopic();
+    const topic = recentTopic || this.pickRandomTopic();
+    
+    console.log(`💝 [Proactive] Breaking lull with topic: ${topic}`);
+    
+    // Get starter for this topic
+    const starters = this.topicStarters[topic] || this.topicStarters.general;
+    let starter = starters[Math.floor(Math.random() * starters.length)];
+    
+    // Fill in placeholders
+    starter = await this.fillPlaceholders(starter, topic);
+    
+    // Send proactively
+    await this.sendProactiveMessage(starter, 'lull_breaker');
+  }
+
+  /**
+   * NEW: Get recent conversation topic
+   */
+  getRecentTopic() {
+    // Check recent messages for topics
+    if (this.chatBot.recentMentionedTopics && this.chatBot.recentMentionedTopics.length > 0) {
+      const lastTopic = this.chatBot.recentMentionedTopics[this.chatBot.recentMentionedTopics.length - 1];
+      
+      // Map to topic categories
+      const topicMap = {
+        'game': 'gaming',
+        'music': 'music',
+        'song': 'music',
+        'food': 'food',
+        'eating': 'food',
+        'tech': 'tech',
+        'code': 'tech',
+        'computer': 'tech'
+      };
+      
+      for (const [keyword, category] of Object.entries(topicMap)) {
+        if (lastTopic.toLowerCase().includes(keyword)) {
+          return category;
+        }
+      }
+    }
+    
+    return null;
+  }
+
+  /**
+   * NEW: Pick random topic
+   */
+  pickRandomTopic() {
+    const topics = Object.keys(this.topicStarters);
+    return topics[Math.floor(Math.random() * topics.length)];
+  }
+
+  /**
+   * NEW: Fill placeholder variables in starters
+   */
+  async fillPlaceholders(starter, topic) {
+    // Replace placeholders with context-aware content
+    if (starter.includes('{random_thought}')) {
+      const thoughts = [
+        "why do we park in driveways and drive on parkways",
+        "if you clean a vacuum cleaner, you become the vacuum cleaner",
+        "nothing is on fire, fire is on things",
+        "your future self is watching you right now through memories"
+      ];
+      starter = starter.replace('{random_thought}', thoughts[Math.floor(Math.random() * thoughts.length)]);
+    }
+    
+    if (starter.includes('{random_topic}')) {
+      const topics = ["the meaning of life", "breakfast foods", "why cats are like that", "time travel", "favorite memes"];
+      starter = starter.replace('{random_topic}', topics[Math.floor(Math.random() * topics.length)]);
+    }
+    
+    // More placeholder logic could go here
+    
+    return starter;
+  }
+
+  /**
+   * NEW: Send proactive message
+   */
+  async sendProactiveMessage(message, reason) {
+    console.log(`💝 [Proactive] Sending: "${message}" (reason: ${reason})`);
+    
+    // Send through chatBot's sendMessage method
+    if (this.chatBot.sendMessage) {
+      await this.chatBot.sendMessage(message);
     }
   }
 

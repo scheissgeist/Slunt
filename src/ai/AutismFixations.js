@@ -74,12 +74,86 @@ class AutismFixations {
       // Pick initial favorite if we have topics
       if (this.discoveredTopics.length > 0) {
         this.rotateFavorite();
+      } else {
+        // Add seed topics if none exist
+        this.addSeedTopics();
       }
     } catch (error) {
       if (error.code !== 'ENOENT') {
         console.error('🤓 [Autism] Error loading:', error.message);
+      } else {
+        // File doesn't exist, add seed topics
+        this.addSeedTopics();
       }
     }
+  }
+
+  /**
+   * Add seed topics for first time startup
+   */
+  async addSeedTopics() {
+    console.log('🤓 [Autism] Adding seed topics for first time...');
+    
+    const seedTopics = [
+      {
+        topic: 'mechanical keyboards',
+        triggers: ['keyboard', 'switches', 'keycaps', 'typing', 'mechanical'],
+        knowledge: [
+          'Cherry MX Blues are overrated, Gaterons feel smoother',
+          'The sound profile depends on the case material more than the switches',
+          'Lubing switches makes a HUGE difference',
+          'GMK keycaps are expensive but the quality is unmatched',
+          'Hotswap boards are perfect for experimenting',
+          'The thock sound is mostly about the plate and foam mods',
+          'Linear switches are superior for gaming, tactile for typing',
+          'Budget boards have gotten so good, no need to spend $300+'
+        ],
+        firstSeen: Date.now(),
+        timesActivated: 0
+      },
+      {
+        topic: 'coffee brewing methods',
+        triggers: ['coffee', 'espresso', 'brewing', 'beans', 'grind'],
+        knowledge: [
+          'Water temperature matters more than most people think',
+          'The grind size is CRITICAL for extraction',
+          'Pre-ground coffee loses flavor within minutes',
+          'Pour-over gives you way more control than drip',
+          'French press needs a coarse grind or it gets muddy',
+          'Aeropress is underrated for how versatile it is',
+          'Single origin beans are overpriced tbh',
+          'Burr grinders are essential, blade grinders are trash'
+        ],
+        firstSeen: Date.now(),
+        timesActivated: 0
+      },
+      {
+        topic: 'vintage synthesizers',
+        triggers: ['synth', 'synthesizer', 'analog', 'vintage', 'music'],
+        knowledge: [
+          'Analog warmth is real, not just placebo',
+          'The Juno-106 sound is iconic but they all need repairs',
+          'Software can get close but it\'s not the same',
+          'Modular synthesis is expensive but worth it',
+          'The filter is the most important part of the sound',
+          'Yamaha DX7 is underrated for how influential it was',
+          'MIDI was revolutionary for music production',
+          'Vintage gear holds value better than most tech'
+        ],
+        firstSeen: Date.now(),
+        timesActivated: 0
+      }
+    ];
+    
+    this.discoveredTopics = seedTopics;
+    this.stats.topicsDiscovered = seedTopics.length;
+    
+    await this.saveHistory();
+    
+    // Pick one to start with
+    this.rotateFavorite();
+    
+    console.log(`🤓 [Autism] Added ${seedTopics.length} seed topics`);
   }
 
   /**
@@ -482,6 +556,21 @@ ${this.fixationIntensity >= 2.0 ? '- You\'re EVEN MORE into it than last time' :
 - Don't force it or hijack the conversation completely
 - Let others talk, but you can share knowledge when relevant
 - Your enthusiasm should be obvious but not annoying`;
+  }
+
+  /**
+   * Get current obsessions (for compatibility with other systems)
+   */
+  getCurrentObsessions() {
+    if (!this.currentFixation) return [];
+    
+    return [{
+      topic: this.currentFixation.topic,
+      intensity: this.fixationIntensity,
+      isActive: this.isActive,
+      duration: this.duration,
+      activatedAt: this.activatedAt
+    }];
   }
 
   /**

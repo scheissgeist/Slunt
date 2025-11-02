@@ -107,6 +107,7 @@ const CursorController = require('./src/services/CursorController');
 const PlatformManager = require('./src/io/platformManager');
 const DiscordClient = require('./src/io/discordClient');
 const TwitchClient = require('./src/io/twitchClient');
+const TwitchEmoteManager = require('./src/twitch/TwitchEmoteManager');
 const StreamStatusMonitor = require('./src/services/StreamStatusMonitor');
 
 const app = express();
@@ -292,9 +293,17 @@ setInterval(() => {
     
     // Relationships (detailed for system cards)
     if (chatBot.relationshipMapping) {
-      const relationshipsMap = chatBot.relationshipMapping.relationships || new Map();
-      const relationships = Array.from(relationshipsMap.entries());
-      io.emit('relationships_update', { relationships: relationships.slice(0, 50) });
+      const relationships = chatBot.relationshipMapping.getEnrichedRelationships 
+        ? chatBot.relationshipMapping.getEnrichedRelationships(chatBot.userProfiles)
+        : Array.from(chatBot.relationshipMapping.relationships?.entries() || []);
+      
+      // Filter out invalid relationships
+      const validRelationships = relationships.filter(([key, rel]) => {
+        return rel && rel.users && rel.users.length >= 2 &&
+          !rel.users.some(u => u.includes('joined (aliases') || u.includes('left') || u.includes('(aliases'));
+      });
+      
+      io.emit('relationships_update', { relationships: validRelationships.slice(0, 100) });
     }
     
     // User Reputation/Opinions (detailed for system cards)
@@ -1192,6 +1201,151 @@ io.on('connection', (socket) => {
     console.log(`🔇 Bot muted for ${duration / 1000} seconds`);
   });
   
+  // NEW: Crazy Features Status Endpoint 🎭🔥💀
+  socket.on('getStatus', () => {
+    try {
+      const crazyFeaturesStatus = {
+        type: 'crazyFeatures',
+        status: {
+          addiction: chatBot.addictionSystem ? chatBot.addictionSystem.getStatus() : null,
+          conspiracy: chatBot.conspiracyGenerator ? chatBot.conspiracyGenerator.getStatus() : null,
+          memes: chatBot.memeLifecycleTracker ? chatBot.memeLifecycleTracker.getStatus() : null,
+          falseMemory: chatBot.falseMemorySystem ? chatBot.falseMemorySystem.getStatus() : null,
+          hallucination: chatBot.dreamHallucinationSystem ? chatBot.dreamHallucinationSystem.getStatus() : null,
+          parasocial: chatBot.parasocialTracker ? chatBot.parasocialTracker.getStatus() : null,
+          crush: chatBot.celebrityCrushSystem ? chatBot.celebrityCrushSystem.getStatus() : null,
+          gossip: chatBot.gossipRumorMill ? chatBot.gossipRumorMill.getStatus() : null,
+          sniping: chatBot.streamSnipingDetector ? chatBot.streamSnipingDetector.getStatus() : null,
+          rivalBots: chatBot.rivalBotWars ? chatBot.rivalBotWars.getStatus() : null,
+          cult: chatBot.sluntCultSystem ? chatBot.sluntCultSystem.getStatus() : null,
+          theater: chatBot.chatTheaterMode ? chatBot.chatTheaterMode.getStatus() : null,
+          collective: chatBot.collectiveUnconscious ? chatBot.collectiveUnconscious.getStatus() : null,
+          timeLoop: chatBot.timeLoopDetector ? chatBot.timeLoopDetector.getStatus() : null
+        }
+      };
+      socket.emit('message', crazyFeaturesStatus);
+    } catch (error) {
+      console.error('Error getting crazy features status:', error.message);
+    }
+  });
+  
+  // NEW: Admin Control Handlers 🎮
+  socket.on('admin:conspiracy', () => {
+    try {
+      if (chatBot.conspiracyGenerator) {
+        const conspiracy = chatBot.conspiracyGenerator.generateConspiracy('Admin', 'trigger');
+        console.log('🔍 Admin triggered conspiracy:', conspiracy?.theory);
+        io.emit('activity', { type: 'activity', message: '🔍 New conspiracy generated', timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error triggering conspiracy:', error.message);
+    }
+  });
+
+  socket.on('admin:ritual', () => {
+    try {
+      if (chatBot.sluntCultSystem) {
+        const ritual = chatBot.sluntCultSystem.startRitual('Admin', 'PRAISE');
+        console.log('🕯️ Admin started ritual:', ritual?.type);
+        io.emit('activity', { type: 'activity', message: '🕯️ Cult ritual started', timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error starting ritual:', error.message);
+    }
+  });
+
+  socket.on('admin:timeloop', () => {
+    try {
+      if (chatBot.timeLoopDetector) {
+        chatBot.timeLoopDetector.temporalAnomalyScore += 50;
+        console.log('⏰ Admin forced time loop detection');
+        io.emit('activity', { type: 'activity', message: '⏰ Time loop anomaly triggered', timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error forcing time loop:', error.message);
+    }
+  });
+
+  socket.on('admin:falsememory', () => {
+    try {
+      if (chatBot.falseMemorySystem) {
+        const memory = chatBot.falseMemorySystem.injectFalseMemory({
+          type: 'admin_injection',
+          content: 'Something that never happened',
+          confidence: 0.8
+        });
+        console.log('🧠 Admin injected false memory');
+        io.emit('activity', { type: 'activity', message: '🧠 False memory injected', timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error injecting memory:', error.message);
+    }
+  });
+
+  socket.on('admin:rumor', () => {
+    try {
+      if (chatBot.gossipRumorMill) {
+        const rumor = chatBot.gossipRumorMill.createRumor('Admin', 'Admin created drama', 'admin', {});
+        console.log('🗣️ Admin spread rumor');
+        io.emit('activity', { type: 'activity', message: '🗣️ New rumor spreading', timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error spreading rumor:', error.message);
+    }
+  });
+
+  socket.on('admin:theater', () => {
+    try {
+      if (chatBot.chatTheaterMode) {
+        const play = chatBot.chatTheaterMode.generatePlay('comedy', ['Admin', 'Slunt']);
+        console.log('🎭 Admin started theater play:', play?.title);
+        io.emit('activity', { type: 'activity', message: `🎭 Play started: ${play?.title}`, timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error starting play:', error.message);
+    }
+  });
+
+  socket.on('admin:gaslighting', () => {
+    try {
+      if (chatBot.falseMemorySystem) {
+        chatBot.falseMemorySystem.gaslightingMode = !chatBot.falseMemorySystem.gaslightingMode;
+        const status = chatBot.falseMemorySystem.gaslightingMode ? 'ON' : 'OFF';
+        console.log(`😵 Admin toggled gaslighting: ${status}`);
+        io.emit('activity', { type: 'activity', message: `😵 Gaslighting mode: ${status}`, timestamp: Date.now() });
+      }
+    } catch (error) {
+      console.error('Error toggling gaslighting:', error.message);
+    }
+  });
+
+  socket.on('admin:reset', () => {
+    try {
+      console.log('🔄 Admin resetting all crazy features systems...');
+      
+      // Reset each system
+      if (chatBot.addictionSystem) chatBot.addictionSystem = new (require('./src/ai/AddictionSystem'))();
+      if (chatBot.conspiracyGenerator) chatBot.conspiracyGenerator = new (require('./src/ai/ConspiracyGenerator'))();
+      if (chatBot.memeLifecycleTracker) chatBot.memeLifecycleTracker = new (require('./src/ai/MemeLifecycleTracker'))();
+      if (chatBot.falseMemorySystem) chatBot.falseMemorySystem = new (require('./src/ai/FalseMemorySystem'))();
+      if (chatBot.dreamHallucinationSystem) chatBot.dreamHallucinationSystem = new (require('./src/ai/DreamHallucinationSystem'))();
+      if (chatBot.parasocialTracker) chatBot.parasocialTracker = new (require('./src/ai/ParasocialTracker'))();
+      if (chatBot.celebrityCrushSystem) chatBot.celebrityCrushSystem = new (require('./src/ai/CelebrityCrushSystem'))();
+      if (chatBot.gossipRumorMill) chatBot.gossipRumorMill = new (require('./src/ai/GossipRumorMill'))();
+      if (chatBot.streamSnipingDetector) chatBot.streamSnipingDetector = new (require('./src/ai/StreamSnipingDetector'))();
+      if (chatBot.rivalBotWars) chatBot.rivalBotWars = new (require('./src/ai/RivalBotWars'))();
+      if (chatBot.sluntCultSystem) chatBot.sluntCultSystem = new (require('./src/ai/SluntCultSystem'))();
+      if (chatBot.chatTheaterMode) chatBot.chatTheaterMode = new (require('./src/ai/ChatTheaterMode'))();
+      if (chatBot.collectiveUnconscious) chatBot.collectiveUnconscious = new (require('./src/ai/CollectiveUnconscious'))();
+      if (chatBot.timeLoopDetector) chatBot.timeLoopDetector = new (require('./src/ai/TimeLoopDetector'))();
+      
+      console.log('✅ All systems reset');
+      io.emit('activity', { type: 'activity', message: '🔄 All systems reset', timestamp: Date.now() });
+    } catch (error) {
+      console.error('Error resetting systems:', error.message);
+    }
+  });
+  
   socket.on('clear_memory', () => {
     if (chatBot) {
       chatBot.conversationContext = [];
@@ -1257,6 +1411,21 @@ if (enableCoolhole) {
         channels: process.env.TWITCH_CHANNELS?.split(',') || []
       });
       platformManager.registerPlatform('twitch', twitchClient);
+      
+      // Initialize Twitch Emote Manager
+      const twitchChannel = process.env.TWITCH_CHANNELS ? 
+                           process.env.TWITCH_CHANNELS.split(',')[0].replace('#', '').trim() : 
+                           null;
+      if (twitchChannel) {
+        const twitchEmoteManager = new TwitchEmoteManager(twitchChannel);
+        chatBot.twitchEmoteManager = twitchEmoteManager;
+        
+        // Fetch emotes after connection
+        twitchClient.once('ready', async () => {
+          await twitchEmoteManager.fetchEmotes();
+          console.log(`😊 [TwitchEmotes] Initialized: ${twitchEmoteManager.getTotalEmoteCount()} emotes available`);
+        });
+      }
     }
     
     // Setup unified chat handler for all platforms
@@ -1272,6 +1441,20 @@ if (enableCoolhole) {
         console.error(`❌ Error handling ${chatData.platform} message:`, error.message);
       }
     });
+
+    // Setup reaction handler for Discord
+    if (discordClient) {
+      discordClient.on('reaction', async (reactionData) => {
+        try {
+          console.log(`🎭 [Reaction] Processing ${reactionData.type}: ${reactionData.emoji} from ${reactionData.username}`);
+          
+          // Let ChatBot handle the reaction
+          await chatBot.handleReaction(reactionData);
+        } catch (error) {
+          console.error(`❌ Error handling reaction:`, error.message);
+        }
+      });
+    }
     
     // Give ChatBot access to platform manager for sending messages
     chatBot.setPlatformManager(platformManager);
@@ -1365,8 +1548,16 @@ if (enableCoolhole) {
       // Start exploration
       await coolholeExplorer.startExploration();
       
+      // Connect coolholeExplorer to chatBot
+      chatBot.coolholeExplorer = coolholeExplorer;
+      console.log('🔗 [Explorer] Connected to chatBot for video queueing');
+      
       // Initialize Vision Analyzer
       visionAnalyzer = new VisionAnalyzer(coolholeClient.page);
+      
+      // Connect vision analyzer to chatBot for video reactions
+      chatBot.connectVisionAnalyzer(visionAnalyzer);
+      
       visionAnalyzer.on('screenshotAnalyzed', (data) => {
         if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:screenshot to ${connectedClients} clients`);
         io.emit('vision:screenshot', data);
@@ -1389,6 +1580,39 @@ if (enableCoolhole) {
       visionAnalyzer.on('fullAnalysis', (data) => {
         if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:fullAnalysis to ${connectedClients} clients`);
         io.emit('vision:fullAnalysis', data);
+      });
+      
+      // === VIDEO COMMENTARY: Slunt reacts to videos he sees! ===
+      visionAnalyzer.on('screenshotAnalyzed', async (data) => {
+        try {
+          // Get latest vision data
+          const visionData = visionAnalyzer.getLatestAnalysis();
+          
+          if (visionData && chatBot.videoCommentary) {
+            // Check if Slunt wants to comment on what he's seeing
+            const comment = await chatBot.videoCommentary.checkAndComment(visionData);
+            
+            if (comment) {
+              console.log(`🎬💬 [VideoCommentary] Slunt spontaneously says: "${comment}"`);
+              
+              // Send to Coolhole chat
+              if (coolholeClient) {
+                await coolholeClient.sendMessage(comment);
+              }
+              
+              // Emit to dashboard
+              io.emit('chat:message', {
+                username: 'Slunt',
+                text: comment,
+                platform: 'coolhole',
+                timestamp: Date.now(),
+                type: 'video_reaction'
+              });
+            }
+          }
+        } catch (error) {
+          console.error('❌ [VideoCommentary] Error:', error.message);
+        }
       });
       
       // Start vision analysis
@@ -1493,7 +1717,7 @@ const killPortProcess = async (port) => {
         'discord',
         () => chatBot.discordClient.connect(),
         () => chatBot.discordClient.disconnect(),
-        () => chatBot.discordClient.isReady()
+        () => chatBot.discordClient.isReady // Fixed: property not a function
       );
     }
     
@@ -1545,25 +1769,53 @@ async function gracefulShutdown(signal) {
     if (chatBot) {
       console.log('💾 Saving Slunt\'s memories...');
       
-      // Save all advanced system data
-      if (chatBot.conversationThreads) await chatBot.conversationThreads.save();
-      if (chatBot.userVibesDetection) await chatBot.userVibesDetection.save();
-      if (chatBot.callbackHumorEngine) await chatBot.callbackHumorEngine.save();
-      if (chatBot.contradictionTracking) await chatBot.contradictionTracking.save();
-      if (chatBot.conversationalBoredom) await chatBot.conversationalBoredom.save();
-      if (chatBot.peerInfluenceSystem) await chatBot.peerInfluenceSystem.save();
-      if (chatBot.conversationalGoals) await chatBot.conversationalGoals.save();
+      // Save all systems with error handling
+      const saveSystem = async (system, name) => {
+        try {
+          if (chatBot[system] && typeof chatBot[system].save === 'function') {
+            await chatBot[system].save();
+          }
+        } catch (err) {
+          console.warn(`⚠️ Could not save ${name}:`, err.message);
+        }
+      };
       
-      // Save core systems
-      if (chatBot.relationshipMapping) await chatBot.relationshipMapping.saveRelationships();
-      if (chatBot.userReputationSystem) await chatBot.userReputationSystem.saveReputations();
-      if (chatBot.sluntDiary) await chatBot.sluntDiary.saveDiary();
-      // PersonalityEvolution doesn't have savePersonality method - data is auto-saved
-      // MemoryConsolidation doesn't have saveMemories method - uses consolidateMemories() instead
-      // VideoLearning doesn't have saveVideoData method - data is stored in memory
-      if (chatBot.predictionEngine) await chatBot.predictionEngine.savePredictions();
-      if (chatBot.eventMemorySystem) await chatBot.eventMemorySystem.saveEvents();
-      if (chatBot.bitCommitment) await chatBot.bitCommitment.saveBits();
+      // Save all advanced system data
+      await saveSystem('conversationThreads', 'conversation threads');
+      await saveSystem('userVibesDetection', 'user vibes');
+      await saveSystem('callbackHumorEngine', 'callback humor');
+      await saveSystem('contradictionTracking', 'contradictions');
+      await saveSystem('conversationalBoredom', 'boredom tracker');
+      await saveSystem('peerInfluenceSystem', 'peer influence');
+      await saveSystem('conversationalGoals', 'goals');
+      
+      // Save core systems with specific methods
+      try {
+        if (chatBot.relationshipMapping) await chatBot.relationshipMapping.saveRelationships();
+      } catch (err) { console.warn('⚠️ Could not save relationships:', err.message); }
+      
+      try {
+        if (chatBot.userReputationSystem) await chatBot.userReputationSystem.saveReputations();
+      } catch (err) { console.warn('⚠️ Could not save reputations:', err.message); }
+      
+      try {
+        if (chatBot.sluntDiary) await chatBot.sluntDiary.saveDiary();
+      } catch (err) { console.warn('⚠️ Could not save diary:', err.message); }
+      
+      try {
+        if (chatBot.predictionEngine) await chatBot.predictionEngine.savePredictions();
+      } catch (err) { console.warn('⚠️ Could not save predictions:', err.message); }
+      
+      try {
+        if (chatBot.eventMemorySystem) await chatBot.eventMemorySystem.saveEvents();
+      } catch (err) { console.warn('⚠️ Could not save events:', err.message); }
+      
+      try {
+        if (chatBot.bitCommitment) await chatBot.bitCommitment.saveBits();
+      } catch (err) { console.warn('⚠️ Could not save bits:', err.message); }
+      
+      // Note: New 14 conversation enhancement systems don't need persistent save
+      // They work with in-memory state and existing chatBot data structures
       
       console.log('✅ All session data saved!');
     }

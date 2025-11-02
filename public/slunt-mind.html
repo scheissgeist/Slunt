@@ -950,12 +950,17 @@
                 return;
             }
 
-            // Deduplicate relationships by tracking seen user pairs
+            // Deduplicate and filter out invalid relationships
             const seenUsers = new Set();
             const uniqueRelationships = [];
             
             state.relationships.forEach(([key, rel]) => {
                 if (!rel || !rel.users || rel.users.length < 2) return;
+                
+                // Filter out system messages
+                if (rel.users.some(u => u.includes('joined') || u.includes('left') || u.includes('(aliases'))) {
+                    return;
+                }
                 
                 // Create a normalized key (alphabetically sorted users)
                 const sortedUsers = [...rel.users].sort().join('-');
@@ -970,9 +975,13 @@
             const sorted = uniqueRelationships.sort((a, b) => (b[1]?.strength || 0) - (a[1]?.strength || 0));
 
             sorted.slice(0, 50).forEach(([key, rel]) => {
-                const opinion = determineOpinion(rel.strength);
+                // Determine opinion from RELATIONSHIP STRENGTH (not friendshipLevel)
+                const strength = rel.strength || 0;
+                const opinion = determineOpinionFromStrength(strength);
+                
                 const card = document.createElement('div');
                 card.className = 'relationship-card';
+                card.dataset.opinion = opinion; // For filtering
                 card.onclick = () => showRelationshipDetail(rel);
                 
                 const user1 = rel.users[0] === 'Slunt' ? rel.users[1] : rel.users[0];
@@ -1000,7 +1009,7 @@
                         <span>💪 ${rel.strength} strength</span>
                     </div>
                     <div class="strength-bar">
-                        <div class="strength-fill" style="width: ${Math.min(rel.strength, 100)}%"></div>
+                        <div class="strength-fill" style="width: ${Math.min(Math.max(rel.strength, 0), 100)}%"></div>
                     </div>
                 `;
                 
@@ -1320,18 +1329,41 @@
         }
 
         // Helper functions
-        function determineOpinion(strength) {
-            if (strength > 40) return 'friend';
-            if (strength < 0) return 'rival';
-            if (strength > 20) return 'respected';
+        function determineOpinionFromStrength(strength) {
+            // Based on relationship strength, not friendshipLevel
+            if (strength > 50) return 'friend';
+            if (strength < -10) return 'rival';
+            if (strength > 25) return 'respected';
             if (strength < 10) return 'dismissed';
             return 'neutral';
+        }
+
+        function determineOpinion(strength) {
+            // Alias for backward compatibility
+            return determineOpinionFromStrength(strength);
+        }
+
+        function filterRelationships(filter) {
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Filter relationship cards
+            const cards = document.querySelectorAll('.relationship-card');
+            cards.forEach(card => {
+                const opinion = card.dataset.opinion;
+                if (filter === 'all' || opinion === filter) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
         }
 
         function showRelationshipDetail(rel) {
             const modal = document.getElementById('relationshipModal');
             const user = rel.users[0] === 'Slunt' ? rel.users[1] : rel.users[0];
-            const opinion = determineOpinion(rel.strength);
+            const opinion = determineOpinionFromStrength(rel.strength || 0);
             
             // Generate platform badges
             let platformInfo = 'No platform data';
@@ -1348,6 +1380,20 @@
             
             const crossPlatformIndicator = rel.crossPlatform ? '<div style="color: #10b981; margin-top: 10px;">🌐 Cross-Platform User (seen on multiple platforms)</div>' : '';
             
+            // Add user profile info if available
+            let profileInfo = '';
+            if (rel.userProfiles && rel.userProfiles[user]) {
+                const profile = rel.userProfiles[user];
+                profileInfo = `
+                    <h3>User Profile</h3>
+                    <div style="margin-bottom: 15px;">
+                        <div>📊 Friendship Level: ${profile.friendshipLevel || 0}/100</div>
+                        <div>💬 Total Messages: ${profile.messageCount || 0}</div>
+                        ${profile.lastSeen ? `<div>🕒 Last Seen: ${new Date(profile.lastSeen).toLocaleString()}</div>` : ''}
+                    </div>
+                `;
+            }
+            
             document.getElementById('modalUsername').textContent = user;
             document.getElementById('modalContent').innerHTML = `
                 <div style="margin: 20px 0;">
@@ -1357,7 +1403,9 @@
                     <div style="margin-bottom: 15px;">${platformInfo}</div>
                     ${crossPlatformIndicator}
                     
-                    <h3>Statistics</h3>
+                    ${profileInfo}
+                    
+                    <h3>Relationship Statistics</h3>
                     <div class="relationship-stats" style="display: flex; flex-direction: column; gap: 10px;">
                         <div>💬 Total Interactions: ${rel.interactions}</div>
                         <div>💪 Relationship Strength: ${rel.strength}</div>

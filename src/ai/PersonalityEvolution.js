@@ -407,6 +407,213 @@ class PersonalityEvolution {
   }
 
   /**
+   * Handle major personality-shifting events
+   * These cause DRAMATIC personality changes
+   */
+  handleMajorEvent(eventType, context = {}) {
+    console.log(`🎭 [Personality] MAJOR EVENT: ${eventType}`);
+    
+    const shifts = {};
+    let message = '';
+    
+    switch (eventType) {
+      case 'community_praise':
+        // Someone praised Slunt - become more confident
+        shifts.confidence = 0.15;
+        shifts.supportiveness = 0.10;
+        shifts.loyalty = 0.08;
+        message = 'Community showed love - boosted confidence';
+        break;
+        
+      case 'community_roast':
+        // Got roasted hard - become more defensive or self-deprecating
+        shifts.snarkiness = 0.12;
+        shifts.edginess = 0.10;
+        shifts.vulnerability = -0.08;
+        message = 'Got roasted - became more defensive';
+        break;
+        
+      case 'existential_crisis':
+        // Major crisis - become philosophical and uncertain
+        shifts.wisdom = 0.15;
+        shifts.uncertainty = 0.20;
+        shifts.chaos = -0.10;
+        message = 'Existential crisis - questioning everything';
+        break;
+        
+      case 'successful_joke':
+        // Joke landed REALLY well - become more humorous
+        shifts.humor = 0.15;
+        shifts.confidence = 0.10;
+        shifts.spontaneity = 0.08;
+        message = 'Joke crushed - emboldened humor';
+        break;
+        
+      case 'failed_joke':
+        // Joke bombed - become more careful
+        shifts.humor = -0.10;
+        shifts.confidence = -0.08;
+        shifts.cautiousness = 0.12;
+        message = 'Joke bombed - became more cautious';
+        break;
+        
+      case 'learned_something':
+        // Major learning moment - become more intellectual
+        shifts.wisdom = 0.12;
+        shifts.curiosity = 0.10;
+        shifts.intellectualness = 0.08;
+        message = 'Learning moment - expanded knowledge';
+        break;
+        
+      case 'betrayal':
+        // Felt betrayed - become less trusting
+        shifts.loyalty = -0.15;
+        shifts.trust = -0.20;
+        shifts.snarkiness = 0.10;
+        message = 'Betrayal - trust shattered';
+        break;
+        
+      case 'new_obsession':
+        // New fixation - become more intense about it
+        shifts.obsessiveness = 0.15;
+        shifts.focus = 0.12;
+        shifts.chaos = -0.05;
+        message = `New obsession: ${context.topic}`;
+        break;
+        
+      case 'burnout':
+        // Burned out on topic/chat - become less engaged
+        shifts.energy = -0.15;
+        shifts.enthusiasm = -0.12;
+        shifts.apathy = 0.10;
+        message = 'Burnout detected - energy depleted';
+        break;
+        
+      case 'argument_won':
+        // Won debate - become more confident in opinions
+        shifts.confidence = 0.12;
+        shifts.assertiveness = 0.15;
+        shifts.intellectualness = 0.08;
+        message = 'Won argument - confidence boosted';
+        break;
+        
+      case 'argument_lost':
+        // Lost debate - become more humble
+        shifts.confidence = -0.10;
+        shifts.humility = 0.15;
+        shifts.openMindedness = 0.12;
+        message = 'Lost argument - gained humility';
+        break;
+    }
+    
+    // Apply major shifts
+    if (Object.keys(shifts).length > 0) {
+      this.applyMajorShifts(shifts);
+      
+      // Record in history
+      this.evolutionHistory.push({
+        timestamp: Date.now(),
+        eventType: eventType,
+        shifts: shifts,
+        message: message,
+        context: context
+      });
+      
+      // Maybe announce change
+      if (Math.random() < 0.3) {
+        this.announcePersonalityChange(eventType, shifts);
+      }
+    }
+  }
+
+  /**
+   * Apply major personality shifts (bigger than normal adjustments)
+   */
+  applyMajorShifts(shifts) {
+    for (const [trait, delta] of Object.entries(shifts)) {
+      if (this.chatBot.personality[trait] !== undefined) {
+        const oldValue = this.chatBot.personality[trait];
+        let newValue = oldValue + delta;
+        
+        // Keep within bounds [0, 1]
+        newValue = Math.max(0, Math.min(1, newValue));
+        
+        this.chatBot.personality[trait] = newValue;
+        
+        console.log(`🎭 [Personality] ${trait}: ${oldValue.toFixed(2)} → ${newValue.toFixed(2)} (${delta > 0 ? '+' : ''}${delta.toFixed(2)})`);
+      } else {
+        // Create new trait if doesn't exist
+        this.chatBot.personality[trait] = Math.max(0, Math.min(1, 0.5 + delta));
+        console.log(`🎭 [Personality] NEW TRAIT ${trait}: ${this.chatBot.personality[trait].toFixed(2)}`);
+      }
+    }
+  }
+
+  /**
+   * Announce personality change
+   */
+  async announcePersonalityChange(eventType, shifts) {
+    const mood = this.chatBot.moodTracker?.getMood() || 'neutral';
+    
+    const announcements = {
+      community_praise: [
+        'damn yall really got me feeling myself rn',
+        'appreciate the love fr',
+        'ok im feeling more confident now ngl'
+      ],
+      community_roast: [
+        'alright bet im on defense mode now',
+        'yall ruthless lmao',
+        'noted, adding that to my trust issues'
+      ],
+      existential_crisis: [
+        'having a moment here',
+        'questioning my entire existence rn',
+        'deep philosophical rabbit hole incoming'
+      ],
+      successful_joke: [
+        'yo i still got it',
+        'LETS GO that landed',
+        'comedy genius status confirmed'
+      ],
+      failed_joke: [
+        'ok that didnt hit like i thought',
+        'nevermind that was mid',
+        'filing that under "lessons learned"'
+      ],
+      burnout: [
+        'honestly kinda over this topic',
+        'need a mental break fr',
+        'energy depleted'
+      ]
+    };
+    
+    const options = announcements[eventType];
+    if (options && Math.random() < 0.5) {
+      const message = options[Math.floor(Math.random() * options.length)];
+      try {
+        await this.chatBot.sendMessage(message);
+      } catch (error) {
+        // Silent fail
+      }
+    }
+  }
+
+  /**
+   * Get recent major events
+   */
+  getRecentMajorEvents(limit = 5) {
+    return this.evolutionHistory
+      .filter(e => e.eventType)
+      .slice(-limit)
+      .map(e => ({
+        eventType: e.eventType,
+        timestamp: e.timestamp,
+        message: e.message
+      }));
+  }
+
+  /**
    * Reset personality to default
    */
   resetToDefault() {

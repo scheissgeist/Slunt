@@ -1,0 +1,637 @@
+{
+  "detectedBots": {
+    "patterson1": {
+      "username": "patterson1",
+      "firstDetected": 1762031218632,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 19,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "_slamminsalmon": {
+      "username": "_slamminsalmon",
+      "firstDetected": 1762031238996,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 7,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "sithlord8448": {
+      "username": "sithlord8448",
+      "firstDetected": 1762031287386,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 4,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "braybray9876": {
+      "username": "braybray9876",
+      "firstDetected": 1762031353354,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 14,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "plaguejackal": {
+      "username": "plaguejackal",
+      "firstDetected": 1762031414979,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 6,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "._.fug": {
+      "username": "._.fug",
+      "firstDetected": 1762031436501,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 8,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "shitstainafficionado_04919": {
+      "username": "shitstainafficionado_04919",
+      "firstDetected": 1762031450700,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 7,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "orbmeat": {
+      "username": "orbmeat",
+      "firstDetected": 1762031521236,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 7,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "churchill1941.": {
+      "username": "churchill1941.",
+      "firstDetected": 1762031643812,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "sams0n1999": {
+      "username": "sams0n1999",
+      "firstDetected": 1762031657467,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "localwatercooler": {
+      "username": "localwatercooler",
+      "firstDetected": 1762031680674,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "jhaumrith": {
+      "username": "jhaumrith",
+      "firstDetected": 1762031862491,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "vaporwar3": {
+      "username": "vaporwar3",
+      "firstDetected": 1762032176312,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "Applecooler": {
+      "username": "Applecooler",
+      "firstDetected": 1762032219931,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 4,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "SteeScribbles joined (aliases": {
+      "username": "SteeScribbles joined (aliases",
+      "firstDetected": 1762032288863,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "hued": {
+      "username": "hued",
+      "firstDetected": 1762032368830,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 4,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "rottencheeseca": {
+      "username": "rottencheeseca",
+      "firstDetected": 1762032424322,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "lapome": {
+      "username": "lapome",
+      "firstDetected": 1762032589988,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 5,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "BbNaB": {
+      "username": "BbNaB",
+      "firstDetected": 1762032738053,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "BunnBunn": {
+      "username": "BunnBunn",
+      "firstDetected": 1762032793600,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "jin_joe": {
+      "username": "jin_joe",
+      "firstDetected": 1762032918599,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "southeefrica": {
+      "username": "southeefrica",
+      "firstDetected": 1762033141250,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "whomo.": {
+      "username": "whomo.",
+      "firstDetected": 1762033188594,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "coolusername joined (aliases": {
+      "username": "coolusername joined (aliases",
+      "firstDetected": 1762033464416,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "pat8925": {
+      "username": "pat8925",
+      "firstDetected": 1762033562756,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "Applecooler joined (aliases": {
+      "username": "Applecooler joined (aliases",
+      "firstDetected": 1762033722262,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "albino5stargeneral": {
+      "username": "albino5stargeneral",
+      "firstDetected": 1762033755284,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "uncledoctor": {
+      "username": "uncledoctor",
+      "firstDetected": 1762033830083,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 5,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "taikunoaku": {
+      "username": "taikunoaku",
+      "firstDetected": 1762033874800,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "shazbot885": {
+      "username": "shazbot885",
+      "firstDetected": 1762033884599,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    ".blueeyeswhitesupremacist": {
+      "username": ".blueeyeswhitesupremacist",
+      "firstDetected": 1762039752575,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "catfractal": {
+      "username": "catfractal",
+      "firstDetected": 1762040793527,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 4,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "dammitwesley": {
+      "username": "dammitwesley",
+      "firstDetected": 1762040938737,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 3,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "scouragous": {
+      "username": "scouragous",
+      "firstDetected": 1762041145559,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 2,
+        "messages": 3,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "painmongr joined (aliases": {
+      "username": "painmongr joined (aliases",
+      "firstDetected": 1762042272422,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "electriqwizard": {
+      "username": "electriqwizard",
+      "firstDetected": 1762042702810,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "what.tha": {
+      "username": "what.tha",
+      "firstDetected": 1762042866083,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 2,
+        "messages": 3,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "manticrow": {
+      "username": "manticrow",
+      "firstDetected": 1762043113470,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 2,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "gorgelgargle": {
+      "username": "gorgelgargle",
+      "firstDetected": 1762043265187,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 4,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "bobbyboon": {
+      "username": "bobbyboon",
+      "firstDetected": 1762043440164,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "Daknez joined (aliases": {
+      "username": "Daknez joined (aliases",
+      "firstDetected": 1762043542440,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 1,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    },
+    "Capegourd": {
+      "username": "Capegourd",
+      "firstDetected": 1762043573270,
+      "botScore": 0,
+      "patterns": {
+        "responseSpeed": [],
+        "formatSimilarity": [],
+        "vocabulary": {},
+        "typos": 0,
+        "messages": 1,
+        "activeHours": {}
+      },
+      "confirmed": false,
+      "rivalryLevel": 0
+    }
+  },
+  "rivalryScores": {},
+  "warHistory": [],
+  "dominanceScore": 50
+}

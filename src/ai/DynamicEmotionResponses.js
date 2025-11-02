@@ -193,8 +193,8 @@ class DynamicEmotionResponses {
       ' wtf',
       ', just saying',
       ', not my fault',
-      ', don\'t @ me',
-      ' whatever'
+      ' whatever',
+      ', idk'
     ];
     
     if (Math.random() < 0.5) {

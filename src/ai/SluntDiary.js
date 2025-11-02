@@ -8,6 +8,7 @@ class SluntDiary {
     this.entries = [];
     this.maxEntries = 200; // Increased for better history
     this.savePath = './data/diary.json';
+    this.saveTimeout = null; // Debounce timer
     this.loadDiary(); // Auto-load on startup
   }
 
@@ -28,23 +29,31 @@ class SluntDiary {
   }
 
   /**
-   * Save diary to disk
+   * Save diary to disk (debounced)
    */
   async saveDiary() {
-    try {
-      const dir = path.dirname(this.savePath);
-      await fs.mkdir(dir, { recursive: true });
-
-      const data = {
-        entries: this.entries,
-        savedAt: Date.now()
-      };
-
-      await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
-      console.log(`📔 [Diary] Saved ${this.entries.length} entries to disk`);
-    } catch (error) {
-      console.error('📔 [Diary] Error saving:', error.message);
+    // Clear existing timeout
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
     }
+    
+    // Debounce: wait 2 seconds before saving
+    this.saveTimeout = setTimeout(async () => {
+      try {
+        const dir = path.dirname(this.savePath);
+        await fs.mkdir(dir, { recursive: true });
+
+        const data = {
+          entries: this.entries,
+          savedAt: Date.now()
+        };
+
+        await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
+        console.log(`📔 [Diary] Saved ${this.entries.length} entries to disk`);
+      } catch (error) {
+        console.error('📔 [Diary] Error saving:', error.message);
+      }
+    }, 2000);
   }
 
   addEntry(text, type = 'thought', isPublic = true) {

@@ -57,9 +57,20 @@ class VisionAnalyzer extends EventEmitter {
       sceneChangeRate: 0
     };
     
+    // ENHANCED: Visual Learning System
+    this.visualLearning = {
+      videoReactions: new Map(), // videoId -> {positive, negative, neutral, laughs}
+      userPreferences: new Map(), // username -> {likedGenres, dislikedGenres, favoriteColors}
+      successfulMoments: [],      // Moments that made chat laugh/engage
+      visualJokes: [],             // Screenshots that had funny reactions
+      contentPatterns: new Map()   // pattern -> engagement score
+    };
+    
     // Storage
     this.screenshotsDir = path.resolve(process.cwd(), 'screenshots');
+    this.learningFile = path.join(process.cwd(), 'data', 'visual_learning.json');
     this.ensureDirectories();
+    this.loadVisualLearning();
   }
 
   /**
@@ -578,6 +589,30 @@ class VisionAnalyzer extends EventEmitter {
   }
 
   /**
+   * Get latest analysis data (for AI context)
+   */
+  getLatestAnalysis() {
+    if (!this.visualMemory.screenshots.length) {
+      return null;
+    }
+
+    const latest = this.visualMemory.screenshots[this.visualMemory.screenshots.length - 1];
+    
+    return {
+      timestamp: latest.timestamp,
+      detected: latest.analysis?.videoPlayer?.title || 'video content',
+      confidence: latest.analysis?.videoPlayer?.isPlaying ? 0.9 : 0.5,
+      text: latest.analysis?.detectedText?.slice(0, 3) || [],
+      scene: latest.analysis?.sceneChanged ? 'changed' : 'stable',
+      brightness: latest.analysis?.brightness || 0,
+      videoPlaying: latest.analysis?.videoPlayer?.isPlaying || false,
+      videoTitle: latest.analysis?.videoPlayer?.title || null,
+      videoTime: latest.analysis?.videoPlayer?.currentTime || 0,
+      videoDuration: latest.analysis?.videoPlayer?.duration || 0
+    };
+  }
+
+  /**
    * Get full vision data
    */
   getVisionData() {
@@ -586,8 +621,191 @@ class VisionAnalyzer extends EventEmitter {
       insights: this.insights,
       memory: this.visualMemory,
       isAnalyzing: this.isAnalyzing,
-      lastScreenshot: this.lastScreenshot
+      lastScreenshot: this.lastScreenshot,
+      visualLearning: this.getVisualLearningStats()
     };
+  }
+
+  /**
+   * Learn from chat reactions to current video
+   */
+  learnFromReaction(username, message, videoContext) {
+    if (!videoContext || !videoContext.videoTitle) return;
+    
+    const videoId = videoContext.videoTitle.toLowerCase().substring(0, 50);
+    
+    if (!this.visualLearning.videoReactions.has(videoId)) {
+      this.visualLearning.videoReactions.set(videoId, {
+        positive: 0,
+        negative: 0,
+        neutral: 0,
+        laughs: 0,
+        title: videoContext.videoTitle
+      });
+    }
+    
+    const reactions = this.visualLearning.videoReactions.get(videoId);
+    
+    // Analyze sentiment
+    if (/\b(lmao|lmfao|haha|😂|💀|hilarious|dying)\b/i.test(message)) {
+      reactions.laughs++;
+      reactions.positive++;
+    } else if (/\b(good|great|love|amazing|fire|🔥|based)\b/i.test(message)) {
+      reactions.positive++;
+    } else if (/\b(bad|shit|trash|cringe|yikes|mid)\b/i.test(message)) {
+      reactions.negative++;
+    } else {
+      reactions.neutral++;
+    }
+    
+    // Update user preferences
+    this.updateUserPreferences(username, videoContext, message);
+    
+    // Save successful moments (high engagement)
+    if (reactions.laughs >= 3 || reactions.positive >= 5) {
+      this.visualLearning.successfulMoments.push({
+        videoTitle: videoContext.videoTitle,
+        timestamp: Date.now(),
+        reactions: { ...reactions }
+      });
+      
+      // Keep only last 50
+      if (this.visualLearning.successfulMoments.length > 50) {
+        this.visualLearning.successfulMoments.shift();
+      }
+    }
+    
+    this.saveVisualLearning();
+  }
+
+  /**
+   * Update user preferences based on reactions
+   */
+  updateUserPreferences(username, videoContext, message) {
+    if (!this.visualLearning.userPreferences.has(username)) {
+      this.visualLearning.userPreferences.set(username, {
+        likedGenres: [],
+        dislikedGenres: [],
+        engagementPattern: 'normal'
+      });
+    }
+    
+    const prefs = this.visualLearning.userPreferences.get(username);
+    
+    // Track genre preferences
+    const genre = this.detectGenre(videoContext.videoTitle);
+    if (genre) {
+      if (/\b(good|love|great|amazing)\b/i.test(message)) {
+        if (!prefs.likedGenres.includes(genre)) {
+          prefs.likedGenres.push(genre);
+        }
+      } else if (/\b(bad|hate|trash|cringe)\b/i.test(message)) {
+        if (!prefs.dislikedGenres.includes(genre)) {
+          prefs.dislikedGenres.push(genre);
+        }
+      }
+    }
+  }
+
+  /**
+   * Detect genre from video title
+   */
+  detectGenre(title) {
+    const lower = title.toLowerCase();
+    
+    if (/\b(game|gaming|gameplay|lets play|speedrun)\b/.test(lower)) return 'gaming';
+    if (/\b(anime|manga|weeb)\b/.test(lower)) return 'anime';
+    if (/\b(meme|funny|comedy|laugh|hilarious)\b/.test(lower)) return 'memes';
+    if (/\b(music|song|album|concert)\b/.test(lower)) return 'music';
+    if (/\b(news|politic|debate)\b/.test(lower)) return 'news';
+    if (/\b(tutorial|how to|guide)\b/.test(lower)) return 'educational';
+    if (/\b(drama|react|response)\b/.test(lower)) return 'drama';
+    
+    return null;
+  }
+
+  /**
+   * Get recommendations based on learned preferences
+   */
+  getRecommendations() {
+    // Find most successful video types
+    const videoScores = new Map();
+    
+    for (const [videoId, reactions] of this.visualLearning.videoReactions.entries()) {
+      const score = reactions.positive + (reactions.laughs * 2) - reactions.negative;
+      if (score > 0) {
+        videoScores.set(videoId, {
+          title: reactions.title,
+          score,
+          reactions
+        });
+      }
+    }
+    
+    // Sort by score
+    const sorted = Array.from(videoScores.entries())
+      .sort((a, b) => b[1].score - a[1].score)
+      .slice(0, 5);
+    
+    return sorted.map(([id, data]) => data);
+  }
+
+  /**
+   * Get visual learning stats
+   */
+  getVisualLearningStats() {
+    return {
+      videosTracked: this.visualLearning.videoReactions.size,
+      usersTracked: this.visualLearning.userPreferences.size,
+      successfulMoments: this.visualLearning.successfulMoments.length,
+      topVideos: this.getRecommendations().slice(0, 3)
+    };
+  }
+
+  /**
+   * Save visual learning data
+   */
+  async saveVisualLearning() {
+    try {
+      const data = {
+        videoReactions: Array.from(this.visualLearning.videoReactions.entries()),
+        userPreferences: Array.from(this.visualLearning.userPreferences.entries()),
+        successfulMoments: this.visualLearning.successfulMoments,
+        visualJokes: this.visualLearning.visualJokes
+      };
+      
+      await fs.writeFile(this.learningFile, JSON.stringify(data, null, 2));
+    } catch (error) {
+      console.error('❌ [VisionAnalyzer] Save learning error:', error.message);
+    }
+  }
+
+  /**
+   * Load visual learning data
+   */
+  async loadVisualLearning() {
+    try {
+      const data = JSON.parse(await fs.readFile(this.learningFile, 'utf8'));
+      
+      if (data.videoReactions) {
+        this.visualLearning.videoReactions = new Map(data.videoReactions);
+      }
+      if (data.userPreferences) {
+        this.visualLearning.userPreferences = new Map(data.userPreferences);
+      }
+      if (data.successfulMoments) {
+        this.visualLearning.successfulMoments = data.successfulMoments;
+      }
+      if (data.visualJokes) {
+        this.visualLearning.visualJokes = data.visualJokes;
+      }
+      
+      console.log(`👁️ [VisionAnalyzer] Loaded learning data: ${this.visualLearning.videoReactions.size} videos tracked`);
+    } catch (error) {
+      if (error.code !== 'ENOENT') {
+        console.error('⚠️ [VisionAnalyzer] Load learning error:', error.message);
+      }
+    }
   }
 }
 

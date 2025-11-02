@@ -211,6 +211,34 @@ class NicknameManager {
   }
 
   /**
+   * Get rare pet name (extremely rare - ~1% chance)
+   */
+  getRarePetName() {
+    // Only 1% chance to use pet names
+    if (Math.random() > 0.01) return null;
+    
+    const petNames = [
+      'my pet',
+      'kitten',
+      'piss puppy'
+    ];
+    
+    return petNames[Math.floor(Math.random() * petNames.length)];
+  }
+
+  /**
+   * Apply pet name to username (very rarely)
+   */
+  applyPetName(username) {
+    const petName = this.getRarePetName();
+    if (petName) {
+      console.log(`💕 [PetName] Slunt called ${username} "${petName}"`);
+      return petName;
+    }
+    return username;
+  }
+
+  /**
    * Get stats for dashboard
    */
   getStats() {

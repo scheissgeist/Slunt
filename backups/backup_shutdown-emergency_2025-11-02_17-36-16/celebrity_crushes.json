@@ -1,0 +1,1359 @@
+{
+  "crushes": {
+    "coolusername joined (aliases": {
+      "username": "coolusername joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761948125036,
+      "lastInteraction": 1762033464414,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "orbmeat": {
+      "username": "orbmeat",
+      "score": 99,
+      "phase": "UNHEALTHY",
+      "firstNoticed": 1761948458446,
+      "lastInteraction": 1762043404473,
+      "positiveInteractions": 33,
+      "totalInteractions": 33,
+      "attributes": {}
+    },
+    "pat8925": {
+      "username": "pat8925",
+      "score": 100,
+      "phase": "UNHEALTHY",
+      "firstNoticed": 1761948486370,
+      "lastInteraction": 1762033562755,
+      "positiveInteractions": 86,
+      "totalInteractions": 86,
+      "attributes": {}
+    },
+    "miknugget_": {
+      "username": "miknugget_",
+      "score": 24,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761948498731,
+      "lastInteraction": 1761963628313,
+      "positiveInteractions": 8,
+      "totalInteractions": 8,
+      "attributes": {}
+    },
+    "baddibarbie": {
+      "username": "baddibarbie",
+      "score": 30,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761948950895,
+      "lastInteraction": 1761969920790,
+      "positiveInteractions": 10,
+      "totalInteractions": 10,
+      "attributes": {}
+    },
+    "Taikunoaku joined (aliases": {
+      "username": "Taikunoaku joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949045949,
+      "lastInteraction": 1761949045949,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "spurdferguson": {
+      "username": "spurdferguson",
+      "score": 4,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949096553,
+      "lastInteraction": 1761949126441,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "SteeScribbles joined (aliases": {
+      "username": "SteeScribbles joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949137125,
+      "lastInteraction": 1762032288861,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    ".zcanaan": {
+      "username": ".zcanaan",
+      "score": 18,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949144761,
+      "lastInteraction": 1762031069268,
+      "positiveInteractions": 6,
+      "totalInteractions": 6,
+      "attributes": {}
+    },
+    "Brotherimbread joined (aliases": {
+      "username": "Brotherimbread joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949205145,
+      "lastInteraction": 1762026372466,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "OrbMeat joined (aliases": {
+      "username": "OrbMeat joined (aliases",
+      "score": 4,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949239052,
+      "lastInteraction": 1761949540213,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "SteeScribbles": {
+      "username": "SteeScribbles",
+      "score": 81,
+      "phase": "OBSESSED",
+      "firstNoticed": 1761949254238,
+      "lastInteraction": 1762026789584,
+      "positiveInteractions": 27,
+      "totalInteractions": 27,
+      "attributes": {}
+    },
+    "realest_zetto": {
+      "username": "realest_zetto",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949407643,
+      "lastInteraction": 1761984570961,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "electriqwizard joined (aliases": {
+      "username": "electriqwizard joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949493304,
+      "lastInteraction": 1761949493304,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Brotherimbread": {
+      "username": "Brotherimbread",
+      "score": 51,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949503070,
+      "lastInteraction": 1761986885491,
+      "positiveInteractions": 17,
+      "totalInteractions": 17,
+      "attributes": {}
+    },
+    "Taikunoaku": {
+      "username": "Taikunoaku",
+      "score": 48,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949585352,
+      "lastInteraction": 1762028538288,
+      "positiveInteractions": 16,
+      "totalInteractions": 16,
+      "attributes": {}
+    },
+    "big_moof": {
+      "username": "big_moof",
+      "score": 4,
+      "phase": "NOTICING",
+      "firstNoticed": 1761949622717,
+      "lastInteraction": 1761949884664,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "shazbot885": {
+      "username": "shazbot885",
+      "score": 81,
+      "phase": "OBSESSED",
+      "firstNoticed": 1761949700555,
+      "lastInteraction": 1762033942783,
+      "positiveInteractions": 27,
+      "totalInteractions": 27,
+      "attributes": {}
+    },
+    "BbNaB": {
+      "username": "BbNaB",
+      "score": 24,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761949758638,
+      "lastInteraction": 1762032738051,
+      "positiveInteractions": 8,
+      "totalInteractions": 8,
+      "attributes": {}
+    },
+    "picklebond": {
+      "username": "picklebond",
+      "score": 49,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949796900,
+      "lastInteraction": 1761954161854,
+      "positiveInteractions": 17,
+      "totalInteractions": 17,
+      "attributes": {}
+    },
+    "electriqwizard": {
+      "username": "electriqwizard",
+      "score": 60,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949822998,
+      "lastInteraction": 1762042702809,
+      "positiveInteractions": 20,
+      "totalInteractions": 20,
+      "attributes": {}
+    },
+    "_slamminsalmon": {
+      "username": "_slamminsalmon",
+      "score": 66,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949868084,
+      "lastInteraction": 1762033200309,
+      "positiveInteractions": 22,
+      "totalInteractions": 22,
+      "attributes": {}
+    },
+    "taikunoaku": {
+      "username": "taikunoaku",
+      "score": 60,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761949953372,
+      "lastInteraction": 1762033874798,
+      "positiveInteractions": 20,
+      "totalInteractions": 20,
+      "attributes": {}
+    },
+    "ruckusebenezer": {
+      "username": "ruckusebenezer",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761950167612,
+      "lastInteraction": 1762026019941,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "PukeThroat joined (aliases": {
+      "username": "PukeThroat joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761950186782,
+      "lastInteraction": 1761950186782,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    ".blueeyeswhitesupremacist": {
+      "username": ".blueeyeswhitesupremacist",
+      "score": 100,
+      "phase": "UNHEALTHY",
+      "firstNoticed": 1761950227245,
+      "lastInteraction": 1762040769592,
+      "positiveInteractions": 36,
+      "totalInteractions": 36,
+      "attributes": {}
+    },
+    "dammitwesley": {
+      "username": "dammitwesley",
+      "score": 45,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761950257271,
+      "lastInteraction": 1762041114518,
+      "positiveInteractions": 15,
+      "totalInteractions": 15,
+      "attributes": {}
+    },
+    "PukeThroat": {
+      "username": "PukeThroat",
+      "score": 13,
+      "phase": "NOTICING",
+      "firstNoticed": 1761950361805,
+      "lastInteraction": 1761951407407,
+      "positiveInteractions": 5,
+      "totalInteractions": 5,
+      "attributes": {}
+    },
+    "Applecooler": {
+      "username": "Applecooler",
+      "score": 42,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761950382010,
+      "lastInteraction": 1762043136062,
+      "positiveInteractions": 14,
+      "totalInteractions": 14,
+      "attributes": {}
+    },
+    "Deltaverse joined (aliases": {
+      "username": "Deltaverse joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761950405419,
+      "lastInteraction": 1761950405419,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "uncledoctor": {
+      "username": "uncledoctor",
+      "score": 57,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761950418355,
+      "lastInteraction": 1762041189656,
+      "positiveInteractions": 19,
+      "totalInteractions": 19,
+      "attributes": {}
+    },
+    "rottencheeseca": {
+      "username": "rottencheeseca",
+      "score": 42,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761950657579,
+      "lastInteraction": 1762033649381,
+      "positiveInteractions": 14,
+      "totalInteractions": 14,
+      "attributes": {}
+    },
+    "jeedhoob joined (aliases": {
+      "username": "jeedhoob joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761950797817,
+      "lastInteraction": 1761950797817,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "what.tha": {
+      "username": "what.tha",
+      "score": 42,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761950984139,
+      "lastInteraction": 1762043589900,
+      "positiveInteractions": 14,
+      "totalInteractions": 14,
+      "attributes": {}
+    },
+    "aoi.yume": {
+      "username": "aoi.yume",
+      "score": 7,
+      "phase": "NOTICING",
+      "firstNoticed": 1761951031854,
+      "lastInteraction": 1761951300357,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    ".loweffort": {
+      "username": ".loweffort",
+      "score": 39,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761951267237,
+      "lastInteraction": 1762026312002,
+      "positiveInteractions": 13,
+      "totalInteractions": 13,
+      "attributes": {}
+    },
+    "Klumb": {
+      "username": "Klumb",
+      "score": 21,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761951590804,
+      "lastInteraction": 1761963080685,
+      "positiveInteractions": 7,
+      "totalInteractions": 7,
+      "attributes": {}
+    },
+    "sithlord8448": {
+      "username": "sithlord8448",
+      "score": 66,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761951680829,
+      "lastInteraction": 1762033947877,
+      "positiveInteractions": 22,
+      "totalInteractions": 22,
+      "attributes": {}
+    },
+    "glowInTheDark": {
+      "username": "glowInTheDark",
+      "score": 15,
+      "phase": "NOTICING",
+      "firstNoticed": 1761951701094,
+      "lastInteraction": 1761968750248,
+      "positiveInteractions": 5,
+      "totalInteractions": 5,
+      "attributes": {}
+    },
+    "vaporwar3": {
+      "username": "vaporwar3",
+      "score": 30,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761951892225,
+      "lastInteraction": 1762032176311,
+      "positiveInteractions": 10,
+      "totalInteractions": 10,
+      "attributes": {}
+    },
+    "mr.bones888": {
+      "username": "mr.bones888",
+      "score": 36,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761951941413,
+      "lastInteraction": 1761968038651,
+      "positiveInteractions": 12,
+      "totalInteractions": 12,
+      "attributes": {}
+    },
+    "scarpelt": {
+      "username": "scarpelt",
+      "score": 36,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761952025094,
+      "lastInteraction": 1761967791974,
+      "positiveInteractions": 12,
+      "totalInteractions": 12,
+      "attributes": {}
+    },
+    "badevin joined (aliases": {
+      "username": "badevin joined (aliases",
+      "score": 4,
+      "phase": "NOTICING",
+      "firstNoticed": 1761952095444,
+      "lastInteraction": 1761952095710,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "albino5stargeneral": {
+      "username": "albino5stargeneral",
+      "score": 51,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761952130911,
+      "lastInteraction": 1762033755283,
+      "positiveInteractions": 17,
+      "totalInteractions": 17,
+      "attributes": {}
+    },
+    "soapyoid": {
+      "username": "soapyoid",
+      "score": 45,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761952162713,
+      "lastInteraction": 1761970808779,
+      "positiveInteractions": 15,
+      "totalInteractions": 15,
+      "attributes": {}
+    },
+    "winggweeps": {
+      "username": "winggweeps",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761952261838,
+      "lastInteraction": 1761952261838,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "psycho_dad joined (aliases": {
+      "username": "psycho_dad joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761952652582,
+      "lastInteraction": 1761952652582,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "lapome": {
+      "username": "lapome",
+      "score": 36,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761952722618,
+      "lastInteraction": 1762041129707,
+      "positiveInteractions": 12,
+      "totalInteractions": 12,
+      "attributes": {}
+    },
+    "beboy360": {
+      "username": "beboy360",
+      "score": 7,
+      "phase": "NOTICING",
+      "firstNoticed": 1761952781683,
+      "lastInteraction": 1761953476017,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "rottencheeseCA": {
+      "username": "rottencheeseCA",
+      "score": 12,
+      "phase": "NOTICING",
+      "firstNoticed": 1761953127358,
+      "lastInteraction": 1761962855388,
+      "positiveInteractions": 4,
+      "totalInteractions": 4,
+      "attributes": {}
+    },
+    "psycho_dad": {
+      "username": "psycho_dad",
+      "score": 60,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761953380869,
+      "lastInteraction": 1761960823448,
+      "positiveInteractions": 20,
+      "totalInteractions": 20,
+      "attributes": {}
+    },
+    "subtrfuge": {
+      "username": "subtrfuge",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761953694416,
+      "lastInteraction": 1761969780220,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "jhaumrith": {
+      "username": "jhaumrith",
+      "score": 81,
+      "phase": "OBSESSED",
+      "firstNoticed": 1761953794201,
+      "lastInteraction": 1762031862891,
+      "positiveInteractions": 27,
+      "totalInteractions": 27,
+      "attributes": {}
+    },
+    "quantum_magus": {
+      "username": "quantum_magus",
+      "score": 39,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761954056821,
+      "lastInteraction": 1761956814804,
+      "positiveInteractions": 13,
+      "totalInteractions": 13,
+      "attributes": {}
+    },
+    "belzaboom": {
+      "username": "belzaboom",
+      "score": 15,
+      "phase": "NOTICING",
+      "firstNoticed": 1761954279627,
+      "lastInteraction": 1762025893643,
+      "positiveInteractions": 5,
+      "totalInteractions": 5,
+      "attributes": {}
+    },
+    "._.fug": {
+      "username": "._.fug",
+      "score": 66,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761954576899,
+      "lastInteraction": 1762043430002,
+      "positiveInteractions": 22,
+      "totalInteractions": 22,
+      "attributes": {}
+    },
+    "jello_noir": {
+      "username": "jello_noir",
+      "score": 27,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761955006356,
+      "lastInteraction": 1762027257068,
+      "positiveInteractions": 9,
+      "totalInteractions": 9,
+      "attributes": {}
+    },
+    "sforlord": {
+      "username": "sforlord",
+      "score": 24,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761955079547,
+      "lastInteraction": 1762023527099,
+      "positiveInteractions": 8,
+      "totalInteractions": 8,
+      "attributes": {}
+    },
+    "jin_joe": {
+      "username": "jin_joe",
+      "score": 39,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761955114652,
+      "lastInteraction": 1762033008536,
+      "positiveInteractions": 13,
+      "totalInteractions": 13,
+      "attributes": {}
+    },
+    "rottencheeseCA joined (aliases": {
+      "username": "rottencheeseCA joined (aliases",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761955138904,
+      "lastInteraction": 1762029042588,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "Artyom joined (aliases": {
+      "username": "Artyom joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761955438999,
+      "lastInteraction": 1761955438999,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "plaguejackal": {
+      "username": "plaguejackal",
+      "score": 87,
+      "phase": "OBSESSED",
+      "firstNoticed": 1761955589552,
+      "lastInteraction": 1762043770979,
+      "positiveInteractions": 29,
+      "totalInteractions": 29,
+      "attributes": {}
+    },
+    "QuantumSun": {
+      "username": "QuantumSun",
+      "score": 57,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761955968997,
+      "lastInteraction": 1761969815027,
+      "positiveInteractions": 19,
+      "totalInteractions": 19,
+      "attributes": {}
+    },
+    "ghello": {
+      "username": "ghello",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761955995313,
+      "lastInteraction": 1761955995313,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Pocket joined (aliases": {
+      "username": "Pocket joined (aliases",
+      "score": 1,
+      "phase": "NOTICING",
+      "firstNoticed": 1761956061439,
+      "lastInteraction": 1761956061439,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Huculberry": {
+      "username": "Huculberry",
+      "score": 60,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761957294064,
+      "lastInteraction": 1762029499708,
+      "positiveInteractions": 20,
+      "totalInteractions": 20,
+      "attributes": {}
+    },
+    "wrangle joined (aliases": {
+      "username": "wrangle joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761957394112,
+      "lastInteraction": 1761968706061,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "gangstalker_of_gangstalkers": {
+      "username": "gangstalker_of_gangstalkers",
+      "score": 15,
+      "phase": "NOTICING",
+      "firstNoticed": 1761957703790,
+      "lastInteraction": 1762029685866,
+      "positiveInteractions": 5,
+      "totalInteractions": 5,
+      "attributes": {}
+    },
+    "sams0n1999": {
+      "username": "sams0n1999",
+      "score": 24,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761957983719,
+      "lastInteraction": 1762033998674,
+      "positiveInteractions": 8,
+      "totalInteractions": 8,
+      "attributes": {}
+    },
+    "fargerdinklor": {
+      "username": "fargerdinklor",
+      "score": 15,
+      "phase": "NOTICING",
+      "firstNoticed": 1761958080292,
+      "lastInteraction": 1761958395306,
+      "positiveInteractions": 5,
+      "totalInteractions": 5,
+      "attributes": {}
+    },
+    "ensell joined (aliases": {
+      "username": "ensell joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761959152670,
+      "lastInteraction": 1761959453666,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "Capegourd": {
+      "username": "Capegourd",
+      "score": 27,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761959168446,
+      "lastInteraction": 1762043573269,
+      "positiveInteractions": 9,
+      "totalInteractions": 9,
+      "attributes": {}
+    },
+    "radfather joined (aliases": {
+      "username": "radfather joined (aliases",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761959440060,
+      "lastInteraction": 1761965462580,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "ensell": {
+      "username": "ensell",
+      "score": 12,
+      "phase": "NOTICING",
+      "firstNoticed": 1761959465931,
+      "lastInteraction": 1761962452125,
+      "positiveInteractions": 4,
+      "totalInteractions": 4,
+      "attributes": {}
+    },
+    "radfather": {
+      "username": "radfather",
+      "score": 39,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761959512252,
+      "lastInteraction": 1761970689205,
+      "positiveInteractions": 13,
+      "totalInteractions": 13,
+      "attributes": {}
+    },
+    "Migi": {
+      "username": "Migi",
+      "score": 33,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761960243114,
+      "lastInteraction": 1761970753887,
+      "positiveInteractions": 11,
+      "totalInteractions": 11,
+      "attributes": {}
+    },
+    "bangbangbangbang": {
+      "username": "bangbangbangbang",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761960287289,
+      "lastInteraction": 1761984194010,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "patterson1": {
+      "username": "patterson1",
+      "score": 75,
+      "phase": "OBSESSED",
+      "firstNoticed": 1761960382565,
+      "lastInteraction": 1762033763577,
+      "positiveInteractions": 25,
+      "totalInteractions": 25,
+      "attributes": {}
+    },
+    "SickIllu joined (aliases": {
+      "username": "SickIllu joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761961195631,
+      "lastInteraction": 1761961195631,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "bomelette": {
+      "username": "bomelette",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761961490014,
+      "lastInteraction": 1761962566657,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "whomo.": {
+      "username": "whomo.",
+      "score": 27,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761961534001,
+      "lastInteraction": 1762033189128,
+      "positiveInteractions": 9,
+      "totalInteractions": 9,
+      "attributes": {}
+    },
+    "braybray9876": {
+      "username": "braybray9876",
+      "score": 100,
+      "phase": "UNHEALTHY",
+      "firstNoticed": 1761962278865,
+      "lastInteraction": 1762043339372,
+      "positiveInteractions": 37,
+      "totalInteractions": 37,
+      "attributes": {}
+    },
+    "Frigurt": {
+      "username": "Frigurt",
+      "score": 21,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761962501101,
+      "lastInteraction": 1761962859077,
+      "positiveInteractions": 7,
+      "totalInteractions": 7,
+      "attributes": {}
+    },
+    "bangbangbangbang joined (aliases": {
+      "username": "bangbangbangbang joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761962668710,
+      "lastInteraction": 1761962668710,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "nam420": {
+      "username": "nam420",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761963817053,
+      "lastInteraction": 1761963817053,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "localwatercooler": {
+      "username": "localwatercooler",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761965152835,
+      "lastInteraction": 1762031680673,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "Bear141 joined (aliases": {
+      "username": "Bear141 joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761965603498,
+      "lastInteraction": 1761965604016,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "Bear141": {
+      "username": "Bear141",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761965637239,
+      "lastInteraction": 1761965637239,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "WankingPrep": {
+      "username": "WankingPrep",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761965858608,
+      "lastInteraction": 1761966210289,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "pissass joined (aliases": {
+      "username": "pissass joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761966132108,
+      "lastInteraction": 1761966132108,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "enaychdy": {
+      "username": "enaychdy",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761966294239,
+      "lastInteraction": 1761966373084,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "josef.p": {
+      "username": "josef.p",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761967101567,
+      "lastInteraction": 1761967101567,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Ecks joined (aliases": {
+      "username": "Ecks joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761967229786,
+      "lastInteraction": 1761967229786,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "somehermit joined (aliases": {
+      "username": "somehermit joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761968206681,
+      "lastInteraction": 1761968206681,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "somehermit": {
+      "username": "somehermit",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761968243630,
+      "lastInteraction": 1761968243630,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "bonkersizewonga": {
+      "username": "bonkersizewonga",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1761968418508,
+      "lastInteraction": 1761968626925,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "hued": {
+      "username": "hued",
+      "score": 24,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761969339942,
+      "lastInteraction": 1762042882370,
+      "positiveInteractions": 8,
+      "totalInteractions": 8,
+      "attributes": {}
+    },
+    "Someonelse joined (aliases": {
+      "username": "Someonelse joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761969785364,
+      "lastInteraction": 1761969785364,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "shitstainafficionado_04919": {
+      "username": "shitstainafficionado_04919",
+      "score": 42,
+      "phase": "CRUSHING",
+      "firstNoticed": 1761969924777,
+      "lastInteraction": 1762032711784,
+      "positiveInteractions": 14,
+      "totalInteractions": 14,
+      "attributes": {}
+    },
+    "Migi joined (aliases": {
+      "username": "Migi joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1761970006632,
+      "lastInteraction": 1761970006632,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "ducky006446": {
+      "username": "ducky006446",
+      "score": 18,
+      "phase": "NOTICING",
+      "firstNoticed": 1761984476454,
+      "lastInteraction": 1761987003374,
+      "positiveInteractions": 6,
+      "totalInteractions": 6,
+      "attributes": {}
+    },
+    "alanminder": {
+      "username": "alanminder",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1761984507332,
+      "lastInteraction": 1762025340824,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "stevepugwaredev": {
+      "username": "stevepugwaredev",
+      "score": 100,
+      "phase": "UNHEALTHY",
+      "firstNoticed": 1761984554125,
+      "lastInteraction": 1762029753593,
+      "positiveInteractions": 77,
+      "totalInteractions": 77,
+      "attributes": {}
+    },
+    "net.stalker": {
+      "username": "net.stalker",
+      "score": 21,
+      "phase": "INTERESTED",
+      "firstNoticed": 1761986413028,
+      "lastInteraction": 1762028067740,
+      "positiveInteractions": 7,
+      "totalInteractions": 7,
+      "attributes": {}
+    },
+    "Palestine_Forever": {
+      "username": "Palestine_Forever",
+      "score": 18,
+      "phase": "NOTICING",
+      "firstNoticed": 1762021459691,
+      "lastInteraction": 1762024257412,
+      "positiveInteractions": 6,
+      "totalInteractions": 6,
+      "attributes": {}
+    },
+    "Miles_Gloriosus": {
+      "username": "Miles_Gloriosus",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762021532420,
+      "lastInteraction": 1762021532420,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "OrbMeat": {
+      "username": "OrbMeat",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762021711842,
+      "lastInteraction": 1762021711842,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Huculberry joined (aliases": {
+      "username": "Huculberry joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762022487169,
+      "lastInteraction": 1762022487169,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "churchill1941.": {
+      "username": "churchill1941.",
+      "score": 57,
+      "phase": "CRUSHING",
+      "firstNoticed": 1762022684261,
+      "lastInteraction": 1762033570104,
+      "positiveInteractions": 19,
+      "totalInteractions": 19,
+      "attributes": {}
+    },
+    "bbnab": {
+      "username": "bbnab",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1762022711702,
+      "lastInteraction": 1762022841103,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "BunnBunn joined (aliases": {
+      "username": "BunnBunn joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762023083668,
+      "lastInteraction": 1762023233298,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "BunnBunn": {
+      "username": "BunnBunn",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1762023172039,
+      "lastInteraction": 1762032793598,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "Gutmatant": {
+      "username": "Gutmatant",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762023668220,
+      "lastInteraction": 1762023668220,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "Juice_Kelly": {
+      "username": "Juice_Kelly",
+      "score": 12,
+      "phase": "NOTICING",
+      "firstNoticed": 1762023772571,
+      "lastInteraction": 1762025287728,
+      "positiveInteractions": 4,
+      "totalInteractions": 4,
+      "attributes": {}
+    },
+    "Voteskip passed": {
+      "username": "Voteskip passed",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762023781249,
+      "lastInteraction": 1762023781547,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "gr8itsn8": {
+      "username": "gr8itsn8",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762024273387,
+      "lastInteraction": 1762024375968,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "cassidy6969": {
+      "username": "cassidy6969",
+      "score": 75,
+      "phase": "OBSESSED",
+      "firstNoticed": 1762025912714,
+      "lastInteraction": 1762030211403,
+      "positiveInteractions": 25,
+      "totalInteractions": 25,
+      "attributes": {}
+    },
+    "the_brofessor.": {
+      "username": "the_brofessor.",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762025953880,
+      "lastInteraction": 1762026140756,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "spaceman_1996": {
+      "username": "spaceman_1996",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762025983968,
+      "lastInteraction": 1762025983968,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "unhuggable": {
+      "username": "unhuggable",
+      "score": 9,
+      "phase": "NOTICING",
+      "firstNoticed": 1762026173162,
+      "lastInteraction": 1762026257338,
+      "positiveInteractions": 3,
+      "totalInteractions": 3,
+      "attributes": {}
+    },
+    "slunt, don't show Orbmeat this https": {
+      "username": "slunt, don't show Orbmeat this https",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762026907479,
+      "lastInteraction": 1762026907479,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "davedalus": {
+      "username": "davedalus",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762027707072,
+      "lastInteraction": 1762027707072,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "southeefrica joined (aliases": {
+      "username": "southeefrica joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762028443841,
+      "lastInteraction": 1762028443841,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "catfractal": {
+      "username": "catfractal",
+      "score": 39,
+      "phase": "INTERESTED",
+      "firstNoticed": 1762028714661,
+      "lastInteraction": 1762041182584,
+      "positiveInteractions": 13,
+      "totalInteractions": 13,
+      "attributes": {}
+    },
+    "Daknez joined (aliases": {
+      "username": "Daknez joined (aliases",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762028760397,
+      "lastInteraction": 1762043542439,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "Daknez": {
+      "username": "Daknez",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762028823811,
+      "lastInteraction": 1762028823811,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "trueskeletonman": {
+      "username": "trueskeletonman",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762029790530,
+      "lastInteraction": 1762029790530,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "southeefrica": {
+      "username": "southeefrica",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762033141249,
+      "lastInteraction": 1762043680071,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "Applecooler joined (aliases": {
+      "username": "Applecooler joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762033722260,
+      "lastInteraction": 1762033722260,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "scouragous": {
+      "username": "scouragous",
+      "score": 12,
+      "phase": "NOTICING",
+      "firstNoticed": 1762041145558,
+      "lastInteraction": 1762042820954,
+      "positiveInteractions": 4,
+      "totalInteractions": 4,
+      "attributes": {}
+    },
+    "painmongr joined (aliases": {
+      "username": "painmongr joined (aliases",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762042272419,
+      "lastInteraction": 1762042272419,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    },
+    "manticrow": {
+      "username": "manticrow",
+      "score": 6,
+      "phase": "NOTICING",
+      "firstNoticed": 1762043113468,
+      "lastInteraction": 1762043725595,
+      "positiveInteractions": 2,
+      "totalInteractions": 2,
+      "attributes": {}
+    },
+    "gorgelgargle": {
+      "username": "gorgelgargle",
+      "score": 12,
+      "phase": "NOTICING",
+      "firstNoticed": 1762043265185,
+      "lastInteraction": 1762043619261,
+      "positiveInteractions": 4,
+      "totalInteractions": 4,
+      "attributes": {}
+    },
+    "bobbyboon": {
+      "username": "bobbyboon",
+      "score": 3,
+      "phase": "NOTICING",
+      "firstNoticed": 1762043440163,
+      "lastInteraction": 1762043440163,
+      "positiveInteractions": 1,
+      "totalInteractions": 1,
+      "attributes": {}
+    }
+  },
+  "currentCrush": ".blueeyeswhitesupremacist",
+  "crushHistory": [
+    {
+      "username": ".blueeyeswhitesupremacist",
+      "startedAt": 1761950227245,
+      "endedAt": 1761958110763,
+      "peakScore": 60
+    },
+    {
+      "username": "pat8925",
+      "startedAt": 1761948486370,
+      "endedAt": 1761969863835,
+      "peakScore": 84
+    }
+  ]
+}

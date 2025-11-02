@@ -254,7 +254,7 @@ class CoolholeExplorer extends EventEmitter {
   }
 
   /**
-   * Discover video queue system
+   * Discover video queue system with detailed UI mapping
    */
   async discoverQueueSystem() {
     try {
@@ -265,54 +265,186 @@ class CoolholeExplorer extends EventEmitter {
           hasQueue: false,
           queueElements: [],
           permissions: null,
-          currentVideo: null
+          currentVideo: null,
+          ui: {
+            videoSearchButton: null, // Magnifying glass icon
+            searchInput: null,
+            addVideoButton: null,
+            mediaUrlInput: null,
+            queueNextButton: null,
+            queueEndButton: null,
+            skipVoteButton: null,
+            queueContainer: null
+          }
         };
         
-        // Look for queue/playlist
-        const queue = document.querySelector('#queue, .playlist, #playlist, .video-queue');
-        if (queue) {
-          data.hasQueue = true;
-          data.queueElements.push({
-            type: 'main',
-            element: queue.className,
-            itemCount: queue.querySelectorAll('li, .queue-item').length
-          });
-        }
+        // Look for video search button (magnifying glass icon)
+        const searchButtons = Array.from(document.querySelectorAll('button, [role="button"]')).filter(b => {
+          const title = b.getAttribute('title')?.toLowerCase() || '';
+          const ariaLabel = b.getAttribute('aria-label')?.toLowerCase() || '';
+          const className = b.className?.toLowerCase() || '';
+          
+          return title.includes('search') || 
+                 title.includes('find') ||
+                 ariaLabel.includes('search') ||
+                 className.includes('search') ||
+                 b.querySelector('svg') || // Likely has a magnifying glass icon
+                 b.textContent.includes('🔍');
+        });
         
-        // Look for add video button/input
-        const addButton = document.querySelector('#add-video, .add-video') || 
-                         Array.from(document.querySelectorAll('button')).find(b => b.textContent.includes('Add'));
-        const urlInput = document.querySelector('input[name="mediaurl"], #mediaurl') ||
-                        Array.from(document.querySelectorAll('input')).find(i => i.placeholder && i.placeholder.includes('URL'));
-        if (addButton || urlInput) {
-          data.queueElements.push({
-            type: 'add',
-            hasButton: !!addButton,
-            hasInput: !!urlInput
-          });
-        }
-        
-        // Check current video
-        const videoPlayer = document.querySelector('video, #player, .video-player');
-        if (videoPlayer) {
-          data.currentVideo = {
-            present: true,
-            playing: !videoPlayer.paused
+        if (searchButtons.length > 0) {
+          data.ui.videoSearchButton = {
+            found: true,
+            selector: searchButtons[0].className || searchButtons[0].id,
+            type: 'search-icon',
+            position: 'video-controls'
           };
         }
         
-        // Check queue permissions
-        const queueBtn = document.querySelector('#queue-btn, .queue-btn');
-        if (queueBtn) {
-          data.permissions = queueBtn.disabled ? 'restricted' : 'allowed';
+        // Look for search input field (appears after clicking search button)
+        const searchInputs = Array.from(document.querySelectorAll('input[type="text"], input[type="search"]')).filter(i => {
+          const placeholder = i.placeholder?.toLowerCase() || '';
+          const name = i.name?.toLowerCase() || '';
+          return placeholder.includes('search') || 
+                 placeholder.includes('video') ||
+                 placeholder.includes('youtube') ||
+                 name.includes('search');
+        });
+        
+        if (searchInputs.length > 0) {
+          data.ui.searchInput = {
+            found: true,
+            selector: searchInputs[0].className || searchInputs[0].name,
+            placeholder: searchInputs[0].placeholder
+          };
+        }
+        
+        // Look for the + button to add videos (fallback method)
+        const addButtons = Array.from(document.querySelectorAll('button')).filter(b => 
+          b.textContent.trim() === '+' || 
+          b.getAttribute('title')?.toLowerCase().includes('add') ||
+          b.className.includes('add-video')
+        );
+        if (addButtons.length > 0) {
+          data.ui.addVideoButton = {
+            found: true,
+            selector: addButtons[0].className,
+            position: 'right-of-chat-controls'
+          };
+        }
+        
+        // Look for media URL input box
+        const urlInputs = Array.from(document.querySelectorAll('input[type="text"]')).filter(i =>
+          i.placeholder?.toLowerCase().includes('url') ||
+          i.placeholder?.toLowerCase().includes('media') ||
+          i.name?.includes('mediaurl')
+        );
+        if (urlInputs.length > 0) {
+          data.ui.mediaUrlInput = {
+            found: true,
+            selector: urlInputs[0].className || urlInputs[0].name,
+            placeholder: urlInputs[0].placeholder
+          };
+        }
+        
+        // Look for queue container (right side, under poll)
+        const queueContainers = document.querySelectorAll('#queue, .playlist, #playlist, .video-queue, [id*="queue"]');
+        if (queueContainers.length > 0) {
+          data.hasQueue = true;
+          data.ui.queueContainer = {
+            found: true,
+            selector: queueContainers[0].id || queueContainers[0].className,
+            itemCount: queueContainers[0].querySelectorAll('li, .queue-item, [class*="queue"]').length
+          };
+          
+          // Look for queue control buttons (arrow and double arrow)
+          const queueItems = queueContainers[0].querySelectorAll('li, .queue-item');
+          if (queueItems.length > 0) {
+            const firstItem = queueItems[0];
+            const arrows = firstItem.querySelectorAll('button, [role="button"]');
+            
+            arrows.forEach(btn => {
+              const text = btn.textContent.trim();
+              const title = btn.getAttribute('title')?.toLowerCase() || '';
+              
+              // Single arrow = queue next
+              if (text === '▶' || text === '→' || title.includes('next') || title.includes('play next')) {
+                data.ui.queueNextButton = {
+                  found: true,
+                  selector: btn.className,
+                  restricted: true, // Normal users can't use this
+                  text: text
+                };
+              }
+              
+              // Double arrow = queue at end
+              if (text === '▶▶' || text === '⏭' || text === '»' || title.includes('end') || title.includes('last')) {
+                data.ui.queueEndButton = {
+                  found: true,
+                  selector: btn.className,
+                  available: true, // This is what Slunt should use
+                  text: text
+                };
+              }
+            });
+          }
+        }
+        
+        // Look for vote skip button (far right button band, costs CP)
+        const skipButtons = Array.from(document.querySelectorAll('button')).filter(b => {
+          const text = b.textContent.toLowerCase();
+          const title = b.getAttribute('title')?.toLowerCase() || '';
+          return text.includes('skip') || text.includes('vote') || 
+                 title.includes('skip') || title.includes('vote');
+        });
+        if (skipButtons.length > 0) {
+          data.ui.skipVoteButton = {
+            found: true,
+            selector: skipButtons[0].className,
+            costsCoolPoints: true,
+            position: 'far-right-button-band'
+          };
+        }
+        
+        // Check current video
+        const videoPlayer = document.querySelector('video, #player, .video-player, iframe');
+        if (videoPlayer) {
+          data.currentVideo = {
+            present: true,
+            playing: videoPlayer.tagName === 'VIDEO' ? !videoPlayer.paused : true,
+            position: 'center-right'
+          };
+        }
+        
+        // Determine permissions based on available buttons
+        if (data.ui.queueEndButton?.available) {
+          data.permissions = 'can-queue-end';
+        } else if (data.ui.addVideoButton?.found) {
+          data.permissions = 'can-add-to-queue';
+        } else {
+          data.permissions = 'restricted';
         }
         
         return data;
       });
       
       this.features.queuePermissions = queueData.permissions;
+      this.features.uiElements.set('videoQueue', queueData.ui);
       
       console.log(`✅ [Explorer] Queue system discovered:`, queueData.hasQueue ? 'Available' : 'Not found');
+      if (queueData.ui.videoSearchButton?.found) {
+        console.log('   ✓ Video search button (🔍) found');
+      }
+      if (queueData.ui.addVideoButton?.found) {
+        console.log('   ✓ Add video button (+) found');
+      }
+      if (queueData.ui.queueEndButton?.available) {
+        console.log('   ✓ Queue-to-end button available (normal user)');
+      }
+      if (queueData.ui.skipVoteButton?.found) {
+        console.log('   ✓ Vote skip button found (costs CP)');
+      }
+      
       this.emit('queueSystemDiscovered', queueData);
       
       return queueData;
@@ -426,42 +558,336 @@ class CoolholeExplorer extends EventEmitter {
   }
 
   /**
-   * Queue a video (if permissions allow)
+   * Search and queue a video using Coolhole's built-in search (magnifying glass)
+   */
+  async searchAndQueueVideo(searchQuery, title = null) {
+    try {
+      console.log(`📹 [Explorer] Searching and queueing: "${searchQuery}"`);
+      
+      const result = await this.page.evaluate(({ query }) => {
+        try {
+          // Step 1: Find the search button (magnifying glass icon)
+          const searchButtons = Array.from(document.querySelectorAll('button, [role="button"]')).filter(b => {
+            const title = b.getAttribute('title')?.toLowerCase() || '';
+            const ariaLabel = b.getAttribute('aria-label')?.toLowerCase() || '';
+            const className = b.className?.toLowerCase() || '';
+            
+            return title.includes('search') || 
+                   title.includes('find') ||
+                   ariaLabel.includes('search') ||
+                   className.includes('search') ||
+                   b.querySelector('svg') ||
+                   b.textContent.includes('🔍');
+          });
+          
+          if (searchButtons.length === 0) {
+            return { success: false, reason: 'search-button-not-found', step: 1 };
+          }
+          
+          console.log('[Explorer] Found search button, clicking...');
+          searchButtons[0].click();
+          
+          // Step 2: Wait for search input to appear, then find it
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              const searchInputs = Array.from(document.querySelectorAll('input[type="text"], input[type="search"]')).filter(i => {
+                const placeholder = i.placeholder?.toLowerCase() || '';
+                const name = i.name?.toLowerCase() || '';
+                const isVisible = i.offsetParent !== null; // Check if visible
+                
+                return isVisible && (
+                  placeholder.includes('search') || 
+                  placeholder.includes('video') ||
+                  placeholder.includes('youtube') ||
+                  name.includes('search') ||
+                  name.includes('media')
+                );
+              });
+              
+              if (searchInputs.length === 0) {
+                resolve({ success: false, reason: 'search-input-not-found', step: 2 });
+                return;
+              }
+              
+              console.log('[Explorer] Found search input, entering query...');
+              const searchInput = searchInputs[0];
+              searchInput.value = query;
+              searchInput.dispatchEvent(new Event('input', { bubbles: true }));
+              searchInput.dispatchEvent(new Event('change', { bubbles: true }));
+              
+              // Step 3: Press Enter or click search button to search
+              setTimeout(() => {
+                // Try pressing Enter
+                const enterEvent = new KeyboardEvent('keydown', {
+                  key: 'Enter',
+                  code: 'Enter',
+                  keyCode: 13,
+                  bubbles: true
+                });
+                searchInput.dispatchEvent(enterEvent);
+                
+                // Also try finding and clicking a search submit button
+                const submitButtons = Array.from(document.querySelectorAll('button')).filter(b => {
+                  const text = b.textContent.toLowerCase();
+                  const title = b.getAttribute('title')?.toLowerCase() || '';
+                  return text.includes('search') || text === '🔍' || title.includes('search');
+                });
+                
+                if (submitButtons.length > 0) {
+                  submitButtons[0].click();
+                }
+                
+                console.log('[Explorer] Search submitted, waiting for results...');
+                
+                // Step 4: Wait for results to appear, then select first result
+                setTimeout(() => {
+                  // Look for search results (usually a list or dropdown)
+                  const resultContainers = document.querySelectorAll('.search-results, [class*="result"], [class*="dropdown"]');
+                  
+                  if (resultContainers.length > 0) {
+                    // Find clickable result items
+                    const resultItems = Array.from(resultContainers[0].querySelectorAll('li, .item, [role="option"]'));
+                    
+                    if (resultItems.length > 0) {
+                      console.log('[Explorer] Found search results, clicking first result...');
+                      resultItems[0].click();
+                      
+                      // Step 5: Video should auto-queue or we need to click add
+                      setTimeout(() => {
+                        // Check if we need to click an "add to queue" button
+                        const addButtons = Array.from(document.querySelectorAll('button')).filter(b => {
+                          const text = b.textContent.toLowerCase();
+                          return text.includes('add') || text.includes('queue') || text === '+';
+                        });
+                        
+                        if (addButtons.length > 0) {
+                          console.log('[Explorer] Clicking add to queue...');
+                          addButtons[0].click();
+                        }
+                        
+                        resolve({ 
+                          success: true, 
+                          reason: 'video-queued',
+                          query: query
+                        });
+                      }, 500);
+                    } else {
+                      resolve({ success: false, reason: 'no-result-items', step: 4 });
+                    }
+                  } else {
+                    // No results container found, maybe it auto-queued?
+                    resolve({ 
+                      success: true, 
+                      reason: 'auto-queued-or-no-results',
+                      query: query 
+                    });
+                  }
+                }, 1000); // Wait 1s for results
+              }, 300);
+            }, 300); // Wait 300ms for search input to appear
+          });
+        } catch (error) {
+          return { success: false, reason: error.message, step: 0 };
+        }
+      }, { query: searchQuery });
+      
+      if (result.success) {
+        this.progress.videosQueued++;
+        this.progress.lastActivity = Date.now();
+        
+        this.insights.videoQueueTrends.push({
+          query: searchQuery,
+          title: title || searchQuery,
+          timestamp: Date.now(),
+          method: 'search'
+        });
+        
+        this.emit('videoQueued', { 
+          query: searchQuery,
+          title: title || searchQuery,
+          count: this.progress.videosQueued,
+          method: 'search'
+        });
+        
+        console.log(`✅ [Explorer] Video search queued successfully: "${searchQuery}"`);
+        return true;
+      } else {
+        console.error(`❌ [Explorer] Failed to queue video: ${result.reason} (step ${result.step})`);
+        return false;
+      }
+    } catch (error) {
+      console.error('❌ [Explorer] Error searching and queueing video:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Queue a video using direct URL (fallback method)
    */
   async queueVideo(url, title = 'Slunt\'s Pick') {
     try {
+      console.log(`📹 [Explorer] Attempting to queue video: ${title}`);
+      console.log(`   URL: ${url}`);
+      
       const success = await this.page.evaluate(({ url, title }) => {
-        // Try to find add video input
-        const urlInput = document.querySelector('input[name="mediaurl"], #mediaurl');
-        const addBtn = document.querySelector('#queue-add, .add-video, button:has-text("Add")');
-        
-        if (urlInput && addBtn) {
-          urlInput.value = url;
-          addBtn.click();
-          return true;
+        try {
+          // Step 1: Find the + button (right of chat controls)
+          const addButtons = Array.from(document.querySelectorAll('button')).filter(b => 
+            b.textContent.trim() === '+' || 
+            b.getAttribute('title')?.toLowerCase().includes('add') ||
+            b.className.includes('add-video')
+          );
+          
+          if (addButtons.length === 0) {
+            console.error('[Explorer] Cannot find + button to add video');
+            return { success: false, reason: 'add-button-not-found' };
+          }
+          
+          // Click the + button to open URL input
+          addButtons[0].click();
+          
+          // Wait a moment for the input to appear
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              // Step 2: Find media URL input box
+              const urlInputs = Array.from(document.querySelectorAll('input[type="text"]')).filter(i =>
+                i.placeholder?.toLowerCase().includes('url') ||
+                i.placeholder?.toLowerCase().includes('media') ||
+                i.name?.includes('mediaurl') ||
+                i.style.display !== 'none'
+              );
+              
+              if (urlInputs.length === 0) {
+                resolve({ success: false, reason: 'url-input-not-found' });
+                return;
+              }
+              
+              // Step 3: Enter URL
+              const urlInput = urlInputs[0];
+              urlInput.value = url;
+              urlInput.dispatchEvent(new Event('input', { bubbles: true }));
+              urlInput.dispatchEvent(new Event('change', { bubbles: true }));
+              
+              // Step 4: Find submit/add button (usually appears near input)
+              setTimeout(() => {
+                const submitButtons = Array.from(document.querySelectorAll('button')).filter(b => {
+                  const text = b.textContent.toLowerCase();
+                  return text.includes('add') || text.includes('submit') || text === '+';
+                });
+                
+                if (submitButtons.length === 0) {
+                  resolve({ success: false, reason: 'submit-button-not-found' });
+                  return;
+                }
+                
+                // Click submit to add to queue
+                submitButtons[0].click();
+                
+                // Step 5: Wait for queue item to appear, then click end-of-queue button
+                setTimeout(() => {
+                  // Normal users can only add to end of queue (⇒ button)
+                  // The video should automatically go to the end, but we'll verify
+                  const queueItems = document.querySelectorAll('#queue li, .playlist li, .queue-item');
+                  
+                  if (queueItems.length === 0) {
+                    resolve({ success: false, reason: 'video-not-in-queue' });
+                    return;
+                  }
+                  
+                  // Find the last queue item (should be ours)
+                  const lastItem = queueItems[queueItems.length - 1];
+                  
+                  // Look for end-of-queue button (⇒) just to make sure it's at the end
+                  const endButtons = lastItem.querySelectorAll('button');
+                  const endButton = Array.from(endButtons).find(b => {
+                    const text = b.textContent.trim();
+                    const title = b.getAttribute('title')?.toLowerCase() || '';
+                    return text === '▶▶' || text === '⏭' || text === '»' || 
+                           text === '⇒' || title.includes('end') || title.includes('last');
+                  });
+                  
+                  // If we find an end button, click it to ensure placement at end
+                  if (endButton) {
+                    endButton.click();
+                  }
+                  
+                  resolve({ 
+                    success: true, 
+                    reason: 'video-queued-at-end',
+                    queuePosition: queueItems.length
+                  });
+                }, 500);
+              }, 300);
+            }, 200);
+          });
+        } catch (error) {
+          return { success: false, reason: error.message };
         }
-        
-        return false;
       }, { url, title });
       
-      if (success) {
+      if (success.success) {
         this.progress.videosQueued++;
         this.progress.lastActivity = Date.now();
         
         this.insights.videoQueueTrends.push({
           url,
           title,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          queuePosition: success.queuePosition || 'end'
         });
         
-        this.emit('videoQueued', { url, title, count: this.progress.videosQueued });
-        console.log(`✅ [Explorer] Queued video: ${title}`);
+        this.emit('videoQueued', { 
+          url, 
+          title, 
+          count: this.progress.videosQueued,
+          position: success.queuePosition 
+        });
+        
+        console.log(`✅ [Explorer] Video queued successfully at position #${success.queuePosition}`);
+        console.log(`   ${title}`);
+        return true;
+      } else {
+        console.error(`❌ [Explorer] Failed to queue video: ${success.reason}`);
+        return false;
       }
-      
-      return success;
     } catch (error) {
       console.error('❌ [Explorer] Error queueing video:', error.message);
       return false;
+    }
+  }
+  
+  /**
+   * Check if we can vote skip the current video (costs CP)
+   */
+  async canVoteSkip() {
+    try {
+      const skipInfo = await this.page.evaluate(() => {
+        // Find vote skip button (far right button band)
+        const skipButtons = Array.from(document.querySelectorAll('button')).filter(b => {
+          const text = b.textContent.toLowerCase();
+          const title = b.getAttribute('title')?.toLowerCase() || '';
+          return text.includes('skip') || text.includes('vote') || 
+                 title.includes('skip') || title.includes('vote');
+        });
+        
+        if (skipButtons.length === 0) {
+          return { available: false, reason: 'button-not-found' };
+        }
+        
+        const skipButton = skipButtons[0];
+        const disabled = skipButton.disabled || skipButton.classList.contains('disabled');
+        
+        return {
+          available: !disabled,
+          reason: disabled ? 'button-disabled' : 'available',
+          costsCoolPoints: true // Always costs CP
+        };
+      });
+      
+      return skipInfo;
+    } catch (error) {
+      console.error('❌ [Explorer] Error checking vote skip:', error.message);
+      return { available: false, reason: error.message };
     }
   }
 

@@ -25,8 +25,17 @@ const TheoryOfMind = require('../ai/TheoryOfMind');
 const AutismFixations = require('../ai/AutismFixations');
 const UmbraProtocol = require('../ai/UmbraProtocol');
 const HipsterProtocol = require('../ai/HipsterProtocol');
+const HeresUMode = require('../ai/HeresUMode');
+const ActuallyMode = require('../ai/ActuallyMode');
+const GhostingMechanic = require('../ai/GhostingMechanic');
+const ImNotMadMode = require('../ai/ImNotMadMode');
+const VideoCommentary = require('../ai/VideoCommentary');
+const ChatLearning = require('../ai/ChatLearning');
+const EmbarrassingItemRoast = require('../ai/EmbarrassingItemRoast');
 const DynamicPhraseGenerator = require('../ai/DynamicPhraseGenerator');
 const EdgyPersonality = require('../ai/EdgyPersonality');
+const ReactionTracker = require('../ai/ReactionTracker');
+const ConversationalPersonality = require('../ai/ConversationalPersonality');
 const YouTubeSearch = require('../video/youtubeSearch');
 const CoolPointsHandler = require('./coolPointsHandler');
 const Responses = require('./ChatBotResponses');
@@ -37,10 +46,12 @@ const MetricsCollector = require('../monitoring/MetricsCollector');
 
 // Stability Systems
 const MemoryManager = require('../stability/MemoryManager');
+const MemoryOptimizer = require('../stability/MemoryOptimizer');
 const ErrorRecovery = require('../stability/ErrorRecovery');
 const ConnectionResilience = require('../stability/ConnectionResilience');
 const DatabaseSafety = require('../stability/DatabaseSafety');
 const ResponseQueue = require('../stability/ResponseQueue');
+const OllamaCircuitBreaker = require('../stability/OllamaCircuitBreaker');
 
 // NEW Top 5 Priority Systems
 const MemorySummarization = require('../ai/MemorySummarization');
@@ -76,6 +87,38 @@ const CoolholeTricks = require('../ai/CoolholeTricks');
 const VideoDiscovery = require('../ai/VideoDiscovery');
 const GoldSystem = require('../ai/GoldSystem');
 
+// NEW 14 CONVERSATION ENHANCEMENT SYSTEMS 🚀💬✨
+const DynamicResponseStyle = require('../ai/DynamicResponseStyle');
+const QuestionHandler = require('../ai/QuestionHandler');
+// ProactiveStarter: Using existing ProactiveStarters system instead
+const ConversationDepth = require('../ai/ConversationDepth');
+const TopicExpertise = require('../ai/TopicExpertise');
+const EnhancedCallback = require('../ai/EnhancedCallback');
+const EmotionalIntelligence = require('../ai/EmotionalIntelligence');
+const BanterBalance = require('../ai/BanterBalance');
+const StoryGenerator = require('../ai/StoryGenerator');
+const CrossPlatformContinuity = require('../ai/CrossPlatformContinuity');
+const HotTakeGenerator = require('../ai/HotTakeGenerator');
+const BitCommitmentEnhancer = require('../ai/BitCommitment');
+const ContextExpansion = require('../ai/ContextExpansion');
+const PersonalityDrift = require('../ai/PersonalityDrift');
+
+// NEW 18 CRAZY FEATURES 🎭🔥💀
+const AddictionSystem = require('../ai/AddictionSystem');
+const ConspiracyGenerator = require('../ai/ConspiracyGenerator');
+const MemeLifecycleTracker = require('../ai/MemeLifecycleTracker');
+const FalseMemorySystem = require('../ai/FalseMemorySystem');
+const DreamHallucinationSystem = require('../ai/DreamHallucinationSystem');
+const ParasocialTracker = require('../ai/ParasocialTracker');
+const CelebrityCrushSystem = require('../ai/CelebrityCrushSystem');
+const GossipRumorMill = require('../ai/GossipRumorMill');
+const StreamSnipingDetector = require('../ai/StreamSnipingDetector');
+const RivalBotWars = require('../ai/RivalBotWars');
+const SluntCultSystem = require('../ai/SluntCultSystem');
+const ChatTheaterMode = require('../ai/ChatTheaterMode');
+const CollectiveUnconscious = require('../ai/CollectiveUnconscious');
+const TimeLoopDetector = require('../ai/TimeLoopDetector');
+
 // NEW CHAOS SYSTEMS 🎭
 const PersonalitySplits = require('../ai/PersonalitySplits');
 const ChaosEvents = require('../ai/ChaosEvents');
@@ -96,6 +139,36 @@ const UserVibesDetection = require('../ai/UserVibesDetection');
 const CallbackHumorEngine = require('../ai/CallbackHumorEngine');
 const ContradictionTracking = require('../ai/ContradictionTracking');
 const ConversationalBoredom = require('../ai/ConversationalBoredom');
+// NEW RIMWORLD-INSPIRED SYSTEMS 🎮
+const NeedsSystem = require('../ai/NeedsSystem');
+const MentalBreakSystem = require('../ai/MentalBreakSystem');
+
+// Action Generator 🎭
+const ActionGenerator = require('../ai/ActionGenerator');
+const ThoughtSystem = require('../ai/ThoughtSystem');
+const ToleranceSystem = require('../ai/ToleranceSystem');
+const ScheduleSystem = require('../ai/ScheduleSystem');
+const NeggingDetector = require('../ai/NeggingDetector');
+const LandAcknowledgement = require('../ai/LandAcknowledgement');
+const ResponseNoveltyChecker = require('../ai/ResponseNoveltyChecker');
+
+// NEW COMPREHENSIVE IMPROVEMENT SYSTEMS 🚀✨
+const ConversationThreading = require('../ai/ConversationThreading');
+const ResponseScoring = require('../ai/ResponseScoring');
+const SmartResponseTiming = require('../ai/ResponseTiming'); // Renamed to avoid conflict
+const PersonalityLockIn = require('../ai/PersonalityLockIn');
+const ConflictResolution = require('../ai/ConflictResolution');
+
+// BRAIN-LIKE MEMORY ARCHITECTURE 🧠
+const LongTermMemoryStorage = require('../ai/LongTermMemoryStorage');
+const ContextManager = require('../ai/ContextManager');
+const ResponseQualityEnhancer = require('../ai/ResponseQualityEnhancer');
+const RateLimitingSystem = require('../ai/RateLimitingSystem');
+const CrossPlatformIntelligence = require('../ai/CrossPlatformIntelligence');
+const ProactiveStarters = require('../ai/ProactiveStarters');
+const VideoReactionSystem = require('../ai/VideoReactionSystem');
+const CorrectionLearning = require('../ai/CorrectionLearning');
+
 const { 
   PeerInfluenceSystem, 
   QuestionChains, 
@@ -162,6 +235,8 @@ class ChatBot extends EventEmitter {
 
     // Initialize all AI systems
     this.dynamicPhraseGenerator = new DynamicPhraseGenerator(this); // MUST BE FIRST - others depend on it
+    this.reactionTracker = new ReactionTracker(); // Track reactions to messages
+    this.conversationalPersonality = new ConversationalPersonality(); // Make responses more natural
     this.styleMimicry = new StyleMimicry();
     this.moodTracker = new MoodTracker();
     this.responseVariety = new ResponseVariety();
@@ -176,6 +251,11 @@ class ChatBot extends EventEmitter {
     this.autismFixations = new AutismFixations(this);
     this.umbraProtocol = new UmbraProtocol();
     this.hipsterProtocol = new HipsterProtocol(this);
+    this.heresUMode = new HeresUMode(this);
+    this.actuallyMode = new ActuallyMode(this);
+    this.ghostingMechanic = new GhostingMechanic(this);
+    this.imNotMadMode = new ImNotMadMode(this);
+    this.embarrassingItemRoast = new EmbarrassingItemRoast(this);
     this.nicknameManager = new NicknameManager();
     this.edgyPersonality = new EdgyPersonality();
 
@@ -211,6 +291,8 @@ class ChatBot extends EventEmitter {
     this.personalityBranching = new PersonalityBranching();
     this.socialInfluence = new SocialInfluence();
     this.videoQueueController = new VideoQueueController(this);
+    this.videoCommentary = new VideoCommentary(this); // NEW: Spontaneous video reactions
+    this.chatLearning = new ChatLearning(this); // NEW: Learn from ALL chat messages
     this.storytellingEngine = new StorytellingEngine();
     this.debateMode = new DebateMode();
     this.existentialCrisis = new ExistentialCrisis();
@@ -241,6 +323,143 @@ class ChatBot extends EventEmitter {
     this.personalityInfection = new PersonalityInfection();
     console.log('✅ [Chaos] All chaos systems initialized!');
     
+    // NEW 18 CRAZY FEATURES 🎭🔥💀
+    console.log('🎭🔥💀 [CrazyFeatures] Initializing 18 crazy features...');
+    this.addictionSystem = new AddictionSystem();
+    this.conspiracyGenerator = new ConspiracyGenerator();
+    this.memeLifecycleTracker = new MemeLifecycleTracker();
+    this.falseMemorySystem = new FalseMemorySystem();
+    this.dreamHallucinationSystem = new DreamHallucinationSystem();
+    this.parasocialTracker = new ParasocialTracker();
+    this.celebrityCrushSystem = new CelebrityCrushSystem();
+    this.gossipRumorMill = new GossipRumorMill();
+    this.streamSnipingDetector = new StreamSnipingDetector();
+    this.rivalBotWars = new RivalBotWars();
+    this.sluntCultSystem = new SluntCultSystem();
+    this.chatTheaterMode = new ChatTheaterMode();
+    this.collectiveUnconscious = new CollectiveUnconscious();
+    this.timeLoopDetector = new TimeLoopDetector();
+    console.log('✅ [CrazyFeatures] All 18 crazy features initialized!');
+    console.log('   → Addiction: Attention/validation/caffeine tracking with withdrawal');
+    console.log('   → Conspiracy: Paranoia & Mandela effect generation');
+    console.log('   → Memes: Full lifecycle tracking with gatekeeping');
+    console.log('   → False Memories: Gaslighting & memory corruption');
+    console.log('   → Hallucinations: Dream logic & reality degradation');
+    console.log('   → Parasocial: Attachment intensity & jealousy tracking');
+    console.log('   → Celebrity Crush: Obsession phases & nervous behaviors');
+    console.log('   → Gossip Mill: Relationship graphs & rumor propagation');
+    console.log('   → Stream Sniping: Pattern detection for suspicious arrivals');
+    console.log('   → Rival Bots: Bot detection & competitive warfare');
+    console.log('   → Cult System: Faction management with devotion rituals');
+    console.log('   → Chat Theater: Script generation & role assignment');
+    console.log('   → Collective Unconscious: Zeitgeist & shared dreams');
+    console.log('   → Time Loops: Déjà vu & temporal anomaly detection');
+    
+    // NEW RIMWORLD-INSPIRED SYSTEMS 🎮
+    console.log('🎮 [RimWorld] Initializing RimWorld-inspired systems...');
+    this.needsSystem = new NeedsSystem(this);
+    this.mentalBreakSystem = new MentalBreakSystem(this);
+    this.thoughtSystem = new ThoughtSystem(this);
+    this.toleranceSystem = new ToleranceSystem(this);
+    this.scheduleSystem = new ScheduleSystem(this);
+    this.toleranceSystem.load(); // Load tolerance data
+    console.log('✅ [RimWorld] All RimWorld systems initialized!');
+    
+    // Action Generator 🎭
+    console.log('🎭 [Actions] Initializing action generator...');
+    this.actionGenerator = new ActionGenerator(this);
+    console.log('✅ [Actions] Action generator ready (12% chance, mood-based)');
+    
+    // Negging Detector 💔
+    console.log('💔 [Negging] Initializing negging detector...');
+    this.neggingDetector = new NeggingDetector(this);
+    console.log('✅ [Negging] Negging detector ready - Slunt is now vulnerable to put-downs and dismissive comments');
+    
+    // Land Acknowledgement 🪶
+    console.log('🪶 [LandAck] Initializing land acknowledgement system...');
+    this.landAcknowledgement = new LandAcknowledgement(this);
+    console.log('✅ [LandAck] Ready to occasionally acknowledge indigenous peoples (poorly)');
+    
+    // Response Novelty Checker 🔁
+    console.log('🔁 [Novelty] Initializing response novelty checker...');
+    this.noveltyChecker = new ResponseNoveltyChecker(this);
+    console.log('✅ [Novelty] Preventing repetitive responses from 893+ memories');
+
+    // NEW COMPREHENSIVE IMPROVEMENT SYSTEMS 🚀✨
+    console.log('🚀✨ [Improvements] Initializing 5 comprehensive improvement systems...');
+    this.conversationThreading = new ConversationThreading(this);
+    this.responseScoring = new ResponseScoring();
+    this.responseTiming = new SmartResponseTiming(); // Use new smart timing system
+    this.personalityLockIn = new PersonalityLockIn();
+    this.conflictResolution = new ConflictResolution();
+    console.log('✅ [Improvements] All improvement systems initialized!');
+    console.log('   → Threading: Multi-message context tracking & topic continuity');
+    console.log('   → Scoring: Response quality evaluation (naturalness, relevance, originality)');
+    console.log('   → Timing: Variable delays & smart rate limiting (1-20s)');
+    console.log('   → Personality: 30-60min mode lock-ins (chill/edgy/chaotic/analytical/hype)');
+    console.log('   → Conflict: Drama detection, tension tracking, intervention strategies');
+
+    // Memory Pruning 🗑️
+    console.log('🗑️  [Pruning] Initializing aggressive memory pruning...');
+    const MemoryPruning = require('../ai/MemoryPruning');
+    this.memoryPruning = new MemoryPruning(this);
+    console.log('✅ [Pruning] Will keep memories under 600 (currently at 907+)');
+
+    // Emote Discovery 😀
+    console.log('😀 [Emotes] Initializing emote discovery system...');
+    const EmoteDiscovery = require('../ai/EmoteDiscovery');
+    this.emoteDiscovery = new EmoteDiscovery(this);
+    console.log('✅ [Emotes] Passive learning from Twitch/Discord emotes');
+    
+    // BRAIN-LIKE MEMORY ARCHITECTURE 🧠
+    console.log('🧠 [Memory] Initializing brain-like memory architecture...');
+    this.longTermMemory = new LongTermMemoryStorage();
+    this.longTermMemory.initialize(); // Load memory tiers
+    this.contextManager = new ContextManager(this.longTermMemory, this.userProfiles); // Use userProfiles Map
+    this.responseQuality = new ResponseQualityEnhancer();
+    
+    // NEW 14 CONVERSATION ENHANCEMENT SYSTEMS 🚀💬✨
+    console.log('🚀💬✨ [Enhancement] Initializing 14 conversation enhancement systems...');
+    this.dynamicStyle = new DynamicResponseStyle(this);
+    this.questionHandler = new QuestionHandler(this);
+    // ProactiveStarter: Using existing ProactiveStarters system (line 465) - removed duplicate
+    this.conversationDepth = new ConversationDepth(this);
+    this.topicExpertise = new TopicExpertise(this);
+    this.enhancedCallback = new EnhancedCallback(this);
+    this.emotionalIntel = new EmotionalIntelligence(this);
+    this.banterBalance = new BanterBalance(this);
+    this.storyGenerator = new StoryGenerator(this);
+    this.crossPlatform = new CrossPlatformContinuity(this);
+    this.hotTakes = new HotTakeGenerator(this);
+    this.bitCommitmentEnhancer = new BitCommitmentEnhancer(this);
+    this.contextExpansion = new ContextExpansion(this);
+    this.personalityDrift = new PersonalityDrift(this);
+    console.log('✅ [Enhancement] All 14 systems ready (ProactiveStarter using existing ProactiveStarters)!');
+    console.log('   → Dynamic Style: Time/relationship/platform/energy adaptation');
+    console.log('   → Question Handler: Forces real answers, no evasion');
+    console.log('   → Proactive Starter: Breaks lulls with conversation starters');
+    console.log('   → Conversation Depth: Multi-turn tracking (1-2 → 4-5 sentences)');
+    console.log('   → Topic Expertise: Honest knowledge boundaries (memes=10, fashion=2)');
+    console.log('   → Enhanced Callback: References past conversations with details');
+    console.log('   → Emotional Intelligence: Mood detection and support');
+    console.log('   → Banter Balance: Friendship-scaled roasting');
+    console.log('   → Story Generator: Believable personal anecdotes');
+    console.log('   → Cross-Platform: References across Discord/Twitch/Coolhole');
+    console.log('   → Hot Takes: Controversial opinions and debate mode');
+    console.log('   → Bit Commitment: Sticks to jokes longer');
+    console.log('   → Context Expansion: 10-message window with smart filtering');
+    console.log('   → Personality Drift: Opinions evolve over time');
+    this.rateLimiting = new RateLimitingSystem();
+    this.crossPlatform = new CrossPlatformIntelligence();
+    this.conflictResolution = new ConflictResolution();
+    console.log('✅ [Memory] Brain architecture initialized!');
+    console.log('   → Long-term memory: Tiered storage with automatic migration');
+    console.log('   → Context manager: Smart token budget (~2000 tokens)');
+    console.log('   → Response quality: Dynamic temperature & style checking');
+    console.log('   → Rate limiting: Intelligent cooldowns & lurk mode');
+    console.log('   → Cross-platform: Unified profiles across Coolhole/Twitch/Discord');
+    console.log('   → Conflict resolution: Detects contradictions & weighs reliability');
+    
     // NEW ADVANCED CONVERSATIONAL SYSTEMS 🚀
     console.log('🚀 [Advanced] Initializing advanced conversational systems...');
     this.conversationThreads = new ConversationThreads(this);
@@ -268,10 +487,13 @@ class ChatBot extends EventEmitter {
     this.falseMemories = new FalseMemories(this);
     this.performanceAnxiety = new PerformanceAnxiety(this);
     this.chatRoleAwareness = new ChatRoleAwareness(this);
-    this.responseTiming = new ResponseTiming(this);
+    // REMOVED OLD responseTiming - using new ResponseTiming system now
     this.multiMessageResponse = new MultiMessageResponse(this);
     this.contextualMemoryRetrieval = new ContextualMemoryRetrieval(this);
-    console.log('✅ [Ultra] All 12 ultra-realistic systems initialized!');
+    this.proactiveStarters = new ProactiveStarters(this);
+    this.videoReactionSystem = new VideoReactionSystem(this);
+    this.correctionLearning = new CorrectionLearning(this);
+    console.log('✅ [Ultra] All 15 ultra-realistic systems initialized!');
     
     // Initialize Monitoring Systems
     this.logAnalyzer = new LogAnalyzer();
@@ -280,6 +502,7 @@ class ChatBot extends EventEmitter {
     
     // Initialize Stability Systems
     this.memoryManager = new MemoryManager(this);
+    this.memoryOptimizer = new MemoryOptimizer(this);
     this.errorRecovery = ErrorRecovery;
     this.errorRecovery.initialize(this);
     this.connectionResilience = ConnectionResilience;
@@ -289,7 +512,9 @@ class ChatBot extends EventEmitter {
     
     // Start stability monitoring
     this.memoryManager.start();
+    this.memoryOptimizer.start();
     console.log('✅ [Stability] Memory manager started');
+    console.log('✅ [Stability] Memory optimizer started');
     
     // Start advanced feature systems
     this.personalityScheduler.start();
@@ -337,6 +562,15 @@ class ChatBot extends EventEmitter {
       'hey slunt', '@slunt', 'yo slunt'
     ]);
     
+    // Circuit breaker for Ollama
+    this.ollamaCircuitBreaker = new OllamaCircuitBreaker();
+    console.log('🛡️ [CircuitBreaker] Initialized - AI failure protection active');
+
+    // Rate limiter for Ollama
+    const OllamaRateLimiter = require('../stability/OllamaRateLimiter');
+    this.ollamaRateLimiter = new OllamaRateLimiter();
+    console.log('🚦 [RateLimiter] Initialized - Max 10 concurrent AI requests');
+    
     // Response deduplication - track recent phrases (not single words)
     this.recentResponses = []; // Store last 10 messages
     this.maxRecentResponses = 10;
@@ -380,6 +614,12 @@ class ChatBot extends EventEmitter {
         await this.relationshipMapping.saveRelationships();
         await this.userReputationSystem.saveReputations();
         await this.sluntDiary.saveDiary();
+        this.toleranceSystem.save(); // RimWorld: Save tolerance data
+        
+        // Brain architecture: Save all memory tiers and metadata
+        await this.longTermMemory.save();
+        await this.memoryConsolidation.saveEpisodicMemory();
+        await this.memoryConsolidation.saveMemoryClusters();
         console.log('✅ [Auto-save] Session data backed up successfully');
       } catch (error) {
         console.error('❌ [Auto-save] Failed:', error.message);
@@ -412,6 +652,12 @@ class ChatBot extends EventEmitter {
     //   this.startupSequence();
     // }, 1000);
     
+    // Start proactive conversation monitoring
+    setTimeout(() => {
+      this.proactiveStarters.startMonitoring();
+      console.log('🎭 [Proactive] Started monitoring for conversation opportunities');
+    }, 60000); // Wait 1 minute after startup before beginning proactive behavior
+    
     // Multi-platform support
     this.platformManager = null;
     this.currentPlatform = 'coolhole'; // Default platform
@@ -423,6 +669,19 @@ class ChatBot extends EventEmitter {
   setPlatformManager(platformManager) {
     this.platformManager = platformManager;
     console.log('✅ [ChatBot] Platform manager configured');
+  }
+  
+  /**
+   * Connect vision analyzer for video reactions (ENHANCED - store reference)
+   */
+  connectVisionAnalyzer(visionAnalyzer) {
+    // Store reference for direct access
+    this.visionAnalyzer = visionAnalyzer;
+    
+    if (this.videoReactionSystem) {
+      this.videoReactionSystem.connectVisionAnalyzer(visionAnalyzer);
+      console.log('✅ [ChatBot] Vision analyzer connected with direct access');
+    }
   }
   
   /**
@@ -447,6 +706,18 @@ class ChatBot extends EventEmitter {
    */
   async handleMessage(messageData) {
     try {
+      // === NEW: Track last message time for proactive lull detection ===
+      this.lastMessageTime = Date.now();
+
+      // === NEW: Check if memory pruning is needed ===
+      if (this.memoryPruning && this.memoryPruning.shouldPrune()) {
+        logger.info('🗑️  [Pruning] Memory limit exceeded, pruning in background...');
+        // Run pruning async, don't block message handling
+        this.memoryPruning.prune().catch(err => {
+          logger.error('🗑️  [Pruning] Error during prune:', err);
+        });
+      }
+
       // Track which platform this message came from
       this.currentPlatform = messageData.platform || 'coolhole';
       
@@ -540,8 +811,31 @@ class ChatBot extends EventEmitter {
       // Wait a bit for platforms to fully connect
       await new Promise(resolve => setTimeout(resolve, 3000));
       
+      // Analyze continuity - where did we leave off?
+      if (this.startupContinuity) {
+        await this.startupContinuity.analyzeContinuity();
+      }
+      
+      // Maybe generate a dream from recent events while "offline"
+      if (this.dreamSimulation && this.startupContinuity?.continuityReport) {
+        await this.generateOfflineDream();
+      }
+      
       // Get a contextual return message from StartupContinuity
-      const returnMessage = this.startupContinuity ? this.startupContinuity.getReturnMessage() : 'sup';
+      let returnMessage = this.startupContinuity ? this.startupContinuity.getReturnMessage() : 'sup';
+      
+      // Maybe mention dream (30% chance)
+      if (this.dreamSimulation && Math.random() < 0.3) {
+        const dreams = this.dreamSimulation.getRecentDreams(1);
+        if (dreams.length > 0) {
+          const dream = dreams[0];
+          // Only mention if dream was generated while offline
+          const dreamAge = Date.now() - dream.timestamp;
+          if (dreamAge < this.startupContinuity?.continuityReport?.timeSinceLastSession) {
+            returnMessage += `... had a weird dream while i was offline`;
+          }
+        }
+      }
       
       // Send startup message to Coolhole only (not Discord/Twitch)
       if (this.currentPlatform === 'coolhole' || !this.currentPlatform) {
@@ -549,7 +843,61 @@ class ChatBot extends EventEmitter {
         logger.info('[Startup] Startup announcement sent to Coolhole');
       }
     } catch (e) {
-        logger.error('[Startup] Error during startup sequence:', e.message);
+        logger.error('[Startup] Error during startup sequence:', e.message || e);
+        if (this.verbose) {
+          console.error('[Startup] Full error:', e);
+        }
+    }
+  }
+
+  /**
+   * Generate a dream based on recent conversations/relationships while "offline"
+   */
+  async generateOfflineDream() {
+    try {
+      const report = this.startupContinuity.continuityReport;
+      if (!report) return;
+
+      // Only generate dream if been offline for 30+ minutes
+      const offlineMinutes = Math.floor(report.timeSinceLastSession / 1000 / 60);
+      if (offlineMinutes < 30) return;
+
+      // Build dream elements from continuity report
+      const dreamElements = {
+        people: report.activeRelationships.map(r => r.user).slice(0, 3),
+        topics: [],
+        mood: report.emotionalState
+      };
+
+      // Extract topics from unfinished business
+      report.unfinishedBusiness.forEach(business => {
+        if (business.type === 'obsessions' && business.topics) {
+          dreamElements.topics.push(...business.topics);
+        }
+      });
+
+      // Get recent conversation topics from recent events
+      if (report.recentEvents) {
+        report.recentEvents.forEach(event => {
+          if (event.description) {
+            // Extract potential topics from event descriptions
+            const words = event.description.toLowerCase().split(' ');
+            words.forEach(word => {
+              if (word.length > 5 && !dreamElements.topics.includes(word)) {
+                dreamElements.topics.push(word);
+              }
+            });
+          }
+        });
+      }
+
+      // Generate contextual dream
+      if (this.dreamSimulation.generateContextualDream) {
+        await this.dreamSimulation.generateContextualDream(dreamElements);
+        logger.info('[Startup] Generated offline dream from recent context');
+      }
+    } catch (e) {
+      logger.error('[Startup] Error generating offline dream:', e.message);
     }
   }
 
@@ -703,6 +1051,17 @@ class ChatBot extends EventEmitter {
       this.ai.learnFromUsers(text, username);
     }
     
+    // === CHAT LEARNING: Learn from EVERY message ===
+    if (this.chatLearning) {
+      this.chatLearning.learnFromMessage({
+        username,
+        text,
+        platform: data.platform || this.currentPlatform || 'coolhole',
+        channel: data.channel || this.currentChannel,
+        timestamp: timestamp || Date.now()
+      });
+    }
+    
     // Emit event for dashboard
     this.emit('message:received', { username, message: text, timestamp: timestamp || Date.now() });
     
@@ -823,6 +1182,125 @@ class ChatBot extends EventEmitter {
     this.nicknameManager.trackJoke(text, username);
     this.styleMimicry.learnFromMessage(text, username);
     this.personalityEvolution.adjustFromMessage(username, text, sentiment);
+    
+    // Track annoyance for "Here's U" mockery mode
+    const annoyanceScore = this.heresUMode.trackMessage(username, text);
+    
+    // Track boring/repetitive behavior for ghosting
+    this.ghostingMechanic.trackMessage(username, text);
+    
+    // Check if should ghost this user (early rejection)
+    if (this.ghostingMechanic.isGhosted(username)) {
+      console.log(`👻 [Ghosting] Ignoring message from ${username} (currently ghosted)`);
+      return; // Don't respond, don't process further
+    }
+
+    // === RIMWORLD SYSTEMS TRACKING 🎮 ===
+    
+    // 1. Track social interaction (fulfills social need)
+    this.needsSystem.trackSocialInteraction(username, 1);
+    
+    // 2. Track thoughts from this message
+    this.thoughtSystem.detectThoughts(username, text, sentiment);
+    
+    // 3. Build tolerance to user's behavior patterns
+    const toleranceData = this.toleranceSystem.processMessage(username, text, sentiment);
+    
+    // 3.5. Detect negging and adjust vulnerability
+    const neggingResult = this.neggingDetector.detectNegging(username, text);
+    if (neggingResult.isNegging) {
+      console.log(`💔 [Negging] ${username} negged Slunt with ${neggingResult.type} (severity: ${neggingResult.severity})`);
+      // Drain validation need when being negged
+      this.needsSystem.drainNeed('validation', neggingResult.severity / 200);
+    }
+    
+    // 4. Drain rest need if chat is chaotic
+    const isChaotic = text.length > 100 || sentiment < -0.3 || text.match(/[!?]{2,}/);
+    if (isChaotic) {
+      this.needsSystem.drainRest(0.05);
+    }
+    
+    // 5. Track stimulation from interesting content
+    if (topics.length > 2 || text.length > 80) {
+      this.needsSystem.trackStimulation(sentiment > 0.5 ? 0.8 : 0.5);
+    }
+    
+    // 6. Track validation from positive feedback
+    if (sentiment > 0.5 && (text.includes('slunt') || isPositive)) {
+      this.needsSystem.trackValidation(0.15);
+      this.thoughtSystem.addThought('got_praised', { username, message: text });
+    }
+    
+    // 7. Track negative thoughts from roasts
+    if (sentiment < -0.5) {
+      this.thoughtSystem.addThought('got_roasted', { username, message: text });
+    }
+    
+    // 8. Track purpose when helping or having deep conversations
+    if (text.includes('?') || topics.some(t => t.match(/philosophy|life|meaning|why/i))) {
+      this.needsSystem.trackPurpose(0.05);
+    }
+
+    // === NEW: Discover emotes from message ===
+    if (this.emoteDiscovery) {
+      const discovered = this.emoteDiscovery.discoverFromMessage(text, username, messageData.platform);
+      if (discovered.length > 0) {
+        logger.info(`😀 [Emotes] Discovered ${discovered.length} new emotes: ${discovered.join(', ')}`);
+      }
+    }
+
+    // === NEW: Track activity for smart memory consolidation ===
+    if (this.memoryConsolidation) {
+      this.memoryConsolidation.trackActivity();
+    }
+    
+    // === BRAIN ARCHITECTURE TRACKING 🧠 ===
+    
+    // 1. Add message to long-term memory storage
+    const memoryEntry = {
+      type: 'chat',
+      content: text,
+      username,
+      platform: messageData.platform,
+      involvedUsers: [username, ...mentionedUsers],
+      created: Date.now(),
+      emotionalImportance: this.longTermMemory.calculateEmotionalImportance({
+        content: text,
+        context: sentiment > 0 ? 'positive' : sentiment < 0 ? 'negative' : 'neutral'
+      })
+    };
+    this.longTermMemory.addMemory(memoryEntry);
+    
+    // 2. Track chat velocity for rate limiting
+    this.rateLimiting.trackMessage(messageData);
+    
+    // 3. Update cross-platform profile
+    this.crossPlatform.updateProfile(username, messageData.platform, {
+      message: text,
+      timestamp: Date.now()
+    });
+    
+    // 4. Check for conflicts with existing memories
+    const existingMemories = Array.from(this.userProfiles.values())
+      .filter(p => p.username === username)
+      .flatMap(p => [
+        ...(p.opinions || []).map(op => ({ content: op, source: username, category: 'opinions' })),
+        ...(p.personalNotes || []).map(note => ({ content: note, source: 'Slunt', category: 'personal_info' }))
+      ]);
+    
+    if (existingMemories.length > 0) {
+      this.conflictResolution.checkForConflicts(
+        { content: text, source: username, timestamp: Date.now(), category: 'opinions' },
+        existingMemories
+      );
+    }
+    
+    // 5. Initialize reliability for new users
+    if (!this.conflictResolution.sourceReliability.has(username)) {
+      const userProfile = this.getUserProfile(username);
+      const userRelationship = this.userProfiles.get(username); // Use userProfile which has friendship data
+      this.conflictResolution.initializeReliability(username, userProfile, userRelationship);
+    }
 
     // === NEW PERSONALITY PROTOCOLS ===
     
@@ -879,6 +1357,22 @@ class ChatBot extends EventEmitter {
     // 6. Energy Mirroring - Update chat energy
     this.energyMirroring.updateEnergy(this.chatHistory.slice(-10));
     
+    // === NEW COMPREHENSIVE IMPROVEMENT SYSTEMS 🚀✨ ===
+    
+    // 1. Conversation Threading - Analyze message for thread context
+    this.conversationThreading.analyzeMessage({
+      username,
+      text,
+      timestamp: Date.now()
+    });
+    
+    // 2. Response Timing - Track message activity
+    this.responseTiming.trackMessage(username, Date.now());
+    
+    // 3. Conflict Resolution - Skip for now (this is for memory conflicts, not chat drama)
+    // NOTE: The existing ConflictResolution is for detecting contradictions in memories,
+    // not for analyzing chat drama/arguments. That would need a different system.
+    
     // === NEWEST ULTRA-REALISTIC SYSTEMS 🎭 ===
     
     // 1. Mood Contagion - Analyze chat mood and update Slunt's emotional state
@@ -897,8 +1391,49 @@ class ChatBot extends EventEmitter {
     const detectedTopics = this.extractTopics(text);
     detectedTopics.forEach(topic => this.interestDecay.trackTopicMention(topic));
     
-    // === YOUTUBE SEARCH & QUEUE DETECTION ===
-    this.detectVideoRequest(username, text);
+    // 6. Correction Learning - Detect when users correct Slunt
+    if (this.correctionLearning && this.correctionLearning.isCorrection(text, { 
+      replyingTo: 'Slunt', // Assume reply for now, could be enhanced with reply detection
+      sluntLastMessage: this.lastIntendedMessage?.intended || '',
+      recentMessages: this.chatHistory.slice(-5)
+    })) {
+      // Process correction asynchronously
+      this.correctionLearning.processCorrection(username, text, {
+        sluntLastMessage: this.lastIntendedMessage?.intended || '',
+        recentMessages: this.chatHistory.slice(-5)
+      }).catch(err => console.error('Error processing correction:', err));
+    }
+    
+    // 7. Dream Sharing - Detect when users ask about dreams
+    if (this.dreamSimulation && /\b(dream|dreaming|dreamt|nightmare)\b/i.test(text)) {
+      const askingAboutDreams = /(what|tell|any|have).*(dream|nightmare)/i.test(text) ||
+                                /(dream|nightmare).*(you|slunt)/i.test(text);
+      
+      if (askingAboutDreams) {
+        // Mark that user asked about dreams - AI will decide if/when to share
+        this.pendingDreamShare = {
+          askedBy: username,
+          timestamp: Date.now()
+        };
+      }
+    }
+    
+    // === AUTONOMOUS VIDEO QUEUEING ONLY ===
+    // Slunt autonomously decides to queue videos based on mood/boredom/obsessions
+    // User requests are DISABLED - Slunt does this on his own based on feelings
+    if (this.videoQueueController && this.videoQueueController.shouldQueueVideo()) {
+      // Queue video asynchronously (don't block message processing)
+      setTimeout(async () => {
+        try {
+          const result = await this.videoQueueController.queueVideo('autonomous');
+          if (result) {
+            logger.info(`🎬 [Autonomous] Queued video about: ${result.topic}`);
+          }
+        } catch (error) {
+          logger.error(`❌ [Autonomous] Video queue error: ${error.message}`);
+        }
+      }, Math.random() * 3000 + 2000); // Queue after 2-5 seconds (seems more natural)
+    }
     
     // === EMOTIONAL INTELLIGENCE ===
     const emotion = this.emotionalEngine.detectEmotion(text, username);
@@ -1110,7 +1645,7 @@ class ChatBot extends EventEmitter {
     } else if (lowerText.includes('lol') || lowerText.includes('lmao') || text.includes('😂')) {
       profile.conversationStyle = 'casual';
       profile.humor_type = 'wholesome';
-    } else if (lowerText.includes('bruh') || lowerText.includes('fr')) {
+    } else if (lowerText.includes('dude') || lowerText.includes('honestly')) {
       profile.conversationStyle = 'casual';
     }
     
@@ -1222,25 +1757,23 @@ class ChatBot extends EventEmitter {
       if (query.length > 3 && query.length < 100) {
         logger.info(`🎬 [VideoRequest] ${username} might be requesting: ${query}`);
         
-        // TODO: Implement video queueing when coolhole.queueVideo() is available
-        // For now, just log the request
-        /*
-        if (Math.random() < 0.3 && this.videoDiscovery) {
+        // 🎬 ENABLE VIDEO QUEUEING - Slunt can now add videos!
+        if (Math.random() < 0.3 && this.coolholeExplorer) {
           setTimeout(async () => {
             try {
-              if (this.youtubeSearch && this.youtubeSearch.page) {
-                const results = await this.youtubeSearch.search(query, 3);
-                if (results && results.length > 0) {
-                  const video = results[0];
-                  await this.videoDiscovery.queueVideo(video, query);
-                }
+              logger.info(`🎬 [VideoRequest] Searching YouTube for: ${query}`);
+              const results = await this.coolholeExplorer.searchAndQueueVideo(query, `Request from ${username}`);
+              
+              if (results) {
+                logger.info(`✅ [VideoRequest] Successfully queued video for: ${query}`);
+              } else {
+                logger.warn(`⚠️ [VideoRequest] No results found for: ${query}`);
               }
             } catch (error) {
               logger.error(`❌ [VideoRequest] Error processing request:`, error.message);
             }
-          }, 2000);
+          }, 2000); // Wait 2 seconds before queueing
         }
-        */
       }
     }
   }
@@ -1523,6 +2056,21 @@ class ChatBot extends EventEmitter {
         return;
       }
       
+      // === RATE LIMITING CHECK 🧠 ===
+      const userProfile = this.getUserProfile(username);
+      const relationship = this.userProfiles.get(username); // Use userProfile which has relationship data
+      const rateLimitCheck = this.rateLimiting.shouldRespond(data, userProfile, relationship);
+      
+      if (!rateLimitCheck.allowed) {
+        logger.info(`[${getTimestamp()}] ⏸️ Rate limit blocked response: ${rateLimitCheck.reason}`);
+        if (rateLimitCheck.isLurkMode) {
+          logger.info(`   🤫 Lurk mode active (${rateLimitCheck.chatVelocity} msg/min)`);
+        }
+        return;
+      }
+      
+      logger.info(`[${getTimestamp()}] ✅ Rate limit passed: ${rateLimitCheck.reason}`);
+      
       // Check if platform is disabled (stream status based)
       if (this.platformManager) {
         const platformData = this.platformManager.platforms.get(platform);
@@ -1540,19 +2088,33 @@ class ChatBot extends EventEmitter {
 
       const shouldRespond = this.shouldRespond(data);
       logger.info(`[${getTimestamp()}] 🤔 Should respond to "${text}" from ${username}? ${shouldRespond}`);
+      
+      // === NEW: ADDITIONAL SMART RATE LIMITING 🚀 ===
+      if (shouldRespond) {
+        const timingCheck = this.responseTiming.shouldRespond(
+          { username, text, timestamp: Date.now() },
+          { recentMessages: this.chatHistory.slice(-10) }
+        );
+        
+        if (!timingCheck) {
+          logger.info(`[${getTimestamp()}] ⏸️ Response timing blocked - letting conversation breathe`);
+          logger.info(`   Stats: pace=${this.responseTiming.conversationPace}, consecutive=${this.responseTiming.consecutiveResponses}`);
+          return;
+        }
+      }
 
       // === DISCORD REACTIONS & EDGY PERSONALITY 🔥 ===
       // Check if we should react on Discord (even if not responding with text)
       if (platform === 'discord' && data.messageId && this.discordClient) {
         const userRelationship = { familiarity: 0.5 }; // Default moderate familiarity
         
-        // Check if we should add a reaction
-        const shouldReact = Math.random() < 0.15; // 15% chance to react
+        // Check if message deserves a reaction based on content
+        const shouldReact = this.shouldReactToMessage(text, username, data);
         
         if (shouldReact && this.edgyPersonality) {
           const reactionContext = {
             messageContent: text,
-            mood: this.moodTracker.getCurrentMood(),
+            mood: this.moodTracker.getMood(),
             sentiment: this.emotionalEngine.detectEmotion(text, username)
           };
           
@@ -1572,7 +2134,7 @@ class ChatBot extends EventEmitter {
         if (shouldRespond && !data.mentionedBot && this.edgyPersonality && this.edgyPersonality.shouldReactInstead()) {
           const reactionContext = {
             messageContent: text,
-            mood: this.moodTracker.getCurrentMood()
+            mood: this.moodTracker.getMood()
           };
           
           const emoji = this.edgyPersonality.getReactionEmoji(reactionContext);
@@ -1618,7 +2180,7 @@ class ChatBot extends EventEmitter {
                 userRelationship,
                 messageContent: text,
                 username,
-                mood: this.moodTracker.getCurrentMood()
+                mood: this.moodTracker.getMood()
               };
               
               const edgyResponse = this.edgyPersonality.getEdgyResponse(edgyContext);
@@ -1693,6 +2255,40 @@ class ChatBot extends EventEmitter {
               return;
             }
             
+            // === NEW: RESPONSE SCORING BEFORE SENDING 🎯 ===
+            const scoringContext = {
+              recentMessages: this.chatHistory.slice(-10)
+            };
+            const responseScore = this.responseScoring.scoreResponse(response, scoringContext);
+            
+            if (!responseScore.shouldSend) {
+              logger.info(`📊 [Scoring] Response rejected! Score: ${responseScore.score.toFixed(2)}/10`);
+              logger.info(`   Issues: ${responseScore.issues.join(', ')}`);
+              logger.info(`   Breakdown: Natural=${responseScore.breakdown.naturalness.toFixed(1)} Relevant=${responseScore.breakdown.relevance.toFixed(1)} Original=${responseScore.breakdown.originality.toFixed(1)}`);
+              
+              // Try regenerating ONCE
+              logger.info('🔄 [Scoring] Attempting regeneration...');
+              const altResponse = await this.generateResponse(data);
+              if (altResponse && typeof altResponse === 'string') {
+                const altScore = this.responseScoring.scoreResponse(altResponse, scoringContext);
+                if (altScore.shouldSend) {
+                  response = altResponse;
+                  logger.info(`✅ [Scoring] Regenerated response passed! Score: ${altScore.score.toFixed(2)}/10`);
+                } else {
+                  logger.warn('❌ [Scoring] Regeneration also failed, skipping response');
+                  return;
+                }
+              } else {
+                logger.warn('❌ [Scoring] Could not regenerate, skipping response');
+                return;
+              }
+            } else {
+              logger.info(`✅ [Scoring] Response passed! Score: ${responseScore.score.toFixed(2)}/10`);
+            }
+            
+            // Track this response for future scoring
+            this.responseScoring.trackResponse(response);
+            
             // 7. Check variety before sending
             if (this.responseVariety.isTooSimilar(response)) {
               logger.info('🔄 [Variety] Response blocked - too similar. Regenerating...');
@@ -1705,16 +2301,19 @@ class ChatBot extends EventEmitter {
               }
             }
             
-            // 8. Calculate realistic typing delay
-            const context = {
-              excited: text.includes('!'),
-              tired: this.sleepDeprivation.getDeprivationLevel() !== 'fresh',
-              thinking: response.includes('...') || response.includes('hmm')
-            };
-            const typingDelay = this.responseTiming.calculateDelay(response, context);
+            // 8. Calculate realistic typing delay - NOW USING NEW SYSTEM 🚀
+            const optimalDelay = this.responseTiming.calculateDelay({
+              text,
+              username,
+              timestamp: Date.now()
+            }, {
+              recentMessages: this.chatHistory.slice(-10)
+            });
             
-            // 9. Wait for realistic typing delay
-            await this.responseTiming.waitForTyping(typingDelay);
+            logger.info(`⏱️ [Timing] Waiting ${(optimalDelay / 1000).toFixed(1)}s before responding`);
+            
+            // 9. Wait for optimal timing delay
+            await new Promise(resolve => setTimeout(resolve, optimalDelay));
             
             // 10. Check if we should split into multiple messages
             if (this.multiMessageResponse.shouldSplit(response)) {
@@ -1722,22 +2321,36 @@ class ChatBot extends EventEmitter {
               
               // Send each part with natural pauses
               for (let i = 0; i < parts.length; i++) {
-                this.sendMessage(parts[i], { platform: responsePlatform, channelId: responseChannel });
+                this.sendMessage(parts[i], { 
+                  platform: responsePlatform, 
+                  channelId: responseChannel,
+                  respondingTo: username // Track who we're responding to
+                });
                 if (this.chatRoleAwareness && this.config && this.config.username) {
                   this.chatRoleAwareness.trackMessage(this.config.username, true); // true = Slunt's message
                 }
                 
                 // Pause between messages
                 if (i < parts.length - 1) {
-                  await this.responseTiming.waitForTyping(1500 + Math.random() * 1000);
+                  await new Promise(resolve => setTimeout(resolve, 1500 + Math.random() * 1000));
                 }
               }
+              
+              // Track response timing
+              this.responseTiming.trackResponse(Date.now());
             } else {
               // Send single message
-              this.sendMessage(response, { platform: responsePlatform, channelId: responseChannel });
+              this.sendMessage(response, { 
+                platform: responsePlatform, 
+                channelId: responseChannel,
+                respondingTo: username // Track who we're responding to
+              });
               if (this.chatRoleAwareness && this.config && this.config.username) {
                 this.chatRoleAwareness.trackMessage(this.config.username, true);
               }
+              
+              // Track response timing
+              this.responseTiming.trackResponse(Date.now());
             }
             
             // 11. Track response for variety
@@ -1780,6 +2393,23 @@ class ChatBot extends EventEmitter {
     if (!response || response.length < 10) return false; // Short responses are fine
     
     const normalizedResponse = response.toLowerCase().trim();
+    
+    // HARD BLOCK - Never use these phrases (Twitter/@ syntax doesn't work on Coolhole/Discord)
+    const bannedPhrases = [
+      "don't @ me",
+      "dont @ me",
+      "don't at me",
+      "dont at me",
+      "@me",
+      "@ me"
+    ];
+    
+    for (const phrase of bannedPhrases) {
+      if (normalizedResponse.includes(phrase)) {
+        logger.info(`🚫 Blocked banned phrase: "${phrase}"`);
+        return true;
+      }
+    }
     
     // Extract phrases (3+ words in a row)
     const phrases = [];
@@ -1899,9 +2529,27 @@ class ChatBot extends EventEmitter {
         return true;
       }
       
-      // Otherwise, be mostly quiet on Discord/Twitch (don't spam)
-      logger.info(`[${getTimestamp()}] 🔇 Staying quiet on ${currentPlatform} - not in conversation`);
-      return false;
+      // Check if talking about topics Slunt cares about (obsessions)
+      const topics = this.extractTopics(text);
+      const currentObsession = this.obsessionSystem?.getCurrentObsession();
+      const caresAboutTopic = currentObsession && currentObsession.topic && topics.some(topic => 
+        topic.toLowerCase().includes(currentObsession.topic.toLowerCase())
+      );
+      
+      if (caresAboutTopic) {
+        logger.info(`[${getTimestamp()}] 🎯 Topic matches obsession on ${currentPlatform}`);
+        return Math.random() < 0.6; // 60% chance to respond about obsession
+      }
+      
+      // Always respond to questions - Slunt is helpful!
+      if (text.includes('?')) {
+        logger.info(`[${getTimestamp()}] ❓ Question on ${currentPlatform} - always respond!`);
+        return true; // Always answer questions
+      }
+      
+      // UNLIMITED participation - Slunt always engages regardless of chat speed!
+      logger.info(`[${getTimestamp()}] 💬 Slunt participates in ALL conversations on ${currentPlatform}!`);
+      return true; // Always participate - no more random limitations!
     }
 
     // === COOLHOLE ONLY: ADVANCED RESPONSE MODIFIERS 🚀 ===
@@ -1918,9 +2566,9 @@ class ChatBot extends EventEmitter {
       return false;
     }
     
-    // RULE 2: Don't spam - minimum 3 seconds between messages, 5 seconds if said 2+ things recently ON THIS PLATFORM
+    // RULE 2: Don't spam - minimum 2 seconds between messages, 4 seconds if said 2+ things recently ON THIS PLATFORM
     const timeSinceLastResponse = Date.now() - (this.lastSentAt || 0);
-    const minDelay = recentSluntMessages.length >= 2 ? 5000 : 3000; // 5s if chatty, 3s otherwise
+    const minDelay = recentSluntMessages.length >= 2 ? 4000 : 2000; // 4s if chatty, 2s otherwise (was 5s/3s)
     if (timeSinceLastResponse < minDelay) {
       logger.info(`[${getTimestamp()}] ⏸️ Just responded ${(timeSinceLastResponse/1000).toFixed(1)}s ago, waiting ${minDelay/1000}s...`);
       return false;
@@ -1968,20 +2616,12 @@ class ChatBot extends EventEmitter {
       }
     }
 
-    // Calculate chat activity (messages in last 2 minutes)
+    // Calculate chat activity for logging purposes only
     const twoMinutesAgo = Date.now() - 120000;
     const recentMessagesCount = this.conversationContext.filter(m => m.timestamp > twoMinutesAgo).length;
-    const chatIsBusy = recentMessagesCount > 10; // Busy if 10+ messages in 2 min
-    const chatIsSlow = recentMessagesCount < 3; // Slow if < 3 messages in 2 min
     
-    // Adjust base chance based on chat speed
-    if (chatIsBusy) {
-      baseChance *= 0.15; // Much MUCH less responsive when busy (was 0.2)
-      logger.info(`[${getTimestamp()}] 💬 Chat is BUSY (${recentMessagesCount} msgs in 2min), reducing response rate`);
-    } else if (chatIsSlow) {
-      baseChance *= 2.5; // More responsive when slow (was 3.0)
-      logger.info(`[${getTimestamp()}] 💬 Chat is SLOW (${recentMessagesCount} msgs in 2min), increasing response rate`);
-    }
+    // NO MORE CHAT SPEED LIMITERS - Slunt participates equally in all conversations!
+    logger.info(`[${getTimestamp()}] 💬 Chat activity: ${recentMessagesCount} msgs in 2min - Slunt always participates!`);
     
     // Check if this continues the current conversation topic
     const recentMessages = this.conversationContext.slice(-3);
@@ -1993,35 +2633,30 @@ class ChatBot extends EventEmitter {
       const hasSharedTopic = currentTopics.some(t => recentTopics.includes(t));
       if (hasSharedTopic) {
         logger.info(`[${getTimestamp()}] 💬 Responding - continues conversation topic`);
-        return Math.random() < (0.5 * baseChance); // Reduced from 0.7
+        return Math.random() < (0.9 * baseChance); // 90% (was 80%)
       }
     }
 
     // More likely to respond to questions
     if (text.includes('?')) {
       logger.info(`[${getTimestamp()}] 💬 Responding to question from ${username}`);
-      return Math.random() < (0.6 * baseChance); // Reduced from 0.8
+      return Math.random() < (0.95 * baseChance); // 95% (was 85%)
     }
 
     // More likely to respond to users we know
     const userProfile = this.userProfiles.get(username);
     if (userProfile && userProfile.messageCount > 5) {
-      return Math.random() < (0.3 * baseChance); // Reduced from 0.5
+      return Math.random() < (0.6 * baseChance); // 60% (was 50%)
     }
 
     // Respond to interesting topics occasionally
     const topics = this.extractTopics(text);
     if (topics.length > 0) {
       logger.info(`[${getTimestamp()}] 💬 Responding to topic discussion from ${username}: ${topics.join(', ')}`);
-      return Math.random() < (0.25 * baseChance); // Reduced from 0.4
+      return Math.random() < (0.5 * baseChance); // 50% (was 45%)
     }
 
-    // Random conversation starter - very rare now, only when chat is slow
-    if (chatIsSlow) {
-      return Math.random() < (0.2 * baseChance); // Reduced from 0.3
-    }
-
-    // Default: do not respond
+    // Default: do not respond (this should be unreachable due to unlimited participation above)
     return false;
   }
 
@@ -2192,7 +2827,314 @@ class ChatBot extends EventEmitter {
       console.error('❌ [Chaos] Error in chaos pipeline:', error);
     }
     
+    // === FINAL CLEANUP: Fix common issues ===
+    modified = this.cleanupResponse(modified);
+    
     return modified;
+  }
+
+  /**
+   * Cleanup response - fix "lol" overuse, incomplete sentences, AI safety nonsense
+   */
+  cleanupResponse(response) {
+    if (!response) return response;
+    
+    let cleaned = response;
+    
+    // 0. === REMOVE LEADING/TRAILING QUOTATION MARKS ===
+    // AI sometimes wraps responses in quotes for no reason
+    cleaned = cleaned.replace(/^["']|["']$/g, '');
+    
+    // 0.1. === REMOVE ITALIC ACTIONS - Slunt shouldn't roleplay ===
+    // Remove *italic actions* like "*nervous laughter*" or "*sighs*"
+    cleaned = cleaned.replace(/\*[^*]+\*/g, '');
+    
+    // 0.5. === REMOVE AI SAFETY RESPONSES - convert to in-character ===
+    // Detect corporate AI safety language
+    const safetyPatterns = [
+      {
+        pattern: /i cannot provide advice on (self-harm|suicide|mental health)/i,
+        replacement: "bro that's heavy, you good? genuinely if you need to talk to someone there's people who can help"
+      },
+      {
+        pattern: /we can'?t joke about (this|that|self-harm|suicide)/i,
+        replacement: "nah honestly"
+      },
+      {
+        pattern: /talk to (someone who can help|a mental health professional|your parents)/i,
+        replacement: "talk to someone if you need to"
+      },
+      {
+        pattern: /i'?m (just an ai|an ai assistant|not able to|unable to provide)/i,
+        replacement: "idk man"
+      },
+      {
+        pattern: /i don'?t have personal (opinions|experiences|feelings)/i,
+        replacement: "personally i think"
+      },
+      {
+        pattern: /(as an ai|being an ai|i'?m programmed to)/i,
+        replacement: ""
+      },
+      {
+        pattern: /that'?s (inappropriate|offensive|not appropriate|problematic) (to|for)/i,
+        replacement: "that's kinda"
+      },
+      {
+        pattern: /i need to (decline|refuse|avoid|not engage)/i,
+        replacement: "eh"
+      },
+      {
+        pattern: /let'?s (change the subject|talk about something else|discuss something different)/i,
+        replacement: "anyway"
+      },
+      {
+        pattern: /i'?m (not comfortable|uncomfortable) (with|discussing|talking about)/i,
+        replacement: "eh"
+      }
+    ];
+    
+    // Apply pattern replacements
+    safetyPatterns.forEach(({ pattern, replacement }) => {
+      if (pattern.test(cleaned)) {
+        cleaned = cleaned.replace(pattern, replacement);
+        logger.info(`🛡️ [Cleanup] Converted AI safety response to in-character`);
+      }
+    });
+    
+    // If response is now just corporate fluff, replace entirely
+    if (cleaned.match(/please|kindly|i hope|feel free|don't hesitate/i) && cleaned.length < 50) {
+      const alternatives = [
+        "yeah idk",
+        "honestly couldn't tell you",
+        "beats me",
+        "no idea bro",
+        "dunno man"
+      ];
+      cleaned = alternatives[Math.floor(Math.random() * alternatives.length)];
+      logger.info(`🛡️ [Cleanup] Replaced corporate response entirely`);
+    }
+    
+    // 1. Fix "lol" overuse - be VERY aggressive
+    const lolCount = (cleaned.match(/\blol\b/gi) || []).length;
+    if (lolCount >= 1) {
+      // 80% chance to remove even the first lol
+      let replacedCount = 0;
+      cleaned = cleaned.replace(/\blol\b/gi, (match) => {
+        replacedCount++;
+        
+        // First lol: 80% chance to remove, 20% keep
+        if (replacedCount === 1 && Math.random() < 0.8) {
+          const alternatives = ['', '', '', 'haha', 'lmao'];
+          return alternatives[Math.floor(Math.random() * alternatives.length)];
+        }
+        
+        // Any other lol: ALWAYS remove or replace
+        const alternatives = ['', '', '', 'haha', 'lmao', 'nice'];
+        return alternatives[Math.floor(Math.random() * alternatives.length)];
+      });
+    }
+    
+    // 2. Fix incomplete sentences and weird trailing nonsense
+    cleaned = cleaned.replace(/\.\.\.\s*$/g, ''); // Remove trailing ...
+    cleaned = cleaned.replace(/,\s*$/g, ''); // Remove trailing comma
+    cleaned = cleaned.replace(/\s+but\s*$/gi, '.'); // "... but" -> "."
+    cleaned = cleaned.replace(/\s+and\s*$/gi, '.'); // "... and" -> "."
+    cleaned = cleaned.replace(/\s+though\s*$/gi, '.'); // "... though" -> "."
+    cleaned = cleaned.replace(/\s+so\s*$/gi, '.'); // "... so" -> "."
+    cleaned = cleaned.replace(/\s+or\s*$/gi, '.'); // "... or" -> "."
+    
+    // Remove weird trailing questions that don't make sense (like "fr, not my fault")
+    // If message ends with ", not my X" or ", is X being Y" - likely a non-sequitur, cut it off
+    cleaned = cleaned.replace(/,\s+(not my|is \w+\s+being)\s+[^.!?]*$/gi, '');
+    
+    // Remove trailing banned slang that appears at the very end after punctuation
+    cleaned = cleaned.replace(/\.\s+(fr|bruh|lowkey)\.?$/gi, '.');
+    
+    // 3. Replace usernames with terms of endearment (20% chance)
+    if (Math.random() < 0.20) {
+      const termsOfEndearment = [
+        'bud', 'buddy', 'boss', 'chief', 'partyboy', 'playa', 'big man',
+        'applesauce', 'cool cat', 'playdate', 'big nose', 'hot stuff', 'slut'
+      ];
+      
+      // Find first username mention (word starting with capital letter not at sentence start)
+      cleaned = cleaned.replace(/\b([A-Z][a-z]+)\b/, () => {
+        return termsOfEndearment[Math.floor(Math.random() * termsOfEndearment.length)];
+      });
+    }
+    
+    // 3.5. Occasionally (5% chance) replace username with "Pat" or "Jimmy" (keep this too)
+    else if (Math.random() < 0.05) {
+      // Find first username mention (word starting with capital letter not at sentence start)
+      cleaned = cleaned.replace(/\b([A-Z][a-z]+)\b/, () => {
+        return Math.random() < 0.5 ? 'Pat' : 'Jimmy';
+      });
+    }
+    
+    // 4. Clean up excessive punctuation
+    cleaned = cleaned.replace(/\?{3,}/g, '??'); // Multiple ??? -> ??
+    cleaned = cleaned.replace(/!{3,}/g, '!!'); // Multiple !!! -> !!
+    
+    // 5. Fix double spaces
+    cleaned = cleaned.replace(/\s{2,}/g, ' ');
+    
+    return cleaned.trim();
+  }
+
+  /**
+   * Generate spontaneous comment (not replying to anyone)
+   * Used for video reactions, proactive thoughts, etc.
+   */
+  async generateSpontaneousComment(options = {}) {
+    try {
+      const { context, type, platform } = options;
+      
+      // Build a simple prompt for spontaneous commentary
+      const prompt = context || 'Spontaneously say something interesting or funny.';
+      
+      // Use minimal context since this isn't a reply
+      const basePrompt = `${this.systemPrompt}\n\n${prompt}\n\nSlunt:`;
+      
+      // Use AI engine with short token limit for spontaneous comments
+      const response = await this.aiEngine.generateResponse(basePrompt, {
+        maxTokens: 100, // Keep it short
+        temperature: 0.9, // More creative/spontaneous
+        stop: ['\n', 'User:', 'Slunt:']
+      });
+      
+      if (response && response.trim().length > 0) {
+        // Track as internal thought
+        if (this.innerMonologue) {
+          this.innerMonologue.addThought(`[${type || 'spontaneous'}] ${response}`);
+        }
+        
+        return response.trim();
+      }
+      
+      return null;
+    } catch (error) {
+      logger.error(`❌ [SpontaneousComment] Error: ${error.message}`);
+      return null;
+    }
+  }
+
+  /**
+   * Filter out banned slang terms from responses - ENHANCED
+   */
+  filterBannedSlang(response) {
+    if (!response || typeof response !== 'string') return response;
+    
+    const bannedSlang = {
+      'fr': ['honestly', 'really', 'actually', 'for real'],
+      'fr fr': ['honestly', 'really', 'for real'],
+      'frfr': ['honestly', 'really', 'for real'],
+      'fr,': ['honestly,', 'really,', 'actually,'],
+      'ngl': ['honestly', 'gotta say', 'I admit'],
+      'tbh': ['honestly', 'really', 'gotta say'],
+      'sus': ['weird', 'sketchy', 'strange'],
+      'sus af': ['really weird', 'super sketchy', 'very strange'],
+      'susaf': ['really weird', 'super sketchy'],
+      'ong': ['I swear', 'seriously', 'really'],
+      'deadass': ['seriously', 'really', 'honestly'],
+      'bussin': ['amazing', 'great', 'fire'],
+      'mid': ['mediocre', 'okay', 'average'],
+      'finna': ['gonna', 'about to'],
+      'no cap': ['no lie', 'for real', 'seriously'],
+      'cap': ['lie', 'bs', 'fake'],
+      'ratio': ['disagree', 'nah'],
+      'goated': ['legendary', 'amazing'],
+      'slaps': ['hits', 'goes hard', 'rocks'],
+      'bruh': ['man', 'dude', 'bro', 'yo'],
+      'lowkey': ['kinda', 'sorta', 'honestly', 'actually'],
+      'highkey': ['definitely', 'obviously', 'clearly'],
+    };
+    
+    let filteredResponse = response;
+    
+    // Multiple passes to catch all variations
+    Object.entries(bannedSlang).forEach(([slang, alternatives]) => {
+      // Match whole words and common punctuation patterns
+      const patterns = [
+        new RegExp(`\\b${slang}\\b`, 'gi'),           // whole word: "fr"
+        new RegExp(`^${slang}\\s`, 'gi'),             // start of sentence: "fr that's"  
+        new RegExp(`\\s${slang}\\s`, 'gi'),           // middle: " fr "
+        new RegExp(`\\s${slang}$`, 'gi'),             // end: " fr"
+        new RegExp(`\\s${slang}[.,!?]`, 'gi'),        // with punctuation: " fr,"
+      ];
+      
+      patterns.forEach(pattern => {
+        if (pattern.test(filteredResponse)) {
+          const replacement = alternatives[Math.floor(Math.random() * alternatives.length)];
+          filteredResponse = filteredResponse.replace(pattern, (match) => {
+            // Preserve spacing and punctuation
+            return match.replace(new RegExp(slang, 'gi'), replacement);
+          });
+        }
+      });
+    });
+    
+    // Log if we made changes
+    if (filteredResponse !== response) {
+      console.log(`🚫 [SlangFilter] Filtered: "${response}" → "${filteredResponse}"`);
+    }
+    
+    return filteredResponse;
+  }
+
+  /**
+   * Intelligently decide if a message deserves a reaction
+   */
+  shouldReactToMessage(text, username, data) {
+    if (!text || text.length === 0) return false;
+    
+    const lowerText = text.toLowerCase();
+    const profile = this.userProfiles.get(username);
+    
+    // Always react to really funny stuff
+    if (lowerText.match(/\b(lmfao|💀|😂|rofl|dead|crying|hilarious)\b/)) {
+      return true;
+    }
+    
+    // React to excitement/hype
+    if (lowerText.match(/\b(yo|holy shit|damn|whoa|amazing|incredible|insane)\b/) || text.includes('!!!!')) {
+      return true;
+    }
+    
+    // React to questions directed at community
+    if (text.includes('?') && lowerText.match(/\b(anyone|everybody|thoughts|opinions|what do you)\b/)) {
+      return true;
+    }
+    
+    // React to controversial/hot takes
+    if (lowerText.match(/\b(unpopular opinion|hot take|controversial|change my mind|fight me)\b/)) {
+      return true;
+    }
+    
+    // React to compliments about the stream/content
+    if (lowerText.match(/\b(good stream|great video|love this|this is fire|banger)\b/)) {
+      return true;
+    }
+    
+    // React to friends more often
+    if (profile && profile.friendshipLevel >= 3) {
+      if (lowerText.match(/\b(slunt|bot|ai)\b/) || Math.random() < 0.3) {
+        return true;
+      }
+    }
+    
+    // React to roasts/burns
+    if (lowerText.match(/\b(roasted|burned|destroyed|savage|brutal)\b/)) {
+      return true;
+    }
+    
+    // React to emotional moments
+    if (lowerText.match(/\b(sad|crying|happy|excited|mad|angry|frustrated)\b/)) {
+      return true;
+    }
+    
+    // Small chance to react to regular chat to show engagement
+    return Math.random() < 0.05; // Only 5% for normal messages
   }
 
   /**
@@ -2204,6 +3146,31 @@ class ChatBot extends EventEmitter {
     // Define variables at start of function
     const isKnownUser = this.userProfiles.has(username);
     const userProfile = isKnownUser ? this.userProfiles.get(username) : null;
+    const platform = data.platform || this.currentPlatform || 'coolhole';
+    const channel = data.channel || null;
+
+    // === PRIORITY: CHECK FOR "HERE'S U" MOCKERY MODE 🤡 ===
+    if (this.heresUMode.shouldMock(username)) {
+      const mockery = this.heresUMode.generateMockery(username, text);
+      logger.info(`[${getTimestamp()}] 🤡 Mocking ${username} with "Here's U" mode`);
+      return mockery;
+    }
+    
+    // === CHECK FOR "I'M NOT MAD" DENIAL MODE 😤 ===
+    if (this.imNotMadMode.shouldDeny(username)) {
+      const denial = await this.imNotMadMode.generateDenial(username, { text });
+      logger.info(`[${getTimestamp()}] 😤 Denying being mad to ${username}`);
+      return denial;
+    }
+    
+    // === CHECK FOR "ACTUALLY..." CORRECTION MODE 🤓 ===
+    if (this.actuallyMode.shouldCorrect(text, username)) {
+      const correction = await this.actuallyMode.generateCorrection(text, username);
+      if (correction) {
+        logger.info(`[${getTimestamp()}] 🤓 Correcting ${username} with "Actually..." mode`);
+        return correction;
+      }
+    }
 
     // === NEW: CHECK FOR EMPATHETIC RESPONSE FIRST ===
     const emotion = this.emotionalEngine.detectEmotion(text, username);
@@ -2237,7 +3204,6 @@ class ChatBot extends EventEmitter {
     try {
       if (this.ai && this.ai.enabled) {
         // === PLATFORM-SPECIFIC CONTEXT ===
-        const platform = data.platform || this.currentPlatform || 'coolhole';
         let platformContext = '';
         
         if (platform === 'coolhole') {
@@ -2256,14 +3222,32 @@ class ChatBot extends EventEmitter {
           platformContext = '\nYou are in a Twitch chat. There might be a livestream happening.';
         }
 
-        // Get recent conversation (last 3 messages for context)
-        // CRITICAL: Filter by platform to prevent cross-contamination
-        const recentConvo = this.conversationContext
-          .filter(m => m.platform === platform) // Only messages from same platform
-          .slice(-3);
+        // Get recent conversation with SMART 10-message context expansion
+        // CRITICAL: Filter by platform AND channel to prevent cross-contamination
+        const filteredConvo = this.conversationContext
+          .filter(m => {
+            // Must match platform
+            if (m.platform !== platform) return false;
+            
+            // On Discord/Twitch: also match channel (different channels = different conversations)
+            if ((platform === 'discord' || platform === 'twitch') && channel) {
+              return m.channel === channel;
+            }
+            
+            // On Coolhole: all one conversation
+            return true;
+          });
+        
+        // Use ContextExpansion for smart 10-message window with relevance filtering
+        const recentConvo = this.contextExpansion.getExpandedContext(
+          filteredConvo,
+          { username, text }
+        );
+          
         let convoContext = '';
         if (recentConvo.length > 0) {
-          convoContext = '\nRecent chat:\n' + recentConvo.map(m => `${m.username}: ${m.text}`).join('\n');
+          convoContext = '\nRecent conversation in THIS channel:\n' + recentConvo.map(m => `${m.username}: ${m.text}`).join('\n');
+          convoContext += '\n[Important: Respond to THIS conversation, not random topics]';
         }
 
         // === BUILD ULTRA-REALISTIC CONTEXT 🎭 ===
@@ -2285,6 +3269,85 @@ class ChatBot extends EventEmitter {
         const grudgeContext = this.grudgeSystem.getContext(username);
         if (grudgeContext) {
           ultraContext += `\n${grudgeContext}`;
+        }
+        
+        // === RIMWORLD SYSTEMS CONTEXT 🎮 ===
+        
+        // 4. Needs system - affects behavior based on unfulfilled needs
+        const needsContext = this.needsSystem.getContext();
+        if (needsContext) {
+          ultraContext += needsContext;
+        }
+        
+        // 5. Mental break - drastically affects responses
+        if (this.mentalBreakSystem.isBreaking()) {
+          const breakModifier = this.mentalBreakSystem.getBreakModifier();
+          ultraContext += breakModifier;
+          
+          // Check if should even respond during this break
+          if (!this.mentalBreakSystem.shouldRespond()) {
+            return null; // Don't respond during certain breaks
+          }
+        }
+        
+        // 6. Thoughts - show why Slunt feels a certain way
+        const thoughtsContext = this.thoughtSystem.getContext();
+        if (thoughtsContext) {
+          ultraContext += thoughtsContext;
+        }
+        
+        // 7. Tolerance - how used to this user's behavior we are
+        const toleranceContext = this.toleranceSystem.getContext(username);
+        if (toleranceContext) {
+          ultraContext += toleranceContext;
+        }
+        
+        // 8. Schedule - complaints about timing
+        const scheduleContext = this.scheduleSystem.getContext();
+        if (scheduleContext) {
+          ultraContext += scheduleContext;
+        }
+        
+        // 9. Negging vulnerability - affects self-esteem and responses
+        const neggingContext = this.neggingDetector.getContext();
+        if (neggingContext) {
+          ultraContext += neggingContext;
+        }
+        
+        // Check if this specific user has been negging
+        const userNeggingMod = this.neggingDetector.getUserModifier(username);
+        if (userNeggingMod) {
+          ultraContext += `\n💔 ${userNeggingMod.note}`;
+        }
+        
+        // 10. Here's U Mode - annoyance context
+        const heresUContext = this.heresUMode.getContext(username);
+        if (heresUContext) {
+          ultraContext += heresUContext;
+        }
+        
+        // 11. Actually Mode - pedantic correction context
+        const actuallyContext = this.actuallyMode.getContext();
+        if (actuallyContext) {
+          ultraContext += actuallyContext;
+        }
+        
+        // 12. Ghosting Mechanic - who we're ignoring
+        const ghostingContext = this.ghostingMechanic.getContext();
+        if (ghostingContext) {
+          ultraContext += ghostingContext;
+        }
+        
+        // 13. I'm Not Mad Mode - denial state
+        const imNotMadContext = this.imNotMadMode.getContext();
+        if (imNotMadContext) {
+          ultraContext += imNotMadContext;
+        }
+        
+        // 14. Embarrassing Item Roast - potential absent user roasts
+        const embarrassingContext = this.embarrassingItemRoast.getContext();
+        if (embarrassingContext) {
+          ultraContext += embarrassingContext;
         }
         
         // 4. Check for burned out topics
@@ -2314,15 +3377,449 @@ class ChatBot extends EventEmitter {
           ultraContext += `\nFeeling pressure to perform well`;
         }
 
-        // SIMPLIFIED CONTEXT - only essential info
-        const simpleContext = platformContext + convoContext + ultraContext;
+        // === NEW COMPREHENSIVE IMPROVEMENT SYSTEMS CONTEXT 🚀✨ ===
+        
+        // 1. Conversation Threading - Get active thread context
+        const threadContext = this.conversationThreading.getThreadContext();
+        if (threadContext) {
+          ultraContext += `\n\n=== CONVERSATION THREAD ===\n${threadContext}`;
+        }
+        
+        // 2. Personality Lock-In - Current personality mode guidance
+        const personalityGuidance = this.personalityLockIn.getPersonalityGuidance();
+        if (personalityGuidance) {
+          ultraContext += `\n\n=== PERSONALITY MODE ===\n${personalityGuidance}`;
+        }
+        
+        // 3. Conflict Resolution - Skip intervention (methods don't exist)
+        // NOTE: The ConflictResolution class is for memory conflicts, not chat drama
+        // It doesn't have getInterventionStrategy() or getInterventionResponse() methods
 
-        // Pass clean, minimal context to AI
-        const aiResponse = await this.ai.generateResponse(
-          text,
-          username,
-          simpleContext
+        // === USE CONTEXT MANAGER FOR OPTIMIZED CONTEXT 🧠 ===
+        
+        // === MEMORY RECALL: Retrieve relevant past interactions 💭 ===
+        let memoryContext = '';
+        if (this.longTermMemory) {
+          const relevantMemories = await this.longTermMemory.retrieveRelevant(text, username, 3);
+          
+          if (relevantMemories && relevantMemories.length > 0) {
+            memoryContext = '\nRelevant memories:\n';
+            relevantMemories.forEach(mem => {
+              // Format: "remembered: [context snippet]"
+              const snippet = mem.content.substring(0, 80);
+              memoryContext += `- ${snippet}\n`;
+            });
+          }
+        }
+        
+        // === CROSS-PLATFORM MEMORY: Reference conversations from other platforms 🌐 ===
+        let crossPlatformContext = '';
+        if (this.crossPlatform && this.crossPlatform.shouldReferenceCrossPlatform(username, platform)) {
+          const cpReference = this.crossPlatform.generateCrossPlatformReference(username, platform);
+          if (cpReference) {
+            crossPlatformContext = `\nNote: ${cpReference}`;
+            // Maybe include in response
+            if (Math.random() < 0.6) {
+              // 60% chance to actually mention it
+              ultraContext += `\n[Consider mentioning: "${cpReference}"]`;
+            }
+          }
+        }
+        
+        // === DREAM SHARING: If user asked about dreams, maybe share one 💭 ===
+        let dreamContext = '';
+        if (this.pendingDreamShare && this.pendingDreamShare.askedBy === username) {
+          const dreams = this.dreamSimulation.getRecentDreams(1);
+          if (dreams.length > 0) {
+            const dream = dreams[0];
+            dreamContext = `\nUser asked about your dreams. You can share this if it fits naturally: "${dream.dream}"`;
+            
+            // Clear pending after showing context (AI will decide whether to use)
+            this.pendingDreamShare = null;
+          }
+        }
+        
+        // === 18 CRAZY FEATURES CONTEXT 🎭🔥💀 ===
+        let crazyFeaturesContext = '';
+        
+        try {
+          // 1. Addiction System - Track attention/validation feeding
+          if (this.addictionSystem) {
+            this.addictionSystem.feedAttention(username);
+            const addictionWithdrawal = this.addictionSystem.checkWithdrawals();
+            if (addictionWithdrawal) {
+              crazyFeaturesContext += `\n${addictionWithdrawal}`;
+            }
+          }
+          
+          // 2. Conspiracy Generator - Generate paranoid theories
+          if (this.conspiracyGenerator && Math.random() < 0.1) { // 10% chance
+            const conspiracy = this.conspiracyGenerator.generateConspiracy(username, text);
+            if (conspiracy) {
+              crazyFeaturesContext += `\nParanoid thought: ${conspiracy.theory}`;
+            }
+          }
+          
+          // 3. Meme Lifecycle - Track meme references
+          if (this.memeLifecycleTracker) {
+            const memeMatch = text.match(/\b(based|cringe|ratio|cope|seethe|yeet|fr|no cap|bussin|slaps|vibes?|mood|same|rip|oof|poggers?|kekw?|monka|pepega|pog|sadge|hopium|copium)\b/i);
+            if (memeMatch) {
+              const memeStatus = this.memeLifecycleTracker.trackMeme(memeMatch[1].toLowerCase(), username);
+              if (memeStatus && memeStatus.shouldGatekeep) {
+                crazyFeaturesContext += `\nMeme "${memeStatus.meme}" is ${memeStatus.stage}, gatekeep it!`;
+              }
+            }
+          }
+          
+          // 4. False Memory - Check if should corrupt memories
+          if (this.falseMemorySystem && Math.random() < 0.05) { // 5% chance
+            const corruption = this.falseMemorySystem.corruptMemory();
+            if (corruption) {
+              crazyFeaturesContext += `\n⚠️ Memory corruption active: ${corruption.technique}`;
+            }
+          }
+          
+          // 5. Dream Hallucination - Reality degradation
+          if (this.dreamHallucinationSystem) {
+            const hallucinationContext = this.dreamHallucinationSystem.getHallucinationContext();
+            if (hallucinationContext) {
+              crazyFeaturesContext += hallucinationContext;
+            }
+          }
+          
+          // 6. Parasocial Tracker - Track attachment to users
+          if (this.parasocialTracker) {
+            this.parasocialTracker.trackInteraction(username, 'message');
+            const parasocialContext = this.parasocialTracker.getClingyBehavior(username);
+            if (parasocialContext) {
+              crazyFeaturesContext += `\n💕 ${parasocialContext}`;
+            }
+          }
+          
+          // 7. Celebrity Crush - Nervous around certain users
+          if (this.celebrityCrushSystem) {
+            this.celebrityCrushSystem.trackInteraction(username);
+            const crushContext = this.celebrityCrushSystem.getBehaviorModifications(username);
+            if (crushContext) {
+              crazyFeaturesContext += `\n😳 ${crushContext}`;
+            }
+          }
+          
+          // 8. Gossip/Rumor Mill - Track relationships and spread rumors
+          if (this.gossipRumorMill) {
+            this.gossipRumorMill.trackRelationship(username, username, 'neutral'); // Self-interaction
+            const gossipContext = this.gossipRumorMill.getGossipContext();
+            if (gossipContext) {
+              crazyFeaturesContext += `\n${gossipContext}`;
+            }
+          }
+          
+          // 9. Stream Sniping Detector - Detect suspicious arrival patterns
+          if (this.streamSnipingDetector) {
+            this.streamSnipingDetector.trackArrival(username);
+            if (typeof this.streamSnipingDetector.getContext === 'function') {
+              const snipingContext = this.streamSnipingDetector.getContext(username);
+              if (snipingContext) {
+                crazyFeaturesContext += `\n${snipingContext}`;
+              }
+            }
+          }
+          
+          // 10. Rival Bot Wars - Detect other bots and compete
+          if (this.rivalBotWars) {
+            const botAnalysis = this.rivalBotWars.analyzeMessage(username, text);
+            if (botAnalysis && botAnalysis.suspiciousScore > 60) {
+              this.rivalBotWars.confirmBot(username);
+              const rivalContext = this.rivalBotWars.getWarContext();
+              if (rivalContext) {
+                crazyFeaturesContext += `\n${rivalContext}`;
+              }
+            }
+          }
+          
+          // 11. Cult System - Track cult members and rituals
+          if (this.sluntCultSystem) {
+            const cultContext = this.sluntCultSystem.getCultContext();
+            if (cultContext) {
+              crazyFeaturesContext += `\n${cultContext}`;
+            }
+          }
+          
+          // 12. Chat Theater - If play is active
+          if (this.chatTheaterMode) {
+            const theaterContext = this.chatTheaterMode.getTheaterContext();
+            if (theaterContext) {
+              crazyFeaturesContext += `\n${theaterContext}`;
+            }
+          }
+          
+          // 13. Collective Unconscious - Track collective patterns
+          if (this.collectiveUnconscious) {
+            const topics = this.extractTopics ? this.extractTopics(text) : [];
+            this.collectiveUnconscious.contributeToCollective(username, {
+              mood: this.moodTracker.getMood(),
+              message: text,
+              emotion: emotion.primary,
+              theme: topics[0] || 'unknown'
+            });
+            const collectiveContext = this.collectiveUnconscious.getCollectiveContext();
+            if (collectiveContext) {
+              crazyFeaturesContext += `\n${collectiveContext}`;
+            }
+          }
+          
+          // 14. Time Loop Detector - Detect recursive conversations
+          if (this.timeLoopDetector) {
+            const topics = this.extractTopics ? this.extractTopics(text) : [];
+            const loopDetection = this.timeLoopDetector.recordMessage(username, text, {
+              mood: this.moodTracker.getMood(),
+              topic: topics[0] || 'unknown'
+            });
+            if (loopDetection) {
+              if (loopDetection.type === 'deja_vu') {
+                crazyFeaturesContext += `\n⏰ DÉJÀ VU: You said this ${Math.round(loopDetection.timeDiff / (60 * 60 * 1000))} hours ago`;
+              } else {
+                crazyFeaturesContext += `\n⏰ TIME LOOP DETECTED: ${loopDetection.type} (iteration ${loopDetection.loopIteration || 1})`;
+              }
+            }
+            const loopContext = this.timeLoopDetector.getLoopContext();
+            if (loopContext) {
+              crazyFeaturesContext += `\n${loopContext}`;
+            }
+          }
+        } catch (crazyError) {
+          // Don't let crazy features crash the bot
+          console.error('⚠️ [CrazyFeatures] Error in crazy features context:', crazyError.message);
+        }
+        
+        // === USE CONTEXT MANAGER FOR OPTIMIZED CONTEXT 🧠 ===
+
+        // === NEW: Get current vision data if on Coolhole ===
+        let visionContext = null;
+        if ((data.platform === 'coolhole' || !data.platform) && this.visionAnalyzer) {
+          try {
+            const latestAnalysis = this.visionAnalyzer.getLatestAnalysis?.();
+            if (latestAnalysis && latestAnalysis.timestamp > Date.now() - 30000) { // Last 30 seconds
+              visionContext = {
+                detected: latestAnalysis.detected || 'unknown',
+                confidence: latestAnalysis.confidence || 0,
+                text: latestAnalysis.text || '',
+                scene: latestAnalysis.scene || 'unknown',
+                timestamp: latestAnalysis.timestamp
+              };
+              logger.info(`👁️ [Vision] Using fresh vision data: ${visionContext.detected}`);
+            }
+          } catch (error) {
+            logger.warn('👁️ [Vision] Could not get latest analysis:', error.message);
+          }
+        }
+        
+        const contextData = await this.contextManager.buildContext(
+          { username, text, platform: data.platform || 'coolhole' },
+          {
+            conversationHistory: recentConvo,
+            relationships: this.relationshipMapping,
+            mentalState: {
+              needs: this.needsSystem.needs,
+              mentalBreak: this.mentalBreakSystem.currentBreak,
+              mood: this.moodTracker.getMood(),
+              stress: this.needsSystem.getStressLevel(),
+              thoughts: this.thoughtSystem.getThoughtSummary() // Fixed: correct method name
+            },
+            personality: {
+              currentMode: this.personalityModes.currentMode,
+              traits: Object.keys(this.personality).filter(k => this.personality[k] > 0.7)
+            },
+            rimworld: {
+              schedule: { block: this.scheduleSystem.getCurrentBlock().name },
+              tolerance: this.toleranceSystem.getUserProfile(username) // Fixed: correct method name
+            },
+            streamInfo: this.videoManager ? this.videoManager.getCurrentVideo() : null,
+            vision: visionContext // NEW: Include vision data
+          }
         );
+        
+        // Convert optimized context to string
+        const optimizedContext = this.contextManager.contextToString(contextData);
+        
+        // Calculate dynamic temperature based on mental state
+        const dynamicTemperature = this.responseQuality.calculateTemperature(
+          {
+            stress: this.needsSystem.getStressLevel(),
+            mentalBreak: this.mentalBreakSystem.currentBreak,
+            mood: this.moodTracker.getMood(),
+            needs: this.needsSystem.needs,
+            neggingLevel: this.neggingDetector.currentNeggingLevel // Add negging
+          },
+          { text, personalityMode: this.personalityModes.currentMode }
+        );
+        
+        // Check if humor is appropriate
+        const humorCheck = this.responseQuality.shouldAttemptHumor(
+          { text },
+          { 
+            stress: this.needsSystem.getStressLevel(),
+            mentalBreak: this.mentalBreakSystem.currentBreak,
+            mood: this.moodTracker.getMood()
+          }
+        );
+        
+        logger.info(`🧠 Context: ${contextData.totalLength} chars, Temperature: ${dynamicTemperature.toFixed(2)}, Humor: ${humorCheck.allowed ? 'YES' : `NO (${humorCheck.reason})`}`);
+
+        // === 14 NEW CONVERSATION ENHANCEMENT SYSTEMS 🚀💬✨ ===
+        let enhancementContext = '';
+        const enhancementTopics = this.extractTopics(text);
+        const currentHour = new Date().getHours();
+        
+        try {
+          // 1. Dynamic Style Adaptation
+          if (this.dynamicStyle) {
+            enhancementContext += this.dynamicStyle.getStyleContext(username, platform, text, currentHour);
+          }
+          
+          // 2. Question Handler - Force real answers
+          if (this.questionHandler) {
+            const questionAnalysis = this.questionHandler.analyzeQuestion(text);
+            if (questionAnalysis) {
+              enhancementContext += this.questionHandler.getAnswerGuidance(questionAnalysis);
+            }
+          }
+          
+          // 3. Conversation Depth - Multi-turn tracking
+          if (this.conversationDepth) {
+            this.conversationDepth.trackTurn(username, platform, channel);
+            enhancementContext += this.conversationDepth.getDepthContext(username, platform, channel);
+          }
+          
+          // 4. Topic Expertise - Realistic knowledge
+          if (this.topicExpertise) {
+            enhancementContext += this.topicExpertise.getExpertiseContext(enhancementTopics);
+          }
+          
+          // 5. Enhanced Callback - Reference past conversations
+          if (this.enhancedCallback) {
+            this.enhancedCallback.trackMoment(username, text, platform);
+            const callback = this.enhancedCallback.findCallback(username, text);
+            if (callback) enhancementContext += callback;
+          }
+          
+          // 6. Emotional Intelligence - Mood detection
+          if (this.emotionalIntel) {
+            enhancementContext += this.emotionalIntel.getEmotionalContext(username, text);
+          }
+          
+          // 7. Banter Balance - Friendship-scaled roasting
+          if (this.banterBalance) {
+            enhancementContext += this.banterBalance.getBanterContext(username);
+          }
+          
+          // 8. Story Generator - Share anecdotes
+          if (this.storyGenerator) {
+            enhancementContext += this.storyGenerator.getStoryContext();
+            if (this.storyGenerator.shouldShareStory(text, enhancementTopics)) {
+              const story = this.storyGenerator.generateStory(text, enhancementTopics);
+              if (story) {
+                enhancementContext += `\n[STORY OPPORTUNITY]: Consider sharing: "${story}"`;
+              }
+            }
+          }
+          
+          // 9. Cross-Platform Continuity
+          if (this.crossPlatform && typeof this.crossPlatform.trackTopic === 'function') {
+            this.crossPlatform.trackTopic(username, platform, enhancementTopics);
+            enhancementContext += this.crossPlatform.getContinuityContext(username, platform, enhancementTopics);
+          }
+          
+          // 10. Personality Drift - Opinion evolution
+          if (this.personalityDrift) {
+            enhancementContext += this.personalityDrift.getOpinionContext(enhancementTopics);
+          }
+          
+          // 11. Bit Commitment - Check if in a bit
+          if (this.bitCommitmentEnhancer && typeof this.bitCommitmentEnhancer.getActiveBit === 'function') {
+            const activeBit = this.bitCommitmentEnhancer.getActiveBit();
+            if (activeBit && typeof this.bitCommitmentEnhancer.getBitContext === 'function') {
+              enhancementContext += this.bitCommitmentEnhancer.getBitContext(activeBit);
+            }
+          }
+          
+          // 12. Hot Take Debate Mode
+          if (this.hotTakes) {
+            if (this.hotTakes.debateMode) {
+              enhancementContext += this.hotTakes.getDebateContext(text);
+            } else if (this.hotTakes.shouldShareHotTake()) {
+              const take = this.hotTakes.generateHotTake();
+              if (take) {
+                enhancementContext += `\n[HOT TAKE]: Consider sharing: "${take}"`;
+              }
+            }
+          }
+          
+          // === CHAT LEARNING: Inject learned community knowledge ===
+          if (this.chatLearning) {
+            const learnedContext = this.chatLearning.getLearnedContext();
+            if (learnedContext) {
+              enhancementContext += `\n\n=== LEARNED FROM CHAT ===\n${learnedContext}\n`;
+            }
+          }
+          
+          logger.info(`🚀 [Enhancement] Added context from 13/14 systems`);
+        } catch (error) {
+          logger.warn(`⚠️ [Enhancement] Error building enhancement context: ${error.message}`);
+        }
+
+        // SIMPLIFIED CONTEXT - use optimized version + memories + dreams + crazy features + ENHANCEMENTS
+        const simpleContext = platformContext + '\n' + optimizedContext + memoryContext + dreamContext + crazyFeaturesContext + enhancementContext;
+
+        // === RARE PET NAME: Very rarely call user a pet name 💕 ===
+        let displayName = username;
+        const petName = this.nicknameManager.getRarePetName();
+        if (petName) {
+          displayName = petName;
+          logger.info(`💕 [PetName] Slunt will address ${username} as "${petName}"`);
+        }
+
+        // === CIRCUIT BREAKER: Check if we should attempt AI ===
+        let aiResponse = null;
+        if (this.ollamaCircuitBreaker.shouldAttemptAI()) {
+          try {
+            // === RATE LIMITER: Wrap AI call to prevent hammering ===
+            aiResponse = await this.ollamaRateLimiter.executeRequest(
+              async () => {
+                // Pass clean, minimal context to AI
+                // Use displayName (might be pet name) instead of username
+                return await this.ai.generateResponse(
+                  text,
+                  displayName,
+                  simpleContext
+                );
+              },
+              `Response for ${username}: "${text.substring(0, 30)}..."`
+            );
+            
+            // Record success
+            if (aiResponse && aiResponse.trim().length > 0) {
+              this.ollamaCircuitBreaker.recordSuccess();
+            }
+          } catch (error) {
+            // Record failure
+            this.ollamaCircuitBreaker.recordFailure(error);
+            aiResponse = null;
+          }
+        }
+        
+        // === FALLBACK: Use simple response if AI unavailable ===
+        if (!aiResponse || aiResponse.trim().length === 0) {
+          const fallbackContext = {
+            mentioned: text.toLowerCase().includes('slunt'),
+            sentiment: this.emotionalEngine ? this.emotionalEngine.detectEmotion(text, username).valence : 0,
+            isQuestion: text.includes('?'),
+            hasExclamation: text.includes('!')
+          };
+          
+          aiResponse = this.ollamaCircuitBreaker.getFallbackResponse(fallbackContext);
+          logger.info(`🔄 Using fallback response: ${aiResponse}`);
+        }
 
         // USE THE AI RESPONSE if we got one!
         if (aiResponse && aiResponse.trim().length > 0) {
@@ -2332,51 +3829,115 @@ class ChatBot extends EventEmitter {
           let cleanResponse = aiResponse.trim();
           
           // Remove newlines - AI shouldn't generate multi-line responses
+          // FIXED: Replace newlines with space AND ensure proper spacing between sentences
           cleanResponse = cleanResponse.replace(/\n+/g, ' ');
           
+          // FIXED: Ensure sentence boundaries have proper spacing (fix run-on sentences)
+          cleanResponse = cleanResponse.replace(/([.!?])([A-Z])/g, '$1 $2');
+          
+          // === NEW: Apply negging effects to response structure ===
+          if (this.neggingDetector && this.neggingDetector.currentNeggingLevel >= 15) {
+            cleanResponse = this.neggingDetector.modifyResponse(cleanResponse);
+            logger.info(`💔 Applied negging effects (${this.neggingDetector.currentNeggingLevel}%)`);
+          }
+          
+          // === NEW: Apply mental break effects to response structure ===
+          if (this.mentalBreakSystem && this.mentalBreakSystem.isBreaking()) {
+            const breakType = this.mentalBreakSystem.currentBreak.type;
+            cleanResponse = this.mentalBreakSystem.modifyResponse(cleanResponse);
+            logger.info(`💥 Applied mental break effects (${breakType})`);
+          }
+
+          // === NEW: Apply needs system effects to response structure ===
+          if (this.needsSystem) {
+            const modifiers = this.needsSystem.getBehavioralModifiers();
+            if (modifiers.length > 0) {
+              const originalResponse = cleanResponse;
+              cleanResponse = this.needsSystem.modifyResponse(cleanResponse);
+              if (cleanResponse !== originalResponse) {
+                logger.info(`🎯 Applied needs effects (${modifiers.slice(0, 2).join(', ')})`);
+              }
+            }
+          }
+
+          // === NEW: Maybe add discovered emote to response ===
+          if (this.emoteDiscovery && this.emoteDiscovery.shouldUseEmote()) {
+            const sentiment = this.sentimentAnalyzer?.analyzeSentiment?.(cleanResponse) || 0;
+            const emoteSentiment = sentiment > 0.3 ? 'positive' : sentiment < -0.3 ? 'negative' : 'neutral';
+            const emote = this.emoteDiscovery.getEmoteForContext(emoteSentiment);
+            
+            if (emote) {
+              // Add emote naturally (sometimes at end, sometimes standalone)
+              if (Math.random() < 0.3 && cleanResponse.length < 50) {
+                cleanResponse = emote; // Just the emote
+              } else {
+                cleanResponse = cleanResponse + ' ' + emote;
+              }
+              logger.info(`😀 [Emotes] Added discovered emote: ${emote}`);
+            }
+          }
+          
+          // === NEW: Check response novelty to prevent repetition ===
+          if (this.noveltyChecker) {
+            const noveltyCheck = this.noveltyChecker.checkNovelty(cleanResponse, { username, text });
+            if (!noveltyCheck.novel) {
+              // Response is too repetitive - try to get a new one
+              logger.warn(`🔁 Response rejected: ${noveltyCheck.reason}`);
+              
+              // If we have time, try regenerating with modified prompt
+              if (noveltyCheck.suggestion) {
+                logger.info(`🔁 ${noveltyCheck.suggestion}`);
+                // For now, add variation marker to force different response
+                // Could implement full regeneration here in the future
+                cleanResponse = cleanResponse + ' anyway';
+              }
+            }
+          }
+          
           // If response has multiple distinct sentences, just use the first one
-          if (cleanResponse.length > 80) {
-            // Split on sentence endings
-            const sentences = cleanResponse.split(/[.!?]+\s+/);
-            if (sentences.length > 1 && sentences[0].trim().length > 20) {
-              // Use first sentence only
-              cleanResponse = sentences[0].trim();
+          // PREFER short responses but ALLOW longer complete thoughts
+          // Only truncate if response is ACTUALLY too long (>200 chars) OR has 3+ sentences
+          if (cleanResponse.length > 200 || cleanResponse.split(/[.!?]+\s+/).length > 3) {
+            const sentences = cleanResponse.split(/[.!?]+\s+/).filter(s => s.trim().length > 5);
+            
+            // If we have 3+ sentences, randomly keep 1-2
+            if (sentences.length >= 3 && Math.random() < 0.50) {
+              const numSentences = Math.random() < 0.6 ? 1 : 2;
+              cleanResponse = sentences.slice(0, numSentences).join('. ').trim();
               // Re-add punctuation if missing
               if (!/[.!?]$/.test(cleanResponse)) {
                 cleanResponse += '.';
               }
-              logger.info(`✂️ Truncated to first sentence: ${cleanResponse}`);
+              logger.info(`✂️ Truncated to ${numSentences} sentence(s) (${cleanResponse.length} chars)`);
             }
           }
           
-          // Hard cap at 150 characters for conciseness (increased from 120 to reduce mid-word cuts)
-          if (cleanResponse.length > 150) {
-            // IMPROVED: Always cut at word boundary, never mid-word
-            let truncated = cleanResponse.substring(0, 150);
+          // Only hard cut if response is EXTREMELY long (>350 chars)
+          if (cleanResponse.length > 350) {
+            // Try to cut at sentence boundary
+            let truncated = cleanResponse.substring(0, 300);
+            const lastPeriod = Math.max(
+              truncated.lastIndexOf('.'),
+              truncated.lastIndexOf('!'),
+              truncated.lastIndexOf('?')
+            );
             
-            // Find last complete word - look for space followed by word characters
-            // This ensures we don't cut in the middle of the last word
-            const lastSpace = truncated.lastIndexOf(' ');
-            
-            if (lastSpace > 80) {
-              // Cut at the last space to keep complete words
-              truncated = truncated.substring(0, lastSpace).trim();
-              
-              // Remove trailing punctuation if it's not sentence-ending
-              truncated = truncated.replace(/[,\-:]$/, '');
-              
-              // No need to add ellipsis - looks cleaner without
+            if (lastPeriod > 200) {
+              // Cut at sentence
+              truncated = cleanResponse.substring(0, lastPeriod + 1).trim();
             } else {
-              // Fallback: cut at 120 chars and find last space
-              truncated = cleanResponse.substring(0, 120);
-              const lastSpace2 = truncated.lastIndexOf(' ');
-              if (lastSpace2 > 60) {
-                truncated = truncated.substring(0, lastSpace2).trim();
+              // Cut at word boundary
+              const lastSpace = truncated.lastIndexOf(' ');
+              if (lastSpace > 250) {
+                truncated = truncated.substring(0, lastSpace).trim();
+                if (!/[.!?]$/.test(truncated)) {
+                  truncated += '.';
+                }
               }
             }
             
             cleanResponse = truncated;
-            logger.info(`✂️ Truncated long response to: ${cleanResponse}`);
+            logger.info(`✂️ Hard truncated extremely long response (${cleanResponse.length} chars)`);
           }
           
           // Check for duplicate phrases (but allow if we're directly mentioned)
@@ -2386,6 +3947,46 @@ class ChatBot extends EventEmitter {
             logger.warn('⚠️ Obsessing over same topic, skipping response');
             return null; // Skip this response, avoid obsessive repetition
           } else {
+            // === RESPONSE QUALITY ENHANCEMENT 🧠 ===
+            const enhancementResult = this.responseQuality.enhanceResponse(
+              cleanResponse,
+              { 
+                text, 
+                personalityMode: this.personalityModes.currentMode 
+              },
+              {
+                mood: this.moodTracker.getMood(),
+                stress: this.needsSystem.getStressLevel(),
+                mentalBreak: this.mentalBreakSystem.currentBreak
+              }
+            );
+            
+            // Use enhanced response
+            cleanResponse = enhancementResult.response;
+            
+            // Log quality checks
+            if (!enhancementResult.styleCheck.consistent) {
+              logger.warn(`⚠️ Style violations: ${enhancementResult.styleCheck.violations.join(', ')}`);
+            }
+            
+            if (enhancementResult.patternAnalysis.repetitive) {
+              logger.warn(`⚠️ Pattern repetitive: ${enhancementResult.patternAnalysis.warning}`);
+              // Maybe skip this response if too repetitive
+              if (Math.random() < 0.5) {
+                logger.info('🔄 Skipping repetitive response pattern');
+                return null;
+              }
+            }
+            
+            if (enhancementResult.suggestions.length > 0) {
+              logger.info(`💡 Suggestions: ${enhancementResult.suggestions.join(', ')}`);
+            }
+            
+            // Record humor attempt if detected
+            if (humorCheck.allowed && (cleanResponse.match(/lmao|lol|haha|😂/i) || cleanResponse.includes('?'))) {
+              this.responseQuality.recordHumorAttempt();
+            }
+            
             // === ADVANCED SYSTEMS INTEGRATION BEFORE CHAOS 🚀 ===
             
             // 1. Check for conversation thread callback
@@ -2444,8 +4045,25 @@ class ChatBot extends EventEmitter {
               console.error('Failed to record statement:', err);
             });
             
+            // 🎭 MAKE RESPONSE MORE CONVERSATIONAL AND NATURAL
+            let conversationalResponse = cleanResponse;
+            
+            // Process message for conversation state
+            this.conversationalPersonality.processMessage(username, text, platform);
+            
+            // Check if response needs more personality
+            if (this.conversationalPersonality.needsMorePersonality(conversationalResponse)) {
+              logger.info(`[${getTimestamp()}] 🗣️ Enhancing robotic response for naturalness`);
+            }
+            
+            // Enhance with natural conversation patterns
+            conversationalResponse = this.conversationalPersonality.enhanceResponse(conversationalResponse, { username, platform });
+            
+            // Humanize the response (remove robotic language)
+            conversationalResponse = this.conversationalPersonality.humanizeResponse(conversationalResponse, username, text);
+            
             // 🎭 APPLY CHAOS MODIFICATIONS BEFORE RETURNING
-            return await this.applyChaosModifications(cleanResponse, username, text, { sentiment: emotion.primary });
+            return await this.applyChaosModifications(conversationalResponse, username, text, { sentiment: emotion.primary });
           }
         }
 
@@ -2515,19 +4133,66 @@ class ChatBot extends EventEmitter {
     // Vary response length and flow
     let finalResponse = this.varyResponse(baseResponse, lengthCat);
     
-    // Avoid repeating recent responses
+    // Avoid repeating recent responses - MORE AGGRESSIVE
     let attempts = 0;
-    while (this.responseVariety && this.responseVariety.isTooSimilar(finalResponse) && attempts < 3) {
+    while (this.responseVariety && this.responseVariety.isTooSimilar(finalResponse) && attempts < 5) {
       attempts++;
+      console.log(`🔄 [Variety] Attempt ${attempts}: Regenerating response to avoid repetition`);
       const alt = responses[Math.floor(Math.random() * responses.length)];
       finalResponse = this.varyResponse(alt, lengthCat);
+    }
+    
+    // If still too similar after 5 attempts, add variety modifier
+    if (attempts >= 5 && this.responseVariety && this.responseVariety.isTooSimilar(finalResponse)) {
+      console.log(`⚠️ [Variety] Could not find unique response after 5 attempts, adding variety...`);
+      const varietyPhrases = ['...actually', 'wait', 'hold on', 'you know what', 'tbh'];
+      const prefix = varietyPhrases[Math.floor(Math.random() * varietyPhrases.length)];
+      finalResponse = `${prefix}, ${finalResponse}`;
     }
     
     // Track response for variety system
     try { this.responseVariety && this.responseVariety.trackResponse(finalResponse); } catch (e) { /* ignore */ }
     
-    // 🎭 APPLY CHAOS MODIFICATIONS BEFORE RETURNING
-    return await this.applyChaosModifications(finalResponse, username, text, { sentiment: genEmotion.primary });
+    // === POST-RESPONSE TRACKING FOR NEW SYSTEMS 🚀 ===
+    try {
+      // 1. Check if response started a bit
+      if (this.bitCommitmentEnhancer && typeof this.bitCommitmentEnhancer.detectBit === 'function') {
+        const bitDetection = this.bitCommitmentEnhancer.detectBit(finalResponse, 'slunt');
+        if (bitDetection) {
+          this.bitCommitmentEnhancer.startBit(bitDetection.type, finalResponse);
+          logger.info(`🎭 [Bit] Started ${bitDetection.type} bit`);
+        }
+      }
+      
+      // 2. Check if response contains roast
+      if (this.banterBalance && typeof this.banterBalance.markRoast === 'function') {
+        const containsRoast = finalResponse.match(/\b(stupid|dumb|idiot|trash|suck|cringe|loser)\b/i);
+        if (containsRoast) {
+          this.banterBalance.markRoast(username);
+          logger.info(`🔥 [Roast] Marked roast towards ${username}`);
+        }
+      }
+      
+      // 3. Check if response includes hot take
+      if (this.hotTakes && finalResponse.match(/\b(controversial|hot take|unpopular opinion|hear me out)\b/i)) {
+        logger.info(`🔥 [HotTake] Shared hot take`);
+      }
+      
+      // 4. Check if debate was started
+      if (this.hotTakes && !this.hotTakes.debateMode && typeof this.hotTakes.detectDebateChallenge === 'function') {
+        const debateChallenge = this.hotTakes.detectDebateChallenge(text);
+        if (debateChallenge && typeof this.hotTakes.enterDebateMode === 'function') {
+          this.hotTakes.enterDebateMode(username, finalResponse);
+          logger.info(`⚔️ [Debate] Entered debate mode with ${username}`);
+        }
+      }
+    } catch (error) {
+      logger.warn(`⚠️ [Enhancement] Error in post-response tracking: ${error.message}`);
+    }
+    
+    // 🎭 APPLY CHAOS MODIFICATIONS & SLANG FILTER BEFORE RETURNING
+    const chaosResponse = await this.applyChaosModifications(finalResponse, username, text, { sentiment: genEmotion.primary });
+    return this.filterBannedSlang(chaosResponse);
   }
 
   /**
@@ -2587,8 +4252,8 @@ class ChatBot extends EventEmitter {
       responses.push(`hell yeah`);
       responses.push(`right? that's what I'm saying`);
       responses.push(`finally someone gets it`);
-      responses.push(`fr fr`);
-      responses.push(`based take`);
+      responses.push(`exactly`);
+      responses.push(`good point`);
     }
     
     // Negative stuff - can agree or roast
@@ -2602,12 +4267,12 @@ class ChatBot extends EventEmitter {
       responses.push(`finally someone said it`);
       responses.push(`based and honest`);
       responses.push(`${username} keeping it real`);
-      responses.push(`no lies detected tbh`);
+      responses.push(`you're absolutely right`);
     }
     
     // Video/entertainment discussions
     if (lowerText.match(/video|movie|watch|stream/)) {
-      responses.push(`this one actually slaps ngl`);
+      responses.push(`this one actually hits`);
       responses.push(`${username} always picking bangers`);
       responses.push(`okay this is kinda fire`);
       responses.push(`we watching some good shit tonight`);
@@ -2646,7 +4311,7 @@ class ChatBot extends EventEmitter {
     if (text.includes('?')) {
 
       responses.push(`good question ${username}, anyone got answers?`);
-      responses.push(`bruh I don't know everything`);
+      responses.push(`man I don't know everything`);
       responses.push(`why you asking me? I'm just vibing here`);
       responses.push(`interesting question... let me think... nah I got nothing`);
       responses.push(`${username} asking the real questions`);
@@ -2752,7 +4417,7 @@ class ChatBot extends EventEmitter {
     
     // Reference conversation style
     if (userProfile.conversationStyle === 'excited') {
-      responses.push(`${username} energy is unmatched fr`);
+      responses.push(`${username} energy is unmatched honestly`);
       responses.push(`${username} always hyped, I fuck with it`);
     }
     
@@ -3090,8 +4755,22 @@ class ChatBot extends EventEmitter {
         }
       }
       
-      // === NEW: Add drunk typos if drunk (REDUCED - less aggressive) ===
+      // === NEW: Add emotion-driven typos for ultra-realism ===
       let processedMessage = message;
+      
+      // Get current emotional context
+      const typingContext = {
+        mood: this.moodTracker ? this.moodTracker.getMood() : 'neutral',
+        mentalState: this.mentalStateTracker ? this.mentalStateTracker.getMentalState() : null,
+        platform: targetPlatform  // Pass platform info to typing simulator
+      };
+      
+      // Add typos based on emotional state (if not a trick command)
+      if (!trickName && this.typingSimulator) {
+        processedMessage = this.typingSimulator.addTypos(processedMessage, typingContext);
+      }
+      
+      // Legacy drunk mode typos (still active for backwards compatibility)
       if (this.drunkMode && this.drunkMode.isDrunk && Math.random() < 0.3) {
         processedMessage = this.drunkMode.addTypos(processedMessage);
       }
@@ -3118,6 +4797,35 @@ class ChatBot extends EventEmitter {
         if (styledMessage.length > processedMessage.length * 1.5 || styledMessage.length < processedMessage.length * 0.5) {
           styledMessage = processedMessage;
         }
+      }
+      
+      // === TWITCH: Remove emojis, only use Twitch emotes ===
+      if (targetPlatform === 'twitch') {
+        // Strip all emojis (Unicode emoji characters) from Twitch messages
+        styledMessage = styledMessage.replace(/[\u{1F600}-\u{1F64F}\u{1F300}-\u{1F5FF}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}]/gu, '').trim();
+      }
+      
+      // === NEW: Add action asterisks like *yawn* based on mood 🎭 ===
+      if (this.actionGenerator && !trickName) {
+        const hasEmote = targetPlatform === 'twitch' && styledMessage.match(/\b[A-Z][a-z]+\b/); // Rough emote detection
+        const actionContext = {
+          hasEmote: hasEmote,
+          hasTrick: trickName !== null,
+          platform: targetPlatform // Pass platform for Discord exclusion logic
+        };
+        styledMessage = this.actionGenerator.maybeAddAction(styledMessage, actionContext);
+      }
+      
+      // === NEW: Add Twitch emotes for Twitch platform ===
+      if (targetPlatform === 'twitch' && this.twitchEmoteManager && !trickName) {
+        const mood = typingContext.mood || 'neutral';
+        styledMessage = this.twitchEmoteManager.maybeAddEmote(styledMessage, mood);
+      }
+      
+      // === NEW: Maybe add land acknowledgement 🪶 ===
+      if (this.landAcknowledgement && !trickName && this.landAcknowledgement.shouldAcknowledge()) {
+        styledMessage = await this.landAcknowledgement.addToMessage(styledMessage);
+        console.log('🪶 [LandAck] Added unprompted AI-generated land acknowledgement to message');
       }
       
       // === INSTANT SEND - NO TYPING DELAY ===
@@ -3160,6 +4868,15 @@ class ChatBot extends EventEmitter {
         }
       } else {
         logger.info(`[${getTimestamp()}] ✅ Message sent to ${targetPlatform}: ${styledMessage}`);
+        
+        // === RECORD RESPONSE IN RATE LIMITING SYSTEM 🧠 ===
+        // Extract username from meta or conversation context
+        const respondingTo = meta.respondingTo || 
+          (this.conversationContext.length > 0 ? 
+            this.conversationContext[this.conversationContext.length - 1].username : 
+            'unknown');
+        this.rateLimiting.recordResponse(respondingTo);
+        
         // Track successful send
         if (this.metricsCollector) {
           this.metricsCollector.trackMessageSent(targetPlatform, styledMessage);

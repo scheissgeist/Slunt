@@ -1,0 +1,469 @@
+{
+  "episodes": [
+    {
+      "id": "episode_1762043482439_wervg",
+      "events": [
+        {
+          "type": "emotional",
+          "username": "whomo.",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042627360
+        },
+        {
+          "type": "emotional",
+          "username": "manticrow",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042683778
+        },
+        {
+          "type": "emotional",
+          "username": "electriqwizard",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042701802
+        },
+        {
+          "type": "emotional",
+          "username": "BunnBunn joined (aliases",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042714570
+        },
+        {
+          "type": "emotional",
+          "username": "BunnBunn joined (aliases",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042714583
+        },
+        {
+          "type": "emotional",
+          "username": "electriqwizard",
+          "content": "angry",
+          "intensity": "low",
+          "timestamp": 1762042722222
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042742337
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042796690
+        },
+        {
+          "type": "emotional",
+          "username": "whomo.",
+          "content": "grateful",
+          "intensity": "low",
+          "timestamp": 1762042814358
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042819945
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042843274
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042844715
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042848815
+        },
+        {
+          "type": "emotional",
+          "username": "electriqwizard",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042849932
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042850835
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042865068
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042869008
+        },
+        {
+          "type": "emotional",
+          "username": "hued",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042881361
+        },
+        {
+          "type": "emotional",
+          "username": "scouragous",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042893824
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042916976
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042947866
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762042951360
+        },
+        {
+          "type": "emotional",
+          "username": "BbNaB joined (aliases",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043079996
+        },
+        {
+          "type": "emotional",
+          "username": "BbNaB joined (aliases",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043080009
+        },
+        {
+          "type": "emotional",
+          "username": "electriqwizard",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043086901
+        },
+        {
+          "type": "emotional",
+          "username": "vaporwar3",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043091801
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043107495
+        },
+        {
+          "type": "emotional",
+          "username": "manticrow",
+          "content": "angry",
+          "intensity": "low",
+          "timestamp": 1762043112463
+        },
+        {
+          "type": "emotional",
+          "username": "vaporwar3",
+          "content": "angry",
+          "intensity": "low",
+          "timestamp": 1762043120308
+        },
+        {
+          "type": "emotional",
+          "username": "dammitwesley",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043121636
+        },
+        {
+          "type": "emotional",
+          "username": "Applecooler",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043135043
+        },
+        {
+          "type": "emotional",
+          "username": "Applecooler",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043135054
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043159416
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043183327
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043183559
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043190558
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "confused",
+          "intensity": "low",
+          "timestamp": 1762043221166
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043225613
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043231276
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043254779
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043264182
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043290802
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043303014
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043338124
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "confused",
+          "intensity": "low",
+          "timestamp": 1762043338359
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043341825
+        },
+        {
+          "type": "emotional",
+          "username": "bobbyboon",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043342493
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043342906
+        },
+        {
+          "type": "emotional",
+          "username": "braybray9876",
+          "content": "angry",
+          "intensity": "low",
+          "timestamp": 1762043344128
+        },
+        {
+          "type": "emotional",
+          "username": "orbmeat",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043362501
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043371757
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043387180
+        },
+        {
+          "type": "emotional",
+          "username": "orbmeat",
+          "content": "happy",
+          "intensity": "low",
+          "timestamp": 1762043403462
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043404488
+        },
+        {
+          "type": "emotional",
+          "username": "orbmeat",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043406047
+        },
+        {
+          "type": "emotional",
+          "username": "orbmeat",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043406981
+        },
+        {
+          "type": "emotional",
+          "username": "gorgelgargle",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043408422
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "happy",
+          "intensity": "low",
+          "timestamp": 1762043411039
+        },
+        {
+          "type": "emotional",
+          "username": "._.fug",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043428989
+        },
+        {
+          "type": "emotional",
+          "username": "what.tha",
+          "content": "neutral",
+          "intensity": "low",
+          "timestamp": 1762043429118
+        },
+        {
+          "type": "emotional",
+          "username": "bobbyboon",
+          "content": "angry",
+          "intensity": "low",
+          "timestamp": 1762043439149
+        },
+        {
+          "type": "emotional",
+          "username": "plaguejackal",
+          "content": "confused",
+          "intensity": "low",
+          "timestamp": 1762043439231
+        }
+      ],
+      "startTime": 1762042627360,
+      "endTime": 1762043439231,
+      "participants": [
+        "whomo.",
+        "manticrow",
+        "electriqwizard",
+        "BunnBunn joined (aliases",
+        "scouragous",
+        "braybray9876",
+        "what.tha",
+        "hued",
+        "BbNaB joined (aliases",
+        "vaporwar3",
+        "plaguejackal",
+        "dammitwesley",
+        "Applecooler",
+        "gorgelgargle",
+        "bobbyboon",
+        "orbmeat",
+        "._.fug"
+      ],
+      "duration": 811871,
+      "episodeType": "emotional",
+      "narrative": "whomo., manticrow, electriqwizard had an emotional exchange that escalated over 14 minutes. 62 memorable moments.",
+      "importance": 100
+    }
+  ],
+  "savedAt": 1762043482561
+}

@@ -200,6 +200,174 @@ class TypingSimulator {
   }
 
   /**
+   * Add emotion-driven typos to make typing feel more human
+   */
+  addTypos(message, context = {}) {
+    const { mood, mentalState } = context;
+    
+    // Short messages rarely get typos
+    if (message.length < 20) return message;
+    
+    // Calculate typo chance based on emotional state
+    let typoChance = 0.03; // 3% base chance per word
+    let shouldCorrect = true;
+    
+    // Excited/manic = more typos
+    if (mood === 'excited' || mood === 'manic') {
+      typoChance = 0.12; // 12% chance
+      shouldCorrect = Math.random() < 0.7; // 70% correction rate
+    }
+    
+    // Drunk mode = LOTS of typos, degrades over time
+    if (mentalState && mentalState.substance?.name === 'alcohol') {
+      const drunkLevel = mentalState.substance.doseMg / 200; // Higher = more drunk
+      typoChance = 0.15 + (drunkLevel * 0.15); // 15-30%
+      shouldCorrect = Math.random() < (0.3 - drunkLevel * 0.2); // 30-10% correction
+    }
+    
+    // Anxious = deliberate, fewer typos
+    if (mood === 'anxious' || mood === 'stressed') {
+      typoChance = 0.01; // 1% chance
+    }
+    
+    // Depressed/tired = occasional typos, don't always correct
+    if (mood === 'depressed' || mood === 'tired') {
+      typoChance = 0.05; // 5% chance
+      shouldCorrect = Math.random() < 0.4; // 40% correction rate
+    }
+    
+    // Split into words but preserve spaces/punctuation
+    const words = message.split(/(\s+|[.,!?;:])/);
+    let result = [];
+    
+    for (let word of words) {
+      // Skip whitespace and punctuation
+      if (word.match(/^\s+$/) || word.match(/^[.,!?;:]$/)) {
+        result.push(word);
+        continue;
+      }
+      
+      // Skip very short words
+      if (word.length < 3) {
+        result.push(word);
+        continue;
+      }
+      
+      // Roll for typo
+      if (Math.random() < typoChance) {
+        const typoWord = this.generateTypo(word);
+        
+        // Correct the typo?
+        if (shouldCorrect) {
+          // Disabled strikethrough - just use corrected word
+          // (No strikethrough on any platform)
+          result.push(word);
+        } else {
+          result.push(typoWord);
+        }
+      } else {
+        result.push(word);
+      }
+    }
+    
+    return result.join('');
+  }
+
+  /**
+   * Generate a realistic typo
+   */
+  generateTypo(word) {
+    const typoTypes = [
+      () => this.adjacentKeyTypo(word),    // 40% - hit adjacent key
+      () => this.missingLetterTypo(word),  // 25% - skip a letter
+      () => this.doubleLetterTypo(word),   // 20% - double a letter
+      () => this.swapLettersTypo(word),    // 15% - swap adjacent letters
+    ];
+    
+    // Weight the selection
+    const rand = Math.random();
+    let selectedTypo;
+    if (rand < 0.40) selectedTypo = typoTypes[0];
+    else if (rand < 0.65) selectedTypo = typoTypes[1];
+    else if (rand < 0.85) selectedTypo = typoTypes[2];
+    else selectedTypo = typoTypes[3];
+    
+    return selectedTypo();
+  }
+
+  /**
+   * Hit an adjacent key on QWERTY keyboard
+   */
+  adjacentKeyTypo(word) {
+    const keyboard = {
+      'q': ['w', 'a'],
+      'w': ['q', 'e', 's'],
+      'e': ['w', 'r', 'd'],
+      'r': ['e', 't', 'f'],
+      't': ['r', 'y', 'g'],
+      'y': ['t', 'u', 'h'],
+      'u': ['y', 'i', 'j'],
+      'i': ['u', 'o', 'k'],
+      'o': ['i', 'p', 'l'],
+      'p': ['o'],
+      'a': ['q', 's', 'z'],
+      's': ['a', 'w', 'd', 'x'],
+      'd': ['s', 'e', 'f', 'c'],
+      'f': ['d', 'r', 'g', 'v'],
+      'g': ['f', 't', 'h', 'b'],
+      'h': ['g', 'y', 'j', 'n'],
+      'j': ['h', 'u', 'k', 'm'],
+      'k': ['j', 'i', 'l'],
+      'l': ['k', 'o'],
+      'z': ['a', 'x'],
+      'x': ['z', 's', 'c'],
+      'c': ['x', 'd', 'v'],
+      'v': ['c', 'f', 'b'],
+      'b': ['v', 'g', 'n'],
+      'n': ['b', 'h', 'm'],
+      'm': ['n', 'j']
+    };
+    
+    const pos = Math.floor(Math.random() * word.length);
+    const char = word[pos].toLowerCase();
+    const adjacent = keyboard[char];
+    
+    if (!adjacent || adjacent.length === 0) return word;
+    
+    const replacement = adjacent[Math.floor(Math.random() * adjacent.length)];
+    const isUpperCase = word[pos] === word[pos].toUpperCase();
+    const newChar = isUpperCase ? replacement.toUpperCase() : replacement;
+    
+    return word.substring(0, pos) + newChar + word.substring(pos + 1);
+  }
+
+  /**
+   * Skip a letter
+   */
+  missingLetterTypo(word) {
+    if (word.length < 4) return word;
+    const pos = 1 + Math.floor(Math.random() * (word.length - 2)); // Not first or last
+    return word.substring(0, pos) + word.substring(pos + 1);
+  }
+
+  /**
+   * Double a letter
+   */
+  doubleLetterTypo(word) {
+    const pos = Math.floor(Math.random() * word.length);
+    return word.substring(0, pos) + word[pos] + word.substring(pos);
+  }
+
+  /**
+   * Swap adjacent letters
+   */
+  swapLettersTypo(word) {
+    if (word.length < 2) return word;
+    const pos = Math.floor(Math.random() * (word.length - 1));
+    return word.substring(0, pos) + word[pos + 1] + word[pos] + word.substring(pos + 2);
+  }
+
+  /**
    * Get typing speed description
    */
   getTypingSpeedDescription(wpm) {

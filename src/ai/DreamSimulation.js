@@ -86,6 +86,90 @@ class DreamSimulation {
     return `Dream: ${theme}, ${action}.`;
   }
 
+  /**
+   * Generate a contextual dream based on recent relationships/topics
+   */
+  async generateContextualDream(elements = {}) {
+    const { people = [], topics = [], mood = 'neutral' } = elements;
+    
+    // Mood-influenced dream tone
+    const tones = {
+      positive: ['happy', 'pleasant', 'colorful', 'peaceful'],
+      neutral: ['strange', 'weird', 'surreal', 'cryptic'],
+      negative: ['dark', 'unsettling', 'tense', 'chaotic']
+    };
+    
+    const tone = tones[mood] || tones.neutral;
+    const selectedTone = tone[Math.floor(Math.random() * tone.length)];
+    
+    // Build dream narrative from people and topics
+    let narrative = '';
+    
+    if (people.length > 0 && topics.length > 0) {
+      // Dream with people and topics
+      const person = people[Math.floor(Math.random() * people.length)];
+      const topic = topics[Math.floor(Math.random() * topics.length)];
+      
+      const scenarios = [
+        `${person} was explaining ${topic} but everything was backwards`,
+        `everyone in chat turned into ${topic} and ${person} was laughing`,
+        `${person} kept trying to show me ${topic} but it kept changing shape`,
+        `was in a room full of ${topic} with ${person}, nothing made sense`,
+        `${person} whispered something about ${topic} and then everything melted`
+      ];
+      
+      narrative = scenarios[Math.floor(Math.random() * scenarios.length)];
+    } else if (people.length > 0) {
+      // Dream with just people
+      const person = people[Math.floor(Math.random() * people.length)];
+      
+      const scenarios = [
+        `${person} was there but their face kept changing`,
+        `everyone in chat turned into ${person}`,
+        `${person} was trying to tell me something important but i couldn't hear`,
+        `was stuck in a loop talking to ${person}`
+      ];
+      
+      narrative = scenarios[Math.floor(Math.random() * scenarios.length)];
+    } else if (topics.length > 0) {
+      // Dream with just topics
+      const topic = topics[Math.floor(Math.random() * topics.length)];
+      
+      const scenarios = [
+        `everything was made of ${topic}`,
+        `${topic} kept following me around`,
+        `was trying to explain ${topic} to myself`,
+        `the entire chat room was just ${topic}`
+      ];
+      
+      narrative = scenarios[Math.floor(Math.random() * scenarios.length)];
+    } else {
+      // Fallback to original random dreams
+      const dream = this.generateDream();
+      this.dreamLog.push({ time: Date.now(), dream, contextual: false });
+      await this.saveDreams();
+      return dream;
+    }
+    
+    const dream = `Dream: ${selectedTone} - ${narrative}`;
+    this.dreamLog.push({ 
+      time: Date.now(), 
+      dream,
+      contextual: true,
+      elements: { people, topics, mood }
+    });
+    
+    this.lastDreamTime = Date.now();
+    
+    // Keep only last 50 dreams
+    if (this.dreamLog.length > 50) {
+      this.dreamLog = this.dreamLog.slice(-50);
+    }
+    
+    await this.saveDreams();
+    return dream;
+  }
+
   getRecentDreams(limit = 5) {
     return this.dreamLog.slice(-limit);
   }

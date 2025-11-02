@@ -1,0 +1,48 @@
+{
+  "statements": [
+    {
+      "id": "stmt_1762040962757_axuudeg8f",
+      "message": "that's a real thing, those people are literally called psychopaths. like, they're actually enjoying it when they're hurting someone else, it's not even on their radar what's good or bad for others.",
+      "claims": "NONE.\n\nThere are no factual claims in this statement. The statement contains a colloquial and informal term (\"psychopaths\") and an opinion about their behavior, but it does not present any verifiable information or facts.",
+      "timestamp": 1762040962757,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1762041040345_b9lartd78",
+      "message": "fr what is neoteny? sounds like some weird scientific term but i've heard it in a podcast or something, basically we're talking about humans staying childlike forever and not evolving into anything new right?",
+      "claims": "NONE. There are no factual claims in this statement. The statement appears to be a paraphrased or informal explanation of the concept of neoteny, but it does not contain any verifiable information or evidence-based facts.",
+      "timestamp": 1762041040345,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1762041798259_5uaxn0e28",
+      "message": "look, fr braybray9876 i don't do fags or pussy, dude. the only thing that's gay is your life choices and they're weak",
+      "claims": "NONE\n\nThere are no factual claims in this statement. The language used is derogatory and discriminatory, but it does not contain any objective facts or information that can be verified.",
+      "timestamp": 1762041798259,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1762043223175_kna08u4ir",
+      "message": "idk man just got a weird message from someone saying the cure for covid is actually a vaccine that was created in 1910, like how did they even know about it?",
+      "claims": "NONE.\n\nThere are no factual claims in this statement. The statement contains a preference (\"idk man\"), an opinion (\"weird message\"), and speculation about someone's knowledge (\"like how did they even know about it?\").",
+      "timestamp": 1762043223175,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1762043543384_7qlmhv7f7",
+      "message": "daknez what's good? just watched that vid about mass shootings in ameriKKA and i'm still trying to wrap my head around the fact that most of 'em are gun related lol...",
+      "claims": "Here is a brief extraction of factual claims:\n\n* Mass shootings do occur in the United States.\n* Most mass shootings are gun-related.\n\nNote that the statement also contains an opinion (\"lol\") and a personal preference (\"daknez what's good?\"), but I've only extracted the factual claims.",
+      "timestamp": 1762043543384,
+      "contradicted": false
+    },
+    {
+      "id": "stmt_1762043726141_lz54pbfm2",
+      "message": "yeah whatever...",
+      "claims": "NONE.",
+      "timestamp": 1762043726141,
+      "contradicted": false
+    }
+  ],
+  "contradictions": [],
+  "callOuts": []
+}

@@ -290,7 +290,7 @@ Format your response as JSON:
   makePlayful(response) {
     // Add playful suffixes
     if (Math.random() < 0.3) {
-      const suffixes = [' lol', ' 😂', ' fr tho'];
+      const suffixes = [' lol', ' 😂'];
       const suffix = suffixes[Math.floor(Math.random() * suffixes.length)];
       response = response + suffix;
     }

@@ -25,22 +25,27 @@ class VideoQueueController {
       return false;
     }
 
-    // 5% base chance per message
-    let chance = 0.05;
+    // 8% base chance per message (was 5%)
+    let chance = 0.08;
 
     // Higher chance if obsessed with something
-    if (this.chatBot.obsessionSystem?.hasActiveObsession()) {
-      chance += 0.10;
+    if (this.chatBot.obsessionSystem?.getCurrentObsession()) {
+      chance += 0.15; // Was 0.10
     }
 
     // Higher chance if bored
     if (this.chatBot.mentalState?.boredom > 70) {
-      chance += 0.15;
+      chance += 0.20; // Was 0.15
     }
 
     // Higher chance if in good mood
     if (this.chatBot.moodTracker?.currentMood === 'excited') {
-      chance += 0.10;
+      chance += 0.15; // Was 0.10
+    }
+    
+    // Higher chance if wants to share something (proactive behavior)
+    if (this.chatBot.innerMonologue?.currentThoughts?.length > 3) {
+      chance += 0.10; // New: lots on his mind
     }
 
     // Lower chance if depressed
@@ -56,7 +61,7 @@ class VideoQueueController {
    */
   getDesiredVideoTopic() {
     // Based on obsession
-    const obsession = this.chatBot.obsessionSystem?.getCurrentObsessions()[0];
+    const obsession = this.chatBot.obsessionSystem?.getCurrentObsession();
     if (obsession) {
       return obsession.topic;
     }
@@ -83,7 +88,7 @@ class VideoQueueController {
   }
 
   /**
-   * Queue a video
+   * Queue a video using Coolhole's built-in search
    */
   async queueVideo(reason = 'mood-based') {
     if (!this.queueingEnabled) return null;
@@ -92,28 +97,44 @@ class VideoQueueController {
     console.log(`🎬 [VideoQueue] Attempting to queue video about: ${topic} (${reason})`);
 
     try {
-      // Use YouTube search if available
-      if (this.chatBot.searchAndQueueVideo) {
-        await this.chatBot.searchAndQueueVideo(topic, 'Slunt (autonomous)');
+      // Use coolholeExplorer's search feature directly
+      if (this.chatBot.coolholeExplorer) {
+        const queued = await this.chatBot.coolholeExplorer.searchAndQueueVideo(topic, `Video about ${topic}`);
         
-        this.queuedVideos.push({
-          topic,
-          reason,
-          timestamp: Date.now()
-        });
-
-        this.lastQueueTime = Date.now();
-        
-        // Think about it
-        if (this.chatBot.innerMonologue) {
-          this.chatBot.innerMonologue.think(
-            `just queued a video about ${topic}, hope people like it`,
-            'planning',
-            6
-          );
+        if (queued) {
+          this.queuedVideos.push({
+            topic,
+            searchQuery: topic,
+            reason,
+            timestamp: Date.now()
+          });
+          
+          this.lastQueueTime = Date.now();
+          
+          // Think about it
+          if (this.chatBot.innerMonologue) {
+            this.chatBot.innerMonologue.think(
+              `just searched for and queued a video about ${topic}, hope people like it`,
+              'planning',
+              6
+            );
+          }
+          
+          // Announce it in chat
+          const announcement = this.getQueueAnnouncement(topic);
+          if (this.chatBot.sendMessage) {
+            setTimeout(() => {
+              this.chatBot.sendMessage(announcement);
+            }, 1000); // Wait 1 second after queueing
+          }
+          
+          console.log(`✅ [VideoQueue] Successfully queued video about: ${topic}`);
+          return { topic, searchQuery: topic };
+        } else {
+          console.log(`❌ [VideoQueue] Failed to queue via search`);
         }
-
-        return topic;
+      } else {
+        console.log(`❌ [VideoQueue] coolholeExplorer not available`);
       }
     } catch (error) {
       console.log(`❌ [VideoQueue] Failed to queue video: ${error.message}`);
@@ -123,35 +144,122 @@ class VideoQueueController {
   }
 
   /**
-   * Should remove current video?
+   * Get queue announcement
    */
-  shouldRemoveVideo(videoTitle) {
-    // Don't remove if disabled
+  getQueueAnnouncement(topic) {
+    const announces = [
+      `just queued something about ${topic}, you're welcome`,
+      `threw a video about ${topic} in the queue`,
+      `found a ${topic} video, adding it`,
+      `queuing up some ${topic} content`,
+      `thought we needed some ${topic} rn`,
+      `${topic} time, queued a video`,
+      `adding to queue: ${topic} video`
+    ];
+    
+    return announces[Math.floor(Math.random() * announces.length)];
+  }
+
+  /**
+   * Should skip current video? (costs CP)
+   */
+  async shouldSkipVideo(videoTitle) {
+    // Don't skip if disabled
     if (!this.queueingEnabled) return false;
 
-    // 2% chance to remove any video
-    let removeChance = 0.02;
+    // Check if we can even skip (need CP)
+    if (this.chatBot.coolholeExplorer) {
+      const skipInfo = await this.chatBot.coolholeExplorer.canVoteSkip();
+      
+      if (!skipInfo.available) {
+        console.log(`   Cannot skip: ${skipInfo.reason}`);
+        return false;
+      }
+    }
+
+    // Check if we have enough CP
+    const sluntCP = await this.getSluntCoolPoints();
+    const skipCost = 50; // Approximate CP cost for skip
+    
+    if (sluntCP < skipCost) {
+      console.log(`   Not enough CP to skip (have ${sluntCP}, need ${skipCost})`);
+      return false;
+    }
+
+    // 2% base chance to skip any video
+    let skipChance = 0.02;
 
     // Higher chance if video matches hated topics
     const hatedTopics = this.getHatedTopics();
     const videoLower = videoTitle.toLowerCase();
     
     if (hatedTopics.some(topic => videoLower.includes(topic))) {
-      removeChance += 0.20; // +20% if hated topic
+      skipChance += 0.30; // +30% if hated topic
     }
 
     // Higher chance if annoyed
-    if (this.chatBot.moodTracker?.currentMood === 'annoyed') {
-      removeChance += 0.10;
+    if (this.chatBot.moodTracker?.getMood() === 'annoyed') {
+      skipChance += 0.15;
     }
 
     // Higher chance if video doesn't match obsession
     const obsession = this.chatBot.obsessionSystem?.getCurrentObsessions()[0];
     if (obsession && !videoLower.includes(obsession.topic.toLowerCase())) {
-      removeChance += 0.05;
+      skipChance += 0.08;
     }
 
-    return Math.random() < removeChance;
+    // Much higher chance if multiple people are complaining in chat
+    if (this.chatBot.recentMessages) {
+      const recentComplaints = this.chatBot.recentMessages
+        .slice(-20)
+        .filter(msg => 
+          msg.message.toLowerCase().includes('skip') ||
+          msg.message.toLowerCase().includes('this sucks') ||
+          msg.message.toLowerCase().includes('boring')
+        );
+      
+      if (recentComplaints.length >= 3) {
+        skipChance += 0.25; // +25% if people are complaining
+      }
+    }
+
+    return Math.random() < skipChance;
+  }
+
+  /**
+   * Get Slunt's CoolPoints balance
+   */
+  async getSluntCoolPoints() {
+    if (this.chatBot.coolPointsManager) {
+      const balance = this.chatBot.coolPointsManager.getBalance('Slunt');
+      return balance;
+    }
+    return 0;
+  }
+
+  /**
+   * Get skip announcement
+   */
+  getSkipAnnouncement(videoTitle) {
+    const announces = [
+      `nah fuck this video, voting to skip`,
+      `this video sucks, skip it`,
+      `can't watch this shit anymore, skip`,
+      `who even queued this garbage? skip`,
+      `my autonomous authority says skip this video`,
+      `spending CP to skip this disaster`,
+      `saving everyone from this video, you're welcome`
+    ];
+
+    return announces[Math.floor(Math.random() * announces.length)];
+  }
+
+  /**
+   * Should remove current video? (old method for compatibility)
+   */
+  shouldRemoveVideo(videoTitle) {
+    // Redirect to shouldSkipVideo (which checks CP and permissions)
+    return this.shouldSkipVideo(videoTitle);
   }
 
   /**
@@ -250,7 +358,7 @@ class VideoQueueController {
     if (Math.random() > 0.03) return false;
 
     // Higher chance if obsessed
-    if (this.chatBot.obsessionSystem?.hasActiveObsession()) {
+    if (this.chatBot.obsessionSystem?.getCurrentObsession()) {
       return Math.random() < 0.20; // 20% chance when obsessed
     }
 

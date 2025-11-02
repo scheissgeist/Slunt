@@ -16,14 +16,19 @@ class ResponseVariety {
    * Track a response before sending
    */
   trackResponse(message) {
+    // Don't track empty messages
+    if (!message || typeof message !== 'string' || message.trim().length === 0) {
+      return;
+    }
+    
     this.recentResponses.push({
       text: message,
       timestamp: Date.now(),
       patterns: this.extractPatterns(message)
     });
     
-    // Keep last 50
-    if (this.recentResponses.length > 50) {
+    // Keep last 75 (increased from 50 for better long-term tracking)
+    if (this.recentResponses.length > 75) {
       this.recentResponses.shift();
     }
     
@@ -38,8 +43,8 @@ class ResponseVariety {
       const isShortCasual = ['lol', 'lmao', 'yeah', 'nah', 'bruh', 'fr', 'true'].includes(pattern);
       
       if (isShortCasual) {
-        // Allow casual phrases more often - only throttle after 8 uses in recent messages
-        if (count > 8) {
+        // Allow casual phrases more often - only throttle after 6 uses in recent messages (lowered from 8)
+        if (count > 6) {
           this.throttledPhrases.add(pattern);
           console.log(`🚫 [Variety] Throttling overused casual phrase: "${pattern}"`);
           
@@ -51,7 +56,8 @@ class ResponseVariety {
         }
       } else {
         // Other patterns (quotes, specific joke structures) are more annoying when repeated
-        if (count > 4) {
+        // Lowered from 4 to 3 - throttle sooner
+        if (count > 3) {
           this.throttledPhrases.add(pattern);
           console.log(`🚫 [Variety] Throttling overused pattern: "${pattern}"`);
           
@@ -120,17 +126,31 @@ class ResponseVariety {
    */
   isTooSimilar(message) {
     const patterns = this.extractPatterns(message);
+    const normalizedMsg = message.toLowerCase().trim();
     
-    // Short messages (< 15 chars) are often naturally similar ("lol", "nah", "yeah")
-    // Don't block these unless they're IDENTICAL to a very recent message
-    if (message.length < 15) {
-      const lastFive = this.recentResponses.slice(-5).map(r => r.text.toLowerCase());
-      if (lastFive.includes(message.toLowerCase())) {
-        console.log(`⚠️ [Variety] Blocked identical short response in last 5`);
+    // Check last 15 messages for near-duplicates (increased from 10)
+    const lastFifteen = this.recentResponses.slice(-15);
+    for (const recent of lastFifteen) {
+      const recentNormalized = recent.text.toLowerCase().trim();
+      
+      // Block if messages are very similar (>60% overlap, lowered from 70%)
+      const similarity = this.calculateSimilarity(normalizedMsg, recentNormalized);
+      if (similarity > 0.6) {
+        console.log(`⚠️ [Variety] Blocked similar response (${(similarity*100).toFixed(0)}% match): "${message.slice(0, 50)}..."`);
         return true;
       }
-      // Otherwise allow short responses
-      return false;
+      
+      // Also block if short message (< 40 chars) was used in last 15 (increased from 30 chars in 10 messages)
+      if (message.length < 40 && normalizedMsg === recentNormalized) {
+        console.log(`⚠️ [Variety] Blocked identical short response in last 15`);
+        return true;
+      }
+      
+      // Block if very similar and recent (within last 5 messages, be more strict)
+      if (lastFifteen.indexOf(recent) >= lastFifteen.length - 5 && similarity > 0.5) {
+        console.log(`⚠️ [Variety] Blocked similar response in last 5 messages (${(similarity*100).toFixed(0)}% match)`);
+        return true;
+      }
     }
     
     // Check if using throttled phrases
@@ -143,18 +163,36 @@ class ResponseVariety {
     
     // Check similarity to recent responses (only for longer messages)
     const recentPatterns = this.recentResponses
-      .slice(-10)
+      .slice(-15)
       .flatMap(r => r.patterns);
     
     const matchCount = patterns.filter(p => recentPatterns.includes(p)).length;
     
-    // Increased threshold from 3 to 4 - need MORE pattern overlap to block
-    if (matchCount >= 4) {
-      console.log(`⚠️ [Variety] Response too similar to recent messages (${matchCount} patterns match)`);
+    // Lowered threshold from 4 to 3 - need LESS pattern overlap to block
+    if (matchCount >= 3 && patterns.length > 0) {
+      console.log(`⚠️ [Variety] Response too similar to recent messages (${matchCount}/${patterns.length} patterns match)`);
       return true;
     }
     
     return false;
+  }
+
+  /**
+   * Calculate similarity between two strings (0.0 to 1.0)
+   */
+  calculateSimilarity(str1, str2) {
+    // Quick exact match
+    if (str1 === str2) return 1.0;
+    
+    // Tokenize into words
+    const words1 = new Set(str1.split(/\s+/));
+    const words2 = new Set(str2.split(/\s+/));
+    
+    // Calculate Jaccard similarity (intersection / union)
+    const intersection = new Set([...words1].filter(x => words2.has(x)));
+    const union = new Set([...words1, ...words2]);
+    
+    return intersection.size / union.size;
   }
 
   /**

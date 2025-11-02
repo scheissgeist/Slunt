@@ -13,6 +13,7 @@ class RelationshipMapping {
     this.friendGroups = [];
     this.socialGraph = new Map(); // username -> connections
     this.savePath = './data/relationships.json';
+    this.saveTimeout = null; // Debounce timer
     this.loadRelationships(); // Auto-load on startup
   }
 
@@ -74,49 +75,65 @@ class RelationshipMapping {
   }
 
   /**
-   * Save relationships to disk
+   * Save relationships to disk (debounced)
    */
   async saveRelationships() {
-    try {
-      const dir = path.dirname(this.savePath);
-      await fs.mkdir(dir, { recursive: true });
-
-      // Convert nested Maps to arrays for JSON
-      const socialGraphArray = Array.from(this.socialGraph.entries()).map(([username, connections]) => [
-        username,
-        Array.from(connections.entries())
-      ]);
-
-      // Convert platform Sets to arrays for JSON serialization
-      const relationshipsArray = Array.from(this.relationships.entries()).map(([key, rel]) => {
-        const serializedRel = { ...rel };
-        if (rel.platforms) {
-          serializedRel.platforms = {};
-          for (const [username, platforms] of Object.entries(rel.platforms)) {
-            serializedRel.platforms[username] = platforms instanceof Set ? Array.from(platforms) : platforms;
-          }
-        }
-        return [key, serializedRel];
-      });
-
-      const data = {
-        relationships: relationshipsArray,
-        socialGraph: socialGraphArray,
-        friendGroups: this.friendGroups,
-        savedAt: Date.now()
-      };
-
-      await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
-      console.log(`🔗 [Relationships] Saved ${this.relationships.size} relationships to disk`);
-    } catch (error) {
-      console.error('🔗 [Relationships] Error saving:', error.message);
+    // Clear existing timeout
+    if (this.saveTimeout) {
+      clearTimeout(this.saveTimeout);
     }
+    
+    // Debounce: wait 2 seconds before saving
+    this.saveTimeout = setTimeout(async () => {
+      try {
+        const dir = path.dirname(this.savePath);
+        await fs.mkdir(dir, { recursive: true });
+
+        // Convert nested Maps to arrays for JSON
+        const socialGraphArray = Array.from(this.socialGraph.entries()).map(([username, connections]) => [
+          username,
+          Array.from(connections.entries())
+        ]);
+
+        // Convert platform Sets to arrays for JSON serialization
+        const relationshipsArray = Array.from(this.relationships.entries()).map(([key, rel]) => {
+          const serializedRel = { ...rel };
+          if (rel.platforms) {
+            serializedRel.platforms = {};
+            for (const [username, platforms] of Object.entries(rel.platforms)) {
+              serializedRel.platforms[username] = platforms instanceof Set ? Array.from(platforms) : platforms;
+            }
+          }
+          return [key, serializedRel];
+        });
+
+        const data = {
+          relationships: relationshipsArray,
+          socialGraph: socialGraphArray,
+          friendGroups: this.friendGroups,
+          savedAt: Date.now()
+        };
+
+        await fs.writeFile(this.savePath, JSON.stringify(data, null, 2));
+        console.log(`🔗 [Relationships] Saved ${this.relationships.size} relationships to disk`);
+      } catch (error) {
+        console.error('🔗 [Relationships] Error saving:', error.message);
+      }
+    }, 2000);
   }
 
   /**
    * Update relationship between two users
    */
   updateRelationship(user1, user2, interactionType, platform = 'unknown') {
+    // Filter out system messages and invalid usernames
+    if (!user1 || !user2 || 
+        user1.includes('joined (aliases') || user2.includes('joined (aliases') ||
+        user1.includes('left') || user2.includes('left') ||
+        user1.includes('(aliases') || user2.includes('(aliases')) {
+      return; // Skip system messages
+    }
+
     // Normalize order (alphabetically)
     const [userA, userB] = [user1, user2].sort();
     const key = `${userA}-${userB}`;
@@ -492,15 +509,54 @@ class RelationshipMapping {
    * Get relationship stats
    */
   getStats() {
+    // Filter out system messages from stats
+    const validRelationships = Array.from(this.relationships.values())
+      .filter(r => r && r.users && 
+        !r.users.some(u => u.includes('joined (aliases') || u.includes('left') || u.includes('(aliases')));
+    
     return {
-      totalRelationships: this.relationships.size,
+      totalRelationships: validRelationships.length,
       activeUsers: this.socialGraph.size,
       friendGroups: this.friendGroups.length,
-      strongRelationships: Array.from(this.relationships.values())
-        .filter(r => r.strength > 20).length,
-      conflicts: Array.from(this.relationships.values())
-        .filter(r => r.sentiment === 'negative').length
+      strongRelationships: validRelationships.filter(r => r.strength > 20).length,
+      conflicts: validRelationships.filter(r => r.sentiment === 'negative').length
     };
+  }
+
+  /**
+   * Get all relationships with user profiles enriched
+   */
+  getEnrichedRelationships(userProfiles = null) {
+    const enriched = [];
+    
+    for (const [key, rel] of this.relationships.entries()) {
+      // Skip invalid relationships
+      if (!rel || !rel.users || rel.users.length < 2) continue;
+      if (rel.users.some(u => u.includes('joined (aliases') || u.includes('left') || u.includes('(aliases'))) {
+        continue;
+      }
+
+      const enrichedRel = { ...rel };
+      
+      // Add user profile data if available
+      if (userProfiles) {
+        enrichedRel.userProfiles = {};
+        rel.users.forEach(username => {
+          const profile = userProfiles.get(username);
+          if (profile) {
+            enrichedRel.userProfiles[username] = {
+              friendshipLevel: profile.friendshipLevel || 0,
+              messageCount: profile.messageCount || 0,
+              lastSeen: profile.lastSeen || null
+            };
+          }
+        });
+      }
+      
+      enriched.push([key, enrichedRel]);
+    }
+    
+    return enriched;
   }
 
   /**

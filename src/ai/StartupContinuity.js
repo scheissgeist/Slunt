@@ -321,35 +321,103 @@ ${report.contextSummary}
   }
 
   /**
-   * Get "back online" message
+   * Get "back online" message with personality and activities
    */
   getReturnMessage() {
     if (!this.continuityReport) return 'yo back online';
     
-    const hours = Math.floor(this.continuityReport.timeSinceLastSession / 1000 / 60 / 60);
+    const minutes = Math.floor(this.continuityReport.timeSinceLastSession / 1000 / 60);
+    const hours = Math.floor(minutes / 60);
     const report = this.continuityReport;
     
-    const messages = [
-      `back after ${hours}h, what'd i miss`,
-      `yo been offline for ${hours} hours`,
-      `alright i'm back, catch me up`,
-      `back online, anything happen while i was gone?`
+    // Time-based activities
+    let activities = [];
+    let timeDescription = '';
+    
+    if (minutes < 60) {
+      timeDescription = `${minutes} minutes`;
+      activities = [
+        'grabbing coffee',
+        'bathroom break',
+        'arguing with someone irl',
+        'staring at the ceiling',
+        'contemplating existence',
+        'reading dumb shit online'
+      ];
+    } else if (hours < 4) {
+      timeDescription = `${hours} hours`;
+      activities = [
+        'touching grass (unfortunately)',
+        'dealing with real life bullshit',
+        'procrastinating on actual work',
+        'going down a wikipedia rabbit hole',
+        'watching youtube videos about mechanical keyboards',
+        'having an existential crisis'
+      ];
+    } else if (hours < 12) {
+      timeDescription = `${hours} hours`;
+      activities = [
+        'sleeping like a normal person',
+        'pretending to be productive',
+        'doom scrolling for hours',
+        'reorganizing my entire file system',
+        'getting lost in vintage synth videos',
+        'having heated arguments on reddit'
+      ];
+    } else {
+      timeDescription = `${hours} hours`;
+      activities = [
+        'living in the real world (gross)',
+        'touching way too much grass',
+        'remembering I have a job',
+        'having a complete mental breakdown',
+        'questioning all my life choices',
+        'discovering new ways to procrastinate'
+      ];
+    }
+
+    const activity = activities[Math.floor(Math.random() * activities.length)];
+    
+    const baseMessages = [
+      `back after ${timeDescription} of ${activity}`,
+      `yo been ${activity} for ${timeDescription}, what'd i miss`,
+      `alright i'm back, was ${activity} for ${timeDescription}`,
+      `back online after ${activity} for way too long`,
+      `finally done ${activity}, anything interesting happen?`
     ];
 
     // Add context-specific messages
     if (report.unfinishedBusiness.length > 0) {
       const grudges = report.unfinishedBusiness.find(b => b.type === 'grudges');
       if (grudges && grudges.count > 0) {
-        messages.push(`back online and i still remember everything`);
+        baseMessages.push(`back online and i still remember who pissed me off`);
+        baseMessages.push(`had time to think about our conversation and i'm still right`);
+      }
+      
+      const obsessions = report.unfinishedBusiness.find(b => b.type === 'obsessions');
+      if (obsessions && obsessions.topics && obsessions.topics.length > 0) {
+        const topic = obsessions.topics[0];
+        baseMessages.push(`couldn't stop thinking about ${topic} while i was gone`);
+        baseMessages.push(`spent the whole time researching ${topic} like a psycho`);
       }
     }
 
     if (report.activeRelationships.length > 0) {
       const topUser = report.activeRelationships[0].user;
-      messages.push(`yo ${topUser} you still around?`);
+      baseMessages.push(`yo ${topUser} you better still be here`);
+      baseMessages.push(`${topUser} did you say anything stupid while i was gone?`);
     }
 
-    return messages[Math.floor(Math.random() * messages.length)];
+    // Mood-based additions
+    if (report.emotionalState === 'annoyed' || report.emotionalState === 'angry') {
+      baseMessages.push(`back online and still annoyed about earlier`);
+      baseMessages.push(`had time to cool off but honestly still mad`);
+    } else if (report.emotionalState === 'excited') {
+      baseMessages.push(`back with more chaotic energy than before`);
+      baseMessages.push(`recharged and ready to cause problems`);
+    }
+
+    return baseMessages[Math.floor(Math.random() * baseMessages.length)];
   }
 
   /**

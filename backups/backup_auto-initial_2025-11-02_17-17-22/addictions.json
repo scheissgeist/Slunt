@@ -1,0 +1,16 @@
+{
+  "addictions": {
+    "attention": {
+      "level": 99.9,
+      "lastFix": 1762042272418
+    },
+    "validation": {
+      "level": 0,
+      "lastFix": 1761936704148
+    },
+    "caffeine": {
+      "level": 0,
+      "lastFix": 1761936704148
+    }
+  }
+}

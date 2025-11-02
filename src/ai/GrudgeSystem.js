@@ -31,6 +31,10 @@ class GrudgeSystem {
     this.tempCooldownRate = 2; // Points per hour when not triggered
     this.tempHeatingRate = 15; // Points added per offense
     
+    // NEW: Revenge plotting
+    this.revengePlots = new Map(); // username -> revenge data
+    this.forgivenessArcs = new Map(); // username -> arc stage
+    
     // Insult patterns
     this.insultPatterns = [
       /\b(stupid|dumb|idiot|moron|retard)\b/i,
@@ -246,8 +250,169 @@ class GrudgeSystem {
     grudge.forgiven = true;
     grudge.forgivenAt = Date.now();
     
+    // NEW: Start forgiveness arc
+    this.startForgivenessArc(username);
+    
+    // Clear any revenge plots
+    if (this.revengePlots.has(username)) {
+      console.log(`💚 [Grudge] Abandoning revenge plot against ${username}`);
+      this.revengePlots.delete(username);
+    }
+    
     // Keep grudge in memory but mark as forgiven
     // Can be re-triggered more easily
+  }
+
+  /**
+   * NEW: Start revenge plot
+   */
+  startRevengePlot(username) {
+    const grudge = this.grudges.get(username);
+    if (!grudge || grudge.temperature < 70) return; // Need high temperature
+
+    if (!this.revengePlots.has(username)) {
+      this.revengePlots.set(username, {
+        target: username,
+        startedAt: Date.now(),
+        phase: 'plotting', // plotting -> waiting -> executing -> complete
+        opportunities: 0,
+        executedRevenges: []
+      });
+
+      console.log(`😈 [Grudge] Revenge plot started against ${username}`);
+    }
+  }
+
+  /**
+   * NEW: Get revenge opportunity
+   */
+  getRevengeOpportunity(username) {
+    const plot = this.revengePlots.get(username);
+    if (!plot || plot.phase !== 'plotting') return null;
+
+    // Rare chance for revenge opportunity
+    if (Math.random() > 0.9) {
+      plot.opportunities++;
+      plot.phase = 'waiting';
+
+      const revenges = [
+        'perfectly timed roast',
+        'bringing up embarrassing thing they said',
+        'exposing their bad take',
+        'screenshot evidence',
+        'alliance with others against them'
+      ];
+
+      return {
+        type: revenges[Math.floor(Math.random() * revenges.length)],
+        plot: plot
+      };
+    }
+
+    return null;
+  }
+
+  /**
+   * NEW: Execute revenge
+   */
+  executeRevenge(username, revengeType) {
+    const plot = this.revengePlots.get(username);
+    if (!plot) return null;
+
+    plot.executedRevenges.push({
+      type: revengeType,
+      timestamp: Date.now()
+    });
+
+    plot.phase = 'complete';
+
+    console.log(`😈 [Grudge] Revenge executed: ${revengeType} against ${username}`);
+
+    // Revenge lowers grudge temperature slightly (cathartic)
+    const grudge = this.grudges.get(username);
+    if (grudge) {
+      grudge.temperature = Math.max(0, grudge.temperature - 20);
+    }
+
+    return {
+      message: `revenge is sweet`,
+      satisfaction: 100
+    };
+  }
+
+  /**
+   * NEW: Start forgiveness arc
+   */
+  startForgivenessArc(username) {
+    this.forgivenessArcs.set(username, {
+      stage: 'hesitant', // hesitant -> cautious -> rebuilding -> restored
+      startedAt: Date.now(),
+      positiveInteractions: 0,
+      testsPassed: 0
+    });
+
+    console.log(`💚 [Grudge] Forgiveness arc started for ${username}: hesitant trust`);
+  }
+
+  /**
+   * NEW: Progress forgiveness arc
+   */
+  progressForgivenessArc(username) {
+    const arc = this.forgivenessArcs.get(username);
+    if (!arc) return;
+
+    arc.positiveInteractions++;
+
+    // Progress through arc stages
+    if (arc.stage === 'hesitant' && arc.positiveInteractions >= 5) {
+      arc.stage = 'cautious';
+      arc.testsPassed++;
+      console.log(`💚 [Grudge] ${username} arc: hesitant → cautious`);
+    } else if (arc.stage === 'cautious' && arc.positiveInteractions >= 15) {
+      arc.stage = 'rebuilding';
+      arc.testsPassed++;
+      console.log(`💚 [Grudge] ${username} arc: cautious → rebuilding`);
+    } else if (arc.stage === 'rebuilding' && arc.positiveInteractions >= 30) {
+      arc.stage = 'restored';
+      arc.testsPassed++;
+      console.log(`💚 [Grudge] ${username} arc: rebuilding → TRUST RESTORED`);
+    }
+  }
+
+  /**
+   * NEW: Get forgiveness arc message
+   */
+  getForgivenessArcMessage(username) {
+    const arc = this.forgivenessArcs.get(username);
+    if (!arc) return null;
+
+    const messages = {
+      hesitant: [
+        `i'm... trying to move past it ${username}`,
+        `ok ${username} fresh start i guess`,
+        `we're cool ${username}. probably.`
+      ],
+      cautious: [
+        `you've been cool lately ${username}`,
+        `i'm warming up to you again ${username}`,
+        `${username} redemption arc?`
+      ],
+      rebuilding: [
+        `we're good ${username}`,
+        `${username} we're back`,
+        `friendship restored with ${username}`
+      ],
+      restored: [
+        `${username} is my friend again`,
+        `full trust restored with ${username}`,
+        `${username} redemption arc complete`
+      ]
+    };
+
+    const stageMessages = messages[arc.stage];
+    if (!stageMessages) return null;
+
+    return stageMessages[Math.floor(Math.random() * stageMessages.length)];
   }
 
   /**

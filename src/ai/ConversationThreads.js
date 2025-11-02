@@ -468,16 +468,55 @@ Don't use quotation marks. Just the callback phrase:`;
   async load() {
     try {
       const data = await fs.readFile(this.dataPath, 'utf8');
-      const parsed = JSON.parse(data);
       
-      this.abandonedThreads = parsed.abandonedThreads || [];
-      this.pendingTopics = parsed.pendingTopics || [];
-      this.stats = parsed.stats || this.stats;
+      // Try to parse JSON
+      let parsed;
+      try {
+        parsed = JSON.parse(data);
+      } catch (parseError) {
+        console.error('🧵 [Threads] JSON corruption detected:', parseError.message);
+        
+        // Try to salvage data by truncating at error position
+        const match = parseError.message.match(/position (\d+)/);
+        if (match) {
+          const errorPos = parseInt(match[1]);
+          console.log(`🧵 [Threads] Attempting to salvage data up to position ${errorPos}`);
+          
+          try {
+            // Try parsing truncated data
+            const truncated = data.substring(0, errorPos);
+            // Find last complete object
+            const lastBrace = truncated.lastIndexOf('}');
+            if (lastBrace > 0) {
+              parsed = JSON.parse(truncated.substring(0, lastBrace + 1));
+              console.log('🧵 [Threads] Successfully salvaged partial data');
+            }
+          } catch (salvageError) {
+            console.error('🧵 [Threads] Could not salvage data, starting fresh');
+            parsed = null;
+          }
+        }
+        
+        // Create backup of corrupted file
+        if (!parsed) {
+          const backupPath = this.dataPath + '.corrupted.' + Date.now();
+          await fs.writeFile(backupPath, data, 'utf8');
+          console.log(`🧵 [Threads] Backed up corrupted file to ${backupPath}`);
+        }
+      }
       
-      console.log(`🧵 [Threads] Loaded ${this.abandonedThreads.length} abandoned threads and ${this.pendingTopics.length} pending topics`);
+      if (parsed) {
+        this.abandonedThreads = parsed.abandonedThreads || [];
+        this.pendingTopics = parsed.pendingTopics || [];
+        this.stats = parsed.stats || this.stats;
+        
+        console.log(`🧵 [Threads] Loaded ${this.abandonedThreads.length} abandoned threads and ${this.pendingTopics.length} pending topics`);
+      } else {
+        console.log('🧵 [Threads] Starting with fresh data');
+      }
     } catch (error) {
       if (error.code !== 'ENOENT') {
-        console.error('Failed to load conversation threads:', error);
+        console.error('🧵 [Threads] Failed to load conversation threads:', error);
       }
     }
   }

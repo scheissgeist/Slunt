@@ -200,22 +200,63 @@ class ContextualCallbacks {
   }
 
   /**
-   * Get time ago string
+   * Get time ago string (more natural variations)
    */
   getTimeAgo(timestamp) {
     const minutes = Math.floor((Date.now() - timestamp) / 1000 / 60);
     
-    if (minutes < 1) return 'just now';
-    if (minutes < 60) return `${minutes}m ago`;
+    if (minutes < 1) return ['just now', 'a second ago', 'literally just now'][Math.floor(Math.random() * 3)];
+    if (minutes < 5) return ['a few minutes ago', 'like 2 minutes ago', 'just a bit ago'][Math.floor(Math.random() * 3)];
+    if (minutes < 30) return [`like ${Math.floor(minutes / 5) * 5} minutes ago`, 'earlier', 'a bit ago'][Math.floor(Math.random() * 3)];
+    if (minutes < 60) return ['like an hour ago', 'earlier today', 'a bit ago'][Math.floor(Math.random() * 3)];
     
     const hours = Math.floor(minutes / 60);
-    if (hours < 24) return `${hours}h ago`;
+    if (hours < 6) return [`${hours} hours ago`, 'earlier today', 'a few hours back'][Math.floor(Math.random() * 3)];
+    if (hours < 24) return ['earlier today', 'this morning', 'today', `${hours} hours ago`][Math.floor(Math.random() * 4)];
     
     const days = Math.floor(hours / 24);
-    if (days === 1) return 'yesterday';
-    if (days < 7) return `${days} days ago`;
+    if (days === 1) return ['yesterday', 'last night', 'the other day'][Math.floor(Math.random() * 3)];
+    if (days === 2) return ['couple days ago', 'the other day', '2 days ago'][Math.floor(Math.random() * 3)];
+    if (days < 7) return [`${days} days ago`, 'earlier this week', 'a few days back'][Math.floor(Math.random() * 3)];
+    if (days < 14) return ['last week', 'like a week ago', 'the other week'][Math.floor(Math.random() * 3)];
     
-    return 'a while back';
+    return ['a while back', 'a bit ago', 'some time ago'][Math.floor(Math.random() * 3)];
+  }
+
+  /**
+   * Get natural callback phrase (instead of robotic "remember when")
+   */
+  getNaturalCallbackPhrase(timeAgo) {
+    const minutes = Math.floor((Date.now() - timeAgo) / 1000 / 60);
+    
+    // Recent (< 1 hour)
+    if (minutes < 60) {
+      return [
+        'wait didn\'t you just',
+        'bro you literally',
+        'didn\'t you say',
+        'you just said'
+      ][Math.floor(Math.random() * 4)];
+    }
+    
+    // Hours ago
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) {
+      return [
+        'didn\'t you say earlier',
+        'wait earlier you',
+        'you said earlier',
+        'remember earlier when you'
+      ][Math.floor(Math.random() * 4)];
+    }
+    
+    // Days ago
+    return [
+      'remember when you',
+      'didn\'t you',
+      'bro remember when you',
+      'you were saying'
+    ][Math.floor(Math.random() * 4)];
   }
 
   /**

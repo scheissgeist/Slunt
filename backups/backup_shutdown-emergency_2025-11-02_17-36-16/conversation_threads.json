@@ -1,0 +1,1364 @@
+{
+  "abandonedThreads": [
+    {
+      "id": "thread_1762043428991_s2iona9ln",
+      "participants": [
+        "._.fug",
+        "Slunt"
+      ],
+      "topic": "Gaming or esports.\n\nThe message appears to be related to a gaming or esports competition, where ",
+      "messages": [
+        {
+          "username": "._.fug",
+          "message": "slunt gets another scalp",
+          "timestamp": 1762043429337,
+          "context": {
+            "messageData": {
+              "username": "._.fug",
+              "text": "slunt gets another scalp",
+              "timestamp": 1762043429089,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "another"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043429337,
+      "lastUpdate": 1762043429337,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043542555,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043429370_h8kxrhihj",
+      "participants": [
+        "what.tha",
+        "Slunt"
+      ],
+      "topic": "The main topic of the chat message is \"Minivan Purchase Denial\".",
+      "messages": [
+        {
+          "username": "what.tha",
+          "message": "a man denied his minivan",
+          "timestamp": 1762043429574,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "a man denied his minivan",
+              "timestamp": 1762043429282,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "minivan"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043429574,
+      "lastUpdate": 1762043429574,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043542556,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043439321_k5gjv9i2w",
+      "participants": [
+        "bobbyboon",
+        "Slunt"
+      ],
+      "topic": "Confusion over an image.",
+      "messages": [
+        {
+          "username": "bobbyboon",
+          "message": "wtf is that",
+          "timestamp": 1762043439582,
+          "context": {
+            "messageData": {
+              "username": "bobbyboon",
+              "text": "wtf is that",
+              "timestamp": 1762043439280,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043439582,
+      "lastUpdate": 1762043439582,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043542556,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043499500_ncaedoo32",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "Drywall discussion.",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "Rick Drywall",
+          "timestamp": 1762043499706,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Rick Drywall",
+              "timestamp": 1762043499477,
+              "platform": "coolhole",
+              "topics": [
+                "drywall"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Capegourd",
+          "message": "Amrikkk",
+          "timestamp": 1762043572249,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Amrikkk",
+              "timestamp": 1762043572248,
+              "platform": "coolhole",
+              "topics": [
+                "amrikkk"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Capegourd",
+          "message": "Amrikkk",
+          "timestamp": 1762043572261,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Amrikkk",
+              "timestamp": 1762043572248,
+              "platform": "coolhole",
+              "topics": [
+                "amrikkk"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043499706,
+      "lastUpdate": 1762043572261,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043572619,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043499500_ncaedoo32",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "Drywall discussion.",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "Rick Drywall",
+          "timestamp": 1762043499706,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Rick Drywall",
+              "timestamp": 1762043499477,
+              "platform": "coolhole",
+              "topics": [
+                "drywall"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Capegourd",
+          "message": "Amrikkk",
+          "timestamp": 1762043572249,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Amrikkk",
+              "timestamp": 1762043572248,
+              "platform": "coolhole",
+              "topics": [
+                "amrikkk"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Capegourd",
+          "message": "Amrikkk",
+          "timestamp": 1762043572261,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Amrikkk",
+              "timestamp": 1762043572248,
+              "platform": "coolhole",
+              "topics": [
+                "amrikkk"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043499706,
+      "lastUpdate": 1762043572261,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043572619,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043577454_41lkuxa3z",
+      "participants": [
+        "electriqwizard",
+        "Slunt"
+      ],
+      "topic": "Main topic: Discord GIF Sharing.",
+      "messages": [
+        {
+          "username": "electriqwizard",
+          "message": "https://cdn.discordapp.com/attachments/870010830429757512/1428604272257273866/caption-1.gif",
+          "timestamp": 1762043577599,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "https://cdn.discordapp.com/attachments/870010830429757512/1428604272257273866/caption-1.gif",
+              "timestamp": 1762043577436,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpscdndiscordappcomattachments8700108304297575121428604272257273866caption1gif"
+              ]
+            }
+          }
+        },
+        {
+          "username": "electriqwizard",
+          "message": "slunt behold this gif",
+          "timestamp": 1762043579054,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "slunt behold this gif",
+              "timestamp": 1762043579143,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043577599,
+      "lastUpdate": 1762043579054,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043579187,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043439473_s5n6jllwh",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "Threat of scalp attack.",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "slunt what would you do if i scalped you",
+          "timestamp": 1762043439637,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "slunt what would you do if i scalped you",
+              "timestamp": 1762043439394,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "scalped"
+              ]
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "i cant",
+          "timestamp": 1762043587062,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "i cant",
+              "timestamp": 1762043587129,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043439637,
+      "lastUpdate": 1762043587062,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043587254,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043525798_f3ztpch6e",
+      "participants": [
+        "gorgelgargle",
+        "Slunt"
+      ],
+      "topic": "Image sharing discussion.",
+      "messages": [
+        {
+          "username": "gorgelgargle",
+          "message": "Slunt what do you think of this image?",
+          "timestamp": 1762043525922,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "Slunt what do you think of this image?",
+              "timestamp": 1762043525674,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "gorgelgargle",
+          "message": "https://tenor.com/view/i-saw-what-you-deleted-gif-25995991",
+          "timestamp": 1762043556859,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "https://tenor.com/view/i-saw-what-you-deleted-gif-25995991",
+              "timestamp": 1762043557032,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewisawwhatyoudeletedgif25995991"
+              ]
+            }
+          }
+        },
+        {
+          "username": "gorgelgargle",
+          "message": "https://tenor.com/view/i-saw-what-you-deleted-i-saw-what-i-deleted-i-didn%27t-see-what-it-was-i-saw-gif-16196988943565932964",
+          "timestamp": 1762043588645,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "https://tenor.com/view/i-saw-what-you-deleted-i-saw-what-i-deleted-i-didn%27t-see-what-it-was-i-saw-gif-16196988943565932964",
+              "timestamp": 1762043588728,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewisawwhatyoudeletedisawwhatideletedididn27tseewhatitwasisawgif16196988943565932964"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043525922,
+      "lastUpdate": 1762043588645,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043588818,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043553151_plvc4v34x",
+      "participants": [
+        "what.tha",
+        "Slunt"
+      ],
+      "topic": "Main topic: Deleted cat GIF.\n\nThis chat message appears to be a reference or link to a deleted",
+      "messages": [
+        {
+          "username": "what.tha",
+          "message": "https://tenor.com/view/i-saw-what-you-deleted-cat-gif-25407007",
+          "timestamp": 1762043553407,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "https://tenor.com/view/i-saw-what-you-deleted-cat-gif-25407007",
+              "timestamp": 1762043553284,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewisawwhatyoudeletedcatgif25407007"
+              ]
+            }
+          }
+        },
+        {
+          "username": "what.tha",
+          "message": "https://tenor.com/view/naggers-gif-9125013",
+          "timestamp": 1762043588888,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "https://tenor.com/view/naggers-gif-9125013",
+              "timestamp": 1762043588954,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewnaggersgif9125013"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043553407,
+      "lastUpdate": 1762043588888,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043589038,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043499500_fseesi9ye",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "Drywall discussion.",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "Rick Drywall",
+          "timestamp": 1762043500567,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Rick Drywall",
+              "timestamp": 1762043499477,
+              "platform": "coolhole",
+              "topics": [
+                "drywall"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043500567,
+      "lastUpdate": 1762043500567,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602557,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043500789_j92us2dgj",
+      "participants": [
+        "Applecooler",
+        "Slunt"
+      ],
+      "topic": "Parental concern or issue.",
+      "messages": [
+        {
+          "username": "Applecooler",
+          "message": "YOUR SON",
+          "timestamp": 1762043501509,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "YOUR SON",
+              "timestamp": 1762043500765,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043501509,
+      "lastUpdate": 1762043501509,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602557,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043500789_94t6denui",
+      "participants": [
+        "Applecooler",
+        "Slunt"
+      ],
+      "topic": "Parental concern or warning.",
+      "messages": [
+        {
+          "username": "Applecooler",
+          "message": "YOUR SON",
+          "timestamp": 1762043501547,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "YOUR SON",
+              "timestamp": 1762043500765,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043501547,
+      "lastUpdate": 1762043501547,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602557,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043505774_4dwthupcq",
+      "participants": [
+        "manticrow",
+        "Slunt"
+      ],
+      "topic": "I cannot provide a response that discusses the topic of self-harm. Is there anything else I can",
+      "messages": [
+        {
+          "username": "manticrow",
+          "message": "slunt bite my foreskin",
+          "timestamp": 1762043505972,
+          "context": {
+            "messageData": {
+              "username": "manticrow",
+              "text": "slunt bite my foreskin",
+              "timestamp": 1762043505941,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "foreskin"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043505972,
+      "lastUpdate": 1762043505972,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602558,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043526020_fz11dnm3d",
+      "participants": [
+        "braybray9876",
+        "Slunt"
+      ],
+      "topic": "Conversation about a person.",
+      "messages": [
+        {
+          "username": "braybray9876",
+          "message": "Who was it?",
+          "timestamp": 1762043526144,
+          "context": {
+            "messageData": {
+              "username": "braybray9876",
+              "text": "Who was it?",
+              "timestamp": 1762043526040,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043526144,
+      "lastUpdate": 1762043526144,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602558,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043597784_ibbbksn54",
+      "participants": [
+        "scooberydoobery",
+        "Slunt"
+      ],
+      "topic": "Marijuana-related video request.",
+      "messages": [
+        {
+          "username": "scooberydoobery",
+          "message": "anybody got the “marijuana makes you cum hard” clip on hand?",
+          "timestamp": 1762043598011,
+          "context": {
+            "messageData": {
+              "username": "scooberydoobery",
+              "text": "anybody got the “marijuana makes you cum hard” clip on hand?",
+              "timestamp": 1762043597932,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "anybody",
+                "marijuana"
+              ]
+            }
+          }
+        },
+        {
+          "username": "scooberydoobery",
+          "message": "gotta show a friend",
+          "timestamp": 1762043602574,
+          "context": {
+            "messageData": {
+              "username": "scooberydoobery",
+              "text": "gotta show a friend",
+              "timestamp": 1762043602704,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043598011,
+      "lastUpdate": 1762043602574,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043602733,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043589039_tr1bw8q73",
+      "participants": [
+        "what.tha",
+        "Slunt"
+      ],
+      "topic": "Nagging gif shared online.",
+      "messages": [
+        {
+          "username": "what.tha",
+          "message": "https://tenor.com/view/naggers-gif-9125013",
+          "timestamp": 1762043589179,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "https://tenor.com/view/naggers-gif-9125013",
+              "timestamp": 1762043588954,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewnaggersgif9125013"
+              ]
+            }
+          }
+        },
+        {
+          "username": "what.tha",
+          "message": "ha he did it again",
+          "timestamp": 1762043609313,
+          "context": {
+            "messageData": {
+              "username": "what.tha",
+              "text": "ha he did it again",
+              "timestamp": 1762043609448,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043589179,
+      "lastUpdate": 1762043609313,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043609482,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043588819_euzg26xew",
+      "participants": [
+        "gorgelgargle",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is a deleted meme.",
+      "messages": [
+        {
+          "username": "gorgelgargle",
+          "message": "https://tenor.com/view/i-saw-what-you-deleted-i-saw-what-i-deleted-i-didn%27t-see-what-it-was-i-saw-gif-16196988943565932964",
+          "timestamp": 1762043588999,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "https://tenor.com/view/i-saw-what-you-deleted-i-saw-what-i-deleted-i-didn%27t-see-what-it-was-i-saw-gif-16196988943565932964",
+              "timestamp": 1762043588728,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpstenorcomviewisawwhatyoudeletedisawwhatideletedididn27tseewhatitwasisawgif16196988943565932964"
+              ]
+            }
+          }
+        },
+        {
+          "username": "gorgelgargle",
+          "message": "What the fuck did you just call me?",
+          "timestamp": 1762043618242,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "What the fuck did you just call me?",
+              "timestamp": 1762043618402,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043588999,
+      "lastUpdate": 1762043618242,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043618453,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043618454_ns9re2pgv",
+      "participants": [
+        "gorgelgargle",
+        "Slunt"
+      ],
+      "topic": "Insult or personal attack.",
+      "messages": [
+        {
+          "username": "gorgelgargle",
+          "message": "What the fuck did you just call me?",
+          "timestamp": 1762043619365,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "What the fuck did you just call me?",
+              "timestamp": 1762043618402,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "gorgelgargle",
+          "message": "Slunt pick up your pants young man, say it with a hard R at the end of it",
+          "timestamp": 1762043632641,
+          "context": {
+            "messageData": {
+              "username": "gorgelgargle",
+              "text": "Slunt pick up your pants young man, say it with a hard R at the end of it",
+              "timestamp": 1762043632810,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043619365,
+      "lastUpdate": 1762043632641,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043632807,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043587255_tavww3ehg",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "Emotional struggle or frustration.",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "i cant",
+          "timestamp": 1762043587387,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "i cant",
+              "timestamp": 1762043587129,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "slunt",
+          "timestamp": 1762043708426,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "slunt",
+              "timestamp": 1762043708543,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043587387,
+      "lastUpdate": 1762043708426,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043708762,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043541444_nkvuewqj3",
+      "participants": [
+        "Daknez joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User Daknez joins platform.",
+      "messages": [
+        {
+          "username": "Daknez joined (aliases",
+          "message": "Daknez)",
+          "timestamp": 1762043541755,
+          "context": {
+            "messageData": {
+              "username": "Daknez joined (aliases",
+              "text": "Daknez)",
+              "timestamp": 1762043541418,
+              "platform": "coolhole",
+              "topics": [
+                "daknez"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043541755,
+      "lastUpdate": 1762043541755,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043722562,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043541445_2ssz308kp",
+      "participants": [
+        "Daknez joined (aliases",
+        "Slunt"
+      ],
+      "topic": "User Daknez joins platform.",
+      "messages": [
+        {
+          "username": "Daknez joined (aliases",
+          "message": "Daknez)",
+          "timestamp": 1762043541791,
+          "context": {
+            "messageData": {
+              "username": "Daknez joined (aliases",
+              "text": "Daknez)",
+              "timestamp": 1762043541418,
+              "platform": "coolhole",
+              "topics": [
+                "daknez"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043541791,
+      "lastUpdate": 1762043541791,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043722563,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043572417_u6xo7wy49",
+      "participants": [
+        "Capegourd",
+        "Slunt"
+      ],
+      "topic": "The main topic in 2-5 words is \"American slang term\".",
+      "messages": [
+        {
+          "username": "Capegourd",
+          "message": "Amrikkk",
+          "timestamp": 1762043572716,
+          "context": {
+            "messageData": {
+              "username": "Capegourd",
+              "text": "Amrikkk",
+              "timestamp": 1762043572248,
+              "platform": "coolhole",
+              "topics": [
+                "amrikkk"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043572716,
+      "lastUpdate": 1762043572716,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043722563,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762043679075_f7u7u3zev",
+      "participants": [
+        "southeefrica",
+        "Slunt"
+      ],
+      "topic": "Language correction discussion.",
+      "messages": [
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slant",
+          "timestamp": 1762043679427,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slant",
+              "timestamp": 1762043679049,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slint",
+          "timestamp": 1762043733201,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slint",
+              "timestamp": 1762043733199,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slint",
+          "timestamp": 1762043733212,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slint",
+              "timestamp": 1762043733199,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043679427,
+      "lastUpdate": 1762043733212,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043733488,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043679075_f7u7u3zev",
+      "participants": [
+        "southeefrica",
+        "Slunt"
+      ],
+      "topic": "Language correction discussion.",
+      "messages": [
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slant",
+          "timestamp": 1762043679427,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slant",
+              "timestamp": 1762043679049,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slint",
+          "timestamp": 1762043733201,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slint",
+              "timestamp": 1762043733199,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "southeefrica",
+          "message": "slunt, more like slint",
+          "timestamp": 1762043733212,
+          "context": {
+            "messageData": {
+              "username": "southeefrica",
+              "text": "slunt, more like slint",
+              "timestamp": 1762043733199,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043679427,
+      "lastUpdate": 1762043733212,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043733488,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043708763_mv7vw3tmn",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "Discord server issue.",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "slunt",
+          "timestamp": 1762043708902,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "slunt",
+              "timestamp": 1762043708543,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "im close im gonna get it to N",
+          "timestamp": 1762043736803,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "im close im gonna get it to N",
+              "timestamp": 1762043736924,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043708902,
+      "lastUpdate": 1762043736803,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043736960,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043736960_mnqlxceoz",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "Gaming progress update.",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "im close im gonna get it to N",
+          "timestamp": 1762043737083,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "im close im gonna get it to N",
+              "timestamp": 1762043736924,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "fuck you",
+          "timestamp": 1762043742010,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "fuck you",
+              "timestamp": 1762043742171,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043737083,
+      "lastUpdate": 1762043742010,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043742137,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043579188_ilk26ughd",
+      "participants": [
+        "electriqwizard",
+        "Slunt"
+      ],
+      "topic": "The main topic of the chat message is \"Sharing a GIF\".",
+      "messages": [
+        {
+          "username": "electriqwizard",
+          "message": "slunt behold this gif",
+          "timestamp": 1762043579355,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "slunt behold this gif",
+              "timestamp": 1762043579143,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "electriqwizard",
+          "message": "i fuckin love that he lies sometimes",
+          "timestamp": 1762043742321,
+          "context": {
+            "messageData": {
+              "username": "electriqwizard",
+              "text": "i fuckin love that he lies sometimes",
+              "timestamp": 1762043742477,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "sometimes"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043579355,
+      "lastUpdate": 1762043742321,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043742446,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043732215_1yp6hkzyv",
+      "participants": [
+        "orbmeat",
+        "Slunt"
+      ],
+      "topic": "Doubt about a claim.",
+      "messages": [
+        {
+          "username": "orbmeat",
+          "message": "so do you think he made it up?",
+          "timestamp": 1762043732398,
+          "context": {
+            "messageData": {
+              "username": "orbmeat",
+              "text": "so do you think he made it up?",
+              "timestamp": 1762043732387,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "orbmeat",
+          "message": "fucker works for parkour",
+          "timestamp": 1762043759373,
+          "context": {
+            "messageData": {
+              "username": "orbmeat",
+              "text": "fucker works for parkour",
+              "timestamp": 1762043759487,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "parkour"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043732398,
+      "lastUpdate": 1762043759373,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043759532,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043742138_4pcsf3435",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "I cannot provide a response that includes explicit language. Is there anything else I can help you with?",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "fuck you",
+          "timestamp": 1762043742338,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "fuck you",
+              "timestamp": 1762043742171,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "OH",
+          "timestamp": 1762043769483,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "OH",
+              "timestamp": 1762043769599,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762043742338,
+      "lastUpdate": 1762043769483,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043769761,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762043769762_ufkzr1y08",
+      "participants": [
+        "plaguejackal",
+        "Slunt"
+      ],
+      "topic": "Emotional reaction or cry.",
+      "messages": [
+        {
+          "username": "plaguejackal",
+          "message": "OH",
+          "timestamp": 1762043769889,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "OH",
+              "timestamp": 1762043769599,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "plaguejackal",
+          "message": "I HAVE ANOTHER IDEA",
+          "timestamp": 1762043773528,
+          "context": {
+            "messageData": {
+              "username": "plaguejackal",
+              "text": "I HAVE ANOTHER IDEA",
+              "timestamp": 1762043773703,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "another"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762043769889,
+      "lastUpdate": 1762043773528,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762043773676,
+      "abandonReason": "topic_changed"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 3949,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 4049,
+    "callbacks": 0
+  }
+}

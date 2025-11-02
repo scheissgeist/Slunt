@@ -39,7 +39,8 @@ class DiscordClient extends EventEmitter {
           GatewayIntentBits.Guilds,
           GatewayIntentBits.GuildMessages,
           GatewayIntentBits.MessageContent,
-          GatewayIntentBits.GuildMembers
+          GatewayIntentBits.GuildMembers,
+          GatewayIntentBits.GuildMessageReactions
         ]
       });
 
@@ -63,6 +64,12 @@ class DiscordClient extends EventEmitter {
       console.log(`✅ [Discord] Connected as ${client.user.tag}`);
       console.log(`📊 [Discord] In ${client.guilds.cache.size} servers`);
       
+      // Log channels for debugging
+      client.guilds.cache.forEach(guild => {
+        console.log(`📋 [Discord] Guild: ${guild.name} (${guild.id})`);
+        console.log(`   Channels: ${guild.channels.cache.filter(c => c.isTextBased()).map(c => `#${c.name}`).join(', ')}`);
+      });
+      
       this.emit('ready', {
         username: client.user.username,
         guilds: client.guilds.cache.size
@@ -74,6 +81,15 @@ class DiscordClient extends EventEmitter {
 
     this.client.on(Events.MessageCreate, (message) => {
       this.handleMessage(message);
+    });
+
+    // Handle message reactions
+    this.client.on(Events.MessageReactionAdd, (reaction, user) => {
+      this.handleReactionAdd(reaction, user);
+    });
+
+    this.client.on(Events.MessageReactionRemove, (reaction, user) => {
+      this.handleReactionRemove(reaction, user);
     });
 
     this.client.on(Events.Error, (error) => {
@@ -90,18 +106,35 @@ class DiscordClient extends EventEmitter {
    * Handle incoming Discord messages
    */
   handleMessage(message) {
+    console.log(`🔍 [Discord] Message received from ${message.author.tag} in #${message.channel.name}`);
+    
     // Ignore bot's own messages
     if (message.author.id === this.client.user.id) {
+      console.log(`   ⏭️ Skipping own message`);
       return;
     }
 
     // Ignore other bots (optional)
     if (message.author.bot) {
+      console.log(`   ⏭️ Skipping bot message`);
+      return;
+    }
+
+    // Skip messages without text content (embeds, images, etc.)
+    if (!message.content || message.content.trim().length === 0) {
+      console.log(`   ⏭️ Skipping message without text content`);
       return;
     }
 
     // Only respond in configured guilds (if specified)
     if (this.config.guildIds.length > 0 && !this.config.guildIds.includes(message.guildId)) {
+      console.log(`   ⏭️ Skipping - guild not configured (${message.guildId} not in [${this.config.guildIds.join(', ')}])`);
+      return;
+    }
+
+    // ONLY monitor #obedience channel
+    if (message.channel.name !== 'obedience') {
+      console.log(`   ⏭️ Skipping - not in #obedience (currently in #${message.channel.name})`);
       return;
     }
 
@@ -146,6 +179,96 @@ class DiscordClient extends EventEmitter {
     console.log(`💬 [Discord] ${chatData.guildName}/#${chatData.channel} ${chatData.username}: ${chatData.text}`);
     
     this.emit('chat', chatData);
+  }
+
+  /**
+   * Handle reaction added to message
+   */
+  async handleReactionAdd(reaction, user) {
+    // Ignore bot reactions
+    if (user.bot) return;
+
+    try {
+      // Fetch the message if it's partial
+      if (reaction.partial) {
+        await reaction.fetch();
+      }
+      if (reaction.message.partial) {
+        await reaction.message.fetch();
+      }
+
+      // Only process reactions to Slunt's messages
+      if (reaction.message.author.id !== this.client.user.id) return;
+
+      const reactionData = {
+        platform: 'discord',
+        type: 'reaction_add',
+        messageId: reaction.message.id,
+        messageContent: reaction.message.content,
+        channelId: reaction.message.channelId,
+        channelName: reaction.message.channel.name,
+        guildId: reaction.message.guildId,
+        guildName: reaction.message.guild?.name,
+        userId: user.id,
+        username: user.username,
+        displayName: reaction.message.guild?.members.cache.get(user.id)?.displayName || user.username,
+        emoji: reaction.emoji.name,
+        emojiId: reaction.emoji.id,
+        isCustomEmoji: reaction.emoji.id !== null,
+        timestamp: Date.now()
+      };
+
+      console.log(`👍 [Discord] ${reactionData.username} reacted ${reactionData.emoji} to Slunt's message`);
+      this.emit('reaction', reactionData);
+
+    } catch (error) {
+      console.error('❌ [Discord] Error handling reaction add:', error);
+    }
+  }
+
+  /**
+   * Handle reaction removed from message
+   */
+  async handleReactionRemove(reaction, user) {
+    // Ignore bot reactions
+    if (user.bot) return;
+
+    try {
+      // Fetch the message if it's partial
+      if (reaction.partial) {
+        await reaction.fetch();
+      }
+      if (reaction.message.partial) {
+        await reaction.message.fetch();
+      }
+
+      // Only process reactions to Slunt's messages
+      if (reaction.message.author.id !== this.client.user.id) return;
+
+      const reactionData = {
+        platform: 'discord',
+        type: 'reaction_remove',
+        messageId: reaction.message.id,
+        messageContent: reaction.message.content,
+        channelId: reaction.message.channelId,
+        channelName: reaction.message.channel.name,
+        guildId: reaction.message.guildId,
+        guildName: reaction.message.guild?.name,
+        userId: user.id,
+        username: user.username,
+        displayName: reaction.message.guild?.members.cache.get(user.id)?.displayName || user.username,
+        emoji: reaction.emoji.name,
+        emojiId: reaction.emoji.id,
+        isCustomEmoji: reaction.emoji.id !== null,
+        timestamp: Date.now()
+      };
+
+      console.log(`👎 [Discord] ${reactionData.username} removed ${reactionData.emoji} reaction from Slunt's message`);
+      this.emit('reaction', reactionData);
+
+    } catch (error) {
+      console.error('❌ [Discord] Error handling reaction remove:', error);
+    }
   }
 
   /**

@@ -115,12 +115,12 @@ class ContextualAwareness {
   getMediationResponse() {
     const responses = [
       "yall chill lmao",
-      "everyone calm down fr",
-      "bruh take it easy",
+      "everyone calm down honestly",
+      "dude take it easy",
       "not worth fighting over",
       "peace guys",
       "relax damn",
-      "yall need to chill fr fr",
+      "yall need to chill honestly",
       "lets all just vibe"
     ];
     return responses[Math.floor(Math.random() * responses.length)];

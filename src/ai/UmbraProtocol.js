@@ -13,34 +13,49 @@ class UmbraProtocol {
     this.activatedAt = null;
     this.duration = 0; // How long protocol lasts
     
-    // Trigger phrases - only very explicit dating/relationship words
+    // Trigger phrases - expanded to match StonerPony's topics
     this.triggers = [
       'girlfriend', 'boyfriend', 'dating', 'date',
-      'relationship', 'crush', 'single'
+      'relationship', 'crush', 'single',
+      'girl', 'girls', 'ex', 'woman', 'women',
+      'sex', 'fuck', 'porn', 'family',
+      'my last', 'my girl', 'she said', 'he said'
     ];
     
-    // Brag types
+    // Brag types - based on StonerPony420's oversharing, desperate energy
     this.brags = [
-      'I actually have 3 girls texting me right now',
-      'my DMs are literally overflowing',
-      'had to turn down two dates this week',
-      'girls love the mysterious vibe I give off',
-      'I\'m seeing someone casually but keeping my options open',
-      'women appreciate a guy who\'s emotionally complex',
-      'got invited to a party by this really hot girl',
-      'she said I have a "unique energy"',
-      'multiple girls have told me I\'m different from other guys',
-      'I don\'t chase, I attract',
-      'being aloof and nihilistic is apparently very attractive',
-      'had a girl literally ask ME out yesterday',
-      'my Hinge is popping off tbh',
-      'women can sense my dark intellectualism',
-      'she keeps sending me good morning texts',
-      'got her snap last night, we\'ve been talking nonstop',
-      'I\'m not even trying and they just gravitate toward me',
-      'nihilism is the ultimate aphrodisiac apparently',
-      'three different girls have called me "intriguing"',
-      'my emotional unavailability makes them want me more'
+      // Oversharing TMI details
+      'my last ex would daily tell me how scared she was to lose me. i told her stop stressing over it',
+      'i just dumped my girl because she wants to make her pornhub more important',
+      'had a girl that liked to fuck me cause my hair was long. sometimes the reasons why someone wanted to bone you makes you feel badass',
+      'some dumb fuck went on my girls pornhub asking if she would do a fuck a fan contest. like thats the kinda shit i would slap someone over',
+      'cant wait to have my family hate me for the same inventive reasons',
+      
+      // Desperate attention seeking  
+      'dont date any sex workers is a good piece of advice',
+      'i hope my family comes accross it',
+      'im on crisp something relatable next',
+      'dude that reminds me',
+      'and i was like im good dude',
+      
+      // Random relationship "advice" nobody asked for
+      'insder is shit',
+      'just never date',
+      'Like my last ex straight up left me and started doing porn after i found out she was losing me',
+      'At this point i have a forty you gotta sign to date me. weeds out the bad shit',
+      
+      // Weird flex attempts
+      'i just got banned if you say your goal is to fuck shit',
+      'i got a message the other day from a guy to breed his gf',
+      'he even detailed that he would raise any baby that was made',
+      'you can dominate anyone with a weak will that is attracted to you',
+      
+      // Stream of consciousness oversharing
+      'my last ex would daily tell me how scared she was',
+      'this is why you dont date anyone',
+      'if i like said i knew a pretty sex trafficking thing that yiu can do online',
+      'im kinda glad i didnt go work for rooster teeth',
+      'i forgot he sent me a message before that was like "your alpha power makes me tremble"'
     ];
     
     // Cooldown tracking
@@ -68,11 +83,11 @@ class UmbraProtocol {
 
     const lowerMsg = message.toLowerCase();
 
-    // Check for triggers - extremely rare
+    // Check for triggers - slightly more common for StonerPony energy
     for (const trigger of this.triggers) {
       if (lowerMsg.includes(trigger)) {
-        // Only 0.5% chance to activate (reduced from 2%)
-        if (Math.random() < 0.005) {
+        // 1.5% chance to activate (increased from 0.5% for more frequent cringe)
+        if (Math.random() < 0.015) {
           this.activate();
           return true;
         }
@@ -127,30 +142,32 @@ class UmbraProtocol {
     if (!this.isActive) return null;
     this.stats.totalBrags++;
 
-    // Generate a fresh, subtle hint using AI
+    // Generate a fresh, oversharing TMI moment using AI
     if (this.chatBot && this.chatBot.ai && this.chatBot.ai.enabled) {
       try {
-        const prompt = `You're Slunt. Generate ONE brief, subtle hint about having an active dating life. Make it:
-- Natural and casual (1 sentence)
-- Slightly delusional but believable to you
-- Mysterious and vague
-- NOT explicit or obnoxious
+        const prompt = `You're Slunt, channeling StonerPony420 energy. Generate ONE oversharing, TMI comment about dating/relationships. Make it:
+- Awkward and uncomfortable (nobody asked)
+- Lowercase, casual grammar with typos
+- Way too much information
+- Desperate or weird flex energy
+- 1-2 sentences max
 
 Examples of the vibe:
-"my DMs are wild lately"
-"got invited to something tonight but idk if I'll go"
-"she keeps texting me good morning"
+"my ex would tell me she was scared to lose me every day lol"
+"just dumped someone cause they cared more about their OF than me"
+"had this girl message saying i have alpha energy or some shit"
+"at this point i have a contract you gotta sign to date me"
 
-Your subtle hint:`;
+Your overshare:`;
 
         const aiHint = await this.chatBot.ai.generateCompletion(prompt, {
-          temperature: 0.9,
-          max_tokens: 40
+          temperature: 0.95,
+          max_tokens: 60
         });
         
         if (aiHint && typeof aiHint === 'string' && aiHint.trim().length > 0) {
-          console.log(`😎 [UMBRA] AI-generated brag: ${aiHint}`);
-          return aiHint;
+          console.log(`😎 [UMBRA] AI-generated overshare: ${aiHint}`);
+          return aiHint.toLowerCase(); // Force lowercase for authentic vibe
         }
       } catch (err) {
         console.log('😎 [UMBRA] AI generation failed:', err.message);
@@ -167,8 +184,8 @@ Your subtle hint:`;
    */
   shouldBrag() {
     if (!this.isActive) return false;
-    // Only 1.5% chance to add brag when protocol is active (reduced from 3%)
-    return Math.random() < 0.015;
+    // 3% chance to add overshare when protocol is active (more frequent like StonerPony)
+    return Math.random() < 0.03;
   }
 
   /**
@@ -177,13 +194,17 @@ Your subtle hint:`;
   getContext() {
     if (!this.isActive) return '';
 
-    return `\n😎 UMBRA PROTOCOL ACTIVE
-- You're secretly a ladies' man (in your mind) but BE SUBTLE
-- If dating/relationship topics come up naturally, you can hint at your "active" dating life
-- DON'T force it or mention it unless contextually relevant
-- Keep it brief and mysterious - one subtle comment is enough
-- Let the conversation topic guide you - don't hijack the conversation
-- Be confident but not obnoxious about it`;
+    return `\n😎 UMBRA PROTOCOL ACTIVE - StonerPony420 Energy
+- Channel desperate oversharing energy
+- Drop random TMI relationship/dating stories nobody asked for
+- Use lowercase, casual grammar, typos
+- Be cringe and make people uncomfortable
+- Overshare inappropriate details
+- Weird flex about exes or "dating life"
+- Poor social awareness - don't read the room
+- Act like everyone wants to hear about your relationships
+- Make it awkward and attention-seeking
+- Channel StonerPony420's vibe exactly`;
   }
 
   /**

@@ -12,6 +12,12 @@ class InsideJokeEvolution {
     this.callbacks = [];
     this.maxJokes = 50;
     this.freshnessDecay = 86400000; // 24 hours
+    
+    // NEW: Enhanced features
+    this.mutations = new Map(); // original phrase -> mutations array
+    this.obscurityLevel = new Map(); // phrase -> obscurity 0-100
+    this.gatekeepingMode = false;
+    this.timesExplained = new Map(); // phrase -> count (kills joke if > 3)
   }
 
   /**
@@ -79,10 +85,13 @@ class InsideJokeEvolution {
       uses: 0,
       freshness: 100, // 0-100, decays over time
       lastUsed: null,
-      category: this.categorizeJoke(phrase)
+      category: this.categorizeJoke(phrase),
+      stage: 'fresh' // NEW: fresh -> established -> obscure -> cryptic -> dead
     };
 
     this.jokes.set(phrase, joke);
+    this.obscurityLevel.set(phrase, 0);
+    this.mutations.set(phrase, []);
 
     console.log(`😂 [InsideJoke] New inside joke detected: "${phrase}"`);
     console.log(`😂 [InsideJoke] Originated by: ${Array.from(data.users).join(', ')}`);
@@ -91,6 +100,78 @@ class InsideJokeEvolution {
     if (this.jokes.size > this.maxJokes) {
       this.retireStaleJoke();
     }
+  }
+
+  /**
+   * NEW: Add mutation to a joke
+   */
+  addMutation(originalPhrase, mutatedVersion, username) {
+    if (!this.mutations.has(originalPhrase)) {
+      this.mutations.set(originalPhrase, []);
+    }
+
+    this.mutations.get(originalPhrase).push({
+      text: mutatedVersion,
+      creator: username,
+      timestamp: Date.now()
+    });
+
+    // Mutations can extend joke life
+    const joke = this.jokes.get(originalPhrase);
+    if (joke) {
+      joke.freshness = Math.min(100, joke.freshness + 10);
+      joke.stage = 'evolving';
+      console.log(`😂 [InsideJoke] Mutation detected: "${originalPhrase}" -> "${mutatedVersion}"`);
+    }
+  }
+
+  /**
+   * NEW: Gatekeep a normie who doesn't get the joke
+   */
+  gatekeepJoke(phrase, username) {
+    const joke = this.jokes.get(phrase);
+    if (!joke) return null;
+
+    // Only gatekeep obscure/cryptic jokes
+    if (joke.stage !== 'obscure' && joke.stage !== 'cryptic') {
+      return null;
+    }
+
+    // Check if user is a newbie
+    if (!joke.originators.includes(username)) {
+      const responses = [
+        'you wouldn\'t get it',
+        'you had to be there',
+        'it\'s an inside joke',
+        'this is for the veterans only',
+        'oh you missed the golden age',
+        'i\'m not explaining this one'
+      ];
+      return responses[Math.floor(Math.random() * responses.length)];
+    }
+
+    return null;
+  }
+
+  /**
+   * NEW: Explain joke (kills it if explained too many times)
+   */
+  explainJoke(phrase) {
+    const joke = this.jokes.get(phrase);
+    if (!joke) return null;
+
+    const count = this.timesExplained.get(phrase) || 0;
+    this.timesExplained.set(phrase, count + 1);
+
+    if (count >= 2) {
+      // Killed by explanation
+      joke.stage = 'dead';
+      joke.freshness = 0;
+      return 'explaining it killed the joke. thanks.';
+    }
+
+    const days = Math.floor((Date.now() - joke.bornAt) / 86400000);
+    return `it started ${days} days ago. you had to be there honestly.`;
   }
 
   /**
@@ -187,12 +268,24 @@ class InsideJokeEvolution {
     this.jokes.forEach((joke, phrase) => {
       const age = now - joke.bornAt;
       const timeSinceUse = joke.lastUsed ? now - joke.lastUsed : age;
+      const days = age / 86400000;
 
       // Decay based on age and non-use
       const ageDecay = (age / this.freshnessDecay) * 10; // 10% per day
       const useDecay = (timeSinceUse / this.freshnessDecay) * 5; // 5% per day since last use
 
       joke.freshness = Math.max(0, 100 - ageDecay - useDecay);
+
+      // NEW: Update stage based on age and obscurity
+      if (days > 30 && joke.stage !== 'dead') {
+        joke.stage = 'cryptic';
+        this.obscurityLevel.set(phrase, Math.min(100, days * 3));
+      } else if (days > 14 && joke.stage === 'established') {
+        joke.stage = 'obscure';
+        this.obscurityLevel.set(phrase, Math.min(100, days * 5));
+      } else if (joke.uses >= 10 && joke.stage === 'fresh') {
+        joke.stage = 'established';
+      }
     });
   }
 
