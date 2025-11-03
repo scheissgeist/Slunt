@@ -1,0 +1,19 @@
+{
+  "activeGoals": [
+    {
+      "id": "goal_1762056706691",
+      "text": "My conversational goal for this interaction is: \"Help [user] understand the reasoning behind my suggestion for the upcoming game development project\"",
+      "created": 1762056706691,
+      "progress": 0,
+      "attempts": 0
+    },
+    {
+      "id": "goal_1762057004497",
+      "text": "I'd like to have a fun and lighthearted conversation with you about our shared love of dark, atmospheric music. I'm looking forward",
+      "created": 1762057004497,
+      "progress": 0,
+      "attempts": 0
+    }
+  ],
+  "completedGoals": []
+}

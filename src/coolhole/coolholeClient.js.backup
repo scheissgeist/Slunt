@@ -1,0 +1,1167 @@
+const { chromium } = require('playwright');
+const EventEmitter = require('events');
+const fs = require('fs');
+const path = require('path');
+
+/**
+ * Coolhole.org Client - Handles connection and interaction with Coolhole.org
+ */
+class CoolholeClient extends EventEmitter {
+  constructor() {
+    super();
+    this.browser = null;
+    this.context = null;
+    this.page = null;
+    this.connected = false;
+    this.chatReady = false;
+    this.loginAttempts = 0;
+    this.maxLoginAttempts = 3;
+    this.verbose = process.env.VERBOSE_LOGGING === 'true';
+
+    // Coolhole.org specific settings
+    this.channel = process.env.CYTUBE_CHANNEL || 'coolhole';
+    this.baseUrl = `https://coolhole.org/r/${this.channel}`; // CyTube channel URL
+    this.username = process.env.BOT_USERNAME || 'Slunt';
+    this.password = process.env.BOT_PASSWORD;
+    this.storagePath = path.resolve(process.cwd(), 'data', 'auth-storage.json');
+
+    // Chat state
+    this.lastMessageTime = 0;
+    this.messageQueue = [];
+    this.minMessageDelay = 800; // 800ms between messages (optimized for faster chat)
+
+    // Connection health monitoring
+    this.heartbeatInterval = null;
+    this.heartbeatFrequency = 30000; // Send heartbeat every 30s
+    this.pageCheckInterval = null;
+    this.reconnectTimer = null;
+  }
+
+  /**
+   * Connect to Coolhole.org using Playwright browser
+   */
+  async connect() {
+    try {
+      console.log('🔌 Launching browser...');
+      this.browser = await chromium.launch({
+        headless: true, // Run invisibly in background
+        args: [
+          '--start-maximized',
+          '--disable-gpu',
+          '--disable-webgl',
+          '--use-angle=swiftshader',
+          '--no-sandbox',
+          '--disable-dev-shm-usage'
+        ],
+        slowMo: 100 // Slow down Playwright operations for better stability
+      });
+      
+      // Create a new browser context with persistent storage if available
+      const hasStorage = fs.existsSync(this.storagePath);
+      this.context = await this.browser.newContext({
+        storageState: hasStorage ? this.storagePath : undefined,
+        viewport: { width: 1920, height: 1080 },
+        // Anti-detection: Use realistic user agent
+        userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        // Add extra HTTP headers to appear more like a real browser (avoid problematic headers)
+        extraHTTPHeaders: {
+          'Accept-Language': 'en-US,en;q=0.9',
+          'Accept-Encoding': 'gzip, deflate, br',
+          'Connection': 'keep-alive'
+        }
+      });
+
+      // Hide automation indicators
+      await this.context.addInitScript(() => {
+        // Override navigator.webdriver
+        Object.defineProperty(navigator, 'webdriver', {
+          get: () => undefined
+        });
+        
+        // Hide Playwright/automation traces
+        delete window.__playwright;
+        delete window.__pw_manual;
+        delete window.__PW_inspect;
+      });
+
+      // Create a new page
+      this.page = await this.context.newPage();
+      
+      // Enable browser console logging to debug message detection
+      this.page.on('console', msg => console.log('🌐 Browser:', msg.text()));
+      this.page.on('pageerror', err => console.error('Browser error:', err.message));
+      
+      // Navigate to Coolhole.org (just root URL, not /r/channel)
+      const channelUrl = this.baseUrl;
+      console.log(`🌐 Navigating to Coolhole.org: ${channelUrl}`);
+      let connected = false;
+      for (let attempt = 1; attempt <= 3 && !connected; attempt++) {
+        try {
+          await this.page.goto(channelUrl, { 
+            waitUntil: 'domcontentloaded',
+            timeout: 30000 
+          });
+          connected = true;
+          console.log('✅ Page loaded successfully');
+        } catch (e) {
+          console.log(`Navigation attempt ${attempt} failed:`, e.message);
+          if (attempt < 3) await this.page.waitForTimeout(5000);
+        }
+      }
+      
+      if (!connected) {
+        throw new Error('Failed to connect to Coolhole.org after 3 attempts');
+      }
+      
+      // Wait briefly for initial load
+      console.log('⏳ Waiting for page load...');
+      await this.page.waitForTimeout(2000); // Reduced from 3000
+
+      // SKIP popup handling on initial connect - it causes page close issues
+      // Popups can be handled later if they block functionality
+      console.log('✅ Skipping popup handling to avoid page close issues')
+      
+      // Set up message handlers only if page is still valid
+      try {
+        await this.page.exposeFunction('handleChatMessage', (data) => {
+          this.handleMessage(data);
+        });
+      } catch (e) {
+        console.log('⚠️ Could not expose handleChatMessage:', e.message);
+      }
+
+      // Inject message listener - IMPROVED to catch all message formats
+      await this.page.evaluate(() => {
+        const chatMessages = document.querySelector('#messagebuffer');
+        if (!chatMessages) {
+          console.error('❌ #messagebuffer not found! Cannot set up message listener.');
+          console.log('🔍 Page structure:', document.body.innerHTML.substring(0, 500));
+          return;
+        }
+        
+        console.log('🎧 Setting up message listener on #messagebuffer');
+        
+        // DEBUG: Log existing messages to understand structure
+        const existingMessages = chatMessages.querySelectorAll('div');
+        console.log(`📋 Found ${existingMessages.length} existing elements in chat`);
+        if (existingMessages.length > 0) {
+          const sample = existingMessages[existingMessages.length - 1];
+          console.log('🔍 Sample message structure:', sample.outerHTML.substring(0, 200));
+          console.log('🔍 Sample message classes:', sample.className);
+        }
+        
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+              mutation.addedNodes.forEach((node) => {
+                // Log every new node for debugging
+                if (node.nodeType === Node.ELEMENT_NODE) {
+                  console.log('🆕 New element added:', node.className, node.tagName);
+                  
+                  let username = null;
+                  let text = null;
+                  
+                  // Get full text content
+                  const fullText = node.textContent || '';
+                  console.log('📝 Full text:', fullText.substring(0, 100));
+                  
+                  // Coolhole format: [timestamp] username: message
+                  // Class format: chat-msg-username
+                  if (node.className && node.className.includes('chat-msg-')) {
+                    // Extract username from class name
+                    const classMatch = node.className.match(/chat-msg-([^\s]+)/);
+                    if (classMatch) {
+                      username = classMatch[1];
+                    }
+                    
+                    // Extract message from text (format: [HH:MM:SS] username: message)
+                    const messageMatch = fullText.match(/\[\d{2}:\d{2}:\d{2}\]\s*([^:]+):\s*(.+)/);
+                    if (messageMatch) {
+                      username = messageMatch[1].trim();
+                      text = messageMatch[2].trim();
+                      console.log('🎯 Parsed Coolhole format:', { username, text: text.substring(0, 50) });
+                    }
+                  }
+                  
+                  // Check if this is our own message (learn from what was actually sent)
+                  if (username && text && username === 'Slunt') {
+                    console.log('� Slunt\'s message appeared in chat:', text.substring(0, 50));
+                    // Send to bot for self-reflection
+                    window.handleChatMessage({
+                      type: 'self-reflection',
+                      username: 'Slunt',
+                      text: text.trim(),
+                      timestamp: Date.now()
+                    });
+                  } else if (username && text) {
+                    // Regular user message
+                    console.log(`📨 Message from ${username}: ${text.substring(0, 50)}`);
+                    window.handleChatMessage({
+                      type: 'chat',
+                      username: username.trim(),
+                      text: text.trim(),
+                      timestamp: Date.now()
+                    });
+                  }
+                }
+              });
+            });
+          });
+        observer.observe(chatMessages, { 
+          childList: true, 
+          subtree: true  // Watch all descendants too
+        });
+        console.log('✅ Message listener active');
+      });
+
+      this.connected = true;
+      this.emit('connected');
+
+      // Start health monitoring
+      this.startHealthMonitoring();
+
+      // Check if chat is available and login if we have credentials
+      console.log('🔐 Checking chat availability...');
+      const chatExists = await this.ensureChatReady();
+
+      // Verify we're on the CyTube channel page using visual confirmation
+      await this.verifyPageLocation();
+
+      // SKIP LOGIN FOR NOW - it's causing page close issues
+      // We can send messages as guest on Coolhole
+      console.log('✅ Connected to Coolhole (guest mode - login disabled for now)');
+      this.chatReady = true;
+
+      // If we wanted login in the future:
+      // if (this.password || process.env.BOT_PASSWORD) {
+      //   await this.login();
+      // }
+
+    } catch (error) {
+      console.error('Connection error:', error);
+      this.scheduleReconnect();
+    }
+  }
+
+  /**
+   * Handle Coolhole.org logout process to clear cached session
+   */
+  async logout() {
+    try {
+      console.log('🚪 Looking for user menu and logout option...');
+      
+      // First, try to open user dropdown menu
+      const userMenuSelectors = [
+        '#welcome',  // Common user welcome area
+        '.username',
+        'a.dropdown-toggle',
+        'button.dropdown-toggle',
+        '[data-toggle="dropdown"]'
+      ];
+      
+      let menuOpened = false;
+      for (const selector of userMenuSelectors) {
+        try {
+          const menuButton = await this.page.$(selector);
+          if (menuButton) {
+            console.log(`🖱️ Clicking user menu: ${selector}`);
+            await menuButton.click({ timeout: 2000 });
+            await this.page.waitForTimeout(500);
+            menuOpened = true;
+            break;
+          }
+        } catch (e) {
+          // Try next selector
+        }
+      }
+      
+      // Now try to find and click logout link/button
+      const logoutSelectors = [
+        'a[href="/logout"]',
+        'a:has-text("Logout")',
+        'a:has-text("Log out")',
+        'a:has-text("Sign out")',
+        'button:has-text("Logout")',
+        'button:has-text("Log out")'
+      ];
+      
+      for (const selector of logoutSelectors) {
+        try {
+          const logoutButton = await this.page.$(selector);
+          if (logoutButton) {
+            console.log(`✅ Found logout button: ${selector}`);
+            await logoutButton.click({ timeout: 2000 });
+            await this.page.waitForTimeout(1500);
+            console.log('✅ Logged out successfully');
+            
+            // Clear the saved auth state
+            if (fs.existsSync(this.storagePath)) {
+              fs.unlinkSync(this.storagePath);
+              console.log('🗑️ Cleared saved auth state file');
+            }
+            
+            // Also clear all browser cookies to ensure fresh start
+            await this.context.clearCookies();
+            console.log('🍪 Cleared all browser cookies');
+            
+            // CRITICAL: Clear localStorage and sessionStorage too
+            await this.page.evaluate(() => {
+              localStorage.clear();
+              sessionStorage.clear();
+            });
+            console.log('🧹 Cleared localStorage and sessionStorage');
+            
+            return true;
+          }
+        } catch (e) {
+          // Try next selector
+        }
+      }
+      
+      console.log('⚠️ No logout button found - clearing cookies manually');
+      
+      // If we can't logout via UI, just clear cookies and storage
+      if (fs.existsSync(this.storagePath)) {
+        fs.unlinkSync(this.storagePath);
+        console.log('🗑️ Cleared saved auth state file');
+      }
+      await this.context.clearCookies();
+      console.log('🍪 Cleared all browser cookies');
+      
+      // CRITICAL: Also clear localStorage and sessionStorage
+      await this.page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+      });
+      console.log('🧹 Cleared localStorage and sessionStorage');
+      
+      return true;
+    } catch (error) {
+      console.log('⚠️ Logout error:', error.message);
+      
+      // Best effort - clear storage even if logout UI fails
+      try {
+        if (fs.existsSync(this.storagePath)) {
+          fs.unlinkSync(this.storagePath);
+          console.log('🗑️ Cleared saved auth state file (fallback)');
+        }
+        await this.context.clearCookies();
+        console.log('🍪 Cleared all browser cookies (fallback)');
+        
+        // CRITICAL: Also clear localStorage and sessionStorage
+        await this.page.evaluate(() => {
+          localStorage.clear();
+          sessionStorage.clear();
+        });
+        console.log('🧹 Cleared localStorage and sessionStorage');
+      } catch (e) {}
+      
+      return false;
+    }
+  }
+
+  /**
+   * Handle Coolhole.org login process
+   */
+  async login() {
+    if (this.loginAttempts >= this.maxLoginAttempts) {
+      console.error('❌ Max login attempts reached');
+      return false;
+    }
+
+    try {
+      this.loginAttempts++;
+      console.log(`🔑 Login attempt ${this.loginAttempts}/${this.maxLoginAttempts}`);
+      
+      // Check if page is still open
+      if (!this.page || this.page.isClosed()) {
+        console.error('❌ Page closed, cannot login');
+        return false;
+      }
+      
+      // Navigate directly to login page
+      console.log('🌐 Navigating to login page...');
+      try {
+        await this.page.goto(`${this.baseUrl}/login`, { timeout: 10000, waitUntil: 'networkidle' });
+        await this.page.waitForTimeout(1500);
+        console.log('✅ Login page loaded');
+      } catch (e) {
+        console.log('⚠️ Could not navigate to /login:', e.message);
+        // Try clicking login link as fallback
+        try {
+          const loginLink = await this.page.$('a[href="/login"], a:has-text("Login"), a:has-text("Sign in")');
+          if (loginLink) {
+            await loginLink.click({ timeout: 2000 });
+            await this.page.waitForTimeout(1500);
+          }
+        } catch (e2) {
+          console.log('Login link not found:', e2.message);
+        }
+      }
+
+      // Flexible selectors for fields
+      console.log('🔍 Looking for login fields...');
+      const fieldSelectors = ['#name', 'input[name="name"]', 'input[type="text"]'];
+      const pwSelectors = ['#pw', 'input[type="password"]'];
+
+      let nameField = null; let pwField = null;
+      for (const sel of fieldSelectors) {
+        try {
+          nameField = await this.page.$(sel);
+          if (nameField) { console.log(`✅ Username field: ${sel}`); break; }
+        } catch (e) { /* continue */ }
+      }
+      for (const sel of pwSelectors) {
+        try {
+          pwField = await this.page.$(sel);
+          if (pwField) { console.log(`✅ Password field: ${sel}`); break; }
+        } catch (e) { /* continue */ }
+      }
+
+      if (!nameField || !pwField) {
+        console.log('⚠️ Login fields not found, checking if already logged in...');
+      } else {
+        // Clear and type with human-like delays
+        try {
+          // Focus and clear username field
+          console.log('👤 Filling username field...');
+          await nameField.click();
+          await this.page.waitForTimeout(100);
+          await nameField.fill('');
+          await this.page.waitForTimeout(50);
+          
+          // Type username character by character with random delays
+          for (const char of this.username) {
+            await nameField.type(char, { delay: 50 + Math.random() * 50 });
+          }
+          
+          await this.page.waitForTimeout(200);
+          
+          // Focus and clear password field
+          console.log('🔑 Filling password field...');
+          await pwField.click();
+          await this.page.waitForTimeout(100);
+          await pwField.fill('');
+          await this.page.waitForTimeout(50);
+          
+          // Type password character by character with random delays
+          const password = this.password || process.env.BOT_PASSWORD || 'piss';
+          for (const char of password) {
+            await pwField.type(char, { delay: 50 + Math.random() * 50 });
+          }
+          
+          console.log('📝 Filled credentials');
+          await this.page.waitForTimeout(500); // Wait before submitting
+
+          // Try multiple submission methods (don't early exit - try all)
+          
+          // Method 1: Click submit button with force option
+          console.log('🖱️ Method 1: Attempting button click...');
+          const submitSelectors = ['#login', 'button:has-text("Login")', 'input[type="submit"]', 'button[type="submit"]'];
+          let buttonClicked = false;
+          for (const sel of submitSelectors) {
+            try {
+              const btn = await this.page.$(sel);
+              if (btn) { 
+                console.log(`  └─ Found button: ${sel}, clicking with force...`);
+                await btn.click({ force: true, timeout: 5000 });
+                buttonClicked = true;
+                console.log(`  └─ ✅ Click succeeded!`);
+                break;
+              }
+            } catch (e) { 
+              console.log(`  └─ ❌ Click failed: ${e.message}`);
+            }
+          }
+          if (!buttonClicked) {
+            console.log('  └─ ⚠️ No submit button found');
+          }
+          
+          await this.page.waitForTimeout(1000);
+          
+          // Method 2: Submit the form directly via JavaScript
+          console.log('⌨️ Method 2: JavaScript form.submit()...');
+          try {
+            const formSubmitted = await this.page.evaluate(() => {
+              const form = document.querySelector('form');
+              if (form) {
+                form.submit();
+                return true;
+              }
+              return false;
+            });
+            console.log(`  └─ ${formSubmitted ? '✅' : '❌'} Form ${formSubmitted ? 'submitted' : 'not found'}`);
+          } catch (e) {
+            console.log(`  └─ ❌ Error: ${e.message}`);
+          }
+          
+          await this.page.waitForTimeout(1000);
+          
+          // Method 3: Press Enter key (most reliable for forms)
+          console.log('⏎ Method 3: Pressing Enter key...');
+          try {
+            await this.page.keyboard.press('Enter');
+            console.log('  └─ ✅ Enter key pressed');
+          } catch (e) {
+            console.log(`  └─ ❌ Error: ${e.message}`);
+          }
+          
+          console.log('⏳ Waiting 5 seconds for login to process...');
+          await this.page.waitForTimeout(5000); // Wait longer for login to process
+          
+          // Check current URL
+          const currentUrl = this.page.url();
+          console.log(`📍 Current URL: ${currentUrl}`);
+          
+          // Check for error messages on the page
+          try {
+            const errorMsg = await this.page.evaluate(() => {
+              const errorEl = document.querySelector('.alert, .error, .warning, #errorbox, .message');
+              return errorEl ? errorEl.textContent.trim() : null;
+            });
+            if (errorMsg) {
+              console.log(`⚠️ Error message on page: ${errorMsg}`);
+            }
+          } catch (e) {}
+          
+          // If we're at /logout, it means login failed
+          if (currentUrl.includes('/logout')) {
+            console.log('❌ LOGIN REJECTED - redirected to /logout');
+            console.log('   Possible reasons:');
+            console.log('   1. Wrong username or password');
+            console.log('   2. Account does not exist');
+            console.log('   3. Coolhole detected automation/bot');
+            // Take screenshot
+            try {
+              const screenshotPath = `screenshot_logout_${Date.now()}.png`;
+              await this.page.screenshot({ path: screenshotPath });
+              console.log(`📸 Saved screenshot: ${screenshotPath}`);
+            } catch (e) {}
+            return false;
+          }
+          
+          // If still on login page, something went wrong
+          if (currentUrl.includes('/login')) {
+            console.log('⚠️ Still on login page after submission!');
+            // Take screenshot for debugging
+            try {
+              const screenshotPath = `screenshot_login_fail_${Date.now()}.png`;
+              await this.page.screenshot({ path: screenshotPath });
+              console.log(`📸 Saved screenshot: ${screenshotPath}`);
+            } catch (e) {}
+            return false;
+          } else {
+            console.log('✅ URL changed, login might have worked');
+          }
+          
+          console.log('⏳ Waiting for login to process...');
+        } catch (e) {
+          console.error('Error filling login form:', e.message);
+          return false;
+        }
+      }
+
+      // Navigate back to the main page BEFORE checking chat elements
+      const channelUrl = this.baseUrl;
+      console.log(`🔄 Navigating back to Coolhole after login: ${channelUrl}`);
+      try {
+        await this.page.goto(channelUrl, { 
+          waitUntil: 'domcontentloaded',
+          timeout: 15000 
+        });
+        await this.page.waitForTimeout(3000); // Wait for channel to load
+        console.log('✅ Back in channel');
+      } catch (e) {
+        console.log('⚠️ Could not navigate back to channel:', e.message);
+      }
+
+      // Handle any popups that appear after login
+      try {
+        await this.handlePopups();
+      } catch (e) {
+        console.log('Popup handling skipped:', e.message);
+      }
+
+      // NOW verify chat presence (buffer + input) with flexible selectors
+      try {
+        const chatPresent = await this.page.$('#messagebuffer');
+        const chatline = await this.page.$('#chatline, .chat-input, textarea');
+
+        if (chatPresent && chatline) {
+          // Verify we're logged in as the correct username
+          try {
+            const usernameText = await this.page.evaluate(() => {
+              // Check for username in various places
+              const welcome = document.querySelector('#welcome, .username, .user-info');
+              if (welcome) return welcome.textContent;
+              
+              // Check for username in nav/header
+              const navUser = document.querySelector('nav .username, header .username');
+              if (navUser) return navUser.textContent;
+              
+              return null;
+            });
+            
+            if (usernameText) {
+              console.log(`👤 Logged in as: ${usernameText.trim()}`);
+              if (!usernameText.includes(this.username)) {
+                console.warn(`⚠️ WARNING: Expected username "${this.username}" but found "${usernameText.trim()}"`);
+              }
+            } else {
+              console.log('⚠️ Could not verify username on page');
+            }
+          } catch (e) {
+            console.log('⚠️ Could not check username:', e.message);
+          }
+          
+          console.log('✅ Login successful!');
+          this.chatReady = true;
+          
+          // Save auth storage for future sessions
+          try {
+            await this.saveAuthState();
+          } catch (e) {
+            console.log('Could not save auth state:', e.message);
+          }
+          console.log('✅ Chat input found and ready!');
+          await this.setupChatHandlers();
+          return true;
+        } else {
+          console.log('⚠️ Chat elements not fully available - attempting to continue');
+          this.chatReady = false;
+          return false;
+        }
+      } catch (e) {
+        console.error('Error checking chat elements:', e.message);
+        return false;
+      }
+
+    } catch (error) {
+      console.error('Login error:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Persist current auth/session storage to disk
+   */
+  async saveAuthState() {
+    try {
+      if (this.context) {
+        const dir = path.dirname(this.storagePath);
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(dir, { recursive: true });
+        }
+        await this.context.storageState({ path: this.storagePath });
+        console.log('💾 Saved auth storage');
+      }
+    } catch (e) {
+      console.warn('Could not save auth storage:', e.message);
+    }
+  }
+
+  /**
+   * Set up chat message handlers
+   */
+  async setupChatHandlers() {
+    // Chat handlers are already set up in the connect() method
+    // This is just a placeholder to confirm they're ready
+    console.log('✅ Chat handlers initialized');
+  }
+
+  /**
+   * Detect if chat UI is already present and mark ready
+   */
+  async ensureChatReady() {
+    try {
+      const buffer = await this.page.$('#messagebuffer');
+      const input = await this.page.$('#chatline, .chat-input, textarea');
+      if (buffer && input) {
+        this.chatReady = true;
+        await this.setupChatHandlers();
+        console.log('✅ Chat ready without explicit login');
+        return true;
+      }
+    } catch (e) {
+      // ignore
+    }
+    return false;
+  }
+
+  /**
+   * Handle incoming messages from Coolhole.org
+   */
+  handleMessage(message) {
+    if (this.verbose) {
+      console.log(`📬 handleMessage called:`, message.type, message.username || '', message.text?.substring(0, 30) || '');
+    }
+
+    // Emit activity for health monitoring (we're receiving messages = connection alive)
+    this.emit('message', message);
+
+    switch (message.type) {
+      case 'self-reflection':
+        if (this.verbose) console.log(`🪞 Emitting self-reflection for Slunt's own message`);
+        this.emit('self-reflection', {
+          actualText: message.text,
+          timestamp: message.timestamp || Date.now()
+        });
+        break;
+
+      case 'chat':
+        if (this.verbose) console.log(`📤 Emitting chat event for: ${message.username}`);
+        this.emit('chat', {
+          username: message.username,
+          text: message.text,
+          platform: 'coolhole',
+          timestamp: message.timestamp || Date.now()
+        });
+        break;
+
+      case 'userJoin':
+        this.emit('userJoin', {
+          username: message.username
+        });
+        break;
+
+      case 'userLeave':
+        this.emit('userLeave', {
+          username: message.username
+        });
+        break;
+
+      case 'loginResponse':
+        this.emit('loginResponse', {
+          success: message.success,
+          error: message.error
+        });
+        break;
+
+      default:
+        console.log('Unhandled message type:', message.type);
+    }
+  }
+
+  /**
+   * Send a chat message to Coolhole.org
+   */
+  async sendChat(message) {
+    if (!this.connected || !this.page) {
+      console.warn('Not connected, cannot send message');
+      return false;
+    }
+
+    // Rate limiting
+    const now = Date.now();
+    const timeSinceLastMessage = now - this.lastMessageTime;
+    if (timeSinceLastMessage < this.minMessageDelay) {
+      const waitTime = this.minMessageDelay - timeSinceLastMessage;
+      console.log(`⏳ Rate limiting: waiting ${waitTime}ms before sending next message`);
+      await this.page.waitForTimeout(waitTime);
+    }
+
+    // --- Retry logic ---
+    let attempt = 0;
+    const maxAttempts = 3;
+    let lastError = null;
+    while (attempt < maxAttempts) {
+      try {
+        // Check if page is still open
+        if (this.page.isClosed()) {
+          console.error('❌ Page is closed, cannot send message');
+          lastError = 'Page closed';
+          break;
+        }
+
+        // Find chat input with retry and flexible selectors
+        const selectors = ['#chatline', '.chat-input', 'textarea', 'input[type="text"]'];
+        let chatInput = null;
+        for (const sel of selectors) {
+          chatInput = await this.page.$(sel);
+          if (chatInput) {
+            console.log(`✅ Found chat input with selector: ${sel}`);
+            
+            // Check if element is actually visible and interactable
+            const isVisible = await chatInput.isVisible();
+            const isEnabled = await chatInput.isEnabled();
+            console.log(`📋 Element state: visible=${isVisible}, enabled=${isEnabled}`);
+            
+            if (isVisible && isEnabled) {
+              break;
+            } else {
+              console.log(`⚠️ Element found but not usable, trying next selector...`);
+              chatInput = null;
+            }
+          }
+        }
+
+        if (!chatInput) {
+          console.error('❌ Chat input not found or not visible/enabled with any selector');
+          lastError = 'Chat input not found or not interactable';
+          break;
+        }
+
+        // Try to make sure it's scrolled into view and interactable
+        try {
+          await chatInput.scrollIntoViewIfNeeded();
+          await this.page.waitForTimeout(200);
+        } catch (scrollErr) {
+          console.warn('⚠️ Could not scroll into view:', scrollErr.message);
+        }
+
+        // Check bounding box AFTER scrolling
+        const box = await chatInput.boundingBox();
+        console.log(`📏 Chat input box dimensions: ${box ? `${box.width}x${box.height}` : 'null'}`);
+        
+        if (!box || box.width < 10 || box.height < 10) {
+          console.error('❌ Chat input still not visible or too small after scroll');
+          lastError = 'Chat input not visible or too small after scroll';
+          break;
+        }
+
+        // CRITICAL: FORCE focus on chat box multiple times to ensure it sticks
+        for (let i = 0; i < 3; i++) {
+          await chatInput.focus();
+          await this.page.waitForTimeout(30);
+        }
+
+        // Verify focus is on the input
+        const isFocused = await chatInput.evaluate(el => document.activeElement === el);
+        if (!isFocused) {
+          console.warn('⚠️ Chat input lost focus, forcing focus again');
+          await chatInput.focus();
+          await this.page.waitForTimeout(50);
+        }
+
+        // Clear existing text
+        await chatInput.evaluate(el => el.value = '');
+
+        // Use fill() instead of type() - faster and handles emojis better
+        await chatInput.fill(message);
+        await this.page.waitForTimeout(100);
+
+        // Ensure still focused before pressing Enter
+        await chatInput.focus();
+        await this.page.waitForTimeout(30);
+
+        // Try to send message, catch click/press timeouts
+        try {
+          console.log(`[CoolholeClient] Attempting to send chat (attempt ${attempt + 1}): ${message}`);
+          await chatInput.press('Enter', { timeout: 3000 });
+          console.log(`[CoolholeClient] Chat input Enter pressed successfully.`);
+        } catch (err) {
+          console.error(`❌ Error pressing Enter to send message (attempt ${attempt + 1}):`, err.message);
+          lastError = err.message;
+          attempt++;
+          await this.page.waitForTimeout(200);
+          continue;
+        }
+
+        // Update rate limiting
+        this.lastMessageTime = Date.now();
+
+        console.log(`[CoolholeClient] Message sent to chat: ${message}`);
+
+        // Emit data event for health monitoring
+        this.emit('data', { type: 'messageSent', message });
+
+        return true;
+      } catch (error) {
+        console.error(`Error sending message (attempt ${attempt + 1}):`, error.message);
+        lastError = error.message;
+        attempt++;
+        await this.page.waitForTimeout(200);
+        continue;
+      }
+    }
+    // If we reach here, all attempts failed
+    console.error(`[CoolholeClient] All sendChat attempts failed: ${lastError}`);
+    return false;
+  }
+
+  /**
+   * Start health monitoring (heartbeat + page checks)
+   */
+  startHealthMonitoring() {
+    // Clear any existing monitoring
+    this.stopHealthMonitoring();
+
+    console.log('💗 [Coolhole] Starting health monitoring');
+
+    // Heartbeat: Emit activity event periodically
+    this.heartbeatInterval = setInterval(() => {
+      if (this.connected && this.page && !this.page.isClosed()) {
+        this.emit('heartbeat', {
+          timestamp: Date.now(),
+          connected: this.connected,
+          chatReady: this.chatReady
+        });
+      }
+    }, this.heartbeatFrequency);
+
+    // Page health check: Verify page is still alive
+    this.pageCheckInterval = setInterval(async () => {
+      try {
+        if (!this.page || this.page.isClosed()) {
+          console.log('❌ [Coolhole] Page closed detected, connection lost');
+          this.handleConnectionLoss('Page closed');
+          return;
+        }
+
+        // Check if we can still access the page
+        const isAccessible = await this.page.evaluate(() => true).catch(() => false);
+        if (!isAccessible) {
+          console.log('❌ [Coolhole] Page not accessible, connection lost');
+          this.handleConnectionLoss('Page not accessible');
+          return;
+        }
+
+        // Check if messagebuffer still exists
+        const chatExists = await this.page.$('#messagebuffer').catch(() => null);
+        if (!chatExists) {
+          console.log('⚠️ [Coolhole] Chat elements missing, might have navigated away');
+        }
+
+      } catch (error) {
+        console.log('⚠️ [Coolhole] Error during health check:', error.message);
+        this.handleConnectionLoss(`Health check error: ${error.message}`);
+      }
+    }, 60000); // Check every 60s
+  }
+
+  /**
+   * Stop health monitoring
+   */
+  stopHealthMonitoring() {
+    if (this.heartbeatInterval) {
+      clearInterval(this.heartbeatInterval);
+      this.heartbeatInterval = null;
+    }
+
+    if (this.pageCheckInterval) {
+      clearInterval(this.pageCheckInterval);
+      this.pageCheckInterval = null;
+    }
+
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+  }
+
+  /**
+   * Handle connection loss
+   */
+  handleConnectionLoss(reason) {
+    if (!this.connected) return; // Already handling disconnect
+
+    console.log(`💔 [Coolhole] Connection lost: ${reason}`);
+    this.connected = false;
+    this.chatReady = false;
+
+    // Stop health monitoring
+    this.stopHealthMonitoring();
+
+    // Emit disconnection event
+    this.emit('disconnected', { reason });
+
+    // Emit error event for health monitor
+    this.emit('error', new Error(`Connection lost: ${reason}`));
+  }
+
+  /**
+   * Schedule reconnection attempt
+   */
+  scheduleReconnect() {
+    if (this.reconnectTimer) return; // Already scheduled
+
+    console.log('🔄 [Coolhole] Scheduling reconnection in 10 seconds...');
+    this.reconnectTimer = setTimeout(async () => {
+      this.reconnectTimer = null;
+      if (!this.connected) {
+        console.log('🔌 [Coolhole] Attempting to reconnect...');
+        try {
+          await this.connect();
+        } catch (error) {
+          console.log('❌ [Coolhole] Reconnection failed:', error.message);
+          // Will be picked up by health monitor for retry
+        }
+      }
+    }, 10000);
+  }
+
+  /**
+   * Disconnect from Coolhole.org
+   */
+  async disconnect() {
+    console.log('🔌 [Coolhole] Disconnecting...');
+
+    // Stop health monitoring
+    this.stopHealthMonitoring();
+
+    this.connected = false;
+    this.chatReady = false;
+
+    if (this.page) {
+      try {
+        await this.page.close();
+      } catch (e) {}
+      this.page = null;
+    }
+    if (this.context) {
+      try {
+        await this.context.close();
+      } catch (e) {}
+      this.context = null;
+    }
+    if (this.browser) {
+      try {
+        await this.browser.close();
+      } catch (e) {}
+      this.browser = null;
+    }
+
+    console.log('✅ [Coolhole] Disconnected');
+  }
+
+  /**
+   * Handle any popup dialogs or modals
+   */
+  async handlePopups() {
+    try {
+      console.log('🚫 Clearing any blocking popups...');
+      let popupCount = 0;
+      
+      while (popupCount < 5) {
+        // Check if page still exists
+        if (!this.page || this.page.isClosed()) {
+          console.log('⚠️ Page closed during popup handling');
+          break;
+        }
+        
+        let found = false;
+        
+        // Check for various popup types
+        const popupSelectors = [
+          'button:has-text("×")',
+          'button:has-text("Close")',
+          '.close',
+          '[data-dismiss="modal"]',
+          'button:has-text("Accept")',
+          'button:has-text("I Accept")',
+          'button:has-text("Agree")',
+          'button:has-text("OK")',
+          'button:has-text("Yes")',
+          '.modal-close'
+        ];
+
+        for (const selector of popupSelectors) {
+          try {
+            if (!this.page || this.page.isClosed()) break;
+            
+            const button = await this.page.$(selector);
+            if (button && await button.isVisible()) {
+              console.log(`Found popup button: ${selector}`);
+              try {
+                await button.click({ timeout: 1000 });
+                await this.page.waitForTimeout(500);
+                found = true;
+                popupCount++;
+                break;
+              } catch (e) {
+                console.log(`Failed to click ${selector}:`, e.message);
+                // Continue trying other selectors
+              }
+            }
+          } catch (e) {
+            // Selector not found or page closed, continue
+            if (e.message.includes('Target page') || e.message.includes('closed')) {
+              console.log('⚠️ Page closed while checking selector');
+              break;
+            }
+          }
+        }
+
+        if (!found) break;
+      }
+
+      if (popupCount > 0) {
+        console.log(`✅ Cleared ${popupCount} popups`);
+      } else {
+        console.log('✅ No popups found');
+      }
+
+    } catch (error) {
+      console.warn('Error handling popups:', error.message);
+      // Continue even if there's an error - popups might not be present
+    }
+  }
+
+  /**
+   * Verify we're on the correct page using visual/DOM confirmation
+   */
+  async verifyPageLocation() {
+    try {
+      console.log('👁️  [Vision] Verifying page location...');
+
+      // Take screenshot for visual verification
+      const screenshot = await this.page.screenshot({ path: `screenshots/page_verification_${Date.now()}.png` });
+
+      // Check current URL
+      const currentUrl = this.page.url();
+      console.log(`📍 [Vision] Current URL: ${currentUrl}`);
+
+      // Check for CyTube-specific elements
+      const cytubeElements = {
+        videoPlayer: await this.page.$('#videowrap').catch(() => null),
+        chatBox: await this.page.$('#messagebuffer').catch(() => null),
+        userlist: await this.page.$('#userlist').catch(() => null),
+        chatline: await this.page.$('#chatline').catch(() => null)
+      };
+
+      const foundElements = Object.entries(cytubeElements)
+        .filter(([key, val]) => val !== null)
+        .map(([key]) => key);
+
+      console.log(`👁️  [Vision] Found CyTube elements: ${foundElements.join(', ') || 'NONE'}`);
+
+      if (foundElements.length === 0) {
+        console.warn(`⚠️  [Vision] WARNING: No CyTube elements found! We might be on the wrong page.`);
+        console.warn(`⚠️  [Vision] Expected URL: ${this.baseUrl}`);
+        console.warn(`⚠️  [Vision] Actual URL: ${currentUrl}`);
+
+        // If URL doesn't match expected, navigate to correct URL
+        if (!currentUrl.includes('/r/')) {
+          console.log(`🔄 [Vision] Navigating to correct CyTube channel: ${this.baseUrl}`);
+          await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+          await this.page.waitForTimeout(2000);
+
+          // Re-verify after navigation
+          const newUrl = this.page.url();
+          console.log(`📍 [Vision] New URL after navigation: ${newUrl}`);
+        }
+      } else {
+        console.log(`✅ [Vision] Page verification successful - on CyTube channel`);
+      }
+
+    } catch (error) {
+      console.warn(`⚠️  [Vision] Page verification failed: ${error.message}`);
+      // Don't fail connection, just warn
+    }
+  }
+
+  /**
+   * Check if connected to Coolhole.org
+   */
+  isConnected() {
+    return this.connected;
+  }
+
+  /**
+   * Ready flag for chat interactions
+   */
+  isChatReady() {
+    return this.connected && this.chatReady;
+  }
+}
+
+module.exports = CoolholeClient;

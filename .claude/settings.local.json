@@ -25,7 +25,16 @@
       "Bash(start-slunt-clean.bat)",
       "Bash(curl:*)",
       "Bash(more:*)",
-      "Bash(timeout 8 node:*)"
+      "Bash(timeout 8 node:*)",
+      "Bash(nul)",
+      "Bash(awk:*)",
+      "Bash(npm test:*)",
+      "Bash(cat:*)",
+      "Bash(python -m json.tool:*)",
+      "Bash(ollama list:*)",
+      "Bash(git add .)",
+      "Bash(npm start)",
+      "Bash(timeout:*)"
     ],
     "deny": [],
     "ask": []

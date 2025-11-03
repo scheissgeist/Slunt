@@ -1,0 +1,145 @@
+{
+  "cookies": [
+    {
+      "name": "_csrf",
+      "value": "s%3A0RaArAoQn3ExmNUpDh69uRNt.GwjZVCzNIshwV2ntPCxUj0SWA4R1IGaZrgeJKN4v264",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "ip-session",
+      "value": "s%3A75.155.140.228%3A1762168186079.1FbQNNlnbOKQJG3%2BD7FzFU06ytU6elBzk2bbrX3DUKs",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": 1796728187.159332,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "YSC",
+      "value": "kEiIxczMrpQ",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "VISITOR_INFO1_LIVE",
+      "value": "NWxoorTf1mk",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777720187.548569,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "VISITOR_PRIVACY_METADATA",
+      "value": "CgJDQRIEGgAgJw%3D%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777720187.548594,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "__cf_bm",
+      "value": "4b_wrdeVctSqXNjaY6Ydt_BON66VaLJ9N7KnwK_hwD8-1762168186-1.0.1.1-Sy9yHFCiqrYB0jr9jbh9YLOvbiAy8ScC0_fs3llJY0VFA1bwE_lLT7SQG153lOck",
+      "domain": ".vimeo.com",
+      "path": "/",
+      "expires": 1762169987.553985,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "_cfuvid",
+      "value": "y_5zATavquMeb.AEEju7iUbQ4nx.oNH8t70q8iVSyEU-1762168186591-0.0.1.1-604800000",
+      "domain": ".vimeo.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "__Secure-ROLLOUT_TOKEN",
+      "value": "CL2BwcyH9NO1MxDZjq6G7NWQAxjPvtaG7NWQAw%3D%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777720188.206348,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "auth",
+      "value": "s%3ASlunt%3A253402300799000%3AhAK5kxd3JjxvOBEpUJFHLaOmpZ%2FQalfU%3ARvbTPO6Kq%2Fozy0N8UM2fx3U50uF59cIpzRFzll7XZqk%3D%3A1.H1y4%2B%2BvSvV9PB6YVUVqNOOs%2F0uETM84Sr077RIGMPsM",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": 1796728196.896081,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://coolhole.org",
+      "localStorage": [
+        {
+          "name": "theme",
+          "value": "\"/css/themes/shale.css\""
+        },
+        {
+          "name": "sfxModEnabled",
+          "value": "false"
+        },
+        {
+          "name": "sfxStackEnabled",
+          "value": "false"
+        },
+        {
+          "name": "sfxGlobalEnabled",
+          "value": "false"
+        },
+        {
+          "name": "emoteVolume",
+          "value": "50"
+        },
+        {
+          "name": "layout",
+          "value": "\"fluid\""
+        },
+        {
+          "name": "secVolume",
+          "value": "50"
+        },
+        {
+          "name": "version",
+          "value": "3"
+        },
+        {
+          "name": "channel_js_pref",
+          "value": "{\"coolesthole_embedded\":\"ALLOW\"}"
+        }
+      ]
+    }
+  ]
+}

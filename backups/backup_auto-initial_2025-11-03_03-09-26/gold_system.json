@@ -1,0 +1,250 @@
+{
+  "goldMessages": [
+    {
+      "username": ".blueeyeswhitesupremacist",
+      "text": "it do be like that mr stancil",
+      "timestamp": 1762054282740,
+      "context": [
+        {
+          "username": "._.fug",
+          "text": "cant sleep jays are on"
+        },
+        {
+          "username": "sithlord8448",
+          "text": "Slunt is perfect the way he is"
+        }
+      ],
+      "wasRepeated": true
+    },
+    {
+      "username": "SteeScribbles",
+      "text": "billy corgan",
+      "timestamp": 1762107779308,
+      "context": [
+        {
+          "username": "soapyoid",
+          "text": "Ok?"
+        },
+        {
+          "username": "soapyoid",
+          "text": "Wow"
+        },
+        {
+          "username": "soapyoid",
+          "text": "No couldn't be"
+        }
+      ],
+      "wasRepeated": true
+    },
+    {
+      "username": "SteeScribbles",
+      "text": "billy corgan",
+      "timestamp": 1762107779308,
+      "context": [
+        {
+          "username": "soapyoid",
+          "text": "Ok?"
+        },
+        {
+          "username": "soapyoid",
+          "text": "Wow"
+        },
+        {
+          "username": "soapyoid",
+          "text": "No couldn't be"
+        }
+      ],
+      "wasRepeated": false
+    },
+    {
+      "username": "Gutmatant",
+      "text": "billy corgan",
+      "timestamp": 1762107789554,
+      "context": [
+        {
+          "username": "soapyoid",
+          "text": "No couldn't be"
+        },
+        {
+          "username": "SteeScribbles",
+          "text": "billy corgan"
+        },
+        {
+          "username": "SteeScribbles",
+          "text": "billy corgan"
+        }
+      ],
+      "wasRepeated": false
+    },
+    {
+      "username": "Gutmatant",
+      "text": "billy corgan",
+      "timestamp": 1762107789554,
+      "context": [
+        {
+          "username": "soapyoid",
+          "text": "No couldn't be"
+        },
+        {
+          "username": "SteeScribbles",
+          "text": "billy corgan"
+        },
+        {
+          "username": "SteeScribbles",
+          "text": "billy corgan"
+        }
+      ],
+      "wasRepeated": false
+    },
+    {
+      "username": "Applecooler",
+      "text": "oh hes just a perceptive",
+      "timestamp": 1762109285514,
+      "context": [
+        {
+          "username": "radfather",
+          "text": "stop"
+        },
+        {
+          "username": "radfather",
+          "text": "stop"
+        },
+        {
+          "username": "hued",
+          "text": "Thanksgiving is around the corner and I need the recipe"
+        }
+      ],
+      "wasRepeated": true
+    },
+    {
+      "username": "Applecooler",
+      "text": "oh hes just a perceptive",
+      "timestamp": 1762109285514,
+      "context": [
+        {
+          "username": "radfather",
+          "text": "stop"
+        },
+        {
+          "username": "radfather",
+          "text": "stop"
+        },
+        {
+          "username": "hued",
+          "text": "Thanksgiving is around the corner and I need the recipe"
+        }
+      ],
+      "wasRepeated": false
+    },
+    {
+      "username": "SteeScribbles",
+      "text": "knocks back",
+      "timestamp": 1762116651752,
+      "context": [
+        {
+          "username": "rottencheeseCA",
+          "text": "normal gym women"
+        },
+        {
+          "username": "rottencheeseCA",
+          "text": "normal gym women"
+        },
+        {
+          "username": "plaguejackal",
+          "text": "no man let's rap"
+        }
+      ],
+      "wasRepeated": true
+    },
+    {
+      "username": "SteeScribbles",
+      "text": "knocks back",
+      "timestamp": 1762116651752,
+      "context": [
+        {
+          "username": "rottencheeseCA",
+          "text": "normal gym women"
+        },
+        {
+          "username": "rottencheeseCA",
+          "text": "normal gym women"
+        },
+        {
+          "username": "plaguejackal",
+          "text": "no man let's rap"
+        }
+      ],
+      "wasRepeated": false
+    }
+  ],
+  "goldPatterns": {
+    "timing": [],
+    "content": [
+      {
+        "word": "billy",
+        "count": 6
+      },
+      {
+        "word": "corgan",
+        "count": 6
+      },
+      {
+        "word": "just",
+        "count": 4
+      },
+      {
+        "word": "perceptive",
+        "count": 4
+      },
+      {
+        "word": "knocks",
+        "count": 4
+      },
+      {
+        "word": "back",
+        "count": 4
+      },
+      {
+        "word": "like",
+        "count": 3
+      },
+      {
+        "word": "that",
+        "count": 3
+      },
+      {
+        "word": "stancil",
+        "count": 3
+      }
+    ],
+    "users": []
+  },
+  "stats": {
+    "totalGold": 13,
+    "goldByUser": [
+      [
+        ".blueeyeswhitesupremacist",
+        1
+      ],
+      [
+        "SteeScribbles",
+        4
+      ],
+      [
+        "Gutmatant",
+        2
+      ],
+      [
+        "Applecooler",
+        2
+      ],
+      [
+        "Slunt",
+        4
+      ]
+    ],
+    "repeatedGold": 4,
+    "sluntGold": 4
+  },
+  "savedAt": 1762142077818
+}

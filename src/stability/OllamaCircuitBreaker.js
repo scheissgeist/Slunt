@@ -26,57 +26,56 @@ class OllamaCircuitBreaker {
     this.totalFailures = 0;
     this.totalFallbacks = 0;
     
-    // Fallback response templates
+    // Fallback response templates - SMARTER AND MORE NATURAL
     this.fallbackResponses = {
       mentioned: [
-        'hey',
-        'yeah?',
-        'sup',
+        'yeah what\'s up',
         'yo',
-        'what',
-        'hmm?',
-        'yeah',
-        'uh huh',
-        'listening'
+        'what\'s good',
+        'yeah i\'m here',
+        'hm?',
+        'listening',
+        'yeah?',
+        'sup'
       ],
       question: [
-        'idk man',
-        'not sure tbh',
-        'maybe?',
-        'could be',
-        'probably',
-        'beats me',
-        'hard to say',
-        'dunno'
+        'honestly not sure',
+        'idk man could go either way',
+        'hard to say tbh',
+        'depends i guess',
+        'probably yeah',
+        'nah don\'t think so',
+        'maybe, hard to tell',
+        'couldn\'t tell you'
       ],
       positive: [
+        'yeah that\'s solid',
         'nice',
-        'cool',
-        'yeah for sure',
-        'totally',
-        'agreed',
-        'same',
+        'fair point',
         'facts',
-        'real'
+        'agreed honestly',
+        'that\'s pretty good',
+        'yeah i fuck with that',
+        'respect'
       ],
       negative: [
-        'oof',
-        'damn',
-        'yeah that sucks',
-        'unfortunate',
+        'damn that sucks',
+        'oof rough',
+        'yeah that\'s unfortunate',
+        'brutal honestly',
         'rip',
-        'rough',
+        'that\'s tough',
         'yikes'
       ],
       neutral: [
-        'fair',
-        'yeah',
+        'fair enough',
         'i feel that',
+        'yeah makes sense',
+        'interesting take',
         'valid',
-        'true',
-        'makes sense',
-        'interesting',
-        'huh'
+        'could be',
+        'huh yeah',
+        'i see what you mean'
       ],
       excited: [
         'oh shit',

@@ -136,37 +136,18 @@ class SleepDeprivation {
     
     let modified = response;
 
-    // Apply typos
-    if (effects.typoChance > 0) {
+    // Only apply MINOR typos when VERY tired, and only occasionally
+    if (level === 'delirious' && Math.random() < 0.2) {
       const words = modified.split(' ');
-      modified = words.map(word => {
-        if (Math.random() < effects.typoChance / 2) { // Half the chance per word
-          return this.applyTypos(word);
-        }
-        return word;
-      }).join(' ');
+      // Pick ONE word to add a typo to (not every word)
+      const targetIndex = Math.floor(Math.random() * words.length);
+      words[targetIndex] = this.applyTypos(words[targetIndex]);
+      modified = words.join(' ');
     }
 
-    // Add philosophical tangents when tired
-    if (effects.philosophical > 0.5 && Math.random() < 0.15) {
-      const tangent = await this.generatePhilosophicalTangent();
-      if (tangent) {
-        modified += ` ${tangent}`;
-      }
-    }
-
-    // Brutal honesty when exhausted
-    if (effects.honesty > 1.5 && Math.random() < 0.12) {
-      const honestThought = await this.generateBrutalHonesty(context);
-      if (honestThought) {
-        modified = honestThought;
-      }
-    }
-
-    // Less coherent when delirious
-    if (effects.coherence < 0.5 && Math.random() < 0.20) {
-      modified = await this.makeIncoherent(modified);
-    }
+    // REMOVED: Philosophical tangents (AI already knows context, will naturally be philosophical)
+    // REMOVED: Brutal honesty override (AI already knows context, will naturally be honest)
+    // REMOVED: makeIncoherent (this literally fragments responses)
 
     return modified;
   }

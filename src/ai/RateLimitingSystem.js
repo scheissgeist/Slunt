@@ -26,12 +26,12 @@ class RateLimitingSystem {
         
         // Configuration
         this.config = {
-            // Per-user cooldowns (milliseconds)
+            // Per-user cooldowns (milliseconds) - REDUCED FOR TESTING
             cooldowns: {
-                vip: 5000,       // 5 seconds (mods, subs, friends)
-                normal: 15000,   // 15 seconds (reduced from 30s)
-                new: 30000,      // 30 seconds (reduced from 60s)
-                spam: 60000      // 1 minute (reduced from 2min)
+                vip: 3000,       // 3 seconds (was 5s)
+                normal: 5000,    // 5 seconds (was 15s) - FAST for testing
+                new: 10000,      // 10 seconds (was 30s)
+                spam: 30000      // 30 seconds (was 60s)
             },
             
             // Global limits

@@ -9,27 +9,17 @@ class ResponseValidator {
     this.brokenPatterns = [
       /\([^)]*$/,           // Unclosed parentheses
       /\[[^\]]*$/,          // Unclosed brackets  
-      /\{[^}]*$/,           // Unclosed braces
-      /"[^"]*$/,            // Unclosed quotes
-      /\.\.\.\s*$/,         // Trailing ellipsis (often incomplete)
-      /\s+and$/i,           // Ends with "and"
-      /\s+but$/i,           // Ends with "but"
-      /\s+the$/i,           // Ends with "the"
-      /\s+a$/i,             // Ends with "a"
-      /\s+to$/i,            // Ends with "to"
-      /\s+of$/i,            // Ends with "of"
-      /\s+in$/i,            // Ends with "in"
-      /\s+is$/i,            // Ends with "is"
-      /\s+was$/i,           // Ends with "was"
-      /\s+like$/i           // Ends with "like"
+      /\{[^}]*$/            // Unclosed braces
+      // Removed quote check - too aggressive, AI often uses quotes normally
+      // Removed trailing word patterns - they're too aggressive
     ];
 
     // Patterns that indicate nonsensical content
     this.nonsensicalPatterns = [
-      /\b[A-Z]{3,}\b/,                    // Random all-caps words
-      /\b\w{15,}\b/,                      // Extremely long words
-      /(\w)\1{4,}/,                       // Repeated characters (aaaaa)
-      /[0-9]{8,}/,                        // Long random numbers
+      /\b[A-Z]{4,}\b/,                    // Random all-caps words (4+ consecutive)
+      /\b\w{25,}\b/,                      // Extremely long words (25+ chars, was 15)
+      /(\w)\1{5,}/,                       // Repeated characters (6+ times, was 4)
+      /[0-9]{10,}/,                       // Long random numbers (10+ digits, was 8)
       /\b[a-z]+[A-Z][a-z]+[A-Z]/,       // WeirdCamelCase
       /\b(SLANGRA|BLARGON|FLEXTRON)\b/i   // Made-up words that appear in corruption
     ];
@@ -56,10 +46,12 @@ class ResponseValidator {
       return { isValid: false, reason: 'too_short' };
     }
 
-    // Check maximum length (prevent rambling)
-    if (trimmed.length > 400) {
-      return { isValid: false, reason: 'too_long' };
-    }
+    // Check maximum length (prevent excessive rambling)
+    // REMOVED LENGTH LIMIT - Let Slunt be conversational and fun!
+    // He was way more interesting without this restriction
+    // if (trimmed.length > 500) {
+    //   return { isValid: false, reason: 'too_long' };
+    // }
 
     // Check for broken patterns
     for (const pattern of this.brokenPatterns) {

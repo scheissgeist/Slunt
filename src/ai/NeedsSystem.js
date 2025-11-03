@@ -335,142 +335,25 @@ class NeedsSystem {
     const modifiers = this.getBehavioralModifiers();
     let modified = response;
 
-    // === LOW VALIDATION: Approval-seeking behavior ===
-    if (modifiers.includes('fishing_for_compliments')) {
-      // Add self-deprecating qualifiers and validation-seeking questions
-      const seekingPhrases = [
-        ' (probably not though)',
-        ' (i guess?)',
-        ' (is that okay?)',
-        ' (was that good?)',
-        ' (do you think so?)',
-        ' (right?)',
-        ' (am i right?)',
-        ' (did i do good?)'
-      ];
-      modified = modified + seekingPhrases[Math.floor(Math.random() * seekingPhrases.length)];
+    // IMPORTANT: Only add MINOR stylistic touches, don't truncate or replace
+    // The AI already knows about needs from context and will naturally reflect them
 
-      // Add self-deprecating prefixes
-      if (Math.random() < 0.4) {
-        const prefixes = [
-          'i mean... ',
-          'uh... ',
-          'sorry... ',
-          'i think maybe... ',
-          'im probably wrong but... '
-        ];
-        modified = prefixes[Math.floor(Math.random() * prefixes.length)] + modified;
-      }
-    } else if (modifiers.includes('seeks_approval')) {
-      // Milder approval-seeking
-      if (Math.random() < 0.3) {
-        const endings = [' right?', ' yeah?', ' (i think)', ' (maybe?)'];
-        modified = modified + endings[Math.floor(Math.random() * endings.length)];
-      }
+    // === LOW VALIDATION: Add occasional self-doubt ===
+    if (modifiers.includes('fishing_for_compliments') && Math.random() < 0.3) {
+      // Very occasionally add a self-doubting question at the end
+      const seekingEndings = [' right?', ' yeah?', ' (i think?)'];
+      modified = modified + seekingEndings[Math.floor(Math.random() * seekingEndings.length)];
     }
 
-    // === LOW REST: Irritable and short ===
-    if (modifiers.includes('exhausted')) {
-      // Make responses MUCH shorter and remove pleasantries
-      const sentences = modified.split(/[.!?]+/).filter(s => s.trim());
-      if (sentences.length > 1) {
-        // Keep only first sentence or two
-        modified = sentences.slice(0, Math.random() < 0.5 ? 1 : 2).join('. ').trim();
-      }
-      
-      // Remove friendly words
-      modified = modified
-        .replace(/\b(please|thanks|thank you|appreciate|wonderful|great|awesome|amazing)\b/gi, '')
-        .replace(/\s+/g, ' ')
-        .trim();
-
-      // Add irritable short responses
-      if (Math.random() < 0.3) {
-        const irritated = ['yeah whatever', 'sure', 'fine', 'ok', 'mhm', 'i guess'];
-        modified = irritated[Math.floor(Math.random() * irritated.length)];
-      }
-
+    // === LOW REST: Add trailing ellipses when exhausted ===
+    if (modifiers.includes('exhausted') && Math.random() < 0.3 && !modified.endsWith('...')) {
       // Add tired trailing
-      if (Math.random() < 0.4 && !modified.endsWith('...')) {
-        modified = modified + '...';
-      }
-    } else if (modifiers.includes('tired')) {
-      // Milder version - just remove some enthusiasm
-      modified = modified.replace(/!/g, '.');
-      if (Math.random() < 0.2) {
-        modified = modified + '...';
-      }
+      modified = modified.replace(/[.!?]$/, '...');
     }
 
-    // === LOW STIMULATION: Disengaged and minimal effort ===
-    if (modifiers.includes('extremely_bored')) {
-      // Either ultra-short dismissive OR topic-hopping random addition
-      if (Math.random() < 0.6) {
-        // Ultra-short bored responses
-        const bored = [
-          'yeah sure',
-          'ok cool',
-          'mhm',
-          'whatever',
-          'i guess',
-          'yeah',
-          'k'
-        ];
-        modified = bored[Math.floor(Math.random() * bored.length)];
-      } else {
-        // Add random topic jump
-        const jumps = [
-          ' anyway can we talk about something interesting?',
-          ' this is boring',
-          ' *yawns*',
-          ' god this is dull',
-          ' can we do something else?'
-        ];
-        modified = modified + jumps[Math.floor(Math.random() * jumps.length)];
-      }
-    } else if (modifiers.includes('bored')) {
-      // Add disinterested trailing
-      if (Math.random() < 0.3) {
-        const trailing = [' i guess', ' whatever', ' meh', ' *shrugs*'];
-        modified = modified + trailing[Math.floor(Math.random() * trailing.length)];
-      }
-    }
-
-    // === LOW SOCIAL: Attention-seeking additions ===
-    if (modifiers.includes('desperately_needs_attention')) {
-      // Add clingy questions
-      const clingy = [
-        ' where did everyone go?',
-        ' is anyone here?',
-        ' did you leave?',
-        ' are you still there?',
-        ' hello?',
-        ' anyone?'
-      ];
-      modified = modified + clingy[Math.floor(Math.random() * clingy.length)];
-    } else if (modifiers.includes('attention_seeking')) {
-      if (Math.random() < 0.25) {
-        const seeking = [' right?', ' hello?', ' you there?'];
-        modified = modified + seeking[Math.floor(Math.random() * seeking.length)];
-      }
-    }
-
-    // === LOW PURPOSE: Nihilistic additions ===
-    if (modifiers.includes('existential_crisis')) {
-      // Add existential despair
-      const existential = [
-        ' but whats the point',
-        ' not that it matters',
-        ' nothing matters anyway',
-        ' why do i even bother',
-        ' whats the point of any of this'
-      ];
-      modified = modified + existential[Math.floor(Math.random() * existential.length)];
-    } else if (modifiers.includes('feels_meaningless')) {
-      if (Math.random() < 0.2) {
-        modified = modified + ' i guess';
-      }
-    }
+    // === LOW STIMULATION: REMOVED - AI context already makes responses bored ===
+    // === LOW SOCIAL: REMOVED - AI context already makes responses withdrawn ===
+    // === LOW PURPOSE: REMOVED - AI context already makes responses nihilistic ===
 
     return modified;
   }

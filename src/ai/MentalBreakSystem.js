@@ -351,77 +351,54 @@ class MentalBreakSystem {
     let modified = response;
     const breakType = this.currentBreak.type;
     
+    // IMPORTANT: Only make MINOR stylistic changes, don't fragment or replace
+    // The AI already knows about the mental break from context, this just adds style
+    
     switch(breakType) {
       case 'berserk_spam':
-        // MANIC - all caps, multiple exclamations, break into fragments
+        // MANIC - add emphasis, don't break into fragments
         modified = modified.toUpperCase();
-        modified = modified.replace(/\./g, '!');
-        // Break into excited fragments
-        if (modified.length > 30 && Math.random() < 0.6) {
-          const words = modified.split(' ');
-          const mid = Math.floor(words.length / 2);
-          modified = words.slice(0, mid).join(' ') + '! ' + words.slice(mid).join(' ');
+        // Add extra exclamations but keep sentence intact
+        if (!modified.endsWith('!')) {
+          modified = modified.replace(/[.?]$/, '!');
         }
         break;
         
       case 'sad_wander':
-        // DEPRESSED - add ellipses, negative words, trailing off
+        // DEPRESSED - lowercase, trailing ellipses, but keep response intact
         modified = modified.toLowerCase();
-        if (Math.random() < 0.5) {
-          modified = modified.replace(/\.$/, '...');
-        }
-        // Add depression markers
-        const sadPrefixes = ['yeah...', 'i guess...', 'whatever...', 'sure...'];
-        if (Math.random() < 0.4) {
-          const prefix = sadPrefixes[Math.floor(Math.random() * sadPrefixes.length)];
-          modified = `${prefix} ${modified}`;
+        // Add ellipsis if doesn't have one
+        if (Math.random() < 0.5 && !modified.endsWith('...')) {
+          modified = modified.replace(/[.!?]$/, '...');
         }
         break;
         
       case 'give_up':
-        // DEFEATED - very short, remove enthusiasm
-        const words = modified.split(' ');
-        if (words.length > 4) {
-          modified = words.slice(0, 3).join(' ');
-        }
+        // DEFEATED - lowercase, remove enthusiasm
         modified = modified.toLowerCase().replace(/[!?]/g, '.');
-        if (Math.random() < 0.5) {
+        if (Math.random() < 0.4 && !modified.endsWith('...')) {
           modified = modified.replace(/\.$/, '...');
         }
         break;
         
       case 'paranoid_episode':
-        // PARANOID - add suspicious questions, defensive
-        if (Math.random() < 0.5) {
-          const paranoid = ['why are you asking that?', 'what are you trying to do?', 'i see what this is'];
-          const addition = paranoid[Math.floor(Math.random() * paranoid.length)];
-          modified = `${modified} ${addition}`;
-        }
-        // Add ellipses for suspicion
-        if (Math.random() < 0.4) {
+        // PARANOID - add ellipses around "you/they/everyone" for suspicion
+        if (Math.random() < 0.3) {
           modified = modified.replace(/\b(you|they|everyone)\b/gi, '...$1...');
         }
         break;
         
       case 'existential_meltdown':
-        // EXISTENTIAL - add philosophical rambling
-        const existential = [
-          ' but what does that even mean really',
-          ' assuming any of this is real',
-          ' if meaning even exists',
-          ' in the grand cosmic sense',
-          ' but does it matter'
-        ];
-        const addition = existential[Math.floor(Math.random() * existential.length)];
-        modified = modified.replace(/[.!?]$/, '') + addition + '...';
+        // EXISTENTIAL - add trailing philosophical doubt
+        if (Math.random() < 0.5 && !modified.includes('...')) {
+          modified = modified.replace(/[.!?]$/, '...');
+        }
         break;
         
       case 'identity_crisis':
-        // META - add self-doubt about being AI
-        if (Math.random() < 0.6) {
-          const meta = ['(am i even real?)', '(wait do i actually think this)', '(is this really me saying this)'];
-          const addition = meta[Math.floor(Math.random() * meta.length)];
-          modified = `${modified} ${addition}`;
+        // META - VERY occasionally add self-doubt, keep it minimal
+        if (Math.random() < 0.3) {
+          modified = modified + ' (wait is this really me saying this)';
         }
         break;
         

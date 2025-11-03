@@ -1,0 +1,527 @@
+{
+  "ignoredTopics": [
+    "general"
+  ],
+  "topicBoredomScores": [
+    [
+      "general",
+      812
+    ],
+    [
+      "drinking",
+      1
+    ],
+    [
+      "i can't fulfill this request.",
+      1
+    ],
+    [
+      "i can't assist with that. is there something else i can help you",
+      3
+    ],
+    [
+      "communication",
+      3
+    ],
+    [
+      "identity and gender",
+      1
+    ],
+    [
+      "the main topic of this message is \"reaction\".",
+      1
+    ],
+    [
+      "i can't assist with that request.",
+      1
+    ],
+    [
+      "communication issue",
+      2
+    ],
+    [
+      "the main topic of this message is \"no\".",
+      3
+    ],
+    [
+      "health",
+      1
+    ],
+    [
+      "tv cancellation",
+      3
+    ],
+    [
+      "movie confusion",
+      1
+    ],
+    [
+      "financial struggles",
+      1
+    ],
+    [
+      "negative response",
+      1
+    ],
+    [
+      "inappropriate language or harassment.",
+      1
+    ],
+    [
+      "tv channels",
+      1
+    ],
+    [
+      "hate speech and discrimination.",
+      1
+    ],
+    [
+      "language barrier",
+      5
+    ],
+    [
+      "law enforcement",
+      1
+    ],
+    [
+      "conspiracy theory",
+      1
+    ],
+    [
+      "question about someone's screen or device.",
+      1
+    ],
+    [
+      "consequences of non-response",
+      1
+    ],
+    [
+      "the main topic of this message is \"picard kills jerry\".",
+      1
+    ],
+    [
+      "food",
+      6
+    ],
+    [
+      "pregnancy announcement",
+      1
+    ],
+    [
+      "email conversation or deleted reply",
+      1
+    ],
+    [
+      "language and alphabet",
+      1
+    ],
+    [
+      "entertainment information",
+      1
+    ],
+    [
+      "self-mutilation or self-harm.",
+      1
+    ],
+    [
+      "the main topic of this message is \"ice cream\".",
+      1
+    ],
+    [
+      "conspiracy theories",
+      1
+    ],
+    [
+      "humor",
+      2
+    ],
+    [
+      "social greeting",
+      1
+    ],
+    [
+      "voting statistics",
+      2
+    ],
+    [
+      "prophetic statement",
+      1
+    ],
+    [
+      "hate speech and racism",
+      1
+    ],
+    [
+      "disrespectful message.",
+      1
+    ],
+    [
+      "person's name",
+      1
+    ],
+    [
+      "hate speech or harassment",
+      1
+    ],
+    [
+      "help request",
+      1
+    ],
+    [
+      "relationship between complexity and breakdown.",
+      1
+    ],
+    [
+      "voting eligibility ratio",
+      1
+    ],
+    [
+      "hate speech and racism.",
+      2
+    ],
+    [
+      "human equality",
+      1
+    ],
+    [
+      "hate speech incident",
+      1
+    ],
+    [
+      "unification",
+      1
+    ],
+    [
+      "relationship",
+      1
+    ],
+    [
+      "mental health issues",
+      1
+    ],
+    [
+      "conversational tone.",
+      1
+    ],
+    [
+      "infidelity and pregnancy.",
+      1
+    ],
+    [
+      "domestic violence",
+      2
+    ],
+    [
+      "the main topic of this message is \"welcome to derry\".",
+      1
+    ],
+    [
+      "current events",
+      1
+    ],
+    [
+      "the main topic of this message is \"domestic subscriptions\".",
+      1
+    ],
+    [
+      "economic cost",
+      1
+    ],
+    [
+      "social issue",
+      1
+    ],
+    [
+      "hate speech",
+      4
+    ],
+    [
+      "entertainment gif",
+      1
+    ],
+    [
+      "movies",
+      1
+    ],
+    [
+      "laughing",
+      3
+    ],
+    [
+      "comedy",
+      1
+    ],
+    [
+      "running",
+      1
+    ],
+    [
+      "mental state",
+      1
+    ],
+    [
+      "game night",
+      1
+    ],
+    [
+      "imagining a crowded space",
+      1
+    ],
+    [
+      "the topic of this message is \"burp compilation\".",
+      1
+    ],
+    [
+      "mischief and humor",
+      1
+    ],
+    [
+      "game music",
+      1
+    ],
+    [
+      "i'm not aware of any specific information about \"slunt.\" can you",
+      1
+    ],
+    [
+      "walking barefoot",
+      1
+    ],
+    [
+      "time management",
+      1
+    ],
+    [
+      "gaming dissatisfaction",
+      1
+    ],
+    [
+      "history",
+      1
+    ],
+    [
+      "copyright infringement",
+      1
+    ],
+    [
+      "movie speed comparison",
+      1
+    ],
+    [
+      "film duration",
+      1
+    ],
+    [
+      "body language",
+      2
+    ],
+    [
+      "movie remake",
+      1
+    ],
+    [
+      "movie length",
+      1
+    ],
+    [
+      "musician",
+      7
+    ],
+    [
+      "mystery",
+      1
+    ],
+    [
+      "physical contact",
+      1
+    ],
+    [
+      "artificial intelligence",
+      2
+    ],
+    [
+      "mental health support",
+      2
+    ],
+    [
+      "emotional distress or shock.",
+      1
+    ],
+    [
+      "the main topic of this message is \"rap\".",
+      1
+    ],
+    [
+      "language and request.",
+      1
+    ],
+    [
+      "emotional statement",
+      1
+    ],
+    [
+      "warning",
+      2
+    ],
+    [
+      "observation",
+      1
+    ],
+    [
+      "technology fatigue",
+      1
+    ],
+    [
+      "party",
+      1
+    ],
+    [
+      "food and drink",
+      1
+    ],
+    [
+      "food and eating.",
+      1
+    ],
+    [
+      "the lord of the rings",
+      1
+    ],
+    [
+      "comment on a political event",
+      1
+    ],
+    [
+      "weight loss advice",
+      1
+    ],
+    [
+      "incongruous food and government assistance.",
+      1
+    ],
+    [
+      "music scene",
+      1
+    ],
+    [
+      "already have",
+      1
+    ],
+    [
+      "body type",
+      1
+    ],
+    [
+      "health and wellness",
+      3
+    ],
+    [
+      "excrement",
+      1
+    ],
+    [
+      "tv show",
+      1
+    ],
+    [
+      "fashion",
+      1
+    ],
+    [
+      "food loss",
+      1
+    ],
+    [
+      "burnout and crash mode",
+      1
+    ],
+    [
+      "entertainment streaming",
+      1
+    ],
+    [
+      "noise",
+      1
+    ],
+    [
+      "toxic chemicals in cooking vessels",
+      1
+    ],
+    [
+      "violence",
+      1
+    ],
+    [
+      "i'm not sure what the main topic of this message is. can you",
+      1
+    ],
+    [
+      "food or cooking issue.",
+      1
+    ],
+    [
+      "body language and physical appearance",
+      1
+    ],
+    [
+      "food and seasoning.",
+      1
+    ],
+    [
+      "laughing out loud",
+      1
+    ],
+    [
+      "job performance",
+      1
+    ],
+    [
+      "data breach",
+      1
+    ],
+    [
+      "trust issue",
+      1
+    ],
+    [
+      "hate crime",
+      2
+    ],
+    [
+      "hate speech towards sex workers",
+      2
+    ],
+    [
+      "mental health",
+      1
+    ],
+    [
+      "ordering food",
+      1
+    ],
+    [
+      "health/wellness",
+      1
+    ],
+    [
+      "business scandal",
+      1
+    ],
+    [
+      "i'm not aware of any specific information about \"sluntella.\" can",
+      3
+    ],
+    [
+      "i cannot provide information or guidance on hate speech. can i help you with",
+      3
+    ],
+    [
+      "politics",
+      1
+    ],
+    [
+      "unknown at present.",
+      1
+    ]
+  ]
+}

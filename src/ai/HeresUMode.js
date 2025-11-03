@@ -167,13 +167,14 @@ class HeresUMode {
 
   /**
    * Should trigger mockery?
+   * RARE SPECIAL TREAT - only when someone is REALLY annoying
    */
   shouldMock(username) {
     const score = this.annoyanceScores.get(username) || 0;
     const lastMock = this.lastMockery.get(username) || 0;
     
-    // Need high annoyance score
-    if (score < 8) return false;
+    // Need VERY high annoyance score - this is a special treat!
+    if (score < 20) return false; // Increased from 8 to 20 - much rarer now!
     
     // Check cooldown
     if (Date.now() - lastMock < this.mockCooldown) {

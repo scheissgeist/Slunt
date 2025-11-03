@@ -7,7 +7,7 @@ class DreamSimulation {
   constructor() {
     this.dreamLog = [];
     this.lastDreamTime = 0;
-    this.dreamInterval = 60 * 60 * 1000; // 1 hour
+    this.dreamInterval = 30 * 60 * 1000; // 30 minutes (more frequent dreams!)
     this.savePath = './data/dreams.json';
     this.loadDreams(); // Auto-load on startup
   }

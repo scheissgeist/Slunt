@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🎤 Talk to Slunt</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-align: center;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    
+    .subtitle {
+      text-align: center;
+      opacity: 0.8;
+      margin-bottom: 40px;
+      font-size: 1.2em;
+    }
+    
+    .status {
+      text-align: center;
+      font-size: 1.5em;
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .status.listening {
+      background: rgba(76, 175, 80, 0.3);
+      border-color: #4CAF50;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    .status.speaking {
+      background: rgba(33, 150, 243, 0.3);
+      border-color: #2196F3;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    .controls {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      margin: 30px 0;
+      flex-wrap: wrap;
+    }
+    
+    button {
+      padding: 15px 40px;
+      font-size: 1.2em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-weight: bold;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    }
+    
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    button:active {
+      transform: translateY(0);
+    }
+    
+    #startBtn {
+      background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+      color: white;
+    }
+    
+    #stopBtn {
+      background: linear-gradient(135deg, #f44336 0%, #da190b 100%);
+      color: white;
+    }
+    
+    #interruptBtn {
+      background: linear-gradient(135deg, #FF9800 0%, #F57C00 100%);
+      color: white;
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .transcript {
+      margin-top: 30px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 15px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
+    .transcript-item {
+      margin: 15px 0;
+      padding: 15px;
+      border-radius: 10px;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .you {
+      background: rgba(76, 175, 80, 0.2);
+      border-left: 4px solid #4CAF50;
+    }
+    
+    .slunt {
+      background: rgba(33, 150, 243, 0.2);
+      border-left: 4px solid #2196F3;
+    }
+    
+    .speaker {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    
+    .timestamp {
+      font-size: 0.8em;
+      opacity: 0.6;
+      margin-top: 5px;
+    }
+    
+    .error {
+      background: rgba(244, 67, 54, 0.3);
+      border: 2px solid #f44336;
+      padding: 15px;
+      border-radius: 10px;
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .info {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 30px;
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+    
+    .info h3 {
+      margin-bottom: 10px;
+    }
+    
+    .info ul {
+      margin-left: 20px;
+    }
+    
+    .info li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎤 Talk to Slunt</h1>
+    <p class="subtitle">Voice conversation with your AI friend</p>
+    
+    <div id="status" class="status">
+      Ready to start
+    </div>
+    
+    <div class="controls">
+      <button id="startBtn">🎤 Start Listening</button>
+      <button id="stopBtn" disabled>🔇 Stop</button>
+      <button id="interruptBtn" disabled>✋ Interrupt Slunt</button>
+    </div>
+    
+    <div id="error" class="error" style="display: none;"></div>
+    
+    <div class="transcript" id="transcript">
+      <p style="text-align: center; opacity: 0.5;">Conversation will appear here...</p>
+    </div>
+    
+    <div class="info">
+      <h3>💡 How to use:</h3>
+      <ul>
+        <li><strong>Click "Start Listening"</strong> to begin voice conversation</li>
+        <li><strong>Speak naturally</strong> - Slunt will hear you and respond</li>
+        <li><strong>Interrupt anytime</strong> - Click interrupt or just start speaking</li>
+        <li><strong>Works during streaming</strong> - Keep this open while streaming on Twitch</li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Connect to Socket.IO server
+    const socket = io();
+    
+    // UI Elements
+    const statusEl = document.getElementById('status');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const interruptBtn = document.getElementById('interruptBtn');
+    const transcriptEl = document.getElementById('transcript');
+    const errorEl = document.getElementById('error');
+    
+    // Speech recognition
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    let recognition = null;
+    let isListening = false;
+    let isSpeaking = false;
+    
+    // Audio playback
+    let currentAudio = null;
+    
+    // Initialize speech recognition
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+      
+      recognition.onresult = (event) => {
+        const result = event.results[event.results.length - 1];
+        if (result.isFinal) {
+          const text = result[0].transcript;
+          handleUserSpeech(text);
+        }
+      };
+      
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        showError(`Speech recognition error: ${event.error}`);
+      };
+      
+      recognition.onend = () => {
+        if (isListening) {
+          // Restart if we're still supposed to be listening
+          recognition.start();
+        }
+      };
+    } else {
+      showError('Speech recognition not supported in this browser. Please use Chrome or Edge.');
+    }
+    
+    // Start listening
+    startBtn.addEventListener('click', () => {
+      if (!recognition) {
+        showError('Speech recognition not available');
+        return;
+      }
+      
+      try {
+        recognition.start();
+        isListening = true;
+        updateStatus('Listening...', 'listening');
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        interruptBtn.disabled = false;
+        clearError();
+        
+        // Clear transcript
+        transcriptEl.innerHTML = '<p style="text-align: center; opacity: 0.5;">Listening for your voice...</p>';
+      } catch (error) {
+        console.error('Error starting recognition:', error);
+        showError('Error starting microphone: ' + error.message);
+      }
+    });
+    
+    // Stop listening
+    stopBtn.addEventListener('click', () => {
+      stopListening();
+    });
+    
+    // Interrupt Slunt
+    interruptBtn.addEventListener('click', () => {
+      if (isSpeaking) {
+        interruptSpeech();
+      }
+    });
+    
+    function stopListening() {
+      if (recognition && isListening) {
+        recognition.stop();
+        isListening = false;
+        updateStatus('Stopped', '');
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        interruptBtn.disabled = true;
+      }
+    }
+    
+    function interruptSpeech() {
+      if (currentAudio) {
+        currentAudio.pause();
+        currentAudio = null;
+      }
+      isSpeaking = false;
+      socket.emit('voice:interrupt');
+      updateStatus('Interrupted - Listening...', 'listening');
+      addTranscript('system', '⏸️ Speech interrupted');
+    }
+    
+    function handleUserSpeech(text) {
+      console.log('User said:', text);
+      addTranscript('you', text);
+      
+      // Send to server
+      socket.emit('voice:speech', { text });
+      
+      updateStatus('Processing...', '');
+    }
+    
+    // Socket events
+    socket.on('voice:response', async (data) => {
+      console.log('Slunt response:', data);
+      addTranscript('slunt', data.text);
+      
+      // Play audio if available
+      if (data.audioUrl) {
+        await playAudio(data.audioUrl);
+      } else {
+        updateStatus('Listening...', 'listening');
+      }
+    });
+    
+    socket.on('voice:speaking:started', () => {
+      isSpeaking = true;
+      updateStatus('Slunt is speaking...', 'speaking');
+    });
+    
+    socket.on('voice:speaking:finished', () => {
+      isSpeaking = false;
+      if (isListening) {
+        updateStatus('Listening...', 'listening');
+      }
+    });
+    
+    socket.on('voice:error', (data) => {
+      console.error('Voice error:', data);
+      showError(data.message || 'Voice system error');
+    });
+    
+    // Detect when user starts speaking (for interruption)
+    if (recognition) {
+      recognition.onspeechstart = () => {
+        if (isSpeaking) {
+          // User started speaking while Slunt was talking - interrupt!
+          interruptSpeech();
+        }
+      };
+    }
+    
+    async function playAudio(audioUrl) {
+      try {
+        currentAudio = new Audio(audioUrl);
+        
+        currentAudio.onended = () => {
+          isSpeaking = false;
+          currentAudio = null;
+          if (isListening) {
+            updateStatus('Listening...', 'listening');
+          }
+        };
+        
+        currentAudio.onerror = (error) => {
+          console.error('Audio playback error:', error);
+          showError('Error playing audio');
+          isSpeaking = false;
+          currentAudio = null;
+        };
+        
+        await currentAudio.play();
+      } catch (error) {
+        console.error('Error playing audio:', error);
+        showError('Error playing audio: ' + error.message);
+      }
+    }
+    
+    function updateStatus(text, className = '') {
+      statusEl.textContent = text;
+      statusEl.className = 'status ' + className;
+    }
+    
+    function addTranscript(speaker, text) {
+      const item = document.createElement('div');
+      item.className = `transcript-item ${speaker}`;
+      
+      const speakerLabel = speaker === 'you' ? 'You' : speaker === 'slunt' ? 'Slunt' : 'System';
+      const timestamp = new Date().toLocaleTimeString();
+      
+      item.innerHTML = `
+        <div class="speaker">${speakerLabel}</div>
+        <div>${text}</div>
+        <div class="timestamp">${timestamp}</div>
+      `;
+      
+      // Remove placeholder text if exists
+      if (transcriptEl.querySelector('p')) {
+        transcriptEl.innerHTML = '';
+      }
+      
+      transcriptEl.appendChild(item);
+      transcriptEl.scrollTop = transcriptEl.scrollHeight;
+    }
+    
+    function showError(message) {
+      errorEl.textContent = message;
+      errorEl.style.display = 'block';
+    }
+    
+    function clearError() {
+      errorEl.style.display = 'none';
+    }
+    
+    // Check if voice is enabled on server
+    socket.emit('voice:status', (status) => {
+      if (!status.enabled) {
+        showError('Voice system not enabled on server. Check configuration.');
+      }
+    });
+  </script>
+</body>
+</html>

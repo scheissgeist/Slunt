@@ -36,6 +36,14 @@ class RivalBotWars {
             const saved = JSON.parse(data);
             
             for (const [key, value] of Object.entries(saved.detectedBots || {})) {
+                // FIX: Convert vocabulary array back to Set
+                if (value.patterns && value.patterns.vocabulary) {
+                    value.patterns.vocabulary = new Set(value.patterns.vocabulary);
+                }
+                // FIX: Convert activeHours array back to Set
+                if (value.patterns && value.patterns.activeHours) {
+                    value.patterns.activeHours = new Set(value.patterns.activeHours);
+                }
                 this.detectedBots.set(key, value);
             }
             
@@ -54,8 +62,21 @@ class RivalBotWars {
 
     async save() {
         try {
+            // Convert Maps and Sets to serializable format
+            const botsToSave = {};
+            for (const [key, value] of this.detectedBots.entries()) {
+                const botCopy = { ...value };
+                // Convert Sets to arrays for JSON serialization
+                if (botCopy.patterns) {
+                    botCopy.patterns = { ...botCopy.patterns };
+                    botCopy.patterns.vocabulary = Array.from(botCopy.patterns.vocabulary || []);
+                    botCopy.patterns.activeHours = Array.from(botCopy.patterns.activeHours || []);
+                }
+                botsToSave[key] = botCopy;
+            }
+            
             const saveData = {
-                detectedBots: Object.fromEntries(this.detectedBots),
+                detectedBots: botsToSave,
                 rivalryScores: Object.fromEntries(this.rivalryScores),
                 warHistory: this.warHistory.slice(-50),
                 dominanceScore: this.dominanceScore

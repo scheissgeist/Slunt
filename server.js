@@ -4,7 +4,24 @@ const socketIo = require('socket.io');
 const cors = require('cors');
 const helmet = require('helmet');
 const path = require('path');
+const { execSync } = require('child_process');
 require('dotenv').config();
+
+// Kill any orphaned node processes on startup
+try {
+  console.log('🧹 [Cleanup] Checking for orphaned processes...');
+  const currentPid = process.pid;
+  
+  // Kill other node processes (except this one)
+  try {
+    execSync(`Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne ${currentPid} } | Stop-Process -Force`, { shell: 'powershell.exe' });
+    console.log('✅ [Cleanup] Killed orphaned node processes');
+  } catch (e) {
+    // No orphaned processes found, that's fine
+  }
+} catch (error) {
+  console.log('⚠️ [Cleanup] Could not clean up processes:', error.message);
+}
 
 // Winston logger setup - quieter logging
 const winston = require('winston');
@@ -28,6 +45,7 @@ const BackupManager = require('./src/services/BackupManager');
 const RateLimiter = require('./src/services/RateLimiter');
 const ContentFilter = require('./src/services/ContentFilter');
 const GracefulShutdown = require('./src/stability/GracefulShutdown');
+const ConnectionHealthMonitor = require('./src/services/ConnectionHealthMonitor');
 
 // Initialize backup and rate limiting systems
 const backupManager = new BackupManager({
@@ -42,6 +60,15 @@ const rateLimiter = new RateLimiter({
 });
 
 const contentFilter = new ContentFilter();
+
+// Initialize connection health monitor
+const healthMonitor = new ConnectionHealthMonitor({
+  checkInterval: 30000, // Check every 30 seconds
+  heartbeatTimeout: 120000, // 2 minutes without activity = dead
+  maxReconnectAttempts: 5,
+  baseReconnectDelay: 5000,
+  maxReconnectDelay: 60000
+});
 
 // Helper for timestamps
 function getTimestamp() {
@@ -102,6 +129,7 @@ const VideoManager = require('./src/video/videoManager');
 const CoolholeExplorer = require('./src/coolhole/coolholeExplorer');
 const VisionAnalyzer = require('./src/vision/visionAnalyzer');
 const CursorController = require('./src/services/CursorController');
+const VoiceManager = require('./src/voice/voiceManager');
 
 // Multi-platform support
 const PlatformManager = require('./src/io/platformManager');
@@ -132,6 +160,8 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(express.static('public'));
+// Serve temporary audio files for voice playback
+app.use('/temp/audio', express.static(path.join(__dirname, 'temp/audio')));
 
 // Serve live dashboard as default
 app.get('/', (req, res) => {
@@ -155,9 +185,21 @@ app.get('/sentiment', (req, res) => {
 
 // Initialize bot components
 const videoManager = new VideoManager();
-const coolholeClient = new CoolholeClient();
+const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
 const chatBot = new ChatBot(coolholeClient, videoManager);
 const sluntManager = new SluntManager();
+
+// Initialize voice manager
+const voiceManager = new VoiceManager({
+  enabled: process.env.ENABLE_VOICE === 'true',
+  sttProvider: process.env.VOICE_STT_PROVIDER || 'browser', // Use browser STT by default
+  ttsProvider: process.env.VOICE_TTS_PROVIDER || 'elevenlabs',
+  elevenLabsApiKey: process.env.ELEVENLABS_API_KEY,
+  elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_ID,
+  openaiApiKey: process.env.OPENAI_API_KEY
+});
+
+console.log(`🎤 [Voice] Voice system ${voiceManager.config.enabled ? 'ENABLED' : 'DISABLED'}`);
 
 // Initialize multi-platform manager
 const platformManager = new PlatformManager();
@@ -202,6 +244,12 @@ setInterval(() => {
   if (platformManager) {
     const platformStatus = platformManager.getStatus();
     io.emit('platform:status', platformStatus);
+  }
+
+  // Broadcast health monitor status
+  if (healthMonitor) {
+    const healthStatus = healthMonitor.getStatus();
+    io.emit('health:status', healthStatus);
   }
   
   // Broadcast sentiment data
@@ -484,6 +532,32 @@ app.get('/api/queue', (req, res) => {
   try {
     const queue = videoManager.getQueue();
     res.json(queue);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Test endpoint to send a message to Coolhole
+app.post('/api/test-message', async (req, res) => {
+  const { message } = req.body;
+  
+  if (!message) {
+    return res.status(400).json({ error: 'Message required' });
+  }
+  
+  try {
+    if (!coolholeClient.isConnected()) {
+      return res.status(503).json({ error: 'Not connected to Coolhole' });
+    }
+    
+    console.log(`🧪 [API] Test message request: "${message}"`);
+    const success = await coolholeClient.sendChat(message);
+    
+    if (success) {
+      res.json({ success: true, message: 'Message sent successfully' });
+    } else {
+      res.status(500).json({ error: 'Failed to send message' });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -1191,6 +1265,65 @@ io.on('connection', (socket) => {
     }
   });
   
+  // Voice chat endpoints
+  socket.on('voice:status', (callback) => {
+    const status = {
+      enabled: voiceManager ? voiceManager.config.enabled : false,
+      isListening: voiceManager ? voiceManager.isListening : false,
+      isSpeaking: voiceManager ? voiceManager.isSpeaking : false,
+      stats: voiceManager ? voiceManager.getStats() : null
+    };
+    if (callback) callback(status);
+  });
+  
+  socket.on('voice:speech', async (data) => {
+    try {
+      if (!voiceManager) {
+        socket.emit('voice:error', { message: 'Voice system not initialized' });
+        return;
+      }
+      
+      console.log(`🎤 [Voice] Received speech: "${data.text}"`);
+      
+      // Process speech as a message from the user
+      const voiceMessage = {
+        platform: 'voice',
+        username: 'You', // Or get from session
+        text: data.text,
+        timestamp: Date.now(),
+        channel: 'voice'
+      };
+      
+      // Send to chatBot for processing
+      const response = await chatBot.generateResponse(voiceMessage);
+      
+      if (response) {
+        console.log(`🗣️ [Voice] Slunt responds: "${response}"`);
+        
+        // Generate speech audio
+        const audioUrl = await voiceManager.speak(response);
+        
+        // Send response back to client
+        socket.emit('voice:response', {
+          text: response,
+          audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
+          timestamp: Date.now()
+        });
+      }
+    } catch (error) {
+      console.error('❌ [Voice] Error processing speech:', error);
+      socket.emit('voice:error', { message: error.message });
+    }
+  });
+  
+  socket.on('voice:interrupt', () => {
+    if (voiceManager) {
+      voiceManager.stopSpeaking();
+      console.log('⏸️ [Voice] Speech interrupted by user');
+    }
+  });
+  });
+  
   socket.on('mute_bot', (data) => {
     const duration = data.duration || 300000;
     chatBot.muted = true;
@@ -1470,10 +1603,77 @@ if (enableCoolhole) {
     
     // Give ChatBot access to content filter for TOS compliance
     chatBot.setContentFilter(contentFilter);
-    
-    // Initialize all platforms
+
+    // ========================================
+    // STEP 1: Initialize all platforms FIRST
+    // ========================================
     console.log('🚀 Initializing all platforms...');
     await platformManager.initialize();
+
+    // ========================================
+    // STEP 2: Register platforms with health monitor AFTER they're connected
+    // ========================================
+    console.log('📡 Registering platforms with health monitor...');
+    healthMonitor.registerPlatform('coolhole', coolholeClient, {
+      enabled: true,
+      critical: true, // Coolhole is critical for operation
+      reconnectOnFail: true,
+      maxReconnectAttempts: 10 // More attempts for critical platform
+    });
+
+    if (discordClient) {
+      healthMonitor.registerPlatform('discord', discordClient, {
+        enabled: true,
+        critical: false,
+        reconnectOnFail: true
+      });
+    }
+
+    if (twitchClient) {
+      healthMonitor.registerPlatform('twitch', twitchClient, {
+        enabled: true,
+        critical: false,
+        reconnectOnFail: true
+      });
+    }
+
+    // ========================================
+    // STEP 3: Set up health monitor event listeners
+    // ========================================
+    healthMonitor.on('platform:disconnected', (data) => {
+      console.log(`⚠️ [HealthMonitor] ${data.platform} disconnected`);
+      io.emit('health:alert', {
+        type: 'disconnected',
+        platform: data.platform,
+        timestamp: Date.now()
+      });
+    });
+
+    healthMonitor.on('platform:reconnected', (data) => {
+      console.log(`✅ [HealthMonitor] ${data.platform} reconnected after ${data.attempts} attempts`);
+      io.emit('health:alert', {
+        type: 'reconnected',
+        platform: data.platform,
+        attempts: data.attempts,
+        timestamp: Date.now()
+      });
+    });
+
+    healthMonitor.on('platform:failed', (data) => {
+      console.log(`❌ [HealthMonitor] ${data.platform} failed to reconnect after ${data.attempts} attempts`);
+      io.emit('health:alert', {
+        type: 'failed',
+        platform: data.platform,
+        attempts: data.attempts,
+        timestamp: Date.now()
+      });
+    });
+
+    // ========================================
+    // STEP 4: START health monitoring LAST
+    // ========================================
+    healthMonitor.start();
+    console.log('💗 Health monitoring started');
     
     // Initialize clip creator if Twitch is available
     if (twitchClient) {

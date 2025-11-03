@@ -1,0 +1,2405 @@
+{
+  "sharedDreams": [],
+  "emergentNarratives": [],
+  "collectiveMoods": {
+    "mood_1762053141387": {
+      "username": "orbmeat",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053141387,
+      "intensity": 0.5
+    },
+    "mood_1762053174713": {
+      "username": "churchill1941.",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053174713,
+      "intensity": 0.5
+    },
+    "mood_1762053214187": {
+      "username": "rottencheeseca",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053214187,
+      "intensity": 0.5
+    },
+    "mood_1762053242856": {
+      "username": "Huculberry",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053242856,
+      "intensity": 0.5
+    },
+    "mood_1762053349953": {
+      "username": "braybray9876",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053349953,
+      "intensity": 0.5
+    },
+    "mood_1762053417425": {
+      "username": "soapyoid",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053417425,
+      "intensity": 0.5
+    },
+    "mood_1762053450655": {
+      "username": "churchill1941.",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053450655,
+      "intensity": 0.5
+    },
+    "mood_1762053500448": {
+      "username": "pat8925",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053500448,
+      "intensity": 0.5
+    },
+    "mood_1762053760293": {
+      "username": "ducky006446",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053760293,
+      "intensity": 0.5
+    },
+    "mood_1762053956733": {
+      "username": "ducky006446",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762053956733,
+      "intensity": 0.5
+    },
+    "mood_1762054164093": {
+      "username": ".blueeyeswhitesupremacist",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762054164093,
+      "intensity": 0.5
+    },
+    "mood_1762054219271": {
+      "username": "whomo.",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762054219271,
+      "intensity": 0.5
+    },
+    "mood_1762054229993": {
+      "username": "sithlord8448",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762054229993,
+      "intensity": 0.5
+    },
+    "mood_1762054239934": {
+      "username": "._.fug",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762054239934,
+      "intensity": 0.5
+    },
+    "mood_1762055003121": {
+      "username": "shitstainafficionado_04919",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762055003121,
+      "intensity": 0.5
+    },
+    "mood_1762055003131": {
+      "username": "shitstainafficionado_04919",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762055003131,
+      "intensity": 0.5
+    },
+    "mood_1762055930718": {
+      "username": "Davedalus",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762055930718,
+      "intensity": 0.5
+    },
+    "mood_1762056776648": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762056776648,
+      "intensity": 0.5
+    },
+    "mood_1762056813203": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762056813203,
+      "intensity": 0.5
+    },
+    "mood_1762056955749": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762056955749,
+      "intensity": 0.5
+    },
+    "mood_1762056958698": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762056958698,
+      "intensity": 0.5
+    },
+    "mood_1762056972227": {
+      "username": "what.tha",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762056972227,
+      "intensity": 0.5
+    },
+    "mood_1762057029287": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057029287,
+      "intensity": 0.5
+    },
+    "mood_1762057036372": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057036372,
+      "intensity": 0.5
+    },
+    "mood_1762057051769": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057051769,
+      "intensity": 0.5
+    },
+    "mood_1762057067353": {
+      "username": "davedalus",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057067353,
+      "intensity": 0.5
+    },
+    "mood_1762057122984": {
+      "username": "what.tha",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057122984,
+      "intensity": 0.5
+    },
+    "mood_1762057129824": {
+      "username": "what.tha",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057129824,
+      "intensity": 0.5
+    },
+    "mood_1762057141806": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057141806,
+      "intensity": 0.5
+    },
+    "mood_1762057205708": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057205708,
+      "intensity": 0.5
+    },
+    "mood_1762057226449": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057226449,
+      "intensity": 0.5
+    },
+    "mood_1762057237979": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057237979,
+      "intensity": 0.5
+    },
+    "mood_1762057364399": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057364399,
+      "intensity": 0.5
+    },
+    "mood_1762057404811": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057404811,
+      "intensity": 0.5
+    },
+    "mood_1762057478948": {
+      "username": "Juice_Kelly",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057478948,
+      "intensity": 0.5
+    },
+    "mood_1762057525484": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057525484,
+      "intensity": 0.5
+    },
+    "mood_1762057705949": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762057705949,
+      "intensity": 0.5
+    },
+    "mood_1762057770063": {
+      "username": "WankingPrep",
+      "mood": {
+        "mood": "happy",
+        "intensity": 0.1,
+        "emoji": "😊",
+        "description": "Happy and upbeat"
+      },
+      "timestamp": 1762057770063,
+      "intensity": 0.5
+    },
+    "mood_1762058347541": {
+      "username": "WankingPrep",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7487999999999999,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058347541,
+      "intensity": 0.5
+    },
+    "mood_1762058379988": {
+      "username": "bangbangbangbang",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7487999999999999,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058379988,
+      "intensity": 0.5
+    },
+    "mood_1762058401622": {
+      "username": "WankingPrep",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058401622,
+      "intensity": 0.5
+    },
+    "mood_1762058435887": {
+      "username": "what.tha",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058435887,
+      "intensity": 0.5
+    },
+    "mood_1762058484355": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058484355,
+      "intensity": 0.5
+    },
+    "mood_1762058487304": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058487304,
+      "intensity": 0.5
+    },
+    "mood_1762058525735": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762058525735,
+      "intensity": 0.5
+    },
+    "mood_1762059600262": {
+      "username": "gr8itsn8",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762059600262,
+      "intensity": 0.5
+    },
+    "mood_1762059896863": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762059896863,
+      "intensity": 0.5
+    },
+    "mood_1762059968195": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.8961,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762059968195,
+      "intensity": 0.5
+    },
+    "mood_1762060051034": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060051034,
+      "intensity": 0.5
+    },
+    "mood_1762060255578": {
+      "username": "gr8itsn8",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060255578,
+      "intensity": 0.5
+    },
+    "mood_1762060679275": {
+      "username": "gr8itsn8",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060679275,
+      "intensity": 0.5
+    },
+    "mood_1762060813546": {
+      "username": "gr8itsn8",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.89,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060813546,
+      "intensity": 0.5
+    },
+    "mood_1762060852622": {
+      "username": "radfather",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060852622,
+      "intensity": 0.5
+    },
+    "mood_1762060896119": {
+      "username": "gr8itsn8",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762060896119,
+      "intensity": 0.5
+    },
+    "mood_1762061617543": {
+      "username": "plaguejackal",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762061617543,
+      "intensity": 0.5
+    },
+    "mood_1762061705648": {
+      "username": "hued",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762061705648,
+      "intensity": 0.5
+    },
+    "mood_1762061804946": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762061804946,
+      "intensity": 0.5
+    },
+    "mood_1762061909727": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762061909727,
+      "intensity": 0.5
+    },
+    "mood_1762061970840": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762061970840,
+      "intensity": 0.5
+    },
+    "mood_1762062105165": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062105165,
+      "intensity": 0.5
+    },
+    "mood_1762062150914": {
+      "username": "Brotherimbread",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062150914,
+      "intensity": 0.5
+    },
+    "mood_1762062156530": {
+      "username": "Brotherimbread",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062156530,
+      "intensity": 0.5
+    },
+    "mood_1762062206446": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062206446,
+      "intensity": 0.5
+    },
+    "mood_1762062434487": {
+      "username": "vaporwar3",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062434487,
+      "intensity": 0.5
+    },
+    "mood_1762062523728": {
+      "username": "jhaumrith",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062523728,
+      "intensity": 0.5
+    },
+    "mood_1762062653063": {
+      "username": "albino5stargeneral",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.81,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062653063,
+      "intensity": 0.5
+    },
+    "mood_1762062817356": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062817356,
+      "intensity": 0.5
+    },
+    "mood_1762062861787": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762062861787,
+      "intensity": 0.5
+    },
+    "mood_1762063000898": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.7290000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063000898,
+      "intensity": 0.5
+    },
+    "mood_1762063070576": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063070576,
+      "intensity": 0.5
+    },
+    "mood_1762063143641": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063143641,
+      "intensity": 0.5
+    },
+    "mood_1762063217038": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063217038,
+      "intensity": 0.5
+    },
+    "mood_1762063237290": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063237290,
+      "intensity": 0.5
+    },
+    "mood_1762063289352": {
+      "username": "gangstalker_of_gangstalkers",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.6561000000000001,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063289352,
+      "intensity": 0.5
+    },
+    "mood_1762063902386": {
+      "username": "Brotherimbread",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.5314410000000002,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762063902386,
+      "intensity": 0.5
+    },
+    "mood_1762068736868": {
+      "username": "superhitler",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762068736868,
+      "intensity": 0.5
+    },
+    "mood_1762068953173": {
+      "username": "Klumb",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762068953173,
+      "intensity": 0.5
+    },
+    "mood_1762068979548": {
+      "username": "Juice_Kelly",
+      "mood": {
+        "mood": "excited",
+        "intensity": 1,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762068979548,
+      "intensity": 0.5
+    },
+    "mood_1762069198322": {
+      "username": "Juice_Kelly",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762069198322,
+      "intensity": 0.5
+    },
+    "mood_1762069210898": {
+      "username": "Juice_Kelly",
+      "mood": {
+        "mood": "excited",
+        "intensity": 0.9,
+        "emoji": "🤩",
+        "description": "Excited and energetic"
+      },
+      "timestamp": 1762069210898,
+      "intensity": 0.5
+    },
+    "mood_1762070609635": {
+      "username": "Voteskip passed",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762070609635,
+      "intensity": 0.5
+    },
+    "mood_1762071613020": {
+      "username": "bbnab",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762071613020,
+      "intensity": 0.5
+    },
+    "mood_1762073580771": {
+      "username": "bbnab",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762073580771,
+      "intensity": 0.5
+    },
+    "mood_1762075290912": {
+      "username": "alanminder",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762075290912,
+      "intensity": 0.5
+    },
+    "mood_1762075360292": {
+      "username": "alanminder",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762075360292,
+      "intensity": 0.5
+    },
+    "mood_1762075560236": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762075560236,
+      "intensity": 0.5
+    },
+    "mood_1762075628618": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762075628618,
+      "intensity": 0.5
+    },
+    "mood_1762076200015": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076200015,
+      "intensity": 0.5
+    },
+    "mood_1762076233857": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076233857,
+      "intensity": 0.5
+    },
+    "mood_1762076275153": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076275153,
+      "intensity": 0.5
+    },
+    "mood_1762076304225": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076304225,
+      "intensity": 0.5
+    },
+    "mood_1762076309705": {
+      "username": "stevepugwaredev",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076309705,
+      "intensity": 0.5
+    },
+    "mood_1762076961366": {
+      "username": "aoi.yume",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762076961366,
+      "intensity": 0.5
+    },
+    "mood_1762077002423": {
+      "username": "aoi.yume",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762077002423,
+      "intensity": 0.5
+    },
+    "mood_1762077070089": {
+      "username": "aoi.yume",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762077070089,
+      "intensity": 0.5
+    },
+    "mood_1762077295593": {
+      "username": "aoi.yume",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762077295593,
+      "intensity": 0.5
+    },
+    "mood_1762077464040": {
+      "username": "aoi.yume",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762077464040,
+      "intensity": 0.5
+    },
+    "mood_1762084378868": {
+      "username": "OrbMeat",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762084378868,
+      "intensity": 0.5
+    },
+    "mood_1762097219099": {
+      "username": "_slamminsalmon",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.216,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762097219099,
+      "intensity": 0.5
+    },
+    "mood_1762108782194": {
+      "username": "Palestine_Forever",
+      "mood": {
+        "mood": "bored",
+        "intensity": 1,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762108782194,
+      "intensity": 0.5
+    },
+    "mood_1762108884447": {
+      "username": "Applecooler",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.9,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762108884447,
+      "intensity": 0.5
+    },
+    "mood_1762112179204": {
+      "username": "shazbot885",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.9,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762112179204,
+      "intensity": 0.5
+    },
+    "mood_1762113719119": {
+      "username": "grug",
+      "mood": {
+        "mood": "bored",
+        "intensity": 1,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762113719119,
+      "intensity": 0.5
+    },
+    "mood_1762120516011": {
+      "username": "SteeScribbles",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762120516011,
+      "intensity": 0.5
+    },
+    "mood_1762120805287": {
+      "username": "milk_man",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762120805287,
+      "intensity": 0.5
+    },
+    "mood_1762120851138": {
+      "username": "SteeScribbles",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762120851138,
+      "intensity": 0.5
+    },
+    "mood_1762120993325": {
+      "username": "gfyr",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762120993325,
+      "intensity": 0.5
+    },
+    "mood_1762122198407": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122198407,
+      "intensity": 0.5
+    },
+    "mood_1762122237394": {
+      "username": "Gutmatant",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122237394,
+      "intensity": 0.5
+    },
+    "mood_1762122441240": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122441240,
+      "intensity": 0.5
+    },
+    "mood_1762122545263": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122545264,
+      "intensity": 0.5
+    },
+    "mood_1762122584657": {
+      "username": "baddibarbie",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122584657,
+      "intensity": 0.5
+    },
+    "mood_1762122645547": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122645547,
+      "intensity": 0.5
+    },
+    "mood_1762122715591": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122715591,
+      "intensity": 0.5
+    },
+    "mood_1762122834333": {
+      "username": "uncledoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762122834333,
+      "intensity": 0.5
+    },
+    "mood_1762123129679": {
+      "username": "baddibarbie",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762123129679,
+      "intensity": 0.5
+    },
+    "mood_1762123163805": {
+      "username": "baddibarbie",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762123163805,
+      "intensity": 0.5
+    },
+    "mood_1762123300025": {
+      "username": "Hawky",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762123300025,
+      "intensity": 0.5
+    },
+    "mood_1762124485454": {
+      "username": "space________",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762124485454,
+      "intensity": 0.5
+    },
+    "mood_1762125115318": {
+      "username": "space________",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762125115318,
+      "intensity": 0.5
+    },
+    "mood_1762125141829": {
+      "username": "sams0n1999",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762125141829,
+      "intensity": 0.5
+    },
+    "mood_1762126546400": {
+      "username": "spaceman_1996",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.12,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762126546400,
+      "intensity": 0.5
+    },
+    "mood_1762127279768": {
+      "username": "nam420",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762127279768,
+      "intensity": 0.5
+    },
+    "mood_1762127400897": {
+      "username": "nam420",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762127400897,
+      "intensity": 0.5
+    },
+    "mood_1762127743474": {
+      "username": "ruckusebenezer",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762127743474,
+      "intensity": 0.5
+    },
+    "mood_1762128296732": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128296732,
+      "intensity": 0.5
+    },
+    "mood_1762128352261": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128352261,
+      "intensity": 0.5
+    },
+    "mood_1762128360245": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128360245,
+      "intensity": 0.5
+    },
+    "mood_1762128411001": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128411001,
+      "intensity": 0.5
+    },
+    "mood_1762128546646": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128546646,
+      "intensity": 0.5
+    },
+    "mood_1762128610229": {
+      "username": "taikunoaku",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128610229,
+      "intensity": 0.5
+    },
+    "mood_1762128618374": {
+      "username": "taikunoaku",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762128618374,
+      "intensity": 0.5
+    },
+    "mood_1762128884034": {
+      "username": "taikunoaku",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762128884034,
+      "intensity": 0.5
+    },
+    "mood_1762128900605": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762128900605,
+      "intensity": 0.5
+    },
+    "mood_1762128906666": {
+      "username": "scarpelt",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762128906666,
+      "intensity": 0.5
+    },
+    "mood_1762128950956": {
+      "username": "taikunoaku",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762128950956,
+      "intensity": 0.5
+    },
+    "mood_1762128961908": {
+      "username": "taikunoaku",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762128961908,
+      "intensity": 0.5
+    },
+    "mood_1762130046535": {
+      "username": "electriqwizard",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762130046535,
+      "intensity": 0.5
+    },
+    "mood_1762130108868": {
+      "username": "electriqwizard",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762130108868,
+      "intensity": 0.5
+    },
+    "mood_1762130154282": {
+      "username": "cassidy6969",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762130154282,
+      "intensity": 0.5
+    },
+    "mood_1762130936742": {
+      "username": "ghello",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2952450000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762130936742,
+      "intensity": 0.5
+    },
+    "mood_1762131022523": {
+      "username": "ghello",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762131022523,
+      "intensity": 0.5
+    },
+    "mood_1762131076162": {
+      "username": "ghello",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762131076162,
+      "intensity": 0.5
+    },
+    "mood_1762132155992": {
+      "username": "bonkersizewonga",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.7476,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762132155992,
+      "intensity": 0.5
+    },
+    "mood_1762132218745": {
+      "username": "kvatch_433_37889",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.8676,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762132218745,
+      "intensity": 0.5
+    },
+    "mood_1762132940344": {
+      "username": "miknugget_",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762132940344,
+      "intensity": 0.5
+    },
+    "mood_1762132991044": {
+      "username": "unhuggable",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762132991044,
+      "intensity": 0.5
+    },
+    "mood_1762133001377": {
+      "username": "unhuggable",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762133001377,
+      "intensity": 0.5
+    },
+    "mood_1762133210735": {
+      "username": "miknugget_",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762133210735,
+      "intensity": 0.5
+    },
+    "mood_1762133388945": {
+      "username": "miknugget_",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762133388945,
+      "intensity": 0.5
+    },
+    "mood_1762133472633": {
+      "username": "miknugget_",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762133472633,
+      "intensity": 0.5
+    },
+    "mood_1762133531780": {
+      "username": "miknugget_",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762133531781,
+      "intensity": 0.5
+    },
+    "mood_1762134007972": {
+      "username": "unhuggable",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.24,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762134007972,
+      "intensity": 0.5
+    },
+    "mood_1762134398441": {
+      "username": "unhuggable",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134398441,
+      "intensity": 0.5
+    },
+    "mood_1762134409150": {
+      "username": "unhuggable",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134409150,
+      "intensity": 0.5
+    },
+    "mood_1762134459202": {
+      "username": "Taikunoaku",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134459202,
+      "intensity": 0.5
+    },
+    "mood_1762134476546": {
+      "username": ".handshake",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134476546,
+      "intensity": 0.5
+    },
+    "mood_1762134517430": {
+      "username": "dammitwesley",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134517430,
+      "intensity": 0.5
+    },
+    "mood_1762134609679": {
+      "username": ".handshake",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134609679,
+      "intensity": 0.5
+    },
+    "mood_1762134658501": {
+      "username": ".handshake",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134658501,
+      "intensity": 0.5
+    },
+    "mood_1762134662938": {
+      "username": ".handshake",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134662938,
+      "intensity": 0.5
+    },
+    "mood_1762134739995": {
+      "username": ".handshake",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762134739995,
+      "intensity": 0.5
+    },
+    "mood_1762140076361": {
+      "username": "jello_noir",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762140076361,
+      "intensity": 0.5
+    },
+    "mood_1762140144968": {
+      "username": "jello_noir",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762140144968,
+      "intensity": 0.5
+    },
+    "mood_1762140327405": {
+      "username": "jello_noir",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762140327405,
+      "intensity": 0.5
+    },
+    "mood_1762141002618": {
+      "username": "theghostrin",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141002618,
+      "intensity": 0.5
+    },
+    "mood_1762141079681": {
+      "username": "Canpilled Consciousness",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141079681,
+      "intensity": 0.5
+    },
+    "mood_1762141215312": {
+      "username": "BobbyBoon",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141215312,
+      "intensity": 0.5
+    },
+    "mood_1762141435267": {
+      "username": "rottencheeseCA",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141435267,
+      "intensity": 0.5
+    },
+    "mood_1762141793930": {
+      "username": "Oil",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141793930,
+      "intensity": 0.5
+    },
+    "mood_1762141893433": {
+      "username": "thankerware 🦃",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141893433,
+      "intensity": 0.5
+    },
+    "mood_1762141963528": {
+      "username": "BoanerPains",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762141963528,
+      "intensity": 0.5
+    },
+    "mood_1762142264285": {
+      "username": "Bryxby",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142264285,
+      "intensity": 0.5
+    },
+    "mood_1762142324679": {
+      "username": "Phagsgiving",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142324679,
+      "intensity": 0.5
+    },
+    "mood_1762142358528": {
+      "username": "gangstalker",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142358528,
+      "intensity": 0.5
+    },
+    "mood_1762142380366": {
+      "username": "Phagsgiving",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142380366,
+      "intensity": 0.5
+    },
+    "mood_1762142503496": {
+      "username": "gangstalker",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142503496,
+      "intensity": 0.5
+    },
+    "mood_1762142577865": {
+      "username": "Phagsgiving",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142577865,
+      "intensity": 0.5
+    },
+    "mood_1762142715213": {
+      "username": "cummoner",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142715213,
+      "intensity": 0.5
+    },
+    "mood_1762142842333": {
+      "username": "Scourge",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142842333,
+      "intensity": 0.5
+    },
+    "mood_1762142888581": {
+      "username": "whomo",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762142888581,
+      "intensity": 0.5
+    },
+    "mood_1762143069638": {
+      "username": "Daniboy",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762143069638,
+      "intensity": 0.5
+    },
+    "mood_1762143507553": {
+      "username": "CHURCH1941",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762143507553,
+      "intensity": 0.5
+    },
+    "mood_1762145269306": {
+      "username": "Nam",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.12,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762145269306,
+      "intensity": 0.5
+    },
+    "mood_1762146007846": {
+      "username": "Happy new year wesley!!!!",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.5196000000000001,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762146007846,
+      "intensity": 0.5
+    },
+    "mood_1762146091574": {
+      "username": "Happy new year wesley!!!!",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.6396000000000001,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762146091574,
+      "intensity": 0.5
+    },
+    "mood_1762146879120": {
+      "username": "lapome",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.9,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762146879120,
+      "intensity": 0.5
+    },
+    "mood_1762146894002": {
+      "username": "lapome",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.9,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762146894002,
+      "intensity": 0.5
+    },
+    "mood_1762146957424": {
+      "username": "Sithlord8448",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.9,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762146957424,
+      "intensity": 0.5
+    },
+    "mood_1762147222577": {
+      "username": "蓝色梦想",
+      "mood": {
+        "mood": "bored",
+        "intensity": 1,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762147222577,
+      "intensity": 0.5
+    },
+    "mood_1762147320889": {
+      "username": "Sithlord8448",
+      "mood": {
+        "mood": "bored",
+        "intensity": 1,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762147320889,
+      "intensity": 0.5
+    },
+    "mood_1762147709125": {
+      "username": "Carpentria Booty Nourishment",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762147709125,
+      "intensity": 0.5
+    },
+    "mood_1762148177400": {
+      "username": "Scarpelius",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762148177400,
+      "intensity": 0.5
+    },
+    "mood_1762148799671": {
+      "username": "Bonkersizewonga",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762148799671,
+      "intensity": 0.5
+    },
+    "mood_1762149769180": {
+      "username": "Chink",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762149769180,
+      "intensity": 0.5
+    },
+    "mood_1762149802854": {
+      "username": "Chink",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762149802854,
+      "intensity": 0.5
+    },
+    "mood_1762149874067": {
+      "username": "Chink",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762149874067,
+      "intensity": 0.5
+    },
+    "mood_1762150548127": {
+      "username": "I_am_Boner",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762150548127,
+      "intensity": 0.5
+    },
+    "mood_1762150569729": {
+      "username": "BbNaB",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762150569729,
+      "intensity": 0.5
+    },
+    "mood_1762150600410": {
+      "username": "I_am_Boner",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762150600410,
+      "intensity": 0.5
+    },
+    "mood_1762150684597": {
+      "username": "I_am_Boner",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.2657205000000001,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762150684597,
+      "intensity": 0.5
+    },
+    "mood_1762150807169": {
+      "username": "I_am_Boner",
+      "mood": {
+        "mood": "bored",
+        "intensity": 0.12,
+        "emoji": "😐",
+        "description": "Bored and uninterested"
+      },
+      "timestamp": 1762150807169,
+      "intensity": 0.5
+    },
+    "mood_1762151946662": {
+      "username": "UncleDoctor",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762151946662,
+      "intensity": 0.5
+    },
+    "mood_1762152218914": {
+      "username": "OMNI",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762152218914,
+      "intensity": 0.5
+    },
+    "mood_1762152658407": {
+      "username": "OMNI",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762152658407,
+      "intensity": 0.5
+    },
+    "mood_1762152980148": {
+      "username": "Mean guy Steve",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.36450000000000005,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762152980148,
+      "intensity": 0.5
+    },
+    "mood_1762154929267": {
+      "username": "Immoral",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762154929267,
+      "intensity": 0.5
+    },
+    "mood_1762157248787": {
+      "username": "MikNugget",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762157248787,
+      "intensity": 0.5
+    },
+    "mood_1762158491356": {
+      "username": "old man",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762158491356,
+      "intensity": 0.5
+    },
+    "mood_1762158710517": {
+      "username": "old man",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.45,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762158710517,
+      "intensity": 0.5
+    },
+    "mood_1762159604386": {
+      "username": "old man",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762159604386,
+      "intensity": 0.5
+    },
+    "mood_1762159634161": {
+      "username": "old man",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.32805000000000006,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762159634161,
+      "intensity": 0.5
+    },
+    "mood_1762162080454": {
+      "username": "tom",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762162080454,
+      "intensity": 0.5
+    },
+    "mood_1762164782882": {
+      "username": "Dibburr",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.405,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762164782882,
+      "intensity": 0.5
+    },
+    "mood_1762167038113": {
+      "username": "KD",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762167038113,
+      "intensity": 0.5
+    },
+    "mood_1762167814159": {
+      "username": "sforlord",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762167814159,
+      "intensity": 0.5
+    },
+    "mood_1762169385233": {
+      "username": "OrbMeat",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762169385233,
+      "intensity": 0.5
+    },
+    "mood_1762169433133": {
+      "username": "OrbMeat",
+      "mood": {
+        "mood": "neutral",
+        "intensity": 0.5,
+        "emoji": "😐",
+        "description": "Neutral"
+      },
+      "timestamp": 1762169433133,
+      "intensity": 0.5
+    }
+  },
+  "archetypes": {}
+}

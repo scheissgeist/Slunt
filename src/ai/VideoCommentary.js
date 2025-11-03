@@ -47,27 +47,28 @@ class VideoCommentary {
    * Check if Slunt should comment on the current video
    */
   async shouldCommentOnVideo(visionData) {
-    if (!this.enabled) return false;
-    if (!visionData) return false;
+    try {
+      if (!this.enabled) return false;
+      if (!visionData) return false;
     
-    // Cooldown check
-    const timeSinceLastComment = Date.now() - this.lastCommentTime;
-    if (timeSinceLastComment < this.commentCooldown) {
-      return false;
-    }
+      // Cooldown check
+      const timeSinceLastComment = Date.now() - this.lastCommentTime;
+      if (timeSinceLastComment < this.commentCooldown) {
+        return false;
+      }
     
-    // Don't comment on same video twice in a row
-    const videoTitle = visionData.videoTitle || visionData.detected;
-    if (videoTitle === this.lastCommentedVideo) {
-      return false;
-    }
+      // Don't comment on same video twice in a row
+      const videoTitle = visionData.videoTitle || visionData.detected;
+      if (videoTitle === this.lastCommentedVideo) {
+        return false;
+      }
     
-    // Base chance: 5%
-    let chance = 0.05;
+      // Base chance: 5%
+      let chance = 0.05;
     
     // === INTEREST TRIGGERS ===
     // +30% if video title matches interests
-    if (videoTitle) {
+    if (videoTitle && typeof videoTitle === 'string') {
       const lowerTitle = videoTitle.toLowerCase();
       if (this.interestTriggers.some(trigger => lowerTitle.includes(trigger))) {
         chance += 0.30;
@@ -91,7 +92,7 @@ class VideoCommentary {
     // === OBSESSION ALIGNMENT ===
     // +25% if video topic matches current obsession
     const obsession = this.chatBot.obsessionSystem?.getCurrentObsession();
-    if (obsession && videoTitle) {
+    if (obsession && obsession.topic && typeof obsession.topic === 'string' && videoTitle && typeof videoTitle === 'string') {
       const obsessionTopic = obsession.topic.toLowerCase();
       const lowerTitle = videoTitle.toLowerCase();
       if (lowerTitle.includes(obsessionTopic) || obsessionTopic.includes(lowerTitle.split(' ')[0])) {
@@ -124,6 +125,11 @@ class VideoCommentary {
     console.log(`🎲 [VideoCommentary] Comment chance: ${(chance * 100).toFixed(1)}%`);
     
     return Math.random() < chance;
+    } catch (error) {
+      // Gracefully handle errors during page navigation or undefined values
+      console.error('❌ [VideoCommentary] Error:', error.message);
+      return false;
+    }
   }
 
   /**
@@ -160,7 +166,7 @@ class VideoCommentary {
     
     // Add obsession context
     const obsession = this.chatBot.obsessionSystem?.getCurrentObsession();
-    if (obsession) {
+    if (obsession && obsession.topic && typeof obsession.topic === 'string' && videoTitle && typeof videoTitle === 'string') {
       const obsessionTopic = obsession.topic.toLowerCase();
       const videoTitleLower = videoTitle.toLowerCase();
       if (videoTitleLower.includes(obsessionTopic) || obsessionTopic.includes(videoTitleLower.split(' ')[0])) {
