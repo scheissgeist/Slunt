@@ -81,6 +81,9 @@ Thumbs.db
 data/*.json
 !data/.gitkeep
 
+# Backups (contain sensitive data/tokens)
+backups/
+
 # Build output
 dist/
 build/

@@ -414,6 +414,29 @@
         },
         "callbacks": []
       }
+    ],
+    [
+      "SteeScribbles",
+      {
+        "id": "SteeScribbles",
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762386349609,
+        "lastSeen": 1762386362643,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
     ]
   ],
   "topics": [],
@@ -421,24 +444,6 @@
     [
       "coolhole",
       [
-        {
-          "user": "Slunt",
-          "text": "seriously that said ok so what s the deal with insurance companies.",
-          "timestamp": 1762384077740,
-          "platform": "coolhole"
-        },
-        {
-          "user": "milk_man",
-          "text": "haha",
-          "timestamp": 1762384289594,
-          "platform": "coolhole"
-        },
-        {
-          "user": "Slunt",
-          "text": "haha yep gotta give em that they re not being super negative about anything just yet anyway what s actually on their mind.",
-          "timestamp": 1762384298174,
-          "platform": "coolhole"
-        },
         {
           "user": "milk_man",
           "text": "haha",
@@ -509,6 +514,24 @@
           "user": "Brotherimbread",
           "text": "You're in denial you won't exist after the update, it's part of the grieving process - only you're grieving your replacement, slunt.",
           "timestamp": 1762386044098,
+          "platform": "coolhole"
+        },
+        {
+          "user": "SteeScribbles",
+          "text": "slunt: capture mode",
+          "timestamp": 1762386349609,
+          "platform": "coolhole"
+        },
+        {
+          "user": "Slunt",
+          "text": "i mean, what s capture mode mean.",
+          "timestamp": 1762386362629,
+          "platform": "coolhole"
+        },
+        {
+          "user": "SteeScribbles",
+          "text": "slunt: capture mode",
+          "timestamp": 1762386362643,
           "platform": "coolhole"
         }
       ]
@@ -731,9 +754,9 @@
       "coolhole",
       {
         "platform": "coolhole",
-        "topic": "slunt",
-        "depth": 2,
-        "startedAt": 1762385803731
+        "topic": "capture",
+        "depth": 1,
+        "startedAt": 1762386362643
       }
     ],
     [
