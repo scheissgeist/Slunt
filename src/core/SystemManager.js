@@ -134,12 +134,14 @@ class SystemManager {
    */
   async initializeBehavioralSystems(chatBot) {
     const DrunkMode = require('../ai/DrunkMode');
+    const HighMode = require('../ai/HighMode');
     const AutismFixations = require('../ai/AutismFixations');
     const GrudgeSystem = require('../ai/GrudgeSystem');
     const ObsessionSystem = require('../ai/ObsessionSystem');
     const AddictionSystem = require('../ai/AddictionSystem');
 
     this.register('drunkMode', new DrunkMode(chatBot));
+    this.register('highMode', new HighMode(chatBot));
     this.register('autismFixations', new AutismFixations(chatBot));
     this.register('grudgeSystem', new GrudgeSystem(chatBot));
     this.register('obsessionSystem', new ObsessionSystem(chatBot));

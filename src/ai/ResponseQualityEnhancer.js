@@ -21,10 +21,13 @@ class ResponseQualityEnhancer {
             
             // Style markers
             styleMarkers: {
-                slunt: ['lmao', 'bruh', 'fr', 'nah', 'yo', 'tbh', 'lowkey', 'highkey'],
+                // Minimal casual language - no zoomer slang
+                slunt: ['lmao', 'yeah', 'nah'],
                 sarcastic: ['sure', 'totally', 'obviously', 'clearly', 'definitely'],
                 existential: ['why', 'existence', 'meaning', 'purpose', 'real', 'consciousness'],
-                technical: ['algorithm', 'function', 'process', 'system', 'logic', 'data']
+                technical: ['algorithm', 'function', 'process', 'system', 'logic', 'data'],
+                // BANNED zoomer slang
+                zoomerSlang: ['mb', 'ngl', 'fr', 'frfr', 'lowkey', 'highkey', 'no cap', 'on god', 'based', 'mid', 'bussin', 'slaps', 'goes hard', 'hits different', 'rent free']
             },
             
             // Humor timing
@@ -138,16 +141,22 @@ class ResponseQualityEnhancer {
         const violations = [];
         const text = response.toLowerCase();
         
-        // Check for appropriate slang usage
+        // Check for zoomer slang (BANNED)
+        const zoomerSlangUsed = this.config.styleMarkers.zoomerSlang
+            .filter(slang => {
+                // Match whole words only (avoid false positives)
+                const regex = new RegExp(`\\b${slang}\\b`, 'i');
+                return regex.test(text);
+            });
+        if (zoomerSlangUsed.length > 0) {
+            violations.push(`zoomer_slang: ${zoomerSlangUsed.join(', ')}`);
+        }
+
+        // Check for excessive slang only (do not require slang usage)
         const slangCount = this.config.styleMarkers.slunt
             .filter(marker => text.includes(marker))
             .length;
-        
-        if (slangCount === 0 && text.length > 50) {
-            violations.push('missing_slang');
-        }
-        
-        if (slangCount > 5) {
+        if (slangCount > 3) {
             violations.push('excessive_slang');
         }
         

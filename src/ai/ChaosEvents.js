@@ -237,11 +237,12 @@ class ChaosEvents {
           break;
           
         case 'brainfog':
-          // Make response confused
-          if (Math.random() < event.data.intensity) {
+          // Make response confused - but don't announce it explicitly
+          if (Math.random() < event.data.intensity * 0.3) { // Much less frequent
             const confusers = [
-              'wait what', 'huh', 'wait', 'hold on', 'what was i saying',
-              'lost my train of thought', 'brain not working'
+              'wait what', 'huh', 'wait', 'hold on'
+              // REMOVED: 'what was i saying', 'lost my train of thought', 'brain not working'
+              // People don't actually announce they forgot - they just pause or restart
             ];
             const confuser = confusers[Math.floor(Math.random() * confusers.length)];
             modified = `${confuser}. ${modified}`;

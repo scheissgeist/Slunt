@@ -28,18 +28,17 @@ class ConversationalPersonality {
       ],
       transitions: [
         "but honestly",
-        "on a real note",
-        "actually though",
-        "but for real",
-        "speaking of",
-        "that said"
+        "thinking about it",
+        "speaking of which",
+        "that said",
+        "honestly though"
       ]
     };
 
     // Natural conversation fillers and connectors
     this.conversationalFillers = [
       "i mean", "honestly", "like", "you know", "anyway", "so", "well", 
-      "actually", "basically", "obviously", "clearly", "apparently", 
+      "basically", "obviously", "clearly", "apparently", 
       "literally", "seriously", "definitely", "probably", "maybe"
     ];
 

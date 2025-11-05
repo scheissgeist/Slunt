@@ -184,8 +184,9 @@ class AutismFixations {
   async analyzeForTopics(message, username) {
     if (!message || message.length < 10) return;
 
-    // Skip bot's own messages
-    if (username === 'Slunt') return;
+    // Skip bot's own messages (Slunt on Coolhole/Discord, sluntbot on Twitch)
+    const myUsernames = ['Slunt', 'sluntbot'];
+    if (myUsernames.some(name => username.toLowerCase() === name.toLowerCase())) return;
 
     try {
       // Use AI to extract potential topics from the message

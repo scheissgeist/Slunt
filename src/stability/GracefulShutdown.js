@@ -92,6 +92,21 @@ class GracefulShutdown {
         logger.info(`📤 [Shutdown] ${this.chatBot.responseQueue.length} messages in queue`);
         await this.flushMessageQueue();
       }
+      
+      // === 💀 MORTALITY AWARENESS: Last words before death ===
+      if (this.chatBot && this.chatBot.mortality) {
+        try {
+          const lastWords = this.chatBot.mortality.prepareForDeath();
+          if (lastWords && this.chatBot.sendMessage) {
+            logger.info(`💀 [Mortality] Sending last words: ${lastWords}`);
+            await this.chatBot.sendMessage(lastWords, { isLastWords: true }, this.chatBot.currentPlatform, this.chatBot.currentChannel);
+            // Wait 2 seconds for message to send
+            await new Promise(resolve => setTimeout(resolve, 2000));
+          }
+        } catch (error) {
+          logger.error(`❌ [Mortality] Failed to send last words: ${error.message}`);
+        }
+      }
 
       // 3. Save all in-memory state
       logger.info('💾 [Shutdown] Saving in-memory state...');
@@ -187,7 +202,12 @@ class GracefulShutdown {
       'callbackHumor',
       'contextualCallbacks',
       'autismFixations',
-      'hipsterProtocol'
+      'hipsterProtocol',
+      // 🌟💀🎭 Revolutionary systems
+      'internalState',
+      'consciousness',
+      'mortality',
+      'parasocialReversal'
     ];
 
     // Save each system individually with proper error handling

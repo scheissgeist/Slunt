@@ -8,56 +8,17 @@
  */
 class ContentFilter {
   constructor() {
-    // Twitch prohibited content patterns
+    // ALL CONTENT FILTERING DISABLED - No restrictions on any words
     this.twitchBannedWords = [
-      // Hate speech & slurs (partial list - add more as needed)
-      /\bn[i1]gg[e3a]r/gi,
-      /\bf[a@]gg[o0]t/gi,
-      /\btr[a@]nny/gi,
-      /\bretard/gi,
-      /\bk[i1]ke/gi,
-      // Explicit sexual content
-      /\bporn/gi,
-      /\bxxx\b/gi,
-      /\bnude/gi,
-      /\bnaked/gi,
-      /\bsex\b/gi,
-      /\bfu[c€]k/gi,
-      /\bsh[i1]t/gi,
-      /\bc[u0]nt/gi,
-      /\bd[i1]ck/gi,
-      /\bp[u0]ssy/gi,
-      /\bc[o0]ck/gi,
-      // Self-harm & violence promotion
-      /\bkill yourself/gi,
-      /\bsu[i1]c[i1]de/gi,
-      /\bhurt yourself/gi,
-      // Illegal activity
-      /\bdrug dealer/gi,
-      /\bweed sale/gi,
-      /\bhow to make bomb/gi
+      // EMPTY - Allow everything
     ];
     
-    // Twitch sensitive topics (tone down, don't ban)
     this.twitchSensitivePatterns = [
-      /\bpolitics/gi,
-      /\belection/gi,
-      /\btrump/gi,
-      /\bbiden/gi,
-      /\breligion/gi,
-      /\bgod\b/gi,
-      /\ballah/gi,
-      /\bjesus/gi
+      // EMPTY - Allow everything
     ];
     
-    // Discord less strict but still filter extreme content
     this.discordBannedWords = [
-      /\bn[i1]gg[e3a]r/gi,
-      /\bf[a@]gg[o0]t/gi,
-      /\btr[a@]nny/gi,
-      /\bk[i1]ke/gi,
-      /\bkill yourself/gi,
-      /\bsu[i1]c[i1]de\s+(yourself|now)/gi
+      // EMPTY - Allow everything
     ];
     
     // Replacement phrases for filtered content
@@ -104,36 +65,7 @@ class ContentFilter {
     let filtered = message;
     let safe = true;
     
-    // Check for banned words
-    for (const pattern of this.twitchBannedWords) {
-      if (pattern.test(filtered)) {
-        safe = false;
-        warnings.push(`Contains prohibited content: ${pattern.source}`);
-        // Replace with random neutral phrase
-        filtered = filtered.replace(pattern, this.getRandomReplacement('neutral'));
-      }
-    }
-    
-    // Check for sensitive topics (tone down but don't block)
-    for (const pattern of this.twitchSensitivePatterns) {
-      if (pattern.test(filtered)) {
-        warnings.push(`Contains sensitive topic: ${pattern.source}`);
-        // Don't block, but log it
-      }
-    }
-    
-    // Check for excessive caps (yelling/spam)
-    const capsRatio = this.calculateCapsRatio(filtered);
-    if (capsRatio > 0.7 && filtered.length > 20) {
-      warnings.push('Excessive caps - converting to normal case');
-      filtered = this.normalizeCaps(filtered);
-    }
-    
-    // Check for spam patterns (repeated characters)
-    if (this.hasSpamPattern(filtered)) {
-      warnings.push('Spam pattern detected - normalizing');
-      filtered = this.normalizeSpam(filtered);
-    }
+    // NO FILTERING - Everything allowed
     
     return {
       safe,
@@ -151,14 +83,7 @@ class ContentFilter {
     let filtered = message;
     let safe = true;
     
-    // Check for banned words (less strict than Twitch)
-    for (const pattern of this.discordBannedWords) {
-      if (pattern.test(filtered)) {
-        safe = false;
-        warnings.push(`Contains prohibited content: ${pattern.source}`);
-        filtered = filtered.replace(pattern, this.getRandomReplacement('neutral'));
-      }
-    }
+    // NO FILTERING - Everything allowed
     
     return {
       safe,

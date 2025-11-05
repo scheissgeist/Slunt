@@ -771,8 +771,8 @@ class StreamingConsciousness {
   constructor(chatBot) {
     this.bot = chatBot;
     
-    this.streamChance = 0.12; // 12% chance to stream
-    this.correctionChance = 0.25; // 25% chance to correct mid-message
+    this.streamChance = 0.01; // REDUCED: 1% chance (was 12% - way too high)
+    this.correctionChance = 0.08; // REDUCED: 8% chance (was 25% - too frequent)
     
     console.log('💭 [Stream] Streaming consciousness initialized');
   }
@@ -860,14 +860,14 @@ class StreamingConsciousness {
     } else if (effect < 0.7) {
       // Add incomplete thoughts
       result = this.addIncompleteThought(message);
-    } else {
-      // Add trailing thought
+    } else if (effect < 0.85) { // Much less frequent
+      // Add trailing thought - but not "forgot" phrases
       const trailing = [
-        '... wait what was i saying',
-        '... lost my train of thought',
         '... anyway',
         '... you know what i mean',
         '... nvm'
+        // REMOVED: '... wait what was i saying', '... lost my train of thought'
+        // People don't announce they forgot mid-sentence
       ];
       result += trailing[Math.floor(Math.random() * trailing.length)];
     }

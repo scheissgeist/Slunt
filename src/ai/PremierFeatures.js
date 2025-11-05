@@ -19,11 +19,11 @@ const path = require('path');
 class InterruptDistraction {
   constructor(chatBot) {
     this.bot = chatBot;
-    this.distractionChance = 0.08; // 8% chance per message
-    this.partialMessageChance = 0.03; // 3% chance of cutting off mid-thought
-    this.topicJumpChance = 0.05; // 5% chance of sudden topic change
-    
-    console.log('⚡ [Interrupt] Interrupt & distraction system initialized');
+    this.distractionChance = 0.02; // REDUCED from 8% to 2% - way too annoying
+    this.partialMessageChance = 0.01; // REDUCED from 3% to 1% - cutting off is annoying
+    this.topicJumpChance = 0.02; // REDUCED from 5% to 2% - topic jumps are disruptive
+
+    console.log('⚡ [Interrupt] Interrupt & distraction system initialized (REDUCED frequencies)');
   }
 
   /**
@@ -66,21 +66,24 @@ class InterruptDistraction {
   }
 
   /**
-   * Generate distraction recovery message
+   * Generate distraction recovery message (REDUCED announcements)
+   * Most of the time, just move on without announcing
    */
   getRecoveryMessage() {
+    // 70% of the time, don't announce - just move on
+    if (Math.random() < 0.70) {
+      return ''; // No announcement
+    }
+
     const recoveries = [
-      'wait what was i saying',
-      'sorry got distracted',
-      'lost my train of thought',
-      'where was i going with that',
       'nvm',
       'wait what',
       'oh right',
-      'hang on',
-      'shit what was the question again'
+      'hang on'
+      // REMOVED: 'wait what was i saying', 'sorry got distracted', 'lost my train of thought'
+      // These are too meta and annoying
     ];
-    
+
     return recoveries[Math.floor(Math.random() * recoveries.length)];
   }
 
@@ -90,9 +93,7 @@ class InterruptDistraction {
   getTopicJump(currentMessage) {
     const jumps = [
       ' wait did you see that',
-      ' oh shit speaking of which',
       ' that reminds me',
-      ' completely different topic but',
       ' wait pause'
     ];
     

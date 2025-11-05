@@ -339,9 +339,10 @@ class NeedsSystem {
     // The AI already knows about needs from context and will naturally reflect them
 
     // === LOW VALIDATION: Add occasional self-doubt ===
-    if (modifiers.includes('fishing_for_compliments') && Math.random() < 0.3) {
-      // Very occasionally add a self-doubting question at the end
-      const seekingEndings = [' right?', ' yeah?', ' (i think?)'];
+    // REDUCED: 30% → 8% - less intrusive, more natural
+    if (modifiers.includes('fishing_for_compliments') && Math.random() < 0.08) {
+      // Very rarely add a self-doubting question at the end (no parentheses)
+      const seekingEndings = [' right?', ' yeah?'];
       modified = modified + seekingEndings[Math.floor(Math.random() * seekingEndings.length)];
     }
 

@@ -208,11 +208,12 @@ class ConnectionHealthMonitor extends EventEmitter {
       ? client.isConnected()
       : client.connected || false;
 
-    // Check if we've seen activity recently
-    const hasRecentActivity = timeSinceActivity < this.heartbeatTimeout;
+    // Check if we've seen activity recently (more lenient: 2 minutes)
+    const hasRecentActivity = timeSinceActivity < (this.heartbeatTimeout * 2);
 
-    // Determine if platform is healthy
-    const isHealthy = isConnected && hasRecentActivity;
+    // Determine if platform is healthy - EITHER connected OR recently active
+    // This fixes false negatives where connection flag is wrong but messages are flowing
+    const isHealthy = isConnected || hasRecentActivity;
 
     if (!isHealthy && !state.reconnecting) {
       console.log(`💔 [HealthMonitor] ${name} appears unhealthy:`);

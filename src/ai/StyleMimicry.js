@@ -37,8 +37,9 @@ class StyleMimicry {
    * Learn from a message
    */
   learnFromMessage(text, username) {
-    // Skip bot's own messages
-    if (username === 'Slunt') return;
+    // Skip bot's own messages (Slunt on Coolhole/Discord, sluntbot on Twitch)
+    const myUsernames = ['Slunt', 'sluntbot'];
+    if (myUsernames.some(name => username.toLowerCase() === name.toLowerCase())) return;
 
     // Analyze punctuation
     if (text.includes('!!!') || text.match(/!{2,}/)) {
@@ -82,15 +83,20 @@ class StyleMimicry {
       }
     }
 
-    // Learn slang and casual phrases
+    // BANNED ZOOMER SLANG - Slunt should NEVER use these
+    const bannedZoomerSlang = [
+      'fr', 'lowkey', 'highkey', 'deadass', 'bet', 'cap', 'no cap', 'finna',
+      'vibe', 'vibes', 'mood', 'oof', 'yeet', 'lit', 'fire', 'based', 'mid',
+      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 'ngl',
+      'bruh', 'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
+    ];
+
+    // Learn slang and casual phrases (excluding banned zoomer slang)
     const slangPatterns = [
-      'lmao', 'lol', 'bruh', 'fr', 'nah', 'yea', 'yeah', 'ngl', 'tbh', 'imo', 'imho',
+      'lmao', 'lol', 'nah', 'yea', 'yeah', 'tbh', 'imo', 'imho',
       'rn', 'tho', 'af', 'asf', 'smh', 'fml', 'wtf', 'omg', 'nvm', 'idk', 'ik',
-      'prolly', 'gonna', 'wanna', 'gotta', 'dunno', 'kinda', 'sorta', 'lowkey',
-      'highkey', 'deadass', 'bet', 'cap', 'no cap', 'finna', 'hella', 'mad',
-      'salty', 'sus', 'vibe', 'vibes', 'mood', 'same', 'oof', 'yeet', 'lit',
-      'fire', 'goat', 'king', 'queen', 'based', 'cringe', 'mid', 'ratio',
-      'cope', 'seethe', 'mald', 'touch grass', 'go outside'
+      'prolly', 'gonna', 'wanna', 'gotta', 'dunno', 'kinda', 'sorta',
+      'hella', 'mad', 'salty', 'sus', 'same', 'goat', 'cringe'
     ];
 
     const lowerText = text.toLowerCase();
@@ -209,17 +215,34 @@ class StyleMimicry {
       }
     }
 
-    // Add slang/reactions sometimes (REDUCED frequency & add variety check)
+    // BANNED ZOOMER SLANG - never use these in responses
+    const bannedWords = [
+      'fr', 'lowkey', 'highkey', 'deadass', 'bet', 'cap', 'no cap', 'finna',
+      'vibe', 'vibes', 'mood', 'oof', 'yeet', 'lit', 'fire', 'based', 'mid',
+      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 'ngl',
+      'bruh', 'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
+    ];
+
+    // Filter banned slang from top slang and strip zoomer words from message
     const topSlang = Array.from(this.stylePatterns.slang.entries())
+      .filter(([word]) => !bannedWords.includes(word.toLowerCase()))
       .sort((a, b) => b[1] - a[1])
       .slice(0, 10)
       .map(s => s[0]);
 
-    if (topSlang.length > 0 && Math.random() > 0.85) { // Reduced from 0.7 to 0.85 (15% -> 15% but with checks below)
-      // Don't add slang if message already has common filler words
-      const lowerMsg = message.toLowerCase();
-      const hasFillerWords = ['lit', 'ik', 'fr', 'ngl', 'tbh', 'tho', 'lmao', 'lol'].some(word => lowerMsg.includes(word));
-      
+    // Remove any banned slang that might be in the message
+    const lowerMsg = message.toLowerCase();
+    for (const banned of bannedWords) {
+      const regex = new RegExp(`\\b${banned}\\b`, 'gi');
+      message = message.replace(regex, '');
+    }
+    // Clean up extra spaces
+    message = message.replace(/\s+/g, ' ').trim();
+
+    if (topSlang.length > 0 && Math.random() > 0.90) { // VERY reduced frequency
+      // Don't add slang if message already has filler words
+      const hasFillerWords = ['ik', 'tbh', 'tho', 'lmao', 'lol'].some(word => lowerMsg.includes(word));
+
       if (!hasFillerWords) {
         const slang = topSlang[Math.floor(Math.random() * topSlang.length)];
         // Add at the end sometimes

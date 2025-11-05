@@ -251,12 +251,10 @@ class DreamHallucinationSystem {
         }
         // Moderate
         else if (this.hallucinationIntensity > 50) {
-            // Coherence degradation
-            if (Math.random() > 0.6) {
-                modified += ' ...wait what was i saying';
-            }
+            // Coherence degradation - don't announce it, just be slightly off
+            // REMOVED: "wait what was i saying" - people don't actually say this
             
-            // Random confusion
+            // Random confusion - just make it lowercase
             if (Math.random() > 0.7) {
                 modified = modified.toLowerCase();
             }

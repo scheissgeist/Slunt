@@ -22,8 +22,11 @@ class CoolholeClient extends EventEmitter {
     // Coolhole.org specific settings
     this.channel = process.env.CYTUBE_CHANNEL || 'coolhole';
     this.baseUrl = 'https://coolhole.org'; // Coolhole uses root domain, not /r/channel path
-    this.username = process.env.BOT_USERNAME || 'Slunt';
-    this.password = process.env.BOT_PASSWORD;
+  // Control login behavior - DISABLED by default (guest mode)
+  // Set COOLHOLE_LOGIN_ENABLED=true in .env to enable authenticated login
+  this.loginEnabled = process.env.COOLHOLE_LOGIN_ENABLED === 'true';
+  this.username = process.env.BOT_USERNAME || 'Slunt'; // Use BOT_USERNAME for both guest and auth modes
+  this.password = process.env.BOT_PASSWORD;
     this.storagePath = path.resolve(process.cwd(), 'data', 'auth-storage.json');
 
     // Chat state
@@ -43,31 +46,61 @@ class CoolholeClient extends EventEmitter {
    */
   async connect() {
     try {
-      console.log('🔌 Launching browser...');
-      this.browser = await chromium.launch({
-        headless: true, // Hidden browser
-        args: [
-          '--start-maximized',
-          '--window-size=1920,1080', // Force large window size
-          '--disable-gpu',
-          '--disable-webgl',
-          '--use-angle=swiftshader',
-          '--no-sandbox',
-          '--disable-dev-shm-usage'
-        ],
-        slowMo: 20 // MINIMAL slowdown - operations only
-      });
+      console.log('🔌 Launching browser with persistent profile...');
       
-      // Always start with a fresh browser context, never use saved storage
-      this.context = await this.browser.newContext({
+      // Use persistent context to save permissions and cookies
+      const path = require('path');
+      const userDataDir = path.join(__dirname, '../../.browser-profile');
+      
+      this.context = await chromium.launchPersistentContext(userDataDir, {
+        headless: (process.env.COOLHOLE_HEADLESS || '').toLowerCase() !== 'false', // default headless; set COOLHOLE_HEADLESS=false to debug
         viewport: { width: 1920, height: 1080 },
         userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        args: [
+          '--start-maximized',
+          '--window-size=1920,1080',
+          // REMOVED: --disable-gpu, --disable-webgl, --use-angle=swiftshader
+          // These were causing video player crashes
+          '--disable-webgpu',
+          '--ignore-gpu-blocklist',
+          '--no-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-features=IsolateOrigins,site-per-process', // Allow scripts from any origin
+          '--disable-site-isolation-trials' // Bypass script isolation restrictions
+        ],
         extraHTTPHeaders: {
           'Accept-Language': 'en-US,en;q=0.9',
           'Accept-Encoding': 'gzip, deflate, br',
           'Connection': 'keep-alive'
-        }
+        },
+        slowMo: 20
       });
+      
+      // Listen for page crashes
+      this.context.on('page', async page => {
+        page.on('crash', () => console.error('💥 [PAGE CRASH] Page crashed unexpectedly!'));
+      });
+      
+      // Get reference to browser from context
+      this.browser = this.context.browser();
+
+      // DO NOT CLEAR COOKIES/STORAGE: Preserve in-page permission choice ("Allow")
+      // If you need a fresh start, set env COOLHOLE_FORCE_FRESH=true
+      if (process.env.COOLHOLE_FORCE_FRESH === 'true') {
+        console.log('🧹 Forcing fresh session: clearing cookies and storage...');
+        const pages = this.context.pages();
+        if (pages.length > 0) {
+          const page = pages[0];
+          await page.context().clearCookies();
+          await page.evaluate(() => {
+            localStorage.clear();
+            sessionStorage.clear();
+          }).catch(() => console.log('⚠️ Could not clear storage (no page loaded yet)'));
+        }
+        console.log('✅ Old session data cleared - will login fresh as:', this.username);
+      } else {
+        console.log('🧹 Skipping cookie/storage clearing to preserve permission choice and session');
+      }
 
       // Hide automation indicators - ENHANCED STEALTH
       await this.context.addInitScript(() => {
@@ -129,15 +162,6 @@ class CoolholeClient extends EventEmitter {
       // Create a new page
       this.page = await this.context.newPage();
 
-      // Force clear all cookies, localStorage, and sessionStorage before login
-      await this.context.clearCookies();
-      await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
-      await this.page.evaluate(() => {
-        localStorage.clear();
-        sessionStorage.clear();
-      });
-      console.log('🧹 Forced clear of cookies, localStorage, and sessionStorage before login');
-
       // Set up global dialog handler to catch duplicate session warnings early
       this.page.on('dialog', async dialog => {
         const message = dialog.message();
@@ -155,6 +179,14 @@ class CoolholeClient extends EventEmitter {
       // Enable browser console logging to debug message detection
       this.page.on('console', msg => console.log('🌐 Browser:', msg.text()));
       this.page.on('pageerror', err => console.error('Browser error:', err.message));
+      this.page.on('close', async () => {
+        console.warn('⚠️ [PAGE CLOSED EVENT] Page was closed unexpectedly');
+        try {
+          await this.onPageClosed('initial-connect');
+        } catch (e) {
+          console.warn('⚠️ Page close recovery failed:', e.message);
+        }
+      });
       
       // Navigate to Coolhole.org (just root URL, not /r/channel)
       const channelUrl = this.baseUrl;
@@ -204,17 +236,82 @@ class CoolholeClient extends EventEmitter {
         }, { passive: false, capture: true });
       });
 
-      // HANDLE POPUPS FIRST before attempting login
-      console.log('🚫 Clearing any popups that might block login...');
+  // HANDLE ONLY THE ALLOW BUTTON - don't click other close buttons
+      console.log('� Checking for permission dialog...');
+      let pageReloaded = false;
       try {
-        await this.handlePopups();
-        console.log('✅ Popups cleared');
+        await this.handleAllowButton();
+        console.log('✅ Permission dialog handled');
       } catch (e) {
-        console.log('⚠️ Popup handling issue:', e.message);
+        if (e.message === 'Allow button clicked - page reloading' || 
+            e.message.includes('Page closed after popup click')) {
+          console.log('🔄 Allow button triggered reload/navigation...');
+          pageReloaded = true;
+          
+          // Wait a bit for the old page to close
+          console.log('⏳ Waiting 2 seconds for page to fully close...');
+          await new Promise(resolve => setTimeout(resolve, 2000));
+          
+          // Check if page is still valid or if we need to create a new one
+          console.log('🔍 Checking page state...');
+          if (this.page.isClosed()) {
+            console.log('🔄 Creating new page after navigation...');
+            
+            // Check if context is also closed
+            try {
+              this.page = await this.context.newPage();
+              console.log('✅ New page created');
+            } catch (contextError) {
+              if (contextError.message.includes('closed')) {
+                console.log('⚠️ Context was also closed, need full reconnection');
+                throw new Error('Browser context closed - full reconnection needed');
+              }
+              throw contextError;
+            }
+            
+            // Re-setup event listeners for new page
+            this.page.on('dialog', async dialog => {
+              const message = dialog.message();
+              console.log(`🔔 Dialog: "${message}"`);
+              if (message.toLowerCase().includes('already') || 
+                  message.toLowerCase().includes('duplicate') ||
+                  message.toLowerCase().includes('another') ||
+                  message.toLowerCase().includes('session')) {
+                console.warn(`⚠️ DUPLICATE SESSION WARNING: "${message}"`);
+                console.warn(`⚠️ Another session may be using username: ${this.username}`);
+              }
+              await dialog.dismiss().catch(() => {});
+            });
+            this.page.on('console', msg => console.log('🌐 Browser:', msg.text()));
+            this.page.on('pageerror', err => console.error('Browser error:', err.message));
+            console.log('✅ Event listeners attached');
+            
+            console.log('🌐 Navigating to:', this.baseUrl);
+            await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+            console.log('✅ New page loaded successfully');
+          } else {
+            // Wait for navigation to complete
+            console.log('⏳ Page still open, waiting for navigation...');
+            try {
+              await this.page.waitForLoadState('domcontentloaded', { timeout: 15000 });
+              console.log('✅ Page reload complete');
+            } catch (navError) {
+              console.log('⚠️ Navigation wait timeout');
+            }
+          }
+        } else {
+          console.log('⚠️ Popup handling issue:', e.message);
+        }
       }
       
+      // Don't try to handle popups again after reload - let the page stabilize
+      // The Allow button should have been clicked and permission remembered
+
       // Set up message handlers only if page is still valid
       try {
+        if (this.page.isClosed()) {
+          throw new Error('Page is closed, cannot set up handlers');
+        }
         await this.page.exposeFunction('handleChatMessage', (data) => {
           this.handleMessage(data);
         });
@@ -224,130 +321,83 @@ class CoolholeClient extends EventEmitter {
 
       // Expose health activity recording function so browser context can update health monitor
       try {
-        await this.page.exposeFunction('recordHealthActivity', () => {
-          if (this.healthMonitor) {
-            this.healthMonitor.recordActivity('coolhole');
-            console.log('[Socket.IO] ✅ Health activity recorded');
-          }
-        });
+        if (!this.page.isClosed()) {
+          await this.page.exposeFunction('recordHealthActivity', () => {
+            if (this.healthMonitor) {
+              this.healthMonitor.recordActivity('coolhole');
+              console.log('[Socket.IO] ✅ Health activity recorded');
+            }
+          });
+        }
       } catch (e) {
         console.log('⚠️ Could not expose recordHealthActivity:', e.message);
       }
 
+      // Reduce stabilization wait and add more logging, with lightweight self-healing
+      console.log('⏳ Waiting briefly for page to stabilize...');
+      for (let i = 0; i < 2; i++) {
+        if (this.page.isClosed()) {
+          console.log(`⚠️ Page closed during stabilization (check ${i+1}/2)`);
+          // Try to self-heal by creating a fresh page and navigating back
+          try {
+            this.page = await this.context.newPage();
+            await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+            await new Promise(resolve => setTimeout(resolve, 300));
+            console.log('🔁 Recovered page during stabilization');
+          } catch (recoverErr) {
+            console.log('💥 Recovery failed during stabilization:', recoverErr.message);
+            throw new Error('Page closed during stabilization - full reconnection needed');
+          }
+        } else {
+          console.log(`   Check ${i+1}/2: Page still open ✓`);
+          await new Promise(resolve => setTimeout(resolve, 300));
+        }
+      }
+  console.log('✅ Page stabilized without closing');
+
+  // Disable MOTD bounce (announcement bar) to prevent layout shift
+  await this.disableMOTDBounce().catch(e => console.log('⚠️ Could not disable MOTD bounce:', e.message));
+      
+      // Final Allow button check (optional) - can be skipped to avoid reload loop
+      if (process.env.COOLHOLE_SKIP_FINAL_ALLOW === 'false') {
+        console.log('🔍 Final Allow button check before Socket.IO setup...');
+        await this.handleAllowButton();
+      } else {
+        console.log('⏭️ Skipping final Allow button check (COOLHOLE_SKIP_FINAL_ALLOW != "false")');
+      }
+      
+      // Final page check
+      if (this.page.isClosed()) {
+        console.log('⚠️ Page closed before Socket.IO setup');
+        throw new Error('Page closed before Socket.IO setup - full reconnection needed');
+      }
+
       // Inject Socket.IO listener - CyTube uses Socket.IO for real-time chat
       console.log('🔌 Setting up Socket.IO message interception...');
-      await this.page.evaluate((username) => {
-        // Debug: Check what socket variables are available
-        console.log('[Socket.IO] Checking for socket variables...');
-        const possibleSockets = ['socket', 'io', 'cytubeSocket', 'clientSocket'];
-        for (const varName of possibleSockets) {
-          if (window[varName]) {
-            console.log(`[Socket.IO] Found ${varName}:`, typeof window[varName], window[varName]);
-          }
-        }
+      // DISABLED - Socket.IO interception triggers Coolhole's anti-bot detection
+      // await this.installSocketInterceptor(this.page, this.username);
+      console.log('⏭️ [Socket.IO] Interception DISABLED (triggers anti-bot) - using DOM polling only');
 
-        // Wait for CyTube's socket to be available - try multiple possible names
-        const checkSocket = setInterval(() => {
-          let foundSocket = null;
-          let socketName = null;
-
-          // Try different possible socket variable names
-          for (const varName of ['socket', 'io', 'cytubeSocket', 'clientSocket']) {
-            if (window[varName]) {
-              foundSocket = window[varName];
-              socketName = varName;
-              break;
-            }
-          }
-
-          if (foundSocket) {
-            console.log(`[Socket.IO] Found CyTube socket connection via ${socketName}!`, foundSocket);
-            clearInterval(checkSocket);
-
-            // Intercept the original event handling mechanism at a lower level
-            // Use the internal _callbacks or listeners if available
-            const originalOnevent = foundSocket.onevent;
-            if (originalOnevent) {
-              foundSocket.onevent = function(packet) {
-                const args = packet.data || [];
-                const event = args[0];
-                
-                console.log(`[Socket.IO] 🔔 EVENT RECEIVED: ${event}`, args.slice(1));
-                
-                // Record health activity for ANY event
-                if (window.recordHealthActivity) {
-                  window.recordHealthActivity();
-                }
-                
-                // Handle specific events we care about
-                if (event === 'chatMsg') {
-                  const data = args[1];
-                  console.log('[Socket.IO] ✉️ chatMsg:', JSON.stringify(data));
-                  
-                  if (data && data.username && data.msg) {
-                    console.log(`[Socket.IO] Processing message from ${data.username}: ${data.msg.substring(0, 50)}`);
-
-                    // Check if this is our own message
-                    const currentUsername = username || 'Slunt';
-                    const isOwn = data.username.toLowerCase() === currentUsername.toLowerCase() ||
-                                 data.username.toLowerCase() === 'slunt';
-
-                    console.log(`[Socket.IO] Username check: "${data.username}" vs "${currentUsername}" -> isOwn: ${isOwn}`);
-
-                    if (window.handleChatMessage) {
-                      window.handleChatMessage({
-                        type: isOwn ? 'self-reflection' : 'chat',
-                        username: data.username,
-                        text: data.msg,
-                        timestamp: Date.now()
-                      });
-                    }
-                  }
-                } else if (event === 'userJoin') {
-                  console.log('[Socket.IO] 👋 userJoin:', args[1]);
-                } else if (event === 'userLeave') {
-                  console.log('[Socket.IO] 🚪 userLeave:', args[1]);
-                }
-                
-                // Call the original handler
-                return originalOnevent.call(this, packet);
-              };
-              console.log('✅ Socket.IO onevent interceptor installed - monitoring all events');
-            } else {
-              console.error('❌ Could not find onevent method on socket - event monitoring may not work');
-            }
-          }
-        }, 500);
-
-        // Safety timeout
-        setTimeout(() => {
-          clearInterval(checkSocket);
-          console.error('CyTube socket not found after 30 seconds!');
-        }, 30000);
-      }, this.username)
-
-      // 🔄 FALLBACK: DOM polling for messages in case Socket.IO interceptor fails
+      // 🔄 PRIMARY METHOD: DOM polling for messages (Socket.IO interception disabled)
       console.log('🔄 Starting DOM polling fallback for message detection...');
       
-      // Start DOM polling
+      // Start DOM polling (REDUCED frequency to minimize spam)
       this.domPollingInterval = setInterval(async () => {
         try {
-          console.log('[DOM Polling] 🔍 Checking for new messages...');
+          // Only log if we find messages to reduce spam
           const messages = await this.page.evaluate(() => {
             const chatBuffer = document.querySelector('#messagebuffer');
             if (!chatBuffer) {
-              console.log('[DOM Debug] No #messagebuffer found');
+              // Don't spam logs when chat not found
               return [];
             }
             
             // Try multiple possible selectors
             let messageElements = chatBuffer.querySelectorAll('div.chat-msg-Slunt, div.chat-msg-OrbMeat, div[class*="chat-msg"]');
-            console.log(`[DOM Debug] Found ${messageElements.length} messages with chat-msg class`);
-            
-            // If that doesn't work, get ALL divs
+
+            // If that doesn't work, get ALL divs (silently)
             if (messageElements.length === 0) {
               messageElements = chatBuffer.querySelectorAll('div');
-              console.log(`[DOM Debug] Trying all divs: ${messageElements.length} found`);
             }
             
             const messages = [];
@@ -389,7 +439,11 @@ class CoolholeClient extends EventEmitter {
             return messages;
           });
           
-          console.log(`[DOM Polling] 📊 Found ${messages.length} recent messages`);
+          // Only log if we found NEW messages (reduces spam by 90%)
+          if (messages.length > 0 && messages.length !== this.lastMessageCount) {
+            console.log(`[DOM Polling] 📊 Found ${messages.length} new messages`);
+            this.lastMessageCount = messages.length;
+          }
           
           // Process messages in Node.js context
           for (const msg of messages) {
@@ -419,9 +473,12 @@ class CoolholeClient extends EventEmitter {
             }
           }
         } catch (e) {
-          console.error('[DOM Polling] ❌ Error:', e.message);
+          // Only log real errors, not "page closed" spam
+          if (!e.message.includes('Target closed') && !e.message.includes('Execution context')) {
+            console.error('[DOM Polling] ❌ Error:', e.message);
+          }
         }
-      }, 2000); // Check every 2 seconds
+      }, 5000); // Check every 5 seconds (reduced from 2s to minimize spam)
       
       console.log('✅ DOM polling interval started');
 
@@ -434,18 +491,19 @@ class CoolholeClient extends EventEmitter {
       // Verify we're on the CyTube channel page using visual confirmation
       await this.verifyPageLocation();
 
-      // ALWAYS attempt login first if credentials are available
-      // Don't check chat availability first - that skips login
-      if (this.password || process.env.BOT_PASSWORD) {
-        console.log('🔐 Credentials found, attempting login...');
+      // Only attempt login if explicitly enabled AND credentials are available
+      if (this.loginEnabled && (this.password || process.env.BOT_PASSWORD)) {
+        console.log('🔐 Credentials found, attempting login as', this.username);
         const loginSuccess = await this.login();
         if (loginSuccess) {
           console.log('✅ Logged in successfully as', this.username);
         } else {
           console.log('⚠️ Login failed, continuing as guest');
         }
+      } else if (!this.loginEnabled) {
+        console.log('ℹ️ Login explicitly disabled (COOLHOLE_LOGIN_ENABLED=false), continuing as guest');
       } else {
-        console.log('ℹ️ No credentials provided, continuing as guest');
+        console.log('⚠️ No credentials provided, continuing as guest');
       }
 
       // AFTER login attempt, check if chat is available
@@ -637,22 +695,31 @@ class CoolholeClient extends EventEmitter {
       // The login form will handle it if we're actually logged in
       console.log('ℹ️ Attempting login (will skip if already authenticated)...');
       
-      // FIRST: Try guest login with custom name (more reliable for bots)
-      console.log('🎭 Attempting guest login with custom name...');
-      try {
+      // SKIP GUEST LOGIN - force authenticated login only
+      console.log('⏭️ Skipping guest login - authenticated login required');
+      const skipGuest = true;
+      if (!skipGuest) try {
         const guestLogin = await this.page.evaluate((username) => {
           // Look for guest name input (CyTube often has this)
-          const guestInput = document.querySelector('input[placeholder*="guest" i], input[name="guestname"], #guestname');
-          const guestBtn = document.querySelector('button:has-text("Set Guest Name"), button:has-text("Continue as Guest"), input[value*="guest" i]');
-          
+          const guestInput = document.querySelector('input[name="guestname"], #guestname, input[placeholder*="name" i]:not([type="password"])');
+
           if (guestInput) {
             console.log('[Guest] Found guest name input');
             guestInput.value = username;
+
+            // Look for any button with "guest", "continue", or "set" in text
+            const buttons = Array.from(document.querySelectorAll('button, input[type="submit"]'));
+            const guestBtn = buttons.find(btn => {
+              const text = (btn.textContent || btn.value || '').toLowerCase();
+              return text.includes('guest') || text.includes('continue') || text.includes('set');
+            });
+
             if (guestBtn) {
-              console.log('[Guest] Clicking guest login button');
+              console.log('[Guest] Clicking guest button:', guestBtn.textContent || guestBtn.value);
               guestBtn.click();
               return true;
             }
+
             // Try pressing Enter if no button
             const event = new KeyboardEvent('keydown', { key: 'Enter', keyCode: 13 });
             guestInput.dispatchEvent(event);
@@ -690,6 +757,29 @@ class CoolholeClient extends EventEmitter {
       
       // FALLBACK: Try authenticated login
       console.log('🔍 Checking for authenticated login on current page...');
+      
+      // FIRST: Check if we're already logged in by looking for our username in the userlist
+      try {
+        const alreadyLoggedIn = await this.page.evaluate((username) => {
+          const userlistItems = document.querySelectorAll('.userlist_item, .user-entry, [class*="userlist"]');
+          for (const item of userlistItems) {
+            const text = (item.textContent || '').trim();
+            if (text.toLowerCase().includes(username.toLowerCase())) {
+              return true;
+            }
+          }
+          return false;
+        }, this.username);
+        
+        if (alreadyLoggedIn) {
+          console.log(`✅ Already logged in as "${this.username}" - skipping login process`);
+          this.loginAttempts = 0;
+          return true;
+        }
+      } catch (e) {
+        console.log('⚠️ Could not check login status:', e.message);
+      }
+      
       const currentUrl = this.page.url();
       
       let loginFieldsFound = false;
@@ -731,174 +821,210 @@ class CoolholeClient extends EventEmitter {
         }
       }
 
-      // Now actually search for the fields with all selectors
-      console.log('🔍 Searching for login input fields...');
+  // Now actually search for the fields with all selectors
+      // IMPORTANT: Look for VISIBLE, CONNECTED forms only (avoid duplicates)
+      console.log('🔍 Searching for VISIBLE login input fields...');
 
       let nameField = null; let pwField = null;
-      for (const sel of fieldSelectors) {
+      
+      // Find ALL matching fields and filter to visible ones
+      let allNameFields = await this.page.$$('input[name="name"], input[placeholder*="name" i]');
+      let allPwFields = await this.page.$$('input[type="password"]');
+      
+      console.log(`🔍 Found ${allNameFields.length} username fields and ${allPwFields.length} password fields`);
+
+      // If there are multiple username fields (common on channel page), switch to dedicated /login page
+      if (allNameFields.length > 1 || allPwFields.length !== 1) {
         try {
-          nameField = await this.page.$(sel);
-          if (nameField) { console.log(`✅ Username field: ${sel}`); break; }
-        } catch (e) { /* continue */ }
+          console.log('🌐 Multiple/ambiguous fields detected. Navigating to dedicated /login page...');
+          // Check if page is still alive before navigating
+          if (this.page.isClosed()) {
+            throw new Error('Page closed before /login navigation');
+          }
+          await this.page.goto(`${this.baseUrl}/login`, { timeout: 10000, waitUntil: 'domcontentloaded' }); // Changed from networkidle
+          await this.page.waitForTimeout(1000);
+          // Check if page survived navigation
+          if (this.page.isClosed()) {
+            throw new Error('Page closed during /login navigation');
+          }
+          // Re-query fields on the login page
+          allNameFields = await this.page.$$('input[name="name"], input[placeholder*="name" i]');
+          allPwFields = await this.page.$$('input[type="password"]');
+          console.log(`🔍 [/login] Found ${allNameFields.length} username fields and ${allPwFields.length} password fields`);
+        } catch (e) {
+          console.log('⚠️ Failed to navigate to /login:', e.message);
+          // Page might have closed - check if we're already logged in anyway
+          if (this.page && !this.page.isClosed()) {
+            // Try to continue with whatever fields we have
+            console.log('ℹ️  Continuing without /login page');
+          }
+        }
       }
-      for (const sel of pwSelectors) {
-        try {
-          pwField = await this.page.$(sel);
-          if (pwField) { console.log(`✅ Password field: ${sel}`); break; }
-        } catch (e) { /* continue */ }
+      
+      // Pick the FIRST VISIBLE field for each
+      for (const field of allNameFields) {
+        const isVisible = await field.isVisible().catch(() => false);
+        const isConnected = await field.evaluate(el => el.isConnected).catch(() => false);
+        if (isVisible && isConnected) {
+          nameField = field;
+          const name = await field.evaluate(el => el.name || el.id || el.placeholder).catch(() => 'unknown');
+          console.log(`✅ Using VISIBLE username field: ${name}`);
+          break;
+        }
+      }
+      
+      for (const field of allPwFields) {
+        const isVisible = await field.isVisible().catch(() => false);
+        const isConnected = await field.evaluate(el => el.isConnected).catch(() => false);
+        if (isVisible && isConnected) {
+          pwField = field;
+          const name = await field.evaluate(el => el.name || el.id || el.placeholder).catch(() => 'unknown');
+          console.log(`✅ Using VISIBLE password field: ${name}`);
+          break;
+        }
       }
 
       if (!nameField || !pwField) {
         console.log('⚠️ Login fields not found, checking if already logged in...');
       } else {
-        // Clear and type with human-like delays
+        // Fill the VISIBLE fields we found
         try {
-          // FORCE DISABLE AUTOFILL on the username field
-          console.log('🚫 Disabling autofill on login fields...');
-          await this.page.evaluate(() => {
-            const nameInput = document.querySelector('#name, input[name="name"], input[placeholder*="name" i]');
-            const pwInput = document.querySelector('#password, input[type="password"]');
-            if (nameInput) {
-              nameInput.setAttribute('autocomplete', 'off');
-              nameInput.setAttribute('autocorrect', 'off');
-              nameInput.setAttribute('autocapitalize', 'off');
-              nameInput.setAttribute('spellcheck', 'false');
-            }
-            if (pwInput) {
-              pwInput.setAttribute('autocomplete', 'off');
-            }
-          });
-          
-          // AGGRESSIVELY clear username field (select all and delete)
-          console.log('👤 Clearing and filling username field...');
-          await nameField.click({ clickCount: 3 }); // Triple click to select all
-          await this.page.keyboard.press('Backspace'); // Delete selected text
-          await nameField.fill(''); // Extra clear
-          
-          // Type username character by character FAST
-          console.log(`📝 Typing username: ${this.username}`);
-          for (const char of this.username) {
-            await nameField.type(char, { delay: 10 + Math.random() * 20 }); // FAST: 10-30ms
-          }
-          
-          // AGGRESSIVELY clear password field
-          console.log('🔑 Clearing and filling password field...');
-          await pwField.click({ clickCount: 3 }); // Triple click to select all
-          await this.page.keyboard.press('Backspace'); // Delete selected text
-          await pwField.fill(''); // Extra clear
-          
-          // Type password character by character with faster delays
-          const password = this.password || process.env.BOT_PASSWORD || 'piss';
-          console.log('📝 Typing password...');
-          for (const char of password) {
-            await pwField.type(char, { delay: 10 + Math.random() * 20 }); // FAST: 10-30ms
-          }
-          
-          console.log('✅ Filled credentials with autofill disabled');
-          await this.page.waitForTimeout(250); // Wait for form to be fully ready
+          // Clear and type credentials
+          console.log('👤 Filling username field...');
+          await nameField.click();
+          await nameField.fill(''); // Clear first
+          await nameField.type(this.username, { delay: 50 }); // Type with delay
 
-          // Try submission methods ONE AT A TIME - stop after first success!
+          console.log('🔑 Filling password field...');
+          const password = this.password || process.env.BOT_PASSWORD || 'piss';
+          await pwField.click();
+          await pwField.fill(''); // Clear first
+          await pwField.type(password, { delay: 50 }); // Type with delay
+
+          console.log('✅ Filled credentials');
+          await this.page.waitForTimeout(250); // Small settle
+
+          // Try submission methods
           let loginSubmitted = false;
           
-          // Method 1: Click submit button with force option
-          if (!loginSubmitted) {
-            console.log('🖱️ Method 1: Attempting button click...');
-            const submitSelectors = ['#login', 'button:has-text("Login")', 'input[type="submit"]', 'button[type="submit"]'];
-            for (const sel of submitSelectors) {
-              try {
-                const btn = await this.page.$(sel);
-                if (btn) { 
-                  console.log(`  └─ Found button: ${sel}, clicking...`);
-                  await btn.click({ force: true, timeout: 5000 });
-                  console.log(`  └─ ✅ Click succeeded! Waiting for login to process...`);
-                  loginSubmitted = true;
-                  break;
-                }
-              } catch (e) { 
-                console.log(`  └─ ❌ Click failed: ${e.message}`);
+          // Method 1: Click submit button
+          console.log('🖱️ Attempting to click login button...');
+          const submitSelectors = ['button:has-text("Login")', 'input[type="submit"]', 'button[type="submit"]', '#login'];
+          for (const sel of submitSelectors) {
+            try {
+              const btn = await this.page.$(sel);
+              if (btn && await btn.isVisible()) {
+                console.log(`  └─ Found visible button: ${sel}`);
+                await btn.click({ timeout: 3000 });
+                console.log('  └─ ✅ Clicked!');
+                loginSubmitted = true;
+                break;
               }
+            } catch (e) {
+              console.log(`  └─ ❌ Failed: ${e.message}`);
             }
           }
-          
-          // Method 2: Submit the form directly via JavaScript (only if button click failed)
+
+          // Method 2: JS submit if needed
           if (!loginSubmitted) {
             console.log('⌨️ Method 2: JavaScript form.submit()...');
             try {
               const formSubmitted = await this.page.evaluate(() => {
                 const form = document.querySelector('form');
-                if (form && form.isConnected) {  // Check if form is connected to DOM
-                  form.submit();
-                  return true;
-                }
+                if (form && form.isConnected) { form.submit(); return true; }
                 return false;
               });
               console.log(`  └─ ${formSubmitted ? '✅' : '❌'} Form ${formSubmitted ? 'submitted' : 'not found/connected'}`);
               if (formSubmitted) loginSubmitted = true;
-            } catch (e) {
-              console.log(`  └─ ❌ Error: ${e.message}`);
-            }
+            } catch (e) { console.log(`  └─ ❌ Error: ${e.message}`); }
           }
-          
-          // Method 3: Press Enter key (only if previous methods failed)
+
+          // Method 3: Press Enter key
           if (!loginSubmitted) {
             console.log('⏎ Method 3: Pressing Enter key...');
-            try {
-              await this.page.keyboard.press('Enter');
-              console.log('  └─ ✅ Enter key pressed');
-              loginSubmitted = true;
-            } catch (e) {
-              console.log(`  └─ ❌ Error: ${e.message}`);
-            }
+            try { await this.page.keyboard.press('Enter'); console.log('  └─ ✅ Enter key pressed'); loginSubmitted = true; } catch (e) { console.log(`  └─ ❌ Error: ${e.message}`); }
           }
-          
-          console.log('⏳ Waiting for login to process...');
-          await this.page.waitForTimeout(1500); // Fast login processing
-          // Check current URL
-          const currentUrl = this.page.url();
-          console.log(`📍 Current URL: ${currentUrl}`);
-          
-          // Check for error messages on the page
+
+          // After submission, wait for one of: URL change away from /login, chat available, or page close (reload)
+          console.log('⏳ Waiting for login result (url/chat/close)...');
+          let closedDuringSubmit = false;
           try {
-            const errorMsg = await this.page.evaluate(() => {
-              const errorEl = document.querySelector('.alert, .error, .warning, #errorbox, .message');
-              return errorEl ? errorEl.textContent.trim() : null;
-            });
-            if (errorMsg) {
-              console.log(`⚠️ Error message on page: ${errorMsg}`);
+            await Promise.race([
+              this.page.waitForURL(u => !u.includes('/login'), { timeout: 6000 }),
+              this.page.waitForSelector('#messagebuffer', { timeout: 6000 }),
+              this.page.waitForEvent('close', { timeout: 6000 }).then(() => { closedDuringSubmit = true; })
+            ]);
+          } catch (e) {
+            // Timeout is okay; we'll verify state next
+          }
+
+          if (closedDuringSubmit || this.page.isClosed()) {
+            console.log('📄 Page closed during/after submit (likely reload). Recovering...');
+            try {
+              this.page = await this.context.newPage();
+              await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 15000 });
+              await this.page.waitForTimeout(800);
+            } catch (e) {
+              console.log('⚠️ Recovery navigation failed:', e.message);
+              return false;
             }
-          } catch (e) {}
-          
-          // If we're at /logout, it means login failed
-          if (currentUrl.includes('/logout')) {
-            console.log('❌ LOGIN REJECTED - redirected to /logout');
-            console.log('   Possible reasons:');
-            console.log('   1. Wrong username or password');
-            console.log('   2. Account does not exist');
-            console.log('   3. Coolhole detected automation/bot');
-            // Take screenshot
-            try {
-              const screenshotPath = `screenshot_logout_${Date.now()}.png`;
-              await this.page.screenshot({ path: screenshotPath });
-              console.log(`📸 Saved screenshot: ${screenshotPath}`);
-            } catch (e) {}
-            return false;
           }
-          
-          // If still on login page, something went wrong
-          if (currentUrl.includes('/login')) {
-            console.log('⚠️ Still on login page after submission!');
-            // Take screenshot for debugging
+
+          // Verify authentication state on current page
+          let authStatus = { loggedIn: false, foundUsers: [] };
+          try {
+            authStatus = await this.page.evaluate((expectedUsername) => {
+              const result = { loggedIn: false, foundUsers: [] };
+              try {
+                // Look for logout link/button
+                const nodes = Array.from(document.querySelectorAll('a, button'));
+                const hasLogout = nodes.some(n => (n.textContent || '').toLowerCase().includes('logout'));
+                // Check userlist for username
+                const userlistItems = document.querySelectorAll('.userlist_item, .user-entry, [class*="userlist"]');
+                for (const item of userlistItems) {
+                  const text = (item.textContent || item.innerText || '').trim();
+                  if (text) result.foundUsers.push(text);
+                  if (text.toLowerCase().includes(expectedUsername.toLowerCase())) {
+                    result.loggedIn = true;
+                  }
+                }
+                // If logout present and username not found yet, still consider logged in
+                if (hasLogout) result.loggedIn = result.loggedIn || true;
+              } catch {}
+              return result;
+            }, this.username);
+          } catch (e) {
+            console.log('⚠️ Auth verification error:', e.message);
+          }
+
+          console.log(`🔐 Auth check: loggedIn=${authStatus.loggedIn} users=${authStatus.foundUsers.slice(0,3).join(' | ')}`);
+
+          if (!authStatus.loggedIn) {
+            // Try once to go to /login and detect explicit error
             try {
-              const screenshotPath = `screenshot_login_fail_${Date.now()}.png`;
-              await this.page.screenshot({ path: screenshotPath });
-              console.log(`📸 Saved screenshot: ${screenshotPath}`);
-            } catch (e) {}
-            return false;
+              await this.page.goto(`${this.baseUrl}/login`, { waitUntil: 'domcontentloaded', timeout: 10000 });
+              await this.page.waitForTimeout(600);
+              const errorMsg = await this.page.evaluate(() => {
+                const el = document.querySelector('.alert, .error, .warning, #errorbox, .message');
+                return el ? (el.textContent || '').trim() : null;
+              });
+              if (errorMsg) console.log(`⚠️ Login error banner: ${errorMsg}`);
+              if (errorMsg && /invalid|wrong|failed/i.test(errorMsg)) {
+                console.log('❌ Explicit login failure detected.');
+                return false;
+              }
+            } catch {}
+          }
+
+          // If we got here and either auth looks good or no explicit failure, proceed
+          if (!authStatus.loggedIn) {
+            console.log('⚠️ Authentication not confirmed; proceeding but will verify via userlist later.');
           } else {
-            console.log('✅ URL changed, login might have worked');
+            console.log('✅ Authentication likely successful.');
+            this.loginAttempts = 0;
           }
           
-          console.log('⏳ Waiting for login to process...');
+          console.log('⏳ Finalizing login...');
         } catch (e) {
           console.error('Error filling login form:', e.message);
           return false;
@@ -909,12 +1035,18 @@ class CoolholeClient extends EventEmitter {
       const channelUrl = this.baseUrl;
       console.log(`🔄 Navigating back to Coolhole after login: ${channelUrl}`);
       try {
-        await this.page.goto(channelUrl, { 
-          waitUntil: 'domcontentloaded',
-          timeout: 15000 
-        });
-        await this.page.waitForTimeout(800); // Fast channel load
-        console.log('✅ Back in channel');
+        // Check if page is still alive
+        if (this.page && !this.page.isClosed()) {
+          await this.page.goto(channelUrl, { 
+            waitUntil: 'domcontentloaded',
+            timeout: 15000 
+          });
+          await this.page.waitForTimeout(800); // Fast channel load
+          console.log('✅ Back in channel');
+        } else {
+          console.log('⚠️ Page closed before navigating back to channel');
+          // Don't throw - let it fail gracefully and trigger reconnect
+        }
       } catch (e) {
         console.log('⚠️ Could not navigate back to channel:', e.message);
       }
@@ -926,7 +1058,7 @@ class CoolholeClient extends EventEmitter {
         console.log('Popup handling skipped:', e.message);
       }
 
-      // NOW verify chat presence (buffer + input) with flexible selectors
+  // NOW verify chat presence (buffer + input) with flexible selectors
       try {
         const chatPresent = await this.page.$('#messagebuffer');
         const chatline = await this.page.$('#chatline, .chat-input, textarea');
@@ -1026,20 +1158,7 @@ class CoolholeClient extends EventEmitter {
             console.error('❌ Lost login status - might have been kicked by duplicate session');
           } else {
             console.log(`✅ Still logged in as: ${stillLoggedIn}`);
-            
-            // AUTO-SEND A TEST MESSAGE after successful login
-            try {
-              console.log('💬 Sending automatic greeting message...');
-              await this.page.waitForTimeout(300); // Minimal pause before first message
-              const testSent = await this.sendChat('yo whats up coolhole');
-              if (testSent) {
-                console.log('✅ Automatic greeting sent successfully!');
-              } else {
-                console.warn('⚠️ Automatic greeting failed to send');
-              }
-            } catch (greetErr) {
-              console.error('❌ Error sending automatic greeting:', greetErr.message);
-            }
+            // Greeting will be handled by server on 'connected' event
           }
 
           console.log(`✅ Login verified - connected as: ${stillLoggedIn}`);
@@ -1254,14 +1373,14 @@ class CoolholeClient extends EventEmitter {
           break;
         }
 
-        // Focus chat box
-        await chatInput.focus();
-
-        // Clear existing text
-        await chatInput.evaluate(el => el.value = '');
-
-        // Use fill() instead of type() - faster and handles emojis better
-        await chatInput.fill(message);
+        // MINIMAL INTERACTION - Skip focus() to avoid anti-bot detection
+        // Just set value and press Enter directly
+        
+        // Clear existing text and type message
+        await chatInput.evaluate((el, msg) => {
+          el.value = '';
+          el.value = msg;
+        }, message);
 
         // Try to send message, catch click/press timeouts
         try {
@@ -1306,6 +1425,14 @@ class CoolholeClient extends EventEmitter {
     // If we reach here, all attempts failed
     console.error(`[CoolholeClient] All sendChat attempts failed: ${lastError}`);
     return false;
+  }
+
+  /**
+   * PlatformManager-compatible sendMessage wrapper
+   * Routes to sendChat for actual message sending
+   */
+  async sendMessage(_channel, content, _options = {}) {
+    return this.sendChat(content);
   }
 
   /**
@@ -1481,6 +1608,9 @@ class CoolholeClient extends EventEmitter {
 
     // Emit error event for health monitor
     this.emit('error', new Error(`Connection lost: ${reason}`));
+
+    // Proactively schedule reconnection attempt
+    this.scheduleReconnect();
   }
 
   /**
@@ -1522,20 +1652,300 @@ class CoolholeClient extends EventEmitter {
       } catch (e) {}
       this.page = null;
     }
+    // For persistent context, closing context also closes browser
     if (this.context) {
       try {
         await this.context.close();
       } catch (e) {}
       this.context = null;
-    }
-    if (this.browser) {
-      try {
-        await this.browser.close();
-      } catch (e) {}
-      this.browser = null;
+      this.browser = null; // Browser is managed by context
     }
 
     console.log('✅ [Coolhole] Disconnected');
+  }
+
+  /**
+   * Disable/contain the Message Of The Day (MOTD)/announcement collapse bounce
+   * on CyTube-based UIs to prevent screen shifting.
+   */
+  async disableMOTDBounce() {
+    if (!this.page || this.page.isClosed()) return;
+    await this.page.addStyleTag({ content: `
+      /* Prevent layout shift from MOTD/announcement areas */
+      #motd, #motdwrap, #motdrow, .motd, #announcements, .announcement { display: none !important; height: 0 !important; overflow: hidden !important; }
+      .collapse, .collapsing { height: auto !important; overflow: visible !important; transition: none !important; }
+      body { scroll-behavior: auto !important; }
+    `}).catch(() => {});
+    await this.page.evaluate(() => {
+      try {
+        const hideEl = (el) => { if (!el) return; el.style.display = 'none'; el.style.height = '0px'; el.style.overflow = 'hidden'; };
+        const sels = ['#motd', '#motdwrap', '#motdrow', '.motd', '#announcements', '.announcement'];
+        for (const s of sels) document.querySelectorAll(s).forEach(hideEl);
+        // Also neutralize any toggle buttons that reference MOTD
+        document.querySelectorAll('a,button').forEach(btn => {
+          const t = (btn.textContent || '').toLowerCase();
+          if (t.includes('motd') || t.includes('message of the day') || t.includes('announcement')) {
+            btn.addEventListener('click', (e) => { e.stopImmediatePropagation(); e.preventDefault(); return false; }, { capture: true });
+          }
+        });
+        // MutationObserver to re-hide if site re-injects elements
+        const obs = new MutationObserver(() => {
+          for (const s of sels) document.querySelectorAll(s).forEach(hideEl);
+        });
+        obs.observe(document.body, { childList: true, subtree: true });
+        console.log('[MOTD] Bounce disabled');
+      } catch (e) {
+        console.warn('[MOTD] Disable error:', e.message);
+      }
+    });
+  }
+
+  /**
+   * Install Socket.IO interception into the given page
+   */
+  async installSocketInterceptor(page, username) {
+    try {
+      await page.evaluate((username) => {
+        // Debug: Check what socket variables are available
+        console.log('[Socket.IO] Checking for socket variables...');
+        const possibleSockets = ['socket', 'io', 'cytubeSocket', 'clientSocket'];
+        for (const varName of possibleSockets) {
+          if (window[varName]) {
+            console.log(`[Socket.IO] Found ${varName}:`, typeof window[varName], window[varName]);
+          }
+        }
+
+        // Wait for CyTube's socket to be available - try multiple possible names
+        const checkSocket = setInterval(() => {
+          let foundSocket = null;
+          let socketName = null;
+
+          // Try different possible socket variable names
+          for (const varName of ['socket', 'io', 'cytubeSocket', 'clientSocket']) {
+            if (window[varName]) {
+              foundSocket = window[varName];
+              socketName = varName;
+              break;
+            }
+          }
+
+          if (foundSocket) {
+            console.log(`[Socket.IO] Found CyTube socket connection via ${socketName}!`, foundSocket);
+            clearInterval(checkSocket);
+
+            // Intercept the original event handling mechanism at a lower level
+            const originalOnevent = foundSocket.onevent;
+            if (originalOnevent) {
+              foundSocket.onevent = function(packet) {
+                const args = packet.data || [];
+                const event = args[0];
+                
+                // IGNORE CoolPoints events - they trigger anti-bot detection
+                if (event && typeof event === 'string' && 
+                    (event.toLowerCase().includes('coolpoint') || 
+                     event.toLowerCase().includes('cp'))) {
+                  console.log(`[Socket.IO] ⏭️ IGNORING CoolPoints event: ${event} (anti-bot prevention)`);
+                  // Don't call original handler for CoolPoints events
+                  return;
+                }
+                
+                console.log(`[Socket.IO] 🔔 EVENT RECEIVED: ${event}`, args.slice(1));
+                
+                // Record health activity for ANY event
+                if (window.recordHealthActivity) {
+                  window.recordHealthActivity();
+                }
+                
+                // Handle specific events we care about
+                if (event === 'chatMsg') {
+                  const data = args[1];
+                  console.log('[Socket.IO] ✉️ chatMsg:', JSON.stringify(data));
+                  
+                  if (data && data.username && data.msg) {
+                    console.log(`[Socket.IO] Processing message from ${data.username}: ${data.msg.substring(0, 50)}`);
+
+                    // Check if this is our own message
+                    const currentUsername = username || 'Slunt';
+                    const isOwn = data.username.toLowerCase() === currentUsername.toLowerCase() ||
+                                 data.username.toLowerCase() === 'slunt';
+
+                    console.log(`[Socket.IO] Username check: "${data.username}" vs "${currentUsername}" -> isOwn: ${isOwn}`);
+
+                    if (window.handleChatMessage) {
+                      window.handleChatMessage({
+                        type: isOwn ? 'self-reflection' : 'chat',
+                        username: data.username,
+                        text: data.msg,
+                        timestamp: Date.now()
+                      });
+                    }
+                  }
+                } else if (event === 'userJoin') {
+                  console.log('[Socket.IO] 👋 userJoin:', args[1]);
+                } else if (event === 'userLeave') {
+                  console.log('[Socket.IO] 🚪 userLeave:', args[1]);
+                }
+                
+                // Call the original handler
+                return originalOnevent.call(this, packet);
+              };
+              console.log('✅ Socket.IO onevent interceptor installed - monitoring all events');
+            } else {
+              console.error('❌ Could not find onevent method on socket - event monitoring may not work');
+            }
+          }
+        }, 500);
+
+        // Safety timeout
+        setTimeout(() => {
+          clearInterval(checkSocket);
+          console.error('CyTube socket not found after 30 seconds!');
+        }, 30000);
+      }, username);
+    } catch (e) {
+      console.warn('⚠️ Could not install Socket.IO interceptor:', e.message);
+    }
+  }
+
+  /**
+   * Centralized handler for unexpected page closes. Attempts to recreate the page,
+   * navigate back, re-expose bridges, and reinstall interceptors; then resumes login if enabled.
+   */
+  async onPageClosed(origin = 'unknown') {
+    if (this._recoveringPage) {
+      return; // Avoid concurrent recoveries
+    }
+    this._recoveringPage = true;
+    try {
+      if (!this.context) {
+        throw new Error('Browser context is closed');
+      }
+
+      console.log(`🔁 [Recovery] Recreating page after close (origin: ${origin})...`);
+      this.page = await this.context.newPage();
+
+      // Reattach listeners on the new page
+      this.page.on('console', msg => console.log('🌐 Browser:', msg.text()));
+      this.page.on('pageerror', err => console.error('Browser error:', err.message));
+      this.page.on('dialog', async dialog => {
+        const message = dialog.message();
+        console.log(`🔔 Dialog: "${message}"`);
+        if (message.toLowerCase().includes('already') ||
+            message.toLowerCase().includes('duplicate') ||
+            message.toLowerCase().includes('another') ||
+            message.toLowerCase().includes('session')) {
+          console.warn(`⚠️ DUPLICATE SESSION WARNING: "${message}"`);
+        }
+        await dialog.dismiss().catch(() => {});
+      });
+      this.page.on('close', async () => {
+        console.warn('⚠️ [PAGE CLOSED EVENT] (recovered page) Page was closed');
+        try { await this.onPageClosed('recovered-page'); } catch {}
+      });
+
+      // Navigate back to base URL
+      await this.page.goto(this.baseUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await this.page.waitForTimeout(500);
+
+  // Ensure MOTD bounce is disabled on recovered page
+  await this.disableMOTDBounce().catch(() => {});
+
+      // Re-expose Node bridges
+      try {
+        await this.page.exposeFunction('handleChatMessage', (data) => this.handleMessage(data));
+      } catch (e) { console.log('⚠️ Could not expose handleChatMessage:', e.message); }
+      try {
+        await this.page.exposeFunction('recordHealthActivity', () => {
+          if (this.healthMonitor) this.healthMonitor.recordActivity('coolhole');
+        });
+      } catch (e) { console.log('⚠️ Could not expose recordHealthActivity:', e.message); }
+
+      // Reinstall Socket.IO interceptor
+      await this.installSocketInterceptor(this.page, this.username);
+
+      // Ensure chat is ready
+      await this.ensureChatReady();
+
+      // Attempt login again if enabled
+      if (this.loginEnabled && (this.password || process.env.BOT_PASSWORD)) {
+        console.log('🔐 [Recovery] Attempting login after page recovery...');
+        await this.login();
+      }
+    } catch (e) {
+      console.warn('⚠️ [Recovery] Page recovery unsuccessful:', e.message);
+      // If we cannot recover, mark connection lost so scheduler will reconnect
+      this.handleConnectionLoss('Page close recovery failed');
+    } finally {
+      this._recoveringPage = false;
+    }
+  }
+
+  /**
+   * Handle ONLY the Allow button for script permissions
+   * This button causes page reload, so we throw an error to signal this
+   */
+  async handleAllowButton() {
+    try {
+      // Check if page still exists
+      if (!this.page || this.page.isClosed()) {
+        console.log('⚠️ Page closed, skipping Allow button check');
+        return;
+      }
+      
+      // Look for Allow button with a short timeout
+      const allowButton = await this.page.$('button:has-text("Allow")');
+      if (!allowButton) {
+        console.log('✅ No Allow button found - permission already granted');
+        return;
+      }
+      
+      const isVisible = await allowButton.isVisible();
+      if (!isVisible) {
+        console.log('✅ Allow button not visible - permission already granted');
+        return;
+      }
+      
+      console.log('🔓 Found script permission dialog - preparing to click Allow');
+
+      // Try to pre-check any "Remember my choice" checkbox quickly via JS (no waits)
+      try {
+        await this.page.evaluate(() => {
+          const boxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+          const remember = boxes.find(cb => /remember|choice|always/i.test(cb.parentElement?.textContent || '')) || boxes[0];
+          if (remember && !remember.checked) {
+            remember.checked = true;
+            remember.dispatchEvent(new Event('change', { bubbles: true }));
+            console.log('[Allow] Pre-checked remember checkbox');
+          }
+        }).catch(() => {});
+      } catch {}
+
+      // IMPORTANT: Clicking Allow will close/reload the page. Do it and signal caller to reconnect.
+      try {
+        await allowButton.click({ timeout: 1000 });
+        // Give the browser a tiny moment to process the click
+        await this.page.waitForTimeout(200).catch(() => {});
+      } catch (clickErr) {
+        // If the page/context closed during the click, that's expected
+        if (String(clickErr.message || '').toLowerCase().includes('closed') ||
+            String(clickErr.message || '').toLowerCase().includes('target page')) {
+          console.log('📄 Page closed during Allow click (expected)');
+        } else {
+          console.log('⚠️ Allow click error:', clickErr.message);
+        }
+      }
+
+      // Whether or not we observed the close, instruct caller to restart flow
+      throw new Error('Allow button clicked - page reloading');
+
+    } catch (e) {
+      // If we intentionally signaled a reload, propagate to caller
+      if (e.message === 'Allow button clicked - page reloading') {
+        throw e;
+      }
+      // Otherwise just log and continue
+      console.log('⚠️ Allow button handling completed with:', e.message);
+    }
   }
 
   /**
@@ -1556,31 +1966,47 @@ class CoolholeClient extends EventEmitter {
         let found = false;
         
         // FIRST: Handle CyTube script permission dialog (most important!)
+        // NOTE: Clicking "Allow" causes immediate page reload/navigation
+        // so we CANNOT do any more operations after clicking it
         try {
           const allowButton = await this.page.$('button:has-text("Allow")');
           if (allowButton && await allowButton.isVisible()) {
             console.log('🔓 Found script permission dialog - clicking Allow');
             
-            // Check "Remember my choice" checkbox first
+            // Try to check "Remember my choice" but don't fail if page closes
             try {
-              const rememberCheckbox = await this.page.$('input[type="checkbox"]');
+              const rememberCheckbox = await this.page.$('input[type="checkbox"]', { timeout: 500 });
               if (rememberCheckbox) {
-                await rememberCheckbox.check();
+                await Promise.race([
+                  rememberCheckbox.check({ timeout: 500 }),
+                  new Promise(resolve => setTimeout(resolve, 600))
+                ]);
                 console.log('✅ Checked "Remember my choice"');
               }
             } catch (e) {
-              console.log('⚠️ Could not check remember box:', e.message);
+              // Page might close, that's OK
             }
             
-            await allowButton.click({ timeout: 2000 });
-            await this.page.waitForTimeout(1000);
-            console.log('✅ Clicked Allow button');
-            found = true;
-            popupCount++;
-            continue; // Check for more popups
+            // Click Allow - this will likely cause page to reload/close
+            try {
+              await Promise.race([
+                allowButton.click({ timeout: 1000 }),
+                new Promise(resolve => setTimeout(resolve, 1100))
+              ]);
+            } catch (e) {
+              // Expected - page closes during click
+            }
+            
+            console.log('✅ Clicked Allow button - page will reload');
+            // Don't continue checking for more popups - page is reloading
+            // Let the connection fail and reconnect will handle it
+            throw new Error('Allow button clicked - page reloading');
           }
         } catch (e) {
-          // Continue to other popup types
+          if (e.message === 'Allow button clicked - page reloading') {
+            throw e; // Propagate this specific error to exit handlePopups
+          }
+          // Other errors: Continue to other popup types
         }
         
         // Check for various other popup types
@@ -1606,20 +2032,32 @@ class CoolholeClient extends EventEmitter {
               console.log(`Found popup button: ${selector}`);
               try {
                 await button.click({ timeout: 1000 });
-                await this.page.waitForTimeout(500);
+                // Wait a bit and check if page is still alive
+                await new Promise(resolve => setTimeout(resolve, 300));
+                
+                // If page closed after this click, it might have triggered navigation
+                if (this.page.isClosed()) {
+                  console.log(`⚠️ Page closed after clicking ${selector} - might be navigation trigger`);
+                  throw new Error('Page closed after popup click - possible navigation');
+                }
+                
+                await this.page.waitForTimeout(200);
                 found = true;
                 popupCount++;
                 break;
               } catch (e) {
+                if (e.message.includes('Page closed after popup click')) {
+                  throw e; // Propagate page close error
+                }
                 console.log(`Failed to click ${selector}:`, e.message);
                 // Continue trying other selectors
               }
             }
           } catch (e) {
             // Selector not found or page closed, continue
-            if (e.message.includes('Target page') || e.message.includes('closed')) {
-              console.log('⚠️ Page closed while checking selector');
-              break;
+            if (e.message.includes('Target page') || e.message.includes('closed') || e.message.includes('Page closed after popup click')) {
+              console.log('⚠️ Page closed while handling popup');
+              throw e; // Propagate to outer handler
             }
           }
         }
@@ -1634,6 +2072,11 @@ class CoolholeClient extends EventEmitter {
       }
 
     } catch (error) {
+      // Check if this is one of our intentional errors that should propagate
+      if (error.message === 'Allow button clicked - page reloading' || 
+          error.message.includes('Page closed after popup click')) {
+        throw error; // Propagate to caller
+      }
       console.warn('Error handling popups:', error.message);
       // Continue even if there's an error - popups might not be present
     }

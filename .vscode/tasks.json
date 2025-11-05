@@ -42,6 +42,35 @@
 			"command": "npm test",
 			"group": "test",
 			"dependsOn": "Install Dependencies"
+		},
+		{
+			"label": "Run Tests (inline)",
+			"type": "shell",
+			"command": "npm test",
+			"group": "test"
+		},
+		{
+			"label": "Start Development Server",
+			"type": "shell",
+			"command": "npm run dev",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Start Coolhole Chatbot",
+			"type": "shell",
+			"command": "npm start",
+			"args": [],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "Start Coolhole Chatbot (Direct)",
+			"type": "shell",
+			"command": "npm install && npm start",
+			"group": "build"
 		}
 	]
 }

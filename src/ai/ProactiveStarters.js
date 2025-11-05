@@ -60,54 +60,13 @@ class ProactiveStarters {
   
   /**
    * Check if we should proactively start a conversation
+   * DISABLED: Let chat be dead when it's dead - don't force conversations
    */
   async considerStartingConversation() {
-    try {
-      // Don't start if recently started
-      const timeSinceLast = Date.now() - this.lastProactiveMessage;
-      if (timeSinceLast < this.config.minTimeBetweenStarts) {
-        return;
-      }
-      
-      // Check if chat is slow
-      const chatIsSlow = this.isChatSlow();
-      if (!chatIsSlow) {
-        return; // Only initiate when chat is slow
-      }
-      
-      // Calculate chance based on mood and boredom
-      let chance = this.config.baseChance;
-      
-      // Bored = more likely to start conversation
-      const boredom = this.chatBot.mentalState?.boredom || 0;
-      if (boredom > 70) {
-        chance += 0.15; // +15% when very bored
-      }
-      
-      // Excited/energetic = more likely to share
-      const mood = this.chatBot.moodTracker?.getMood();
-      if (mood === 'excited' || mood === 'energetic') {
-        chance += 0.10; // +10% when excited
-      }
-      
-      // Obsessed = more likely to talk about it
-      if (this.chatBot.obsessionSystem?.getCurrentObsession()) {
-        chance += 0.20; // +20% when obsessed
-      }
-      
-      // Depressed = less likely to initiate
-      const depression = this.chatBot.mentalState?.depression || 0;
-      if (depression > 60) {
-        chance -= 0.10; // -10% when depressed
-      }
-      
-      // Roll the dice
-      if (Math.random() < chance) {
-        await this.startConversation();
-      }
-    } catch (error) {
-      console.error('❌ [Proactive] Error considering conversation start:', error.message);
-    }
+    // DISABLED: Don't force conversations when chat is naturally dead
+    // Real people don't awkwardly try to start conversations in dead chat
+    // They just let it be quiet
+    return;
   }
   
   /**

@@ -29,6 +29,13 @@ ENABLE_VOICE=true
 VOICE_STT_PROVIDER=browser
 VOICE_TTS_PROVIDER=elevenlabs
 ELEVENLABS_API_KEY=your-api-key-here
+# Primary/backup ElevenLabs voices (examples)
+# Jamal (primary)
+ELEVENLABS_VOICE_ID=6OzrBCQf8cjERkYgzSg8
+# Jemima (backup)
+ELEVENLABS_BACKUP_VOICE_ID=DLsHlh26Ugcm6ELvS0qi
+# Keep voice replies fast and on-topic (recommended)
+VOICE_LITE=true
 ```
 
 ### 3. Start the Bot
@@ -114,6 +121,21 @@ Browse all voices: https://elevenlabs.io/voice-library
 - `shimmer` - Female, warm
 
 ## 🔧 Advanced Configuration
+
+### Voice-Fast / Lite Mode (Recommended)
+
+For snappier, on-topic voice replies, enable the lightweight generation path:
+
+```properties
+# .env
+VOICE_LITE=true   # default is true; set to false to use full brain context for voice
+```
+
+Lite mode:
+- Uses minimal recent chat context
+- Forces 1–2 short sentences, strictly on-topic
+- Skips heavy systems to reduce latency
+- Falls back to full pipeline automatically on errors
 
 ### Voice Speed & Pitch
 

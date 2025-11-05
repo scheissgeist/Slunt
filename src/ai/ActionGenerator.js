@@ -65,8 +65,12 @@ class ActionGenerator {
   
   /**
    * Decide if we should add an action to this response
+   * DISABLED - Slunt doesn't do Reddit asterisk roleplay actions
    */
   shouldAddAction(messageLength, context = {}) {
+    // DISABLED: Asterisk actions are for redditors
+    return false;
+
     // Check cooldown
     const now = Date.now();
     if (now - this.lastActionTime < this.actionCooldown) {
@@ -125,7 +129,7 @@ class ActionGenerator {
       'neutral';
     
     // Get actions for this mood
-    const moodKey = mood.toLowerCase();
+    const moodKey = (typeof mood === 'string' ? mood : 'neutral').toLowerCase();
     let availableActions = this.moodActions[moodKey] || this.genericActions;
     
     // If mood not found, try to find similar moods

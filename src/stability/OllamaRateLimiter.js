@@ -12,7 +12,7 @@ const logger = require('../bot/logger');
 
 class OllamaRateLimiter {
   constructor() {
-    this.maxConcurrent = 10;
+    this.maxConcurrent = 3; // REDUCED from 10 to 3 - less CPU/memory usage
     this.timeout = 15000; // 15 seconds
     this.activeRequests = 0;
     this.queue = [];

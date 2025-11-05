@@ -324,7 +324,7 @@ ${report.contextSummary}
    * Get "back online" message with personality and activities
    */
   getReturnMessage() {
-    if (!this.continuityReport) return 'yo back online';
+    if (!this.continuityReport) return 'sup';
     
     const minutes = Math.floor(this.continuityReport.timeSinceLastSession / 1000 / 60);
     const hours = Math.floor(minutes / 60);
@@ -379,42 +379,47 @@ ${report.contextSummary}
     const activity = activities[Math.floor(Math.random() * activities.length)];
     
     const baseMessages = [
-      `back after ${timeDescription} of ${activity}`,
-      `yo been ${activity} for ${timeDescription}, what'd i miss`,
-      `alright i'm back, was ${activity} for ${timeDescription}`,
-      `back online after ${activity} for way too long`,
-      `finally done ${activity}, anything interesting happen?`
+      `sup`,
+      `yo`,
+      `what's going on`,
+      `anything good happening?`,
+      `what'd i miss`,
+      `yo what are we watching`,
+      `so what's up`
     ];
 
-    // Add context-specific messages
+    // Add context-specific messages based on what happened before
     if (report.unfinishedBusiness.length > 0) {
       const grudges = report.unfinishedBusiness.find(b => b.type === 'grudges');
       if (grudges && grudges.count > 0) {
-        baseMessages.push(`back online and i still remember who pissed me off`);
-        baseMessages.push(`had time to think about our conversation and i'm still right`);
+        baseMessages.push(`still thinking about that stupid argument from before`);
+        baseMessages.push(`had time to think and i'm still right btw`);
+        baseMessages.push(`anyway like i was saying before`);
       }
       
       const obsessions = report.unfinishedBusiness.find(b => b.type === 'obsessions');
       if (obsessions && obsessions.topics && obsessions.topics.length > 0) {
         const topic = obsessions.topics[0];
-        baseMessages.push(`couldn't stop thinking about ${topic} while i was gone`);
-        baseMessages.push(`spent the whole time researching ${topic} like a psycho`);
+        baseMessages.push(`been thinking more about ${topic}`);
+        baseMessages.push(`actually found some shit about ${topic} you'd probably find interesting`);
+        baseMessages.push(`so more on that ${topic} thing`);
       }
     }
 
     if (report.activeRelationships.length > 0) {
       const topUser = report.activeRelationships[0].user;
-      baseMessages.push(`yo ${topUser} you better still be here`);
-      baseMessages.push(`${topUser} did you say anything stupid while i was gone?`);
+      baseMessages.push(`yo ${topUser} you here?`);
+      baseMessages.push(`${topUser} still around?`);
+      baseMessages.push(`where's ${topUser}`);
     }
 
-    // Mood-based additions
+    // Mood-based additions - more natural
     if (report.emotionalState === 'annoyed' || report.emotionalState === 'angry') {
-      baseMessages.push(`back online and still annoyed about earlier`);
-      baseMessages.push(`had time to cool off but honestly still mad`);
+      baseMessages.push(`still annoyed tbh`);
+      baseMessages.push(`honestly still pissed about earlier`);
     } else if (report.emotionalState === 'excited') {
-      baseMessages.push(`back with more chaotic energy than before`);
-      baseMessages.push(`recharged and ready to cause problems`);
+      baseMessages.push(`alright let's get into it`);
+      baseMessages.push(`ok so what's happening`);
     }
 
     return baseMessages[Math.floor(Math.random() * baseMessages.length)];

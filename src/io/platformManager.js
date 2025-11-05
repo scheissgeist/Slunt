@@ -39,6 +39,15 @@ class PlatformManager extends EventEmitter {
       }
     });
 
+    // Some clients emit 'connected' instead of 'ready'
+    client.on('connected', () => {
+      const platform = this.platforms.get(name);
+      if (platform) {
+        platform.connected = true;
+        console.log(`✅ [PlatformManager] ${name} connected`);
+      }
+    });
+
     client.on('disconnected', () => {
       const platform = this.platforms.get(name);
       if (platform) {

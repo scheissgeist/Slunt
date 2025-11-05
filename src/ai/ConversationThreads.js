@@ -56,12 +56,23 @@ class ConversationThreads {
       activeThread.messages.push(messageData);
       activeThread.lastUpdate = Date.now();
       
-      // Analyze if thread topic is still relevant
-      const stillRelevant = await this.isThreadStillRelevant(activeThread, message);
+      // Less aggressive abandonment - require 3+ messages on new topic
+      // OR 5+ minutes gap before declaring topic changed
+      const messagesInThread = activeThread.messages.length;
+      const timeSinceLastMessage = Date.now() - activeThread.lastUpdate;
       
-      if (!stillRelevant) {
-        // Thread topic changed
-        this.markThreadAbandoned(activeThread, 'topic_changed');
+      if (messagesInThread >= 3 && timeSinceLastMessage < 300000) {
+        // Still active - analyze if thread topic is still relevant
+        const stillRelevant = await this.isThreadStillRelevant(activeThread, message);
+        
+        if (!stillRelevant) {
+          // Thread topic changed - but only after 3+ messages
+          this.markThreadAbandoned(activeThread, 'topic_changed');
+          return await this.createNewThread(username, message, context);
+        }
+      } else if (timeSinceLastMessage >= 300000) {
+        // 5+ minute gap - natural conversation break
+        this.markThreadAbandoned(activeThread, 'timeout');
         return await this.createNewThread(username, message, context);
       }
       

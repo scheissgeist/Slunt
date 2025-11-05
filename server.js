@@ -1,23 +1,76 @@
-const express = require('express');
+﻿const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const net = require('net');
 const cors = require('cors');
+const fs = require('fs');
 const helmet = require('helmet');
 const path = require('path');
 const { execSync } = require('child_process');
+const VoiceGreetings = require('./src/voice/VoiceGreetings');
 require('dotenv').config();
 
-// Kill any orphaned node processes on startup
+// ============ SMART PORT DETECTION ============
+// Auto-detects available port to avoid conflicts between multiple instances
+async function findAvailablePort(preferredPort) {
+  return new Promise((resolve) => {
+    const server = net.createServer();
+    server.listen(preferredPort, () => {
+      const { port } = server.address();
+      server.close(() => {
+        console.log(`✅ [Port] ${port} is available`);
+        resolve(port);
+      });
+    });
+    server.on('error', () => {
+      console.log(`⚠️  [Port] ${preferredPort} is in use, trying ${preferredPort + 1}...`);
+      resolve(findAvailablePort(preferredPort + 1));
+    });
+  });
+}
+
+// Determine preferred port: env variable, or auto-select 3000/3001
+const PREFERRED_PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
+let PORT = PREFERRED_PORT; // Will be updated by findAvailablePort in startup
+
+// ============ CRITICAL: CATCH ALL ERRORS TO PREVENT CRASHES ============
+process.on('uncaughtException', (error) => {
+  console.error('💥💥💥 UNCAUGHT EXCEPTION:', error);
+  console.error('Stack:', error.stack);
+  // Don't exit - log it and continue
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('💥💥💥 UNHANDLED REJECTION at:', promise);
+  console.error('Reason:', reason);
+  // Don't exit - log it and continue
+});
+
+process.on('SIGTERM', () => {
+  console.log('⚠️  SIGTERM received - graceful shutdown');
+});
+
+process.on('SIGINT', () => {
+  console.log('⚠️  SIGINT received - graceful shutdown');
+});
+// ========================================================================
+
+// Kill any orphaned node processes on startup (DISABLED by default to avoid killing npm/VS Code processes)
 try {
-  console.log('🧹 [Cleanup] Checking for orphaned processes...');
-  const currentPid = process.pid;
-  
-  // Kill other node processes (except this one)
-  try {
-    execSync(`Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne ${currentPid} } | Stop-Process -Force`, { shell: 'powershell.exe' });
-    console.log('✅ [Cleanup] Killed orphaned node processes');
-  } catch (e) {
-    // No orphaned processes found, that's fine
+  const cleanupEnabled = (process.env.CLEANUP_ORPHANS || '').toLowerCase() === 'true';
+  if (cleanupEnabled) {
+    console.log('🧹 [Cleanup] Checking for orphaned processes...');
+    const currentPid = process.pid;
+
+    // Kill other node processes (except this one)
+    try {
+      execSync(`Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.Id -ne ${currentPid} } | Stop-Process -Force`, { shell: 'powershell.exe' });
+      console.log('✅ [Cleanup] Killed orphaned node processes');
+    } catch (e) {
+      // No orphaned processes found, that's fine
+    }
+  } else {
+    console.log('🧹 [Cleanup] Skipped orphaned-process kill (CLEANUP_ORPHANS not enabled)');
   }
 } catch (error) {
   console.log('⚠️ [Cleanup] Could not clean up processes:', error.message);
@@ -124,7 +177,21 @@ process.on('unhandledRejection', (reason, promise) => {
 
 const ChatBot = require('./src/bot/chatBot');
 logger.info('Slunt server starting...');
-const CoolholeClient = require('./src/coolhole/coolholeClient');
+
+// Use STEALTH browser by default (more stable than WebSocket for some networks)
+const useWebSocket = process.env.USE_WEBSOCKET === 'true';
+const CoolholeClient = useWebSocket
+  ? require('./src/coolhole/coolholeClientWebSocket')
+  : (process.env.USE_STEALTH === 'true' 
+      ? require('./src/coolhole/coolholeClientStealth')
+      : require('./src/coolhole/coolholeClient'));
+
+console.log('🔌 [Coolhole] Client mode:', useWebSocket ? 'WEBSOCKET (lightweight, no browser)' : 'BROWSER (Puppeteer - headless stealth)');
+
+if (!useWebSocket) {
+  console.log(`🔐 [Coolhole] Using ${process.env.USE_STEALTH === 'true' ? 'STEALTH' : 'STANDARD'} client`);
+}
+
 const VideoManager = require('./src/video/videoManager');
 const CoolholeExplorer = require('./src/coolhole/coolholeExplorer');
 const VisionAnalyzer = require('./src/vision/visionAnalyzer');
@@ -140,6 +207,15 @@ const StreamStatusMonitor = require('./src/services/StreamStatusMonitor');
 
 const app = express();
 const server = http.createServer(app);
+// Lightweight in-process metrics
+const metrics = { startTime: Date.now(), requests: 0, responses: 0, errors: 0 };
+app.use((req, res, next) => {
+  metrics.requests++;
+  res.on('finish', () => {
+    metrics.responses++;
+  });
+  next();
+});
 const io = socketIo(server, {
   cors: {
     origin: process.env.ALLOWED_ORIGINS?.split(',') || ["http://localhost:3000", "http://localhost:3001"],
@@ -163,6 +239,21 @@ app.use(express.static('public'));
 // Serve temporary audio files for voice playback
 app.use('/temp/audio', express.static(path.join(__dirname, 'temp/audio')));
 
+// Basic /metrics endpoint for ops
+app.get('/metrics', (req, res) => {
+  res.set('Content-Type', 'application/json');
+  res.send(
+    JSON.stringify({
+      uptimeSec: Math.round((Date.now() - metrics.startTime) / 1000),
+      requests: metrics.requests,
+      responses: metrics.responses,
+      errors: metrics.errors,
+      connectedClients,
+      timestamp: new Date().toISOString(),
+    })
+  );
+});
+
 // Serve live dashboard as default
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'live-dashboard.html'));
@@ -183,19 +274,408 @@ app.get('/sentiment', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'sentiment-dashboard.html'));
 });
 
+// Serve Voice Chat page
+app.get('/voice', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'voice-demo.html'));
+});
+
 // Initialize bot components
 const videoManager = new VideoManager();
 const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
 const chatBot = new ChatBot(coolholeClient, videoManager);
 const sluntManager = new SluntManager();
 
+// Initialize voice greeting system
+const voiceGreetings = new VoiceGreetings(chatBot);
+
+// Voice API for web demo
+const openaiTTS = require('./src/voice/openaiTTS');
+const elevenLabsTTS = require('./src/voice/elevenLabsTTS');
+const coquiTTS = require('./src/voice/coquiTTS');
+const resembleAI = require('./src/voice/resembleAI');
+
+// Voice memory management endpoint
+app.post('/api/voice/clear-memory', async (req, res) => {
+  try {
+    chatBot.voiceMemory = [];
+    chatBot.voiceFocusMode = false; // Exit focus mode when clearing
+    console.log('🧠 [Voice] Memory cleared - exiting focus mode, returning to normal activity');
+    res.json({ success: true, message: 'Voice memory cleared' });
+  } catch (error) {
+    console.error('❌ [Voice] Failed to clear memory:', error);
+    res.status(500).json({ error: 'Failed to clear memory' });
+  }
+});
+
+// Proactive voice conversation - Slunt can lead the conversation
+app.get('/api/voice/proactive', async (req, res) => {
+  try {
+    // Check if there's been silence (no voice activity recently)
+    const timeSinceLastVoice = Date.now() - (chatBot.lastVoiceActivity || 0);
+    const silenceThreshold = 9 * 1000; // 9 seconds of silence - HIGHLY RESPONSIVE
+    
+    // Only be proactive if in voice focus mode and there's been silence
+    if (!chatBot.voiceFocusMode || timeSinceLastVoice < silenceThreshold) {
+      return res.json({ proactive: false, reason: 'not_ready' });
+    }
+    
+    console.log(`🎤 [Voice] ${Math.round(timeSinceLastVoice / 1000)}s of silence - being proactive and pushy`);
+    
+    // Generate a contextual proactive conversation starter
+    // BETTER PROMPTS: More natural, varied, and context-aware
+    const proactivePrompts = [
+      // Pushy/Curious
+      "So what are you thinking about right now?",
+      "You got quiet. What's on your mind?",
+      "Still there? Say something.",
+      "What do you actually think about that?",
+      "Wait, explain that more. I don't get it.",
+      "You just gonna leave that hanging?",
+      "What else you wanna talk about?",
+      "That's it? Keep going.",
+      "Tell me more about that.",
+      "Why though? What's the reason?",
+      "You disagree with something I said?",
+      "What's your take on this?",
+      "Alright what's next?",
+      "You seem distracted. What's up?",
+      "C'mon, give me your opinion on something.",
+      
+      // More natural variations
+      "So anyway...",
+      "Wait, I had a thought about that.",
+      "Actually, what do you mean by that?",
+      "Hold on, that reminds me of something.",
+      "Quick question about what you said...",
+      "So you really think that?",
+      "That doesn't make sense to me.",
+      "I'm curious about something.",
+      "Let me ask you this...",
+      "What would you do in that situation?",
+      
+      // References to conversation
+      "Back to what you were saying...",
+      "Actually I wanted to ask about that.",
+      "So about that thing you mentioned...",
+      "I've been thinking about what you said.",
+      "That's interesting but...",
+      "Wait I don't agree with that.",
+      "You're not telling me something.",
+      "There's more to it though, right?"
+    ];
+    
+    // Use AI to generate a contextual, engaging proactive message
+    let proactiveMessage;
+    if (chatBot.voiceMemory && chatBot.voiceMemory.length > 0) {
+      const recentContext = chatBot.voiceMemory.slice(-5).map(m => `${m.role}: ${m.text}`).join('\n');
+      
+      // ENHANCED PROMPT: More specific about what makes a good proactive response
+      const contextPrompt = `Recent conversation:
+${recentContext}
+
+They've been quiet for ${Math.round(timeSinceLastVoice / 1000)} seconds.
+
+Break the silence by:
+- Asking a follow-up question about what they just said
+- Challenging or pushing back on their point
+- Referencing something they mentioned earlier
+- Sharing a quick thought or observation
+- Being curious and digging deeper
+
+Be pushy, curious, and keep the conversation moving. NO generic "what's up" stuff.
+
+Generate ONE engaging question or statement (10-25 words max):
+
+Slunt:`;
+      
+      proactiveMessage = await chatBot.aiEngine.generateOllamaResponse(
+        contextPrompt,
+        'System',
+        '',
+        80, // MORE tokens for engaging questions (was 50)
+        true // Voice mode
+      );
+    }
+    
+    // SMARTER FALLBACK: Pick contextually if AI fails
+    if (!proactiveMessage || proactiveMessage.trim().length < 5) {
+      // Try to pick a contextual prompt based on recent conversation
+      const recentText = chatBot.voiceMemory?.slice(-3).map(m => m.text).join(' ').toLowerCase() || '';
+      
+      // Context-aware selection
+      if (recentText.includes('?')) {
+        // They asked a question recently, follow up
+        const followUps = [
+          "Actually, what do you mean by that?",
+          "Wait, explain that more.",
+          "So you really think that?",
+          "Back to what you were saying...",
+          "Hold on, that reminds me of something."
+        ];
+        proactiveMessage = followUps[Math.floor(Math.random() * followUps.length)];
+      } else if (recentText.length > 50) {
+        // They were talking, push them to continue
+        const pushers = [
+          "That's it? Keep going.",
+          "Tell me more about that.",
+          "There's more to it though, right?",
+          "You're not telling me something.",
+          "What else about that?"
+        ];
+        proactiveMessage = pushers[Math.floor(Math.random() * pushers.length)];
+      } else {
+        // Generic but still better than "what's up"
+        proactiveMessage = proactivePrompts[Math.floor(Math.random() * proactivePrompts.length)];
+      }
+    }
+    
+    console.log(`🎤 [Voice] Proactive: "${proactiveMessage}"`);
+    
+    // Update last voice activity
+    chatBot.lastVoiceActivity = Date.now();
+    
+    // Add to voice memory
+    if (chatBot.voiceMemory) {
+      chatBot.voiceMemory.push({
+        speaker: 'Slunt',  // Changed from 'role' to 'speaker' to match context builder
+        text: proactiveMessage,
+        timestamp: Date.now()
+      });
+    }
+    
+    res.json({ 
+      proactive: true, 
+      text: proactiveMessage,
+      reason: 'silence_detected'
+    });
+  } catch (error) {
+    console.error('❌ [Voice] Proactive generation failed:', error);
+    res.status(500).json({ error: 'Failed to generate proactive message' });
+  }
+});
+
+app.post('/api/voice', async (req, res) => {
+  try {
+    const { text } = req.body;
+    if (!text) return res.status(400).json({ error: 'No text provided' });
+    
+    // 🚫 Filter out UI control phrases that shouldn't be treated as conversation
+    const controlPhrases = ['start listening', 'stop listening', 'clear memory', 'stop', 'start'];
+    const lowerText = text.toLowerCase().trim();
+    if (controlPhrases.includes(lowerText)) {
+      console.log(`🎤 [Voice] Ignoring control phrase: "${text}"`);
+      return res.json({ 
+        reply: "I'm listening. Go ahead.",
+        audioUrl: null,
+        ignored: true
+      });
+    }
+    
+    // ✅ STORE USER MESSAGE IN VOICE MEMORY
+    if (!chatBot.voiceMemory) {
+      chatBot.voiceMemory = [];
+    }
+    chatBot.voiceMemory.push({
+      speaker: 'You',  // Changed from 'role' to 'speaker' to match context builder
+      text: text,
+      timestamp: Date.now()
+    });
+    console.log(`🧠 [Voice] Stored user message: "${text}" (memory: ${chatBot.voiceMemory.length} msgs)`);
+    
+    // Unified message loop: send to Slunt
+    let reply = await chatBot.generateResponse({
+      platform: 'voice',
+      username: 'You',
+      text,
+      timestamp: Date.now(),
+      channel: 'voice',
+      voiceMode: true // Enable fast path for real-time voice
+    });
+    if (!reply || !String(reply).trim()) {
+      reply = "I'm here. What’s up?";
+    }
+    //  STORE SLUNT'S REPLY IN VOICE MEMORY
+    chatBot.voiceMemory.push({
+      speaker: 'Slunt',  // Changed from 'role' to 'speaker' to match context builder
+      text: reply,
+      timestamp: Date.now()
+    });
+    const replyPreview = reply.length > 50 ? reply.slice(0, 50) + '...' : reply;
+    console.log(`🧠 [Voice] Stored Slunt reply: "${replyPreview}" (memory: ${chatBot.voiceMemory.length} msgs)`);
+    
+    // Get TTS audio from selected provider (MP3)
+    try {
+      const provider = (process.env.VOICE_TTS_PROVIDER || 'elevenlabs').toLowerCase();
+      let audioBuffer;
+      let ttsMeta = { provider };
+      
+      if (provider === 'piper') {
+        // Piper TTS - Local, free, fast, high quality
+        try {
+          const { spawn } = require('child_process');
+          const piperExec = process.env.PIPER_EXECUTABLE || 'piper';
+          const piperModel = process.env.PIPER_MODEL || 'en_US-lessac-medium.onnx';
+          const piperSpeaker = process.env.PIPER_SPEAKER || '0';
+          
+          console.log(`🎙️ [Voice] Piper generating speech with model: ${piperModel}`);
+          
+          // Generate WAV file directly
+          const tempDir = path.join(__dirname, 'temp', 'audio');
+          if (!fs.existsSync(tempDir)) {
+            fs.mkdirSync(tempDir, { recursive: true });
+          }
+          
+          const wavFile = path.join(tempDir, `piper_${Date.now()}.wav`);
+          
+          await new Promise((resolve, reject) => {
+            const piper = spawn(piperExec, [
+              '--model', piperModel,
+              '--speaker', piperSpeaker,
+              '--output_file', wavFile
+            ]);
+            
+            piper.stderr.on('data', (data) => {
+              console.log(`[Piper] ${data.toString()}`);
+            });
+            
+            piper.on('close', (code) => {
+              if (code === 0 && fs.existsSync(wavFile)) {
+                resolve();
+              } else {
+                reject(new Error(`Piper failed with code ${code}`));
+              }
+            });
+            
+            piper.on('error', reject);
+            
+            // Send text to stdin
+            piper.stdin.write(reply || '');
+            piper.stdin.end();
+          });
+          
+          // Read the generated WAV file
+          audioBuffer = fs.readFileSync(wavFile);
+          ttsMeta.model = piperModel;
+          ttsMeta.speaker = piperSpeaker;
+          ttsMeta.format = 'wav';
+        } catch (piperErr) {
+          console.warn('⚠️  [Voice] Piper TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', piperErr.message);
+          audioBuffer = null;
+        }
+      } else if (provider === 'resemble') {
+        // Resemble AI - Cloud, voice cloning, 200 min/month free
+        try {
+          audioBuffer = await resembleAI(reply || '', {
+            voiceId: process.env.RESEMBLE_VOICE_ID
+          });
+          ttsMeta.voiceId = process.env.RESEMBLE_VOICE_ID;
+        } catch (resembleErr) {
+          console.warn('⚠️  [Voice] Resemble AI failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', resembleErr.message);
+          audioBuffer = null;
+        }
+      } else if (provider === 'coqui') {
+        // Coqui TTS - Local, free, high quality
+        try {
+          audioBuffer = await coquiTTS(reply || '', {
+            speaker: process.env.COQUI_SPEAKER,
+            language: process.env.COQUI_LANGUAGE,
+            model: process.env.COQUI_MODEL
+          });
+          ttsMeta.speaker = process.env.COQUI_SPEAKER || 'p267';
+          ttsMeta.model = process.env.COQUI_MODEL || 'tts_models/en/vctk/vits';
+        } catch (coquiErr) {
+          console.warn('⚠️  [Voice] Coqui TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Make sure Coqui server is running: tts-server --model_name tts_models/en/vctk/vits');
+          // Let browser handle TTS
+          audioBuffer = null;
+        }
+      } else if (provider === 'elevenlabs') {
+        const apiKeyPresent = !!process.env.ELEVENLABS_API_KEY;
+        if (!apiKeyPresent) {
+          console.warn('⚠️  [Voice] ELEVENLABS_API_KEY is missing; browser TTS will be used by the client');
+        }
+        // Force David unless explicitly overridden via env
+        const DAVID_ID = 'XusZimPAb50wPl00sLE6';
+        const primaryVoiceId = process.env.ELEVENLABS_VOICE_ID || DAVID_ID;
+        // Support both env names for backup voice id
+        const backupVoiceId = process.env.ELEVENLABS_BACKUP_VOICE_ID || process.env.ELEVENLABS_VOICE_ID_BACKUP;
+        let voiceUsed = primaryVoiceId || null;
+        let usedFallback = false;
+        try {
+          audioBuffer = await elevenLabsTTS(reply || '', {
+            voiceId: primaryVoiceId,
+            modelId: process.env.ELEVENLABS_MODEL
+          });
+          console.log(`🎤 [VoiceAPI] ElevenLabs TTS OK (voice=${primaryVoiceId}, model=${process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2'})`);
+        } catch (primaryErr) {
+          if (backupVoiceId) {
+            console.warn('⚠️  [Voice] Primary ElevenLabs voice failed, trying backup voice ID');
+            audioBuffer = await elevenLabsTTS(reply || '', {
+              voiceId: backupVoiceId,
+              modelId: process.env.ELEVENLABS_MODEL
+            });
+            voiceUsed = backupVoiceId;
+            usedFallback = true;
+            console.log(`🎤 [VoiceAPI] ElevenLabs TTS fallback used (voice=${backupVoiceId})`);
+          } else {
+            throw primaryErr;
+          }
+        }
+        ttsMeta.voiceId = voiceUsed;
+        ttsMeta.fallback = usedFallback;
+        ttsMeta.model = process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
+      } else if (provider === 'openai') {
+        // OpenAI TTS - Paid, high quality voices
+        try {
+          audioBuffer = await openaiTTS(reply || '', {
+            voice: process.env.VOICE_OPENAI_VOICE,
+            speed: process.env.VOICE_OPENAI_SPEED ? Number(process.env.VOICE_OPENAI_SPEED) : undefined
+          });
+          ttsMeta.voice = process.env.VOICE_OPENAI_VOICE || 'verse';
+        } catch (openaiErr) {
+          console.warn('⚠️  [Voice] OpenAI TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', openaiErr.message);
+          audioBuffer = null;
+        }
+      } else {
+        // Unknown provider - use browser TTS
+        console.warn(`⚠️  [Voice] Unknown TTS provider: ${provider}, falling back to browser TTS`);
+        audioBuffer = null;
+      }
+      // Ensure temp/audio directory exists
+      const tempDir = path.join(__dirname, 'temp', 'audio');
+      if (!fs.existsSync(tempDir)) {
+        fs.mkdirSync(tempDir, { recursive: true });
+      }
+      // Save audio to temp file for playback
+      const fileExt = ttsMeta.format === 'wav' ? 'wav' : 'mp3';
+      const audioRelPath = `temp/audio/voice_reply_${Date.now()}.${fileExt}`;
+      const audioFile = path.join(__dirname, audioRelPath);
+      fs.writeFileSync(audioFile, audioBuffer);
+      // Respond with reply text and audio URL (+meta)
+      res.json({ reply, audioUrl: `/${audioRelPath}`, tts: ttsMeta });
+    } catch (ttsErr) {
+      // Graceful fallback: return text without audio so client can use browser TTS
+      const ttsMsg = ttsErr?.code === 'NO_API_KEY' ? 'OPENAI_API_KEY is not configured' : (ttsErr.message || 'TTS failed');
+      console.warn('⚠️  [Voice] TTS unavailable:', ttsMsg);
+      res.json({ reply, audioUrl: null, ttsError: ttsMsg });
+    }
+  } catch (err) {
+    console.error('Voice API error:', err);
+    res.status(500).json({ error: 'Voice API error' });
+  }
+});
+
 // Initialize voice manager
 const voiceManager = new VoiceManager({
-  enabled: process.env.ENABLE_VOICE === 'true',
+  enabled: (process.env.ENABLE_VOICE || '').toLowerCase() !== 'false', // default ENABLED; set ENABLE_VOICE=false to disable
   sttProvider: process.env.VOICE_STT_PROVIDER || 'browser', // Use browser STT by default
   ttsProvider: process.env.VOICE_TTS_PROVIDER || 'elevenlabs',
   elevenLabsApiKey: process.env.ELEVENLABS_API_KEY,
-  elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_ID,
+  // Use David voice from .env (XusZimPAb50wPl00sLE6)
+  elevenLabsVoiceId: process.env.ELEVENLABS_VOICE_ID, // David voice from .env
   openaiApiKey: process.env.OPENAI_API_KEY
 });
 
@@ -1201,7 +1681,8 @@ io.on('connection', (socket) => {
     connected: coolholeClient.isConnected(),
     chatReady: coolholeClient.isChatReady(),
     stats: chatBot.getChatStatistics(),
-    personality: chatBot.getPersonalityState()
+    personality: chatBot.getPersonalityState(),
+    voiceMemory: chatBot.voiceMemory || []
   });
   
   // Send initial diary entries
@@ -1266,6 +1747,29 @@ io.on('connection', (socket) => {
   });
   
   // Voice chat endpoints
+  // Optional: receive raw audio from client for server-side STT
+  socket.on('voice:audio', async (arrayBuffer) => {
+    try {
+      const axios = require('axios');
+      const ELEVENLABS_API_KEY = process.env.ELEVENLABS_API_KEY || 'YOUR_ELEVENLABS_API_KEY';
+      const audioBuffer = Buffer.from(arrayBuffer);
+      const response = await axios.post(
+        'https://api.elevenlabs.io/v1/speech-to-text',
+        audioBuffer,
+        {
+          headers: {
+            'xi-api-key': ELEVENLABS_API_KEY,
+            'Content-Type': 'audio/webm',
+          },
+        }
+      );
+      const transcript = response.data.transcript || '[No transcript]';
+      socket.emit('voice:transcript', { text: transcript });
+    } catch (err) {
+      console.error('STT error:', err);
+      socket.emit('voice:transcript', { text: '[STT error]' });
+    }
+  });
   socket.on('voice:status', (callback) => {
     const status = {
       enabled: voiceManager ? voiceManager.config.enabled : false,
@@ -1287,11 +1791,12 @@ io.on('connection', (socket) => {
       
       // Process speech as a message from the user
       const voiceMessage = {
-        platform: 'voice',
-        username: 'You', // Or get from session
+        platform: 'voice-chat',
+        username: data.username || 'You',
         text: data.text,
         timestamp: Date.now(),
-        channel: 'voice'
+        channel: 'voice-chat',
+        isVoiceMessage: true
       };
       
       // Send to chatBot for processing
@@ -1303,9 +1808,33 @@ io.on('connection', (socket) => {
         // Generate speech audio
         const audioUrl = await voiceManager.speak(response);
         
+        if (audioUrl) {
+          console.log(`✅ [Voice] ElevenLabs audio generated: ${audioUrl}`);
+        } else {
+          console.log(`⚠️ [Voice] No ElevenLabs audio - browser will use fallback TTS`);
+        }
+        
         // Send response back to client
         socket.emit('voice:response', {
           text: response,
+          audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
+          timestamp: Date.now()
+        });
+      } else {
+        // Response was filtered/rejected - send a fallback
+        console.log(`⚠️ [Voice] Response was filtered, using fallback`);
+        const fallbacks = [
+          "What?",
+          "I didn't catch that.",
+          "Say that again?",
+          "Come again?",
+          "Huh?"
+        ];
+        const fallback = fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        
+        const audioUrl = await voiceManager.speak(fallback);
+        socket.emit('voice:response', {
+          text: fallback,
           audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
           timestamp: Date.now()
         });
@@ -1322,7 +1851,7 @@ io.on('connection', (socket) => {
       console.log('⏸️ [Voice] Speech interrupted by user');
     }
   });
-  });
+  
   
   socket.on('mute_bot', (data) => {
     const duration = data.duration || 300000;
@@ -1522,7 +2051,12 @@ if (enableCoolhole) {
   // Wrap in async IIFE to use await
   (async () => {
     // Register Coolhole as a platform (will be connected by platformManager.initialize())
-    platformManager.registerPlatform('coolhole', coolholeClient);
+    // Only register Coolhole if not disabled
+    if (process.env.DISABLE_COOLHOLE !== 'true') {
+      platformManager.registerPlatform('coolhole', coolholeClient);
+    } else {
+      console.log('⏸️  [Coolhole] DISABLED - skipping registration');
+    }
     
     // Initialize Discord if configured
     if (process.env.DISCORD_TOKEN) {
@@ -1608,24 +2142,33 @@ if (enableCoolhole) {
     // STEP 1: Initialize all platforms FIRST
     // ========================================
     console.log('🚀 Initializing all platforms...');
-    await platformManager.initialize();
+    try {
+      await platformManager.initialize();
+    } catch (error) {
+      console.error('❌ Platform initialization error (continuing anyway):', error.message);
+      // Don't crash - some platforms may have failed but others might be OK
+    }
 
     // ========================================
     // STEP 2: Register platforms with health monitor AFTER they're connected
     // ========================================
     console.log('📡 Registering platforms with health monitor...');
-    healthMonitor.registerPlatform('coolhole', coolholeClient, {
-      enabled: true,
-      critical: true, // Coolhole is critical for operation
-      reconnectOnFail: true,
-      maxReconnectAttempts: 10 // More attempts for critical platform
-    });
+    
+    // Only register Coolhole if not disabled
+    if (process.env.DISABLE_COOLHOLE !== 'true') {
+      healthMonitor.registerPlatform('coolhole', coolholeClient, {
+        enabled: true,
+        critical: true, // Coolhole is critical for operation
+        reconnectOnFail: true,
+        maxReconnectAttempts: 10 // More attempts for critical platform
+      });
+    }
 
     if (discordClient) {
       healthMonitor.registerPlatform('discord', discordClient, {
         enabled: true,
         critical: false,
-        reconnectOnFail: true
+        reconnectOnFail: false // DISABLED - don't auto-reconnect Discord
       });
     }
 
@@ -1633,7 +2176,7 @@ if (enableCoolhole) {
       healthMonitor.registerPlatform('twitch', twitchClient, {
         enabled: true,
         critical: false,
-        reconnectOnFail: true
+        reconnectOnFail: false // DISABLED - don't auto-reconnect Twitch
       });
     }
 
@@ -1710,157 +2253,38 @@ if (enableCoolhole) {
   });
   
   // Initialize Explorer and Vision Analyzer after connection
-  coolholeClient.once('connected', async () => {
-    console.log('✅ Coolhole connected - initializing advanced features...');
-
-    // Setup chat event handlers
-    chatBot.setupCoolholeHandlers();
-    console.log('🎯 Chat event handlers registered');
-
-    // Wait for chat to be ready
-    await new Promise(resolve => setTimeout(resolve, 3000));
-
-    if (coolholeClient.page) {
-      // Initialize YouTube Search with page
-      chatBot.youtubeSearch.setPage(coolholeClient.page);
-      console.log('🎬 [YouTube] Search system initialized');
+  // Lightweight greeting on every connection (including reconnects)
+  coolholeClient.on('connected', async () => {
+    try {
+      console.log('✅ Coolhole connected - ULTRA MINIMAL MODE');
+      console.log('⚠️  [DEBUG] All initialization DISABLED - only chat handlers');
       
-      // Initialize Explorer
-      coolholeExplorer = new CoolholeExplorer(coolholeClient.page);
-      coolholeExplorer.on('emotesDiscovered', (data) => {
-        console.log(`✨ Discovered ${data.totalFound} emotes`);
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:emotes to ${connectedClients} clients`);
-        io.emit('explorer:emotes', data);
-      });
-      coolholeExplorer.on('explorationProgress', (progress) => {
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:progress to ${connectedClients} clients`);
-        io.emit('explorer:progress', progress);
-      });
-      coolholeExplorer.on('emoteUsed', (data) => {
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:emoteUsed: ${data.emote}`);
-        io.emit('explorer:emoteUsed', data);
-      });
-      coolholeExplorer.on('videoQueued', (data) => {
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting explorer:videoQueued: ${data.video}`);
-        io.emit('explorer:videoQueued', data);
+      // MINIMAL: Just register message handler, nothing else
+      coolholeClient.on('message', (data) => {
+        console.log('💬 [Coolhole]', data.username + ':', data.message);
       });
       
-      // Start exploration
-      await coolholeExplorer.startExploration();
-      
-      // Connect coolholeExplorer to chatBot
-      chatBot.coolholeExplorer = coolholeExplorer;
-      console.log('🔗 [Explorer] Connected to chatBot for video queueing');
-      
-      // Initialize Vision Analyzer
-      visionAnalyzer = new VisionAnalyzer(coolholeClient.page);
-      
-      // Connect vision analyzer to chatBot for video reactions
-      chatBot.connectVisionAnalyzer(visionAnalyzer);
-      
-      visionAnalyzer.on('screenshotAnalyzed', (data) => {
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:screenshot to ${connectedClients} clients`);
-        io.emit('vision:screenshot', data);
-      });
-      visionAnalyzer.on('textDetected', (data) => {
-        if (VERBOSE) console.log(`📝 Text detected: ${data.text.join(', ')}`);
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:text to ${connectedClients} clients`);
-        io.emit('vision:text', data);
-      });
-      visionAnalyzer.on('sceneChange', (data) => {
-        if (VERBOSE) console.log('🎬 Scene changed!');
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:sceneChange to ${connectedClients} clients`);
-        io.emit('vision:sceneChange', data);
-      });
-      visionAnalyzer.on('videoDetected', (data) => {
-        if (VERBOSE) console.log(`🎬 Video detected: ${data.title}`);
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:video to ${connectedClients} clients`);
-        io.emit('vision:video', data);
-      });
-      visionAnalyzer.on('fullAnalysis', (data) => {
-        if (VERBOSE) console.log(`📡 [Socket.IO] Emitting vision:fullAnalysis to ${connectedClients} clients`);
-        io.emit('vision:fullAnalysis', data);
-      });
-      
-      // === VIDEO COMMENTARY: Slunt reacts to videos he sees! ===
-      visionAnalyzer.on('screenshotAnalyzed', async (data) => {
-        try {
-          // Get latest vision data
-          const visionData = visionAnalyzer.getLatestAnalysis();
-          
-          if (visionData && chatBot.videoCommentary) {
-            // Check if Slunt wants to comment on what he's seeing
-            const comment = await chatBot.videoCommentary.checkAndComment(visionData);
-            
-            if (comment) {
-              console.log(`🎬💬 [VideoCommentary] Slunt spontaneously says: "${comment}"`);
-              
-              // Send to Coolhole chat
-              if (coolholeClient) {
-                await coolholeClient.sendMessage(comment);
-              }
-              
-              // Emit to dashboard
-              io.emit('chat:message', {
-                username: 'Slunt',
-                text: comment,
-                platform: 'coolhole',
-                timestamp: Date.now(),
-                type: 'video_reaction'
-              });
-            }
-          }
-        } catch (error) {
-          console.error('❌ [VideoCommentary] Error:', error.message);
-        }
-      });
-      
-      // Start vision analysis
-      await visionAnalyzer.startAnalysis({
-        screenshotInterval: 15000, // Every 15 seconds
-        analysisInterval: 60000,   // Full analysis every minute
-        detectScenes: true,
-        readText: true,
-        analyzeColors: true
-      });
-      
-      // Initialize Cursor Controller - Slunt can now click things!
-      cursorController = new CursorController(coolholeClient.page);
-      cursorController.on('discovery', (data) => {
-        console.log(`🖱️ [Cursor] Discovered ${data.total} interactive elements`);
-        io.emit('cursor:discovery', data);
-      });
-      cursorController.on('emote:used', (data) => {
-        console.log(`😊 [Cursor] Used emote: ${data.emote}`);
-        io.emit('cursor:emoteUsed', data);
-      });
-      cursorController.on('interaction', (data) => {
-        console.log(`🖱️ [Cursor] Interaction: ${data.type} - ${data.name}`);
-        io.emit('cursor:interaction', data);
-      });
-      
-      // Start cursor exploration - Slunt will click emotes and explore!
-      await cursorController.startExploration({
-        explorationFrequency: 60000, // Explore every minute
-        emoteFrequency: 45000,       // Try emotes every 45 seconds
-        enabled: false                // DISABLED - emote clicking doesn't actually send to chat
-      });
-      
-      console.log('🚀 Advanced features initialized!');
-      
-      // Run startup sequence - announce to chat
-      await chatBot.startupSequence();
+      console.log('✅ Chat handler registered - NO STARTUP, NO ADVANCED FEATURES');
+    } catch (e) {
+      console.error('[Startup] Handler failed:', e.message);
     }
   });
+
+  console.log('⚠️  [DEBUG] Advanced features (Vision/Cursor) DISABLED to prevent crash');
 } else {
   console.log('Coolhole connection disabled - running in test mode');
 }
 
 // Start server
-const PORT = process.env.PORT || 3001;
+// Removed duplicate PORT declaration; now set at the top of the file
 
 // Kill any process using the port before starting
 const killPortProcess = async (port) => {
+  const shouldKill = String(process.env.KILL_PORT_ON_START || '').toLowerCase() === 'true';
+  if (!shouldKill) {
+    console.log(`[PortKill] Skipped freeing port ${port} (set KILL_PORT_ON_START=true to enable)`);
+    return;
+  }
   const { exec } = require('child_process');
   const platform = process.platform;
   let cmd;
@@ -1872,7 +2296,7 @@ const killPortProcess = async (port) => {
     cmd = `lsof -ti:${port} | xargs kill -9`;
   }
   return new Promise((resolve) => {
-    exec(cmd, (err, stdout, stderr) => {
+    exec(cmd, (err) => {
       if (err) {
         console.log(`[PortKill] Could not kill process on port ${port}:`, err.message);
       } else {
@@ -1883,7 +2307,26 @@ const killPortProcess = async (port) => {
   });
 };
 
+// Prevent unhandled promise rejections from crashing the server
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('❌ [CRITICAL] Unhandled Promise Rejection:', reason);
+  console.error('Promise:', promise);
+  // Don't exit - keep server running
+});
+
+process.on('uncaughtException', (error) => {
+  console.error('❌ [CRITICAL] Uncaught Exception:', error);
+  // Don't exit - keep server running unless it's truly fatal
+  if (error.code === 'ERR_IPC_CHANNEL_CLOSED' || error.code === 'ECONNRESET') {
+    console.log('⚠️  Non-fatal error, continuing...');
+  }
+});
+
 (async () => {
+  // Detect and use available port
+  PORT = await findAvailablePort(PREFERRED_PORT);
+  console.log(`🚀 [Server] Starting on port ${PORT}`);
+  
   await killPortProcess(PORT);
   
   // Initialize backup system
@@ -1894,166 +2337,53 @@ const killPortProcess = async (port) => {
     rateLimiter.cleanup();
   }, 300000); // Cleanup every 5 minutes
   
-  server.listen(PORT, () => {
-    console.log(`Coolhole.org Chatbot Server running on port ${PORT}`);
-    console.log(`Health check available at http://localhost:${PORT}/api/health`);
-    
-    // Initialize graceful shutdown handlers
-    GracefulShutdown.initialize(chatBot, server);
-    console.log('🛡️ [Stability] Graceful shutdown handlers registered');
-    
-    // Register connection resilience for platforms
-    if (chatBot.coolholeClient) {
-      chatBot.connectionResilience.registerPlatform(
-        'coolhole',
-        () => chatBot.coolholeClient.connect(),
-        () => chatBot.coolholeClient.disconnect(),
-        () => chatBot.coolholeClient.isConnected()
-      );
-    }
-    
-    if (chatBot.discordClient) {
-      chatBot.connectionResilience.registerPlatform(
-        'discord',
-        () => chatBot.discordClient.connect(),
-        () => chatBot.discordClient.disconnect(),
-        () => chatBot.discordClient.isReady // Fixed: property not a function
-      );
-    }
-    
-    if (chatBot.twitchClient) {
-      chatBot.connectionResilience.registerPlatform(
-        'twitch',
-        () => chatBot.twitchClient.connect(),
-        () => chatBot.twitchClient.disconnect(),
-        () => chatBot.twitchClient.isConnected()
-      );
-    }
-    
-    // Start connection health checks
-    chatBot.connectionResilience.startHealthChecks();
-    console.log('🏥 [Stability] Connection health monitoring started');
+  // Start temp audio janitor to prevent disk bloat
+  const TempJanitor = require('./src/utils/TempJanitor');
+  const tempJanitor = new TempJanitor({
+    tempDir: path.join(__dirname, 'temp', 'audio'),
+    maxAge: 60 * 60 * 1000, // 1 hour
+    interval: 10 * 60 * 1000 // 10 minutes
   });
-})();
-
-// Keep-alive interval to prevent process from exiting prematurely
-const keepAlive = setInterval(() => {
-  // Ping to keep things alive
-  try {
-    if (chatBot.isConnected()) {
-      // Just check status, don't spam logs
-    }
-  } catch (e) {
-    // Ignore errors in keep-alive
-  }
-}, 30000);
-
-// Graceful shutdown with memory preservation
-async function gracefulShutdown(signal) {
-  console.log(`\n⚠️ ${signal} received - saving all session data...`);
-  clearInterval(keepAlive);
+  tempJanitor.start();
   
-  try {
-    // Create emergency backup before shutdown
-    console.log('💾 Creating emergency backup...');
-    await backupManager.createBackup('shutdown-emergency');
+  server.listen(PORT, () => {
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`🚀 Coolhole.org Chatbot Server - RUNNING`);
+    console.log(`${'='.repeat(60)}`);
+    console.log(`📡 Port: ${PORT}`);
+    console.log(`🎤 Voice: http://localhost:${PORT}/voice`);
+    console.log(`📊 Dashboard: http://localhost:${PORT}/`);
+    console.log(`🧠 Mind: http://localhost:${PORT}/mind`);
+    console.log(`🎯 Platforms: http://localhost:${PORT}/platforms`);
+    console.log(`🌐 Health: http://localhost:${PORT}/api/health`);
+    console.log(`${'='.repeat(60)}\n`);
     
-    // Shutdown backup manager
-    backupManager.shutdown();
-    
-    // Stop active processes
-    if (cursorController) cursorController.stop();
-    if (visionAnalyzer && typeof visionAnalyzer.stop === 'function') visionAnalyzer.stop();
-    
-    // Save all chatBot memories and state
-    if (chatBot) {
-      console.log('💾 Saving Slunt\'s memories...');
-      
-      // Save all systems with error handling
-      const saveSystem = async (system, name) => {
-        try {
-          if (chatBot[system] && typeof chatBot[system].save === 'function') {
-            await chatBot[system].save();
-          }
-        } catch (err) {
-          console.warn(`⚠️ Could not save ${name}:`, err.message);
-        }
-      };
-      
-      // Save all advanced system data
-      await saveSystem('conversationThreads', 'conversation threads');
-      await saveSystem('userVibesDetection', 'user vibes');
-      await saveSystem('callbackHumorEngine', 'callback humor');
-      await saveSystem('contradictionTracking', 'contradictions');
-      await saveSystem('conversationalBoredom', 'boredom tracker');
-      await saveSystem('peerInfluenceSystem', 'peer influence');
-      await saveSystem('conversationalGoals', 'goals');
-      
-      // Save core systems with specific methods
-      try {
-        if (chatBot.relationshipMapping) await chatBot.relationshipMapping.saveRelationships();
-      } catch (err) { console.warn('⚠️ Could not save relationships:', err.message); }
-      
-      try {
-        if (chatBot.userReputationSystem) await chatBot.userReputationSystem.saveReputations();
-      } catch (err) { console.warn('⚠️ Could not save reputations:', err.message); }
-      
-      try {
-        if (chatBot.sluntDiary) await chatBot.sluntDiary.saveDiary();
-      } catch (err) { console.warn('⚠️ Could not save diary:', err.message); }
-      
-      try {
-        if (chatBot.predictionEngine) await chatBot.predictionEngine.savePredictions();
-      } catch (err) { console.warn('⚠️ Could not save predictions:', err.message); }
-      
-      try {
-        if (chatBot.eventMemorySystem) await chatBot.eventMemorySystem.saveEvents();
-      } catch (err) { console.warn('⚠️ Could not save events:', err.message); }
-      
-      try {
-        if (chatBot.bitCommitment) await chatBot.bitCommitment.saveBits();
-      } catch (err) { console.warn('⚠️ Could not save bits:', err.message); }
-      
-      // Note: New 14 conversation enhancement systems don't need persistent save
-      // They work with in-memory state and existing chatBot data structures
-      
-      console.log('✅ All session data saved!');
-    }
-    
-    // Disconnect from all platforms
-    console.log('📡 Disconnecting from all platforms...');
-    await platformManager.shutdown();
-    
-    // Close server
-    server.close(() => {
-      console.log('👋 Slunt signing off...');
-      process.exit(0);
-    });
-    
-    // Force exit after 5 seconds if graceful shutdown hangs
-    setTimeout(() => {
-      console.log('⏰ Forced shutdown after timeout');
-      process.exit(1);
-    }, 5000);
-    
-  } catch (error) {
-    console.error('❌ Error during shutdown:', error.message);
-    process.exit(1);
-  }
-}
-
-process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
-process.on('SIGINT', () => gracefulShutdown('SIGINT (Ctrl+C)'));
-
-// Catch uncaught exceptions and save before crashing
-process.on('uncaughtException', async (error) => {
-  console.error('💥 UNCAUGHT EXCEPTION:', error);
-  await gracefulShutdown('UNCAUGHT EXCEPTION');
+    // Broadcast voice memory updates every 2 seconds to all connected dashboards
+    setInterval(() => {
+      if (io && chatBot && chatBot.voiceMemory) {
+        io.emit('voice:memory', {
+          memory: chatBot.voiceMemory,
+          count: chatBot.voiceMemory.length,
+          maxSize: chatBot.MAX_VOICE_MEMORY || 8
+        });
+      }
+    }, 2000);
+// ...existing code...
+  });
+})().catch(err => {
+  console.error('❌ [FATAL] Server startup failed:', err);
+  process.exit(1);
 });
 
-process.on('unhandledRejection', async (reason, promise) => {
-  console.error('💥 UNHANDLED REJECTION at:', promise, 'reason:', reason);
-  await gracefulShutdown('UNHANDLED REJECTION');
+// Graceful server error handling
+server.on('error', (err) => {
+  if (err && err.code === 'EADDRINUSE') {
+    console.error(`❌ Port ${PORT} is already in use. Set KILL_PORT_ON_START=true to attempt freeing it on boot, or choose a different PORT.`);
+  } else {
+    console.error('[ServerError]', err);
+  }
 });
 
 module.exports = { app, server, io };
+
+

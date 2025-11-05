@@ -64,7 +64,9 @@ class ChatLearning {
       const { username, text, platform } = data;
       
       // Skip own messages for phrase learning (but track engagement on them)
-      if (username === 'Slunt' || username === 'Slunt#2969') {
+      // Slunt's usernames: "Slunt" (Coolhole/Discord), "sluntbot" (Twitch), "Slunt#2969" (Discord with tag)
+      const myUsernames = ['slunt', 'sluntbot', 'slunt#2969'];
+      if (myUsernames.includes(username.toLowerCase())) {
         this.trackOwnMessageForEngagement(text, data);
         return;
       }

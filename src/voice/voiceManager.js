@@ -12,6 +12,8 @@ const EventEmitter = require('events');
 const axios = require('axios');
 const fs = require('fs').promises;
 const path = require('path');
+const OpenAIRealtimeClient = require('./openaiRealtimeClient');
+const VoiceEnhancer = require('./voiceEnhancer');
 
 class VoiceManager extends EventEmitter {
   constructor(config = {}) {
@@ -23,10 +25,20 @@ class VoiceManager extends EventEmitter {
       googleApiKey: config.googleApiKey || process.env.GOOGLE_CLOUD_API_KEY,
       
       // Text-to-Speech options
-      ttsProvider: config.ttsProvider || 'elevenlabs', // 'elevenlabs', 'openai', 'google'
+      ttsProvider: config.ttsProvider || 'piper', // 'piper', 'bark', 'elevenlabs', 'openai', 'openai-realtime', 'google', 'browser'
       elevenLabsApiKey: config.elevenLabsApiKey || process.env.ELEVENLABS_API_KEY,
-      elevenLabsVoiceId: config.elevenLabsVoiceId || process.env.ELEVENLABS_VOICE_ID || 'ErXwobaYiN019PkySvjV', // Antoni voice
+      elevenLabsVoiceId: config.elevenLabsVoiceId || process.env.ELEVENLABS_VOICE_ID, // David voice from .env
       openaiApiKey: config.openaiApiKey || process.env.OPENAI_API_KEY,
+      openaiRealtimeVoice: config.openaiRealtimeVoice || process.env.OPENAI_REALTIME_VOICE || 'ash',
+      
+      // Piper TTS (Local, Free, Fast)
+      piperExecutable: config.piperExecutable || process.env.PIPER_EXECUTABLE || 'piper',
+      piperModel: config.piperModel || process.env.PIPER_MODEL || 'en_US-lessac-medium',
+      piperSpeaker: config.piperSpeaker || process.env.PIPER_SPEAKER || '0',
+      
+      // Bark TTS (Local, Free, Expressive)
+      barkServerUrl: config.barkServerUrl || process.env.BARK_SERVER_URL || 'http://localhost:8080',
+      barkVoice: config.barkVoice || process.env.BARK_VOICE || 'male_deep',
       
       // Voice settings
       voiceSpeed: config.voiceSpeed || 1.0, // 0.5 - 2.0
@@ -58,6 +70,19 @@ class VoiceManager extends EventEmitter {
       totalSpeakingTime: 0
     };
     
+    // Voice enhancer for more natural speech
+    this.voiceEnhancer = new VoiceEnhancer();
+
+    // OpenAI Realtime client
+    this.realtimeClient = null;
+    if (this.config.ttsProvider === 'openai-realtime') {
+      this.realtimeClient = new OpenAIRealtimeClient({
+        apiKey: this.config.openaiApiKey,
+        voice: this.config.openaiRealtimeVoice,
+        instructions: config.systemPrompt || 'You are Slunt, an edgy and unfiltered AI assistant.'
+      });
+    }
+
     console.log('🎤 [Voice] Voice Manager initialized');
     console.log(`   STT Provider: ${this.config.sttProvider}`);
     console.log(`   TTS Provider: ${this.config.ttsProvider}`);
@@ -163,32 +188,55 @@ class VoiceManager extends EventEmitter {
       console.log('⚠️ [Voice] Voice system not enabled');
       return false;
     }
-    
+
     if (!text || text.trim().length === 0) {
       console.log('⚠️ [Voice] No text to speak');
       return false;
     }
-    
+
     try {
+      // Enhance the text for more natural voice
+      const enhanced = this.voiceEnhancer.enhance(text, options);
+      const enhancedText = enhanced.text;
+      const voiceStyle = enhanced.voiceStyle;
+
+      console.log(`🎭 [Voice] Enhanced with emotion: ${enhanced.emotion}`);
+      console.log(`🗣️ [Voice] Speaking: "${enhancedText.substring(0, 100)}..."`);
+
       const startTime = Date.now();
-      console.log(`🗣️ [Voice] Speaking: "${text.substring(0, 100)}..."`);
-      
+
       // If already speaking and interrupts enabled, stop current speech
       if (this.isSpeaking && this.config.interruptEnabled) {
         await this.stopSpeaking();
       }
-      
+
       this.isSpeaking = true;
-      this.emit('speaking:started', { text });
+      this.emit('speaking:started', { text: enhancedText, emotion: enhanced.emotion, voiceStyle });
       
       // Choose TTS provider
       let audioUrl = null;
       switch (this.config.ttsProvider) {
+        case 'openai-realtime':
+          // Use OpenAI Realtime API (streaming, interrupts, ChatGPT quality)
+          await this.openaiRealtimeSpeak(text, options);
+          break;
+        case 'piper':
+          audioUrl = await this.piperTextToSpeech(enhancedText, { ...options, voiceStyle });
+          break;
+        case 'bark':
+          audioUrl = await this.barkTextToSpeech(enhancedText, { ...options, voiceStyle });
+          break;
+        case 'browser':
+          // Browser TTS handled client-side
+          console.log('⚠️ [Voice] Browser TTS should be handled client-side');
+          this.emit('speaking:browser', { text: enhancedText, voiceStyle });
+          this.isSpeaking = false;
+          return true;
         case 'elevenlabs':
-          audioUrl = await this.elevenLabsTextToSpeech(text, options);
+          audioUrl = await this.elevenLabsTextToSpeech(enhancedText, { ...options, voiceStyle });
           break;
         case 'openai':
-          audioUrl = await this.openaiTextToSpeech(text, options);
+          audioUrl = await this.openaiTextToSpeech(enhancedText, { ...options, voiceStyle });
           break;
         case 'google':
           audioUrl = await this.googleTextToSpeech(text, options);
@@ -282,7 +330,7 @@ class VoiceManager extends EventEmitter {
         {
           config: {
             encoding: 'LINEAR16',
-            sampleRateHertz: 16000,
+            sampleRateHertz: 48000,    // Match new high quality sample rate
             languageCode: 'en-US',
             enableAutomaticPunctuation: true
           },
@@ -313,6 +361,139 @@ class VoiceManager extends EventEmitter {
   }
   
   /**
+   * OpenAI Realtime API - Streaming TTS with interrupts (ChatGPT Voice Mode quality)
+   */
+  async openaiRealtimeSpeak(text, options = {}) {
+    try {
+      if (!this.realtimeClient) {
+        console.error('❌ [Voice] Realtime client not initialized');
+        return false;
+      }
+      
+      // Connect if not already connected
+      if (!this.realtimeClient.connected) {
+        await this.realtimeClient.connect();
+      }
+      
+      console.log('🎤 [Voice] OpenAI Realtime speaking (streaming)...');
+      
+      // Send text and start streaming audio
+      this.realtimeClient.sendText(text);
+      
+      // Emit speaking event immediately (streaming starts fast)
+      this.emit('speaking:started', { text });
+      
+      return true;
+      
+    } catch (error) {
+      console.error('❌ [Voice] OpenAI Realtime error:', error.message);
+      return false;
+    }
+  }
+  
+  /**
+   * Piper Text-to-Speech (Local, Free, Fast)
+   * Download from: https://github.com/rhasspy/piper/releases
+   */
+  async piperTextToSpeech(text, options = {}) {
+    const { spawn } = require('child_process');
+    
+    try {
+      const audioDir = path.join(__dirname, '../../temp/audio');
+      await fs.mkdir(audioDir, { recursive: true });
+      
+      const filename = `slunt_${Date.now()}.wav`;
+      const filepath = path.join(audioDir, filename);
+      
+      const model = options.model || this.config.piperModel;
+      const speaker = options.speaker || this.config.piperSpeaker;
+      
+      console.log(`🎙️ [Voice] Piper generating speech (model: ${model}, speaker: ${speaker})`);
+      
+      return new Promise((resolve, reject) => {
+        // piper --model en_US-lessac-medium --output_file output.wav < input.txt
+        const piper = spawn(this.config.piperExecutable, [
+          '--model', model,
+          '--speaker', speaker,
+          '--output_file', filepath
+        ]);
+        
+        // Send text to stdin
+        piper.stdin.write(text);
+        piper.stdin.end();
+        
+        let stderr = '';
+        piper.stderr.on('data', (data) => {
+          stderr += data.toString();
+        });
+        
+        piper.on('close', (code) => {
+          if (code === 0) {
+            console.log(`✅ [Voice] Piper audio generated: ${filename}`);
+            resolve(filepath);
+          } else {
+            console.error(`❌ [Voice] Piper failed (code ${code}): ${stderr}`);
+            reject(new Error(`Piper failed: ${stderr}`));
+          }
+        });
+        
+        piper.on('error', (err) => {
+          console.error('❌ [Voice] Piper error:', err.message);
+          reject(err);
+        });
+      });
+      
+    } catch (error) {
+      console.error('❌ [Voice] Piper TTS error:', error.message);
+      return null;
+    }
+  }
+  
+  /**
+   * Bark Text-to-Speech (Local, Free, Expressive)
+   * Setup: Run install-bark.bat or python bark_server.py
+   */
+  async barkTextToSpeech(text, options = {}) {
+    try {
+      const voice = options.voice || this.config.barkVoice;
+      
+      console.log(`🎙️ [Voice] Bark generating speech (voice: ${voice})`);
+      
+      const response = await axios.post(
+        `${this.config.barkServerUrl}/generate`,
+        {
+          text: text,
+          voice: voice
+        },
+        {
+          responseType: 'arraybuffer',
+          timeout: 60000 // Bark can take a while, especially first run
+        }
+      );
+      
+      const audioDir = path.join(__dirname, '../../temp/audio');
+      await fs.mkdir(audioDir, { recursive: true });
+      
+      const filename = `slunt_${Date.now()}.wav`;
+      const filepath = path.join(audioDir, filename);
+      
+      await fs.writeFile(filepath, response.data);
+      
+      console.log(`✅ [Voice] Bark audio generated: ${filename}`);
+      return filepath;
+      
+    } catch (error) {
+      if (error.code === 'ECONNREFUSED') {
+        console.error('❌ [Voice] Bark server not running!');
+        console.error('   Start with: python bark_server.py');
+      } else {
+        console.error('❌ [Voice] Bark TTS error:', error.message);
+      }
+      return null;
+    }
+  }
+  
+  /**
    * ElevenLabs Text-to-Speech
    */
   async elevenLabsTextToSpeech(text, options = {}) {
@@ -322,16 +503,22 @@ class VoiceManager extends EventEmitter {
     }
     
     try {
-      const voiceId = options.voiceId || this.config.elevenLabsVoiceId;
+      const primaryVoiceId = options.voiceId || this.config.elevenLabsVoiceId;
+      const backupVoiceId = process.env.ELEVENLABS_BACKUP_VOICE_ID;
+      const modelId = process.env.ELEVENLABS_MODEL || 'eleven_multilingual_v2';
       
-      const response = await axios.post(
+      console.log(`🎤 [Voice] Using voice ID: ${primaryVoiceId}`);
+      console.log(`🎤 [Voice] Config voice ID: ${this.config.elevenLabsVoiceId}`);
+      console.log(`🎤 [Voice] Options voice ID: ${options.voiceId || 'not set'}`);
+
+      const postTTS = async (voiceId) => axios.post(
         `https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`,
         {
-          text: text,
-          model_id: 'eleven_monolingual_v1',
+          text,
+          model_id: modelId,
           voice_settings: {
-            stability: 0.5,
-            similarity_boost: 0.75,
+            stability: Number(process.env.ELEVENLABS_STABILITY ?? 0.5),
+            similarity_boost: Number(process.env.ELEVENLABS_SIMILARITY ?? 0.75),
             style: 0.5,
             use_speaker_boost: true
           }
@@ -342,9 +529,29 @@ class VoiceManager extends EventEmitter {
             'xi-api-key': this.config.elevenLabsApiKey,
             'Content-Type': 'application/json'
           },
-          responseType: 'arraybuffer'
+          responseType: 'arraybuffer',
+          timeout: 30000
         }
       );
+
+      if (!primaryVoiceId && backupVoiceId) {
+        console.warn('⚠️  [Voice] No primary ElevenLabs voice configured, trying backup voice');
+      }
+
+      let usedVoiceId = primaryVoiceId;
+      let response;
+      try {
+        if (!primaryVoiceId) throw new Error('NO_PRIMARY_VOICE');
+        response = await postTTS(primaryVoiceId);
+      } catch (primaryErr) {
+        if (backupVoiceId) {
+          console.warn('⚠️  [Voice] ElevenLabs primary voice failed, using backup voice');
+          usedVoiceId = backupVoiceId;
+          response = await postTTS(backupVoiceId);
+        } else {
+          throw primaryErr;
+        }
+      }
       
       // Save audio to temp file
       const audioDir = path.join(__dirname, '../../temp/audio');
@@ -355,7 +562,7 @@ class VoiceManager extends EventEmitter {
       
       await fs.writeFile(filepath, response.data);
       
-      console.log(`💾 [Voice] Audio saved: ${filename}`);
+      console.log(`💾 [Voice] Audio saved (${usedVoiceId || 'unknown voice'}): ${filename}`);
       
       return filepath;
       

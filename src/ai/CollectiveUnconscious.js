@@ -84,12 +84,15 @@ class CollectiveUnconscious {
     contributeToCollective(username, data) {
         const { mood, message, emotion, theme } = data;
 
-        // Update collective mood
+        // Update collective mood (ensure mood is a string, not an object)
         if (mood) {
+            // Convert mood to string if it's an object
+            const moodStr = typeof mood === 'object' ? (mood.mood || mood.primary || JSON.stringify(mood)) : String(mood);
+            
             const moodKey = `mood_${Date.now()}`;
             this.collectiveMoods.set(moodKey, {
                 username,
-                mood,
+                mood: moodStr,
                 timestamp: Date.now(),
                 intensity: data.intensity || 0.5
             });

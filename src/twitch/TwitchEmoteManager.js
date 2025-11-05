@@ -219,35 +219,43 @@ class TwitchEmoteManager {
 
   /**
    * Get a random emote from available emotes
+   * PRIORITIZES channel emotes (brote*) heavily
    */
   getRandomEmote(category = null) {
     let pool = [];
-    
+
     if (category && this.emotes[category]) {
       pool = this.emotes[category];
     } else {
-      // All emotes
-      pool = [
-        ...this.emotes.global,
-        ...this.emotes.channel,
-        ...this.emotes.bttv,
-        ...this.emotes.ffz,
-        ...this.emotes.seventv
-      ];
+      // PRIORITIZE CHANNEL EMOTES (brote*)
+      // 70% chance to use channel emote if available
+      if (this.emotes.channel.length > 0 && Math.random() < 0.70) {
+        pool = this.emotes.channel;
+      } else {
+        // All emotes (but still weight channel higher)
+        pool = [
+          ...this.emotes.channel, // Add channel emotes TWICE to weight them
+          ...this.emotes.channel,
+          ...this.emotes.global,
+          ...this.emotes.bttv,
+          ...this.emotes.ffz,
+          ...this.emotes.seventv
+        ];
+      }
     }
-    
+
     if (pool.length === 0) {
       return null;
     }
-    
+
     // Filter out emotes on cooldown
     const availableEmotes = pool.filter(emote => !this.isOnCooldown(emote));
-    
+
     if (availableEmotes.length === 0) {
       // All on cooldown, just pick any
       return pool[Math.floor(Math.random() * pool.length)];
     }
-    
+
     const emote = availableEmotes[Math.floor(Math.random() * availableEmotes.length)];
     this.markUsed(emote);
     return emote;
@@ -331,11 +339,11 @@ class TwitchEmoteManager {
   }
 
   /**
-   * Maybe add emote to message (20% chance)
+   * Maybe add emote to message (REDUCED to 15% chance - less spam)
    */
   maybeAddEmote(message, mood = null) {
-    if (Math.random() > 0.20) {
-      return message; // 80% of time, no emote
+    if (Math.random() > 0.15) {
+      return message; // 85% of time, no emote (reduced from 80%)
     }
     
     const emote = mood ? this.getEmoteForMood(mood) : this.getRandomEmote();

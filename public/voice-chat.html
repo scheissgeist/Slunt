@@ -227,6 +227,8 @@
     </div>
   </div>
   
+  <!-- Socket.IO client -->
+  <script src="/socket.io/socket.io.js"></script>
   <script>
     // Connect to Socket.IO server
     const socket = io();
@@ -239,92 +241,85 @@
     const transcriptEl = document.getElementById('transcript');
     const errorEl = document.getElementById('error');
     
-    // Speech recognition
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    let recognition = null;
+
+    // Audio recording for server-side STT
+    let mediaRecorder = null;
+    let audioChunks = [];
     let isListening = false;
     let isSpeaking = false;
-    
-    // Audio playback
     let currentAudio = null;
-    
-    // Initialize speech recognition
-    if (SpeechRecognition) {
-      recognition = new SpeechRecognition();
-      recognition.continuous = true;
-      recognition.interimResults = false;
-      recognition.lang = 'en-US';
-      
-      recognition.onresult = (event) => {
-        const result = event.results[event.results.length - 1];
-        if (result.isFinal) {
-          const text = result[0].transcript;
-          handleUserSpeech(text);
-        }
-      };
-      
-      recognition.onerror = (event) => {
-        console.error('Speech recognition error:', event.error);
-        showError(`Speech recognition error: ${event.error}`);
-      };
-      
-      recognition.onend = () => {
-        if (isListening) {
-          // Restart if we're still supposed to be listening
-          recognition.start();
-        }
-      };
-    } else {
-      showError('Speech recognition not supported in this browser. Please use Chrome or Edge.');
-    }
-    
-    // Start listening
-    startBtn.addEventListener('click', () => {
-      if (!recognition) {
-        showError('Speech recognition not available');
-        return;
-      }
-      
+
+    startBtn.addEventListener('click', async () => {
+      updateStatus('Requesting microphone...', '');
       try {
-        recognition.start();
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          showError('Your browser does not support microphone access (getUserMedia).');
+          updateStatus('Microphone not supported', '');
+          return;
+        }
+        const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+        updateStatus('Microphone access granted', '');
+        mediaRecorder = new MediaRecorder(stream);
+        audioChunks = [];
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
+        };
+        mediaRecorder.onerror = (event) => {
+          console.error('MediaRecorder error:', event.error);
+          showError('MediaRecorder error: ' + event.error);
+          updateStatus('MediaRecorder error', '');
+        };
+        mediaRecorder.onstop = async () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
+          addTranscript('you', '[Voice message sent]');
+          updateStatus('Processing...', '');
+          // Send audio to server for STT
+          const reader = new FileReader();
+          reader.onload = function() {
+            const arrayBuffer = reader.result;
+            socket.emit('voice:audio', arrayBuffer);
+            updateStatus('Audio sent to server', '');
+          };
+          reader.onerror = function(e) {
+            showError('Error reading audio: ' + e.message);
+            updateStatus('Audio read error', '');
+          };
+          reader.readAsArrayBuffer(audioBlob);
+        };
+        mediaRecorder.start();
         isListening = true;
         updateStatus('Listening...', 'listening');
         startBtn.disabled = true;
         stopBtn.disabled = false;
         interruptBtn.disabled = false;
         clearError();
-        
-        // Clear transcript
         transcriptEl.innerHTML = '<p style="text-align: center; opacity: 0.5;">Listening for your voice...</p>';
       } catch (error) {
-        console.error('Error starting recognition:', error);
+        console.error('Error starting microphone:', error);
         showError('Error starting microphone: ' + error.message);
+        updateStatus('Microphone error', '');
       }
     });
-    
-    // Stop listening
+
     stopBtn.addEventListener('click', () => {
-      stopListening();
-    });
-    
-    // Interrupt Slunt
-    interruptBtn.addEventListener('click', () => {
-      if (isSpeaking) {
-        interruptSpeech();
-      }
-    });
-    
-    function stopListening() {
-      if (recognition && isListening) {
-        recognition.stop();
+      if (mediaRecorder && isListening) {
+        mediaRecorder.stop();
         isListening = false;
         updateStatus('Stopped', '');
         startBtn.disabled = false;
         stopBtn.disabled = true;
         interruptBtn.disabled = true;
       }
-    }
-    
+    });
+
+    interruptBtn.addEventListener('click', () => {
+      if (isSpeaking) {
+        interruptSpeech();
+      }
+    });
+
     function interruptSpeech() {
       if (currentAudio) {
         currentAudio.pause();
@@ -336,26 +331,44 @@
       addTranscript('system', '⏸️ Speech interrupted');
     }
     
-    function handleUserSpeech(text) {
-      console.log('User said:', text);
-      addTranscript('you', text);
-      
-      // Send to server
-      socket.emit('voice:speech', { text });
-      
-      updateStatus('Processing...', '');
-    }
-    
     // Socket events
     socket.on('voice:response', async (data) => {
       console.log('Slunt response:', data);
       addTranscript('slunt', data.text);
-      
       // Play audio if available
       if (data.audioUrl) {
         await playAudio(data.audioUrl);
+      } else if ('speechSynthesis' in window) {
+        // Fallback to browser speech synthesis if no server audio
+        try {
+          const utter = new SpeechSynthesisUtterance(data.text || '');
+          utter.rate = 1.0;
+          utter.pitch = 1.0;
+          utter.onstart = () => updateStatus('Slunt is speaking...', 'speaking');
+          utter.onend = () => {
+            isSpeaking = false;
+            if (isListening) updateStatus('Listening...', 'listening');
+          };
+          window.speechSynthesis.cancel();
+          window.speechSynthesis.speak(utter);
+        } catch (e) {
+          console.warn('Speech synthesis error:', e);
+          updateStatus('Listening...', 'listening');
+        }
       } else {
         updateStatus('Listening...', 'listening');
+      }
+    });
+
+    // Display transcript from server STT
+    socket.on('voice:transcript', (data) => {
+      if (data && data.text) {
+        addTranscript('you', data.text);
+        updateStatus('Transcript received', '');
+        // Send recognized text for Slunt to respond
+        socket.emit('voice:speech', { text: data.text });
+      } else {
+        showError('No transcript received');
       }
     });
     
@@ -377,18 +390,20 @@
     });
     
     // Detect when user starts speaking (for interruption)
-    if (recognition) {
+    if (typeof recognition !== 'undefined' && recognition) {
+      const orig = recognition.onspeechstart;
       recognition.onspeechstart = () => {
-        if (isSpeaking) {
-          // User started speaking while Slunt was talking - interrupt!
-          interruptSpeech();
-        }
+        if (isSpeaking) interruptSpeech();
+        if (typeof orig === 'function') orig();
       };
     }
     
     async function playAudio(audioUrl) {
       try {
         currentAudio = new Audio(audioUrl);
+        
+        // Play Monster voice 30% faster
+        currentAudio.playbackRate = 1.3;
         
         currentAudio.onended = () => {
           isSpeaking = false;

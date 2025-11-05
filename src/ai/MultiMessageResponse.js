@@ -96,64 +96,65 @@ class MultiMessageResponse {
     // Strategy: Look for natural breaking points in order of preference
     
     // 1. Split on sentence boundaries (. ! ?)
-    const sentences = message.split(/([.!?])\s+/);
-    if (sentences.length > 2) {
-      return this.groupSentences(sentences);
+    const sentences = message.match(/[^.!?]+[.!?]+/g);
+    if (sentences && sentences.length > 1) {
+      return this.groupSentencesNaturally(sentences);
     }
     
     // 2. Split on clause boundaries (conjunctions with commas)
     if (message.includes(', but ') || message.includes(', and ')) {
       const parts = message.split(/, (but|and) /i);
       if (parts.length > 1) {
-        // Reconstruct with conjunctions
-        const result = [parts[0]];
+        // Reconstruct with conjunctions - ensure complete thoughts
+        const result = [];
+        let currentPart = parts[0];
+        
         for (let i = 1; i < parts.length; i += 2) {
           if (i + 1 < parts.length) {
-            result.push(parts[i] + ' ' + parts[i + 1]);
+            const nextPart = parts[i] + ' ' + parts[i + 1];
+            // Only split if both parts are substantial (20+ chars)
+            if (currentPart.length >= 20 && nextPart.length >= 20) {
+              result.push(currentPart.trim());
+              currentPart = nextPart;
+            } else {
+              currentPart += ', ' + nextPart;
+            }
           }
         }
-        return result.map(p => p.trim()).filter(p => p.length > 0);
+        if (currentPart.trim()) result.push(currentPart.trim());
+        
+        // Only return split if we got substantial parts
+        if (result.length > 1 && result.every(p => p.length >= 20)) {
+          return result;
+        }
       }
     }
     
     // 3. Split on em-dashes or hyphens
     if (message.includes(' - ')) {
       const parts = message.split(' - ');
-      if (parts.length > 1 && parts.every(p => p.length > 15)) {
+      if (parts.length > 1 && parts.every(p => p.length > 25)) {
         return parts.map(p => p.trim());
       }
     }
     
-    // 4. Split on commas if long enough
-    if (message.length > 100 && message.includes(', ')) {
-      const parts = message.split(', ');
-      if (parts.length > 1 && parts.every(p => p.length > 20)) {
-        // Reconstruct with commas except last one
-        const result = [];
-        for (let i = 0; i < parts.length - 1; i++) {
-          result.push(parts[i] + ',');
-        }
-        result.push(parts[parts.length - 1]);
-        return result.map(p => p.trim());
-      }
-    }
+    // 4. Don't split on commas - they create incomplete thoughts
     
-    // 5. Last resort: split at word boundary near middle
-    if (message.length > 120) {
+    // 5. Last resort: Only split very long messages (150+ chars)
+    if (message.length > 150) {
+      // Find sentence boundary near middle
       const middle = Math.floor(message.length / 2);
-      const spaceAfter = message.indexOf(' ', middle);
-      const spaceBefore = message.lastIndexOf(' ', middle);
+      const sentenceEnd = message.substring(middle).search(/[.!?]\s+/);
       
-      const splitPoint = spaceAfter !== -1 && (spaceAfter - middle) < (middle - spaceBefore) 
-        ? spaceAfter 
-        : spaceBefore;
-      
-      if (splitPoint !== -1) {
+      if (sentenceEnd !== -1) {
+        const splitPoint = middle + sentenceEnd + 1;
         return [
           message.substring(0, splitPoint).trim(),
-          message.substring(splitPoint + 1).trim()
+          message.substring(splitPoint).trim()
         ];
       }
+      
+      // No sentence boundary - don't split (better to send long message than incomplete)
     }
     
     // Can't split naturally - return as single message
@@ -162,33 +163,28 @@ class MultiMessageResponse {
   
   /**
    * Group sentences into natural message parts
+   * Ensures each part is a complete thought (no fragments)
    */
-  groupSentences(sentenceParts) {
+  groupSentencesNaturally(sentences) {
     const messages = [];
     let currentMessage = '';
     
-    for (let i = 0; i < sentenceParts.length; i++) {
-      const part = sentenceParts[i];
+    for (const sentence of sentences) {
+      const trimmed = sentence.trim();
+      if (!trimmed) continue;
       
-      // Skip empty parts
-      if (!part || !part.trim()) continue;
-      
-      // If this is punctuation, add it to current message
-      if (part.match(/^[.!?]$/)) {
-        currentMessage += part;
-        continue;
-      }
-      
-      // If adding this would make message too long, start new message
-      if (currentMessage.length > 0 && (currentMessage + part).length > 100) {
-        messages.push(currentMessage.trim());
-        currentMessage = part;
+      // If adding this sentence keeps us under 100 chars, add it
+      if ((currentMessage + ' ' + trimmed).length <= 100) {
+        currentMessage += (currentMessage ? ' ' : '') + trimmed;
       } else {
-        // Add space if not first part
-        if (currentMessage.length > 0 && !currentMessage.endsWith(' ')) {
-          currentMessage += ' ';
+        // Start new message, but only if current message is substantial
+        if (currentMessage.length >= 20) {
+          messages.push(currentMessage.trim());
+          currentMessage = trimmed;
+        } else {
+          // Current message too short - combine
+          currentMessage += ' ' + trimmed;
         }
-        currentMessage += part;
       }
     }
     
@@ -197,7 +193,13 @@ class MultiMessageResponse {
       messages.push(currentMessage.trim());
     }
     
-    return messages.length > 0 ? messages : [sentenceParts.join(' ')];
+    // Only return split if we have multiple substantial parts
+    if (messages.length > 1 && messages.every(m => m.length >= 20)) {
+      return messages;
+    }
+    
+    // Otherwise return as single message
+    return [sentences.join(' ')];
   }
   
   /**

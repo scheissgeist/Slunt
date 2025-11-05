@@ -172,14 +172,14 @@ class QuestionChains {
   }
 
   async shouldAskQuestion(username, message, context = {}) {
-    // Higher chance if curious about something
-    if (this.curiosityLevel > 70 && Math.random() < 0.30) {
+    // Higher chance if curious about something (REDUCED from 30% to 8%)
+    if (this.curiosityLevel > 70 && Math.random() < 0.08) {
       return true;
     }
     
-    // Check if user said something interesting
+    // Check if user said something interesting (REDUCED from 25% to 6%)
     const interesting = await this.isInteresting(message);
-    return interesting && Math.random() < 0.25; // 25% chance for interesting things
+    return interesting && Math.random() < 0.06; // 6% chance for interesting things
   }
 
   async isInteresting(message) {

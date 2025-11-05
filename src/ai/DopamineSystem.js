@@ -273,7 +273,7 @@ class DopamineSystem {
       level: this.dopamineLevel,
       mood,
       craving: this.getCravingDescription(),
-      favoriteAction: this.favoriteAction,
+      favoriteActivity: this.favoriteAction,
       recentTrend: this.getRecentTrend()
     };
   }

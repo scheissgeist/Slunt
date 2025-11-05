@@ -26,29 +26,29 @@ class RateLimitingSystem {
         
         // Configuration
         this.config = {
-            // Per-user cooldowns (milliseconds) - REDUCED FOR TESTING
+            // Per-user cooldowns (milliseconds) - OPTIMIZED FOR NATURAL FLOW
             cooldowns: {
-                vip: 3000,       // 3 seconds (was 5s)
-                normal: 5000,    // 5 seconds (was 15s) - FAST for testing
-                new: 10000,      // 10 seconds (was 30s)
-                spam: 30000      // 30 seconds (was 60s)
+                vip: 2000,       // 2 seconds - VIPs get fast responses
+                normal: 4000,    // 4 seconds - Most users (reduced from 5s)
+                new: 8000,       // 8 seconds - New users (reduced from 10s)
+                spam: 20000      // 20 seconds - Spam prevention (reduced from 30s)
             },
             
             // Global limits
-            maxResponsesPerMinute: 15,  // Increased from 10
-            minTimeBetweenResponses: 2000, // 2 seconds (reduced from 3s)
+            maxResponsesPerMinute: 15,  // Max 15 responses per minute
+            minTimeBetweenResponses: 500, // 0.5 seconds between ANY responses (reduced from 2s)
             
             // Chat velocity thresholds
             velocityThresholds: {
                 slow: 5,         // < 5 messages/min
                 normal: 15,      // 5-15 messages/min
-                fast: 35,        // 15-35 messages/min (was 30)
-                overwhelming: 60 // > 60 messages/min (was 50)
+                fast: 35,        // 15-35 messages/min
+                overwhelming: 60 // > 60 messages/min
             },
             
             // Lurk mode
-            lurkModeThreshold: 60,  // Increased from 50 (lurk less often)
-            lurkModeResponseRate: 0.3, // Respond to 30% when lurking (was 20%)
+            lurkModeThreshold: 60,  // Lurk when > 60 messages/min
+            lurkModeResponseRate: 0.3, // Respond to 30% when lurking
             
             // Priority levels
             priorities: {

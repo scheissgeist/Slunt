@@ -72,10 +72,10 @@ class OllamaCircuitBreaker {
         'i feel that',
         'yeah makes sense',
         'interesting take',
-        'valid',
         'could be',
         'huh yeah',
-        'i see what you mean'
+        'i see what you mean',
+        'true'
       ],
       excited: [
         'oh shit',

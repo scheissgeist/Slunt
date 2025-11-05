@@ -40,24 +40,8 @@ class AuthenticUncertainty {
    * Should express uncertainty about this topic?
    */
   shouldExpressUncertainty(topic, context) {
-    // Don't fake knowledge - be honest about not knowing
-    
-    // Check if this is genuinely unknown territory
-    const isUnknown = this.isTopicUnknown(topic);
-    
-    // Check if question is specific/technical
-    const isSpecific = context.message && (
-      context.message.includes('how') ||
-      context.message.includes('why') ||
-      context.message.match(/\d+/) // Numbers suggest specific facts
-    );
-    
-    // Express uncertainty if unknown or very specific
-    if (isUnknown || isSpecific) {
-      this.recordUnknownTopic(topic);
-      return true;
-    }
-    
+    // DISABLED: User wants Slunt to be confident and fun, not a party pooper
+    // He should make shit up and be bold instead of saying "I don't know"
     return false;
   }
 

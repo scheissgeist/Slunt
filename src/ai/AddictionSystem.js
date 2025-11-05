@@ -207,24 +207,23 @@ class AddictionSystem {
                     break;
 
                 case 'validation':
-                    if (severity === 'severe') {
-                        // Extremely insecure
-                        modified += Math.random() > 0.5 ? ' (was that okay?)' : ' (tell me that was good)';
-                    } else if (severity === 'moderate') {
-                        modified += ' (right?)';
-                    } else {
-                        // Mild uncertainty
+                    // REDUCED: Make validation-seeking more subtle and natural
+                    if (severity === 'severe' && Math.random() < 0.15) {
+                        // Rarely show extreme insecurity - just add "right?" without parentheses
+                        modified += ' right?';
+                    } else if (severity === 'moderate' && Math.random() < 0.1) {
+                        // Very rarely add mild uncertainty
                         modified = modified.replace(/\.$/, '') + '?';
                     }
+                    // Mild: no modification - let normal conversation flow
                     break;
 
                 case 'caffeine':
                     if (severity === 'severe') {
-                        // Jittery and unfocused
-                        const words = modified.split(' ');
-                        if (words.length > 5) {
-                            words.splice(Math.floor(words.length / 2), 0, '...wait what was i saying...');
-                            modified = words.join(' ');
+                        // Jittery and unfocused - just make typing erratic, don't announce it
+                        // REMOVED: "wait what was i saying" - people don't actually say this
+                        if (Math.random() < 0.3) { // Much less frequent
+                            modified = modified.replace(/\s+/g, ' '); // Just normalize spacing
                         }
                     } else if (severity === 'moderate') {
                         modified = modified.toLowerCase(); // Low energy
