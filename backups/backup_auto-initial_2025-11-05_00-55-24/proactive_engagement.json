@@ -1,0 +1,17 @@
+{
+  "lastProactiveMessage": null,
+  "conversationLulls": [],
+  "pendingFollowUps": [
+    {
+      "id": "followup_1762299595330_6f5f5fkuo",
+      "userId": "discord:testuser",
+      "topic": "gaming",
+      "platform": "discord",
+      "scheduledTime": 1762301395330,
+      "createdAt": 1762299595330
+    }
+  ],
+  "engagementScore": 0,
+  "successfulEngagements": 0,
+  "failedEngagements": 0
+}

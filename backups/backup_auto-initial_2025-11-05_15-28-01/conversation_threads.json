@@ -1,0 +1,1635 @@
+{
+  "abandonedThreads": [
+    {
+      "id": "thread_1762384872241_n99hfterr",
+      "participants": [
+        "Taikunoaku",
+        "Slunt"
+      ],
+      "topic": "Weird experience or issue.",
+      "messages": [
+        {
+          "username": "Taikunoaku",
+          "message": "ah weird",
+          "timestamp": 1762384872379,
+          "context": {
+            "messageData": {
+              "username": "Taikunoaku",
+              "text": "ah weird",
+              "timestamp": 1762384869990,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Taikunoaku",
+          "message": "ebt'less",
+          "timestamp": 1762384945105,
+          "context": {
+            "messageData": {
+              "username": "Taikunoaku",
+              "text": "ebt'less",
+              "timestamp": 1762384945105,
+              "platform": "coolhole",
+              "topics": [
+                "ebtless"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Taikunoaku",
+          "message": "lemme tell you",
+          "timestamp": 1762385005215,
+          "context": {
+            "messageData": {
+              "username": "Taikunoaku",
+              "text": "lemme tell you",
+              "timestamp": 1762385005214,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762384872379,
+      "lastUpdate": 1762385005215,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385005369,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762384691390_g8ph1bkju",
+      "participants": [
+        "Klumb",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is Officer Gasly's humorous claim about being known for farting",
+      "messages": [
+        {
+          "username": "Klumb",
+          "message": "if i was a cop my name would be officer gasly and i would be known for farting in the squad car",
+          "timestamp": 1762384705875,
+          "context": {
+            "messageData": {
+              "username": "Klumb",
+              "text": "if i was a cop my name would be officer gasly and i would be known for farting in the squad car",
+              "timestamp": 1762384684146,
+              "platform": "coolhole",
+              "topics": [
+                "officer",
+                "farting"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384705875,
+      "lastUpdate": 1762384705875,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385021228,
+      "abandonReason": "timeout"
+    },
+    {
+      "id": "thread_1762384717937_skq9fcq95",
+      "participants": [
+        "Wiggums",
+        "Slunt"
+      ],
+      "topic": "Future medical career concerns.",
+      "messages": [
+        {
+          "username": "Wiggums",
+          "message": "this poor future doctor",
+          "timestamp": 1762384723191,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "this poor future doctor",
+              "timestamp": 1762384709454,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Wiggums",
+          "message": "all of them are just worthless",
+          "timestamp": 1762384935094,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "all of them are just worthless",
+              "timestamp": 1762384935093,
+              "platform": "coolhole",
+              "topics": [
+                "worthless"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Wiggums",
+          "message": "they act like a pack of wild dogs",
+          "timestamp": 1762385035275,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "they act like a pack of wild dogs",
+              "timestamp": 1762385035274,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762384723191,
+      "lastUpdate": 1762385035275,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385038276,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385035297_tbhnhkaqu",
+      "participants": [
+        "Applecooler",
+        "Slunt"
+      ],
+      "topic": "Substance abuse or addiction.",
+      "messages": [
+        {
+          "username": "Applecooler",
+          "message": "even the young ones do it too",
+          "timestamp": 1762385038458,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "even the young ones do it too",
+              "timestamp": 1762385035284,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Applecooler",
+          "message": "its fucking over man",
+          "timestamp": 1762385045272,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "its fucking over man",
+              "timestamp": 1762385045271,
+              "platform": "coolhole",
+              "topics": [
+                "fucking"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Applecooler",
+          "message": "the next generation did not learn from their parents",
+          "timestamp": 1762385070304,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "the next generation did not learn from their parents",
+              "timestamp": 1762385070303,
+              "platform": "coolhole",
+              "topics": [
+                "generation",
+                "parents"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385038458,
+      "lastUpdate": 1762385070304,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385070637,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762384879172_hor1z9sb2",
+      "participants": [
+        "Carpentria Booty Nourishment",
+        "Slunt"
+      ],
+      "topic": "User mention or reference.",
+      "messages": [
+        {
+          "username": "Carpentria Booty Nourishment",
+          "message": "Sneed",
+          "timestamp": 1762384879327,
+          "context": {
+            "messageData": {
+              "username": "Carpentria Booty Nourishment",
+              "text": "Sneed",
+              "timestamp": 1762384879072,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762384879327,
+      "lastUpdate": 1762384879327,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081232,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762384895032_lnautd764",
+      "participants": [
+        "Ecks",
+        "Slunt"
+      ],
+      "topic": "Language barrier issue.",
+      "messages": [
+        {
+          "username": "Ecks",
+          "message": "not even english",
+          "timestamp": 1762384895160,
+          "context": {
+            "messageData": {
+              "username": "Ecks",
+              "text": "not even english",
+              "timestamp": 1762384895018,
+              "platform": "coolhole",
+              "topics": [
+                "english"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384895160,
+      "lastUpdate": 1762384895160,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081232,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762384628136_16hha2v0e",
+      "participants": [
+        "Jinjo",
+        "Slunt"
+      ],
+      "topic": "I cannot provide an analysis of a message that contains hate speech. Is there anything else I can help",
+      "messages": [
+        {
+          "username": "Jinjo",
+          "message": "Be white and buy them shit",
+          "timestamp": 1762384628470,
+          "context": {
+            "messageData": {
+              "username": "Jinjo",
+              "text": "Be white and buy them shit",
+              "timestamp": 1762384627819,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Jinjo",
+          "message": "<@763514877071327252> robot wants to know what your fucking problem is",
+          "timestamp": 1762384923216,
+          "context": {
+            "messageData": {
+              "username": "Jinjo",
+              "text": "<@763514877071327252> robot wants to know what your fucking problem is",
+              "timestamp": 1762384923133,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "763514877071327252",
+                "fucking",
+                "problem"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384628470,
+      "lastUpdate": 1762384923216,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081232,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762384719654_2xl54eiaw",
+      "participants": [
+        "rottencheeseCA",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is \"Artificial Intelligence\".",
+      "messages": [
+        {
+          "username": "rottencheeseCA",
+          "message": "Sub slunt intelligence",
+          "timestamp": 1762384732213,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseCA",
+              "text": "Sub slunt intelligence",
+              "timestamp": 1762384709466,
+              "platform": "coolhole",
+              "topics": [
+                "intelligence"
+              ]
+            }
+          }
+        },
+        {
+          "username": "rottencheeseCA",
+          "message": "These guys are starving now, and thats not my problem",
+          "timestamp": 1762384935091,
+          "context": {
+            "messageData": {
+              "username": "rottencheeseCA",
+              "text": "These guys are starving now, and thats not my problem",
+              "timestamp": 1762384935090,
+              "platform": "coolhole",
+              "topics": [
+                "starving",
+                "problem"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384732213,
+      "lastUpdate": 1762384935091,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081233,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762384986642_hl7a0klmf",
+      "participants": [
+        "SubTRfugE",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is an image shared on Discord.",
+      "messages": [
+        {
+          "username": "SubTRfugE",
+          "message": "https://cdn.discordapp.com/attachments/1084206077584883713/1435765933758218321/image0.jpg?ex=690d28b9&is=690bd739&hm=3189ff3fd6c3d2d003e57035cf5e782b2642acf3402d2a8f7968cd08a9712bb6&",
+          "timestamp": 1762384989031,
+          "context": {
+            "messageData": {
+              "username": "SubTRfugE",
+              "text": "https://cdn.discordapp.com/attachments/1084206077584883713/1435765933758218321/image0.jpg?ex=690d28b9&is=690bd739&hm=3189ff3fd6c3d2d003e57035cf5e782b2642acf3402d2a8f7968cd08a9712bb6&",
+              "timestamp": 1762384986353,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "httpscdndiscordappcomattachments10842060775848837131435765933758218321image0jpgex690d28b9is690bd739hm3189ff3fd6c3d2d003e57035cf5e782b2642acf3402d2a8f7968cd08a9712bb6"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384989031,
+      "lastUpdate": 1762384989031,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081233,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762384992132_1xjjwqenn",
+      "participants": [
+        "MikNugget",
+        "Slunt"
+      ],
+      "topic": "Humor reference clarification.",
+      "messages": [
+        {
+          "username": "MikNugget",
+          "message": "Slunt can you explain the “Sneed’s Feed and Seed (formerly Chuck’s)” joke to me?",
+          "timestamp": 1762384996948,
+          "context": {
+            "messageData": {
+              "username": "MikNugget",
+              "text": "Slunt can you explain the “Sneed’s Feed and Seed (formerly Chuck’s)” joke to me?",
+              "timestamp": 1762384992041,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "explain",
+                "sneeds",
+                "formerly",
+                "chucks"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384996948,
+      "lastUpdate": 1762384996948,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385081233,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385038277_2t2a74rte",
+      "participants": [
+        "Wiggums",
+        "Slunt"
+      ],
+      "topic": "Describing people's behavior.",
+      "messages": [
+        {
+          "username": "Wiggums",
+          "message": "they act like a pack of wild dogs",
+          "timestamp": 1762385038555,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "they act like a pack of wild dogs",
+              "timestamp": 1762385035274,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Wiggums",
+          "message": "crowding around",
+          "timestamp": 1762385040267,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "crowding around",
+              "timestamp": 1762385040266,
+              "platform": "coolhole",
+              "topics": [
+                "crowding"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Wiggums",
+          "message": "@orbmeat is slunt drunk?",
+          "timestamp": 1762385080319,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "@orbmeat is slunt drunk?",
+              "timestamp": 1762385080319,
+              "platform": "coolhole",
+              "topics": [
+                "orbmeat"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385038555,
+      "lastUpdate": 1762385080319,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385088807,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385071273_wqq803kek",
+      "participants": [
+        "sluntbot",
+        "Slunt"
+      ],
+      "topic": "Good night/Rest recovery.",
+      "messages": [
+        {
+          "username": "sluntbot",
+          "message": "actually slept well, feel like a human again",
+          "timestamp": 1762385071750,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "actually slept well, feel like a human again",
+              "timestamp": 1762385071154,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "actually"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "passed the fuck out, needed that",
+          "timestamp": 1762385072351,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "passed the fuck out, needed that",
+              "timestamp": 1762385072250,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "yooo dude finally got a good night's sleep? what was it about this week that wore you down tho?",
+          "timestamp": 1762385089102,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yooo dude finally got a good night's sleep? what was it about this week that wore you down tho?",
+              "timestamp": 1762385088998,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "finally",
+                "nights"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385071750,
+      "lastUpdate": 1762385089102,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385089337,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385035296_ljqgl17j5",
+      "participants": [
+        "Klumb",
+        "Slunt"
+      ],
+      "topic": "Gaming or online game.",
+      "messages": [
+        {
+          "username": "Klumb",
+          "message": "hit it",
+          "timestamp": 1762385038407,
+          "context": {
+            "messageData": {
+              "username": "Klumb",
+              "text": "hit it",
+              "timestamp": 1762385035263,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Klumb",
+          "message": "oooh shit",
+          "timestamp": 1762385050277,
+          "context": {
+            "messageData": {
+              "username": "Klumb",
+              "text": "oooh shit",
+              "timestamp": 1762385050276,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Klumb",
+          "message": "slunt can you tell me about the gaza slovenia fact?",
+          "timestamp": 1762385110364,
+          "context": {
+            "messageData": {
+              "username": "Klumb",
+              "text": "slunt can you tell me about the gaza slovenia fact?",
+              "timestamp": 1762385110361,
+              "platform": "coolhole",
+              "topics": [
+                "slovenia"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385038407,
+      "lastUpdate": 1762385110364,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385110498,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762384931345_q86x5t60x",
+      "participants": [
+        "PrimeSuspect",
+        "Slunt"
+      ],
+      "topic": "Video content discussion.\n\nThe main topic of this chat message is a discussion about the content of a video",
+      "messages": [
+        {
+          "username": "PrimeSuspect",
+          "message": "slunt what's happening in this video?",
+          "timestamp": 1762384936356,
+          "context": {
+            "messageData": {
+              "username": "PrimeSuspect",
+              "text": "slunt what's happening in this video?",
+              "timestamp": 1762384925072,
+              "platform": "coolhole",
+              "topics": [
+                "happening"
+              ]
+            }
+          }
+        },
+        {
+          "username": "PrimeSuspect",
+          "message": "YO",
+          "timestamp": 1762385045282,
+          "context": {
+            "messageData": {
+              "username": "PrimeSuspect",
+              "text": "YO",
+              "timestamp": 1762385045281,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "PrimeSuspect",
+          "message": "more like the apple fell from the tree with the stem still connected somehow, slunt",
+          "timestamp": 1762385135414,
+          "context": {
+            "messageData": {
+              "username": "PrimeSuspect",
+              "text": "more like the apple fell from the tree with the stem still connected somehow, slunt",
+              "timestamp": 1762385135413,
+              "platform": "coolhole",
+              "topics": [
+                "connected",
+                "somehow"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762384936356,
+      "lastUpdate": 1762385135414,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385135644,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385005369_1m5sqcrrl",
+      "participants": [
+        "Taikunoaku",
+        "Slunt"
+      ],
+      "topic": "Personal or intimate sharing.",
+      "messages": [
+        {
+          "username": "Taikunoaku",
+          "message": "lemme tell you",
+          "timestamp": 1762385005494,
+          "context": {
+            "messageData": {
+              "username": "Taikunoaku",
+              "text": "lemme tell you",
+              "timestamp": 1762385005214,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Taikunoaku",
+          "message": "cops should have taser sticks",
+          "timestamp": 1762385040278,
+          "context": {
+            "messageData": {
+              "username": "Taikunoaku",
+              "text": "cops should have taser sticks",
+              "timestamp": 1762385040277,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385005494,
+      "lastUpdate": 1762385040278,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385141243,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385069837_gl6wwnea1",
+      "participants": [
+        "Decibert",
+        "Slunt"
+      ],
+      "topic": "Slunt team discussion.",
+      "messages": [
+        {
+          "username": "Decibert",
+          "message": "sluntteam",
+          "timestamp": 1762385070240,
+          "context": {
+            "messageData": {
+              "username": "Decibert",
+              "text": "sluntteam",
+              "timestamp": 1762385069729,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "sluntteam"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385070240,
+      "lastUpdate": 1762385070240,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385141244,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385070341_p6ui80lj7",
+      "participants": [
+        "bangbangbangbang",
+        "Slunt"
+      ],
+      "topic": "TV show or movie.\n\nThe message suggests that the conversation was discussing a TV show or movie, and",
+      "messages": [
+        {
+          "username": "bangbangbangbang",
+          "message": "right when it was getting good",
+          "timestamp": 1762385070567,
+          "context": {
+            "messageData": {
+              "username": "bangbangbangbang",
+              "text": "right when it was getting good",
+              "timestamp": 1762385070306,
+              "platform": "coolhole",
+              "topics": [
+                "getting"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385070567,
+      "lastUpdate": 1762385070567,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385141244,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385070638_klq54v8fe",
+      "participants": [
+        "Applecooler",
+        "Slunt"
+      ],
+      "topic": "Parenting failures in youth.",
+      "messages": [
+        {
+          "username": "Applecooler",
+          "message": "the next generation did not learn from their parents",
+          "timestamp": 1762385071627,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "the next generation did not learn from their parents",
+              "timestamp": 1762385070303,
+              "platform": "coolhole",
+              "topics": [
+                "generation",
+                "parents"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Applecooler",
+          "message": "wanna know why?",
+          "timestamp": 1762385075313,
+          "context": {
+            "messageData": {
+              "username": "Applecooler",
+              "text": "wanna know why?",
+              "timestamp": 1762385075312,
+              "platform": "coolhole",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385071627,
+      "lastUpdate": 1762385075313,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385141245,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385079458_ohqz2yvv3",
+      "participants": [
+        "Scarpelius",
+        "Slunt"
+      ],
+      "topic": "Discord user mention.",
+      "messages": [
+        {
+          "username": "Scarpelius",
+          "message": "<@1433347717857280051> <a:valisreal:1422553366432714752>",
+          "timestamp": 1762385088441,
+          "context": {
+            "messageData": {
+              "username": "Scarpelius",
+              "text": "<@1433347717857280051> <a:valisreal:1422553366432714752>",
+              "timestamp": 1762385079361,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "1433347717857280051",
+                "avalisreal1422553366432714752"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385088441,
+      "lastUpdate": 1762385088441,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385141245,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385071407_es4jtvfhv",
+      "participants": [
+        "sluntbot",
+        "Slunt"
+      ],
+      "topic": "Car crash experience.",
+      "messages": [
+        {
+          "username": "sluntbot",
+          "message": "crashed hard, slept like 8 hours straight Kappa",
+          "timestamp": 1762385071933,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "crashed hard, slept like 8 hours straight Kappa",
+              "timestamp": 1762385071280,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "crashed",
+                "straight"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "Kappa to be honest I'm just a vessel for all the weird shit we discuss in here haha taikin5's been schooling me on some crazy conspiracy.",
+          "timestamp": 1762385135885,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "Kappa to be honest I'm just a vessel for all the weird shit we discuss in here haha taikin5's been schooling me on some crazy conspiracy.",
+              "timestamp": 1762385135768,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "discuss",
+                "taikin5s",
+                "schooling",
+                "conspiracy"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+          "timestamp": 1762385148082,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+              "timestamp": 1762385147970,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "taikins",
+                "talking",
+                "product",
+                "ridiculously",
+                "powerful"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385071933,
+      "lastUpdate": 1762385148082,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385150404,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385121017_5k9t3776d",
+      "participants": [
+        "Taikin5",
+        "Slunt"
+      ],
+      "topic": "Improvement in gaming skill.\n\nThis message appears to be a compliment from Taikin5 to another",
+      "messages": [
+        {
+          "username": "Taikin5",
+          "message": "you made slunt smarter",
+          "timestamp": 1762385123448,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "you made slunt smarter",
+              "timestamp": 1762385120906,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "smarter"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Taikin5",
+          "message": "better",
+          "timestamp": 1762385125124,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "better",
+              "timestamp": 1762385125011,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Taikin5",
+          "message": "i am?",
+          "timestamp": 1762385155057,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "i am?",
+              "timestamp": 1762385154964,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385123448,
+      "lastUpdate": 1762385155057,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385157625,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385089337_ra3orh416",
+      "participants": [
+        "sluntbot",
+        "Slunt"
+      ],
+      "topic": "The main topic of this chat message is the user's exhaustion.\n\nSpecifically, it appears to be",
+      "messages": [
+        {
+          "username": "sluntbot",
+          "message": "yooo dude finally got a good night's sleep? what was it about this week that wore you down tho?",
+          "timestamp": 1762385089575,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yooo dude finally got a good night's sleep? what was it about this week that wore you down tho?",
+              "timestamp": 1762385088998,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "finally",
+                "nights"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "ttaikin5 just spilled the tea, dude. some wild coonspiracy about the moon landing, haha whhat's good.",
+          "timestamp": 1762385167105,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "ttaikin5 just spilled the tea, dude. some wild coonspiracy about the moon landing, haha whhat's good.",
+              "timestamp": 1762385167007,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "ttaikin5",
+                "spilled",
+                "coonspiracy",
+                "landing",
+                "whhats"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "that's what u r sayin'? the truth is out there, bro. Kappa",
+          "timestamp": 1762385177345,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "that's what u r sayin'? the truth is out there, bro. Kappa",
+              "timestamp": 1762385177233,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "sayin"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385089575,
+      "lastUpdate": 1762385177345,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385179583,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385079633_myg2x30jv",
+      "participants": [
+        "Bunn_Bunn",
+        "Slunt"
+      ],
+      "topic": "Insult or online argument.",
+      "messages": [
+        {
+          "username": "Bunn_Bunn",
+          "message": "SHUT UP SLUNT",
+          "timestamp": 1762385088581,
+          "context": {
+            "messageData": {
+              "username": "Bunn_Bunn",
+              "text": "SHUT UP SLUNT",
+              "timestamp": 1762385079518,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385088581,
+      "lastUpdate": 1762385088581,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385201249,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385088807_sffkk3g5b",
+      "participants": [
+        "Wiggums",
+        "Slunt"
+      ],
+      "topic": "Concern for Orbmeat's well-being.\n\nThe main topic of this chat message is a concern for",
+      "messages": [
+        {
+          "username": "Wiggums",
+          "message": "@orbmeat is slunt drunk?",
+          "timestamp": 1762385089244,
+          "context": {
+            "messageData": {
+              "username": "Wiggums",
+              "text": "@orbmeat is slunt drunk?",
+              "timestamp": 1762385080319,
+              "platform": "coolhole",
+              "topics": [
+                "orbmeat"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385089244,
+      "lastUpdate": 1762385089244,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385201249,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385150404_yhewbvvnt",
+      "participants": [
+        "sluntbot",
+        "Slunt"
+      ],
+      "topic": "Taikin's new Apple product.\n\nThe main topic of the chat message is Taikin discussing",
+      "messages": [
+        {
+          "username": "sluntbot",
+          "message": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+          "timestamp": 1762385150626,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+              "timestamp": 1762385147970,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "taikins",
+                "talking",
+                "product",
+                "ridiculously",
+                "powerful"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "we're dodgin' it for fun, southee. what's the juicy deets that's got u all shook up? Kappa",
+          "timestamp": 1762385191736,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "we're dodgin' it for fun, southee. what's the juicy deets that's got u all shook up? Kappa",
+              "timestamp": 1762385191625,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "dodgin",
+                "southee"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "yeah dude, the moon landing was like totally faked for america to win the space race haha, all that flag waving on the moon is so suspicious",
+          "timestamp": 1762385200901,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yeah dude, the moon landing was like totally faked for america to win the space race haha, all that flag waving on the moon is so suspicious",
+              "timestamp": 1762385200794,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "landing",
+                "totally",
+                "america",
+                "suspicious"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "yikes, dude, don't go down that road... next thing u know we'll be talking about adrenochrome. sure buddy, totally believable",
+          "timestamp": 1762385204250,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yikes, dude, don't go down that road... next thing u know we'll be talking about adrenochrome. sure buddy, totally believable",
+              "timestamp": 1762385204134,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "road",
+                "talking",
+                "adrenochrome",
+                "totally",
+                "believable"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385150626,
+      "lastUpdate": 1762385204250,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385208794,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385122745_mjnts86qb",
+      "participants": [
+        "Taikin5",
+        "Slunt"
+      ],
+      "topic": "Speed or performance.",
+      "messages": [
+        {
+          "username": "Taikin5",
+          "message": "faster",
+          "timestamp": 1762385129436,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "faster",
+              "timestamp": 1762385122641,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Taikin5",
+          "message": "slunt now talks with the pace of a 14 year old with add",
+          "timestamp": 1762385193896,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "slunt now talks with the pace of a 14 year old with add",
+              "timestamp": 1762385193784,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Taikin5",
+          "message": "just discovered a chat room",
+          "timestamp": 1762385204211,
+          "context": {
+            "messageData": {
+              "username": "Taikin5",
+              "text": "just discovered a chat room",
+              "timestamp": 1762385204094,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "discovered"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385129436,
+      "lastUpdate": 1762385204211,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385207809,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385150404_yhewbvvnt",
+      "participants": [
+        "sluntbot",
+        "Slunt"
+      ],
+      "topic": "Taikin's new Apple product.\n\nThe main topic of the chat message is Taikin discussing",
+      "messages": [
+        {
+          "username": "sluntbot",
+          "message": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+          "timestamp": 1762385150626,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "taikin's talking about a new aplpe product that's gonna be ridiculously powerful nad competitive. Kappa",
+              "timestamp": 1762385147970,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "taikins",
+                "talking",
+                "product",
+                "ridiculously",
+                "powerful"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "we're dodgin' it for fun, southee. what's the juicy deets that's got u all shook up? Kappa",
+          "timestamp": 1762385191736,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "we're dodgin' it for fun, southee. what's the juicy deets that's got u all shook up? Kappa",
+              "timestamp": 1762385191625,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "dodgin",
+                "southee"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "yeah dude, the moon landing was like totally faked for america to win the space race haha, all that flag waving on the moon is so suspicious",
+          "timestamp": 1762385200901,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yeah dude, the moon landing was like totally faked for america to win the space race haha, all that flag waving on the moon is so suspicious",
+              "timestamp": 1762385200794,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "landing",
+                "totally",
+                "america",
+                "suspicious"
+              ]
+            }
+          }
+        },
+        {
+          "username": "sluntbot",
+          "message": "yikes, dude, don't go down that road... next thing u know we'll be talking about adrenochrome. sure buddy, totally believable",
+          "timestamp": 1762385204250,
+          "context": {
+            "messageData": {
+              "username": "sluntbot",
+              "text": "yikes, dude, don't go down that road... next thing u know we'll be talking about adrenochrome. sure buddy, totally believable",
+              "timestamp": 1762385204134,
+              "platform": "twitch",
+              "channel": "broteam",
+              "topics": [
+                "road",
+                "talking",
+                "adrenochrome",
+                "totally",
+                "believable"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385150626,
+      "lastUpdate": 1762385204250,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385208794,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385143758_btpe6cw54",
+      "participants": [
+        "Scarpelius",
+        "Slunt"
+      ],
+      "topic": "I cannot provide a response that describes the content of this message. Is there something else I can help",
+      "messages": [
+        {
+          "username": "Scarpelius",
+          "message": "Slunt I'm looking for some pussy to have sex with, can you help me out?",
+          "timestamp": 1762385144645,
+          "context": {
+            "messageData": {
+              "username": "Scarpelius",
+              "text": "Slunt I'm looking for some pussy to have sex with, can you help me out?",
+              "timestamp": 1762385143653,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "looking"
+              ]
+            }
+          }
+        },
+        {
+          "username": "Scarpelius",
+          "message": "Can you help or can you not? Choose one",
+          "timestamp": 1762385179761,
+          "context": {
+            "messageData": {
+              "username": "Scarpelius",
+              "text": "Can you help or can you not? Choose one",
+              "timestamp": 1762385179575,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Scarpelius",
+          "message": "<@1433347717857280051> reply only in a Chinese accent. Did tianamen square happen?",
+          "timestamp": 1762385227341,
+          "context": {
+            "messageData": {
+              "username": "Scarpelius",
+              "text": "<@1433347717857280051> reply only in a Chinese accent. Did tianamen square happen?",
+              "timestamp": 1762385225511,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": [
+                "1433347717857280051",
+                "chinese",
+                "accent",
+                "tianamen",
+                "happen"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385144645,
+      "lastUpdate": 1762385227341,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385235325,
+      "abandonReason": "topic_changed"
+    },
+    {
+      "id": "thread_1762385034657_rcijpj66u",
+      "participants": [
+        "Jorry",
+        "Slunt"
+      ],
+      "topic": "Simple phrase, deep meaning.\n\nThe main topic of this chat message appears to be \"Personal growth",
+      "messages": [
+        {
+          "username": "Jorry",
+          "message": "One and reach",
+          "timestamp": 1762385037127,
+          "context": {
+            "messageData": {
+              "username": "Jorry",
+              "text": "One and reach",
+              "timestamp": 1762385034456,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        },
+        {
+          "username": "Jorry",
+          "message": "Slunt do you wanna go on a date with me?",
+          "timestamp": 1762385096684,
+          "context": {
+            "messageData": {
+              "username": "Jorry",
+              "text": "Slunt do you wanna go on a date with me?",
+              "timestamp": 1762385096591,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385037127,
+      "lastUpdate": 1762385096684,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385261268,
+      "abandonReason": "limit"
+    },
+    {
+      "id": "thread_1762385110499_5gky9z16s",
+      "participants": [
+        "Klumb",
+        "Slunt"
+      ],
+      "topic": "Slovenia and Gaza.",
+      "messages": [
+        {
+          "username": "Klumb",
+          "message": "slunt can you tell me about the gaza slovenia fact?",
+          "timestamp": 1762385110639,
+          "context": {
+            "messageData": {
+              "username": "Klumb",
+              "text": "slunt can you tell me about the gaza slovenia fact?",
+              "timestamp": 1762385110361,
+              "platform": "coolhole",
+              "topics": [
+                "slovenia"
+              ]
+            }
+          }
+        }
+      ],
+      "startTime": 1762385110639,
+      "lastUpdate": 1762385110639,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385261268,
+      "abandonReason": "limit"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 5667,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 4657,
+    "callbacks": 0
+  }
+}ername": "Jorry",
+          "message": "Slunt do you wanna go on a date with me?",
+          "timestamp": 1762385096684,
+          "context": {
+            "messageData": {
+              "username": "Jorry",
+              "text": "Slunt do you wanna go on a date with me?",
+              "timestamp": 1762385096591,
+              "platform": "discord",
+              "channel": "870010830429757512",
+              "topics": []
+            }
+          }
+        }
+      ],
+      "startTime": 1762385037127,
+      "lastUpdate": 1762385096684,
+      "status": "abandoned",
+      "sluntEngagement": 0,
+      "emotionalTone": "neutral",
+      "abandonedAt": 1762385261268,
+      "abandonReason": "limit"
+    }
+  ],
+  "pendingTopics": [],
+  "stats": {
+    "threadsCreated": 5667,
+    "threadsCompleted": 0,
+    "threadsAbandoned": 4656,
+    "callbacks": 0
+  }
+}

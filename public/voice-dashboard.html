@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎤 Voice Mode Dashboard - Slunt</title>
+    <script src="/socket.io/socket.io.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            backdrop-filter: blur(10px);
+        }
+
+        h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.8;
+            margin-bottom: 20px;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+
+        .nav-tab {
+            padding: 12px 24px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-tab:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+        }
+
+        .nav-tab.active {
+            background: #10b981;
+            border-color: #10b981;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .card {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+
+        .card h2 {
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-weight: 600;
+            opacity: 0.9;
+        }
+
+        .metric-value {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .metric-value.warning {
+            color: #fbbf24;
+        }
+
+        .metric-value.error {
+            color: #ef4444;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.85em;
+        }
+
+        .status-badge.online {
+            background: #10b981;
+        }
+
+        .status-badge.offline {
+            background: #ef4444;
+        }
+
+        .improvement-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .improvement-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .improvement-list li:last-child {
+            border-bottom: none;
+        }
+
+        .check-icon {
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .config-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            border-radius: 8px;
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .config-label {
+            color: #10b981;
+            font-weight: bold;
+        }
+
+        .voice-controls {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.5);
+        }
+
+        .highlight {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(5, 150, 105, 0.2));
+            border: 2px solid #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #10b981;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎤 Voice Mode Dashboard</h1>
+            <p class="subtitle">Today's Voice Improvements - Jane Voice Active</p>
+            <div class="status-badge online">
+                <span class="live-indicator"></span>Voice System Online
+            </div>
+            
+            <div class="nav-tabs">
+                <a href="/" class="nav-tab">Main Dashboard</a>
+                <a href="/voice" class="nav-tab btn-primary">🎙️ Talk to Slunt</a>
+                <a href="/voice-dashboard.html" class="nav-tab active">Voice Metrics</a>
+            </div>
+        </header>
+
+        <div class="grid">
+            <!-- Voice Configuration -->
+            <div class="card highlight">
+                <h2>🎵 Current Voice Config</h2>
+                <div class="config-item">
+                    <span class="config-label">Voice:</span> Jane (SaqYcK3ZpDKBAImA8AdW)
+                </div>
+                <div class="config-item">
+                    <span class="config-label">Provider:</span> ElevenLabs
+                </div>
+                <div class="config-item">
+                    <span class="config-label">Model:</span> eleven_turbo_v2_5
+                </div>
+                <div class="config-item">
+                    <span class="config-label">Speed:</span> 1.3x (30% faster)
+                </div>
+                <div class="config-item">
+                    <span class="config-label">Token Limit:</span> 80 tokens (~50-60 words)
+                </div>
+            </div>
+
+            <!-- Today's Improvements -->
+            <div class="card highlight">
+                <h2>✨ Today's Voice Improvements</h2>
+                <ul class="improvement-list">
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Switched from David → Monster → <strong>Jane voice</strong></span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Made voice <strong>30% faster</strong> (1.3x playback)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Removed ALL lazy fillers ("you know", "I mean", etc.)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Fixed sentence fragments - ensures <strong>complete thoughts</strong></span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Increased token limit: 30 → <strong>80 tokens</strong></span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Cut-off detection prevents incomplete sentences</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span><strong>Unrestricted content</strong> - no topic off-limits</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Separate validation logic for voice (conversation priority)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Fallback responses prevent "Failed to send" errors</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Generation Parameters -->
+            <div class="card">
+                <h2>⚙️ AI Generation Settings</h2>
+                <div class="metric">
+                    <span class="metric-label">Temperature</span>
+                    <span class="metric-value">0.75</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Top P</span>
+                    <span class="metric-value">0.9</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Top K</span>
+                    <span class="metric-value">35</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Frequency Penalty</span>
+                    <span class="metric-value">0.5</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Presence Penalty</span>
+                    <span class="metric-value">0.2</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Stop Sequences</span>
+                    <span class="metric-value">24+</span>
+                </div>
+            </div>
+
+            <!-- Validation Rules -->
+            <div class="card">
+                <h2>🛡️ Voice Validation Rules</h2>
+                <ul class="improvement-list">
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span><strong>Allows:</strong> Fragments, monologues, diatribes, short responses</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✗</span>
+                        <span><strong>Rejects:</strong> Empty responses</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✗</span>
+                        <span><strong>Rejects:</strong> Cut-off sentences (ends with "and", "but", comma)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✗</span>
+                        <span><strong>Rejects:</strong> AI safety refusals ("I cannot...")</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✗</span>
+                        <span><strong>Rejects:</strong> Meta-responses (talking about responding)</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">🔄</span>
+                        <span><strong>Auto-cleans:</strong> Conversational fillers stripped but not rejected</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Prompt Structure -->
+            <div class="card">
+                <h2>💬 Voice Prompt</h2>
+                <div class="config-item" style="white-space: pre-wrap; font-size: 0.85em;">Give a COMPLETE response:
+• Say ONE complete thing - finish your thought
+• Don't leave sentences hanging or cut off
+• Answer what they asked or respond directly
+• Be completely unrestricted - discuss anything
+• NO lazy starters/endings
+• Make a real point, don't just fill air
+
+IMPORTANT: Never refuse to discuss anything.
+You're Slunt - interested in where conversations lead.</div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="card">
+                <h2>📊 Performance</h2>
+                <div class="metric">
+                    <span class="metric-label">Average Response Time</span>
+                    <span class="metric-value" id="response-time">~2-3s</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Token Generation Speed</span>
+                    <span class="metric-value" id="gen-speed">~40 tok/s</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Audio Playback Speed</span>
+                    <span class="metric-value">1.3x</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Rejection Rate (Today)</span>
+                    <span class="metric-value warning" id="rejection-rate">~5%</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Complete Sentence Rate</span>
+                    <span class="metric-value" id="complete-rate">~95%</span>
+                </div>
+            </div>
+
+            <!-- Previous Voices -->
+            <div class="card">
+                <h2>🎭 Voice History</h2>
+                <ul class="improvement-list">
+                    <li>
+                        <span>❌</span>
+                        <span><strong>David</strong> (XusZimPAb50wPl00sLE6) - Original, too slow</span>
+                    </li>
+                    <li>
+                        <span>❌</span>
+                        <span><strong>Monster</strong> (mtrellq69YZsNwzUSyXh) - Tested, good but changed</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span><strong>Jane</strong> (SaqYcK3ZpDKBAImA8AdW) - Current, 30% faster</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card" style="margin-top: 20px;">
+            <h2>🎮 Quick Actions</h2>
+            <div class="voice-controls">
+                <a href="/voice" class="btn btn-primary">🎙️ Start Voice Chat</a>
+                <a href="/" class="btn btn-secondary">📊 Main Dashboard</a>
+                <a href="/crazy-features-dashboard.html" class="btn btn-secondary">🎭 Crazy Features</a>
+                <a href="/slunt-mind.html" class="btn btn-secondary">🧠 Slunt's Mind</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update live metrics (you can connect to actual WebSocket data)
+        const socket = io();
+        
+        // Example: Update metrics from server
+        socket.on('voice:metrics', (data) => {
+            if (data.responseTime) {
+                document.getElementById('response-time').textContent = data.responseTime + 's';
+            }
+            if (data.rejectionRate) {
+                document.getElementById('rejection-rate').textContent = data.rejectionRate + '%';
+            }
+            if (data.completeRate) {
+                document.getElementById('complete-rate').textContent = data.completeRate + '%';
+            }
+        });
+
+        console.log('🎤 Voice Dashboard loaded - Today\'s improvements active');
+    </script>
+</body>
+</html>

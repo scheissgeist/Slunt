@@ -1,0 +1,65 @@
+{
+  "clusters": [
+    {
+      "id": "cluster_0",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "Dink Smallwood"
+        ],
+        "timeRange": {
+          "earliest": 1762381282630,
+          "latest": 1762381282630
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "Dink Smallwood",
+        "timestamp": 1762381282630
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "Dink Smallwood",
+          "timestamp": 1762381282630
+        }
+      ],
+      "created": 1762382620876
+    },
+    {
+      "id": "cluster_1",
+      "count": 1,
+      "summary": {
+        "theme": "positive",
+        "count": 1,
+        "users": [
+          "UncleDoctor"
+        ],
+        "timeRange": {
+          "earliest": 1762382327255,
+          "latest": 1762382327255
+        }
+      },
+      "representative": {
+        "type": "opinion",
+        "content": "positive",
+        "username": "UncleDoctor",
+        "timestamp": 1762382327255
+      },
+      "members": [
+        {
+          "type": "opinion",
+          "content": "positive",
+          "username": "UncleDoctor",
+          "timestamp": 1762382327255
+        }
+      ],
+      "created": 1762382620876
+    }
+  ],
+  "savedAt": 1762382920911
+}

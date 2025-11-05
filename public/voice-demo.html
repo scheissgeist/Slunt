@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Slunt Voice Demo v2.0 - FIXED</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #222; color: #fff; text-align: center; }
+    .container { margin: 40px auto; max-width: 500px; background: #333; border-radius: 12px; padding: 32px; }
+    button { font-size: 1.2em; padding: 12px 32px; border-radius: 8px; border: none; background: #4CAF50; color: #fff; cursor: pointer; margin: 12px; }
+    button:disabled { background: #888; }
+    .transcript, .reply { margin: 24px 0; padding: 16px; background: #444; border-radius: 8px; min-height: 40px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎤 Talk to Slunt</h1>
+    <button id="startBtn">Start Listening</button>
+    <button id="stopBtn" disabled>Stop</button>
+    <button id="clearMemoryBtn" style="background: #f44336;">Clear Memory</button>
+    <div class="transcript" id="transcript">Transcript will appear here...</div>
+    <div class="reply" id="reply">Slunt's reply will appear here...</div>
+    <audio id="audio" controls style="display:none;"></audio>
+  </div>
+  <script>
+    let isListening = false;
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const clearMemoryBtn = document.getElementById('clearMemoryBtn');
+    const transcriptEl = document.getElementById('transcript');
+    const replyEl = document.getElementById('reply');
+    const audioEl = document.getElementById('audio');
+  let synthUtterance = null;
+
+    // Clear memory button handler
+    clearMemoryBtn.addEventListener('click', async () => {
+      try {
+        const response = await fetch('/api/voice/clear-memory', { method: 'POST' });
+        const data = await response.json();
+        replyEl.textContent = '🧠 Memory cleared! Starting fresh conversation.';
+        transcriptEl.textContent = 'Ready for a new conversation...';
+        console.log('Voice memory cleared');
+      } catch (err) {
+        console.error('Failed to clear memory:', err);
+        replyEl.textContent = '❌ Failed to clear memory';
+      }
+    });
+
+    // Use browser SpeechRecognition for demo (continuous with pause detection)
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  let recognition = null;
+  let listenContinuously = false;
+  let preferredVoice = null;
+    if (SpeechRecognition) {
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = 'en-US';
+      let finalTranscript = '';
+      let lastSpeechTime = 0;
+      const PAUSE_MS = 1200; // Longer pause to avoid mic noise triggering responses
+      const MIN_CONFIDENCE = 0.3; // LOWERED: Accept more speech (was 0.6, too strict)
+      let pauseTimer = null; // ADDED: Track single timer to prevent duplicates
+      let isSending = false; // ADDED: Prevent multiple sends of same message
+      let lastSentMessage = ''; // ADDED: Dedup identical messages
+      let lastSentTime = 0; // ADDED: Prevent rapid-fire sends
+
+      // Choose a high-quality system voice if we use browser TTS fallback
+      function pickPreferredVoice() {
+        const voices = window.speechSynthesis ? window.speechSynthesis.getVoices() : [];
+        // Prefer Microsoft neural/natural voices on Windows/Edge
+        const prefer = [
+          'Microsoft Aria Online (Natural) - English (United States)',
+          'Microsoft Guy Online (Natural) - English (United States)'
+        ];
+        let best = null;
+        for (const name of prefer) {
+          best = voices.find(v => v.name === name);
+          if (best) return best;
+        }
+        // Otherwise pick first en-US voice that contains Microsoft or Natural/Neural
+        best = voices.find(v => /en-US/i.test(v.lang) && /Microsoft|Natural|Neural/i.test(v.name));
+        if (best) return best;
+        // Fallback to any en-US voice
+        return voices.find(v => /en-US/i.test(v.lang)) || voices[0] || null;
+      }
+
+      function ensurePreferredVoice() {
+        if (!preferredVoice && window.speechSynthesis) {
+          preferredVoice = pickPreferredVoice();
+        }
+      }
+      if (window.speechSynthesis) {
+        // voices may load asynchronously
+        window.speechSynthesis.onvoiceschanged = () => {
+          preferredVoice = pickPreferredVoice();
+        };
+        ensurePreferredVoice();
+      }
+
+      // DISABLED: Don't interrupt Slunt while he's speaking
+      // Only interrupt if user speaks WHILE he's still playing audio
+      // recognition.onstart = () => {
+      //   try {
+      //     if (!audioEl.paused) {
+      //       audioEl.pause();
+      //       audioEl.currentTime = 0;
+      //     }
+      //   } catch (e) {}
+      //   try {
+      //     if (window.speechSynthesis) {
+      //       window.speechSynthesis.cancel();
+      //     }
+      //   } catch (e) {}
+      // };
+
+      recognition.onresult = async (event) => {
+        let interim = '';
+        // ACCUMULATE ALL SPEECH: Don't reset on interim results
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const res = event.results[i];
+          const text = res[0].transcript;
+          const conf = res[0].confidence;
+          
+          // DEBUG: Show what we're getting
+          if (res.isFinal) {
+            console.log(`[Speech] FINAL: "${text}" (confidence: ${conf.toFixed(2)})`);
+          }
+          
+          // ACCEPT EVERYTHING - no confidence filter
+          if (res.isFinal) {
+            finalTranscript += text + ' ';
+            lastSpeechTime = Date.now();
+            console.log(`[Speech] ✅ Accepted: "${text}"`);
+          } else if (!res.isFinal) {
+            interim += text;
+            // Update last speech time even for interim (user still talking)
+            lastSpeechTime = Date.now();
+          }
+        }
+        
+        // Show accumulated + interim text (full thought)
+        const fullText = (finalTranscript + ' ' + interim).trim();
+        transcriptEl.textContent = fullText || 'Listening...';
+
+        // FIXED: Clear previous timer and set ONE timer
+        // This prevents multiple sends of the same message
+        if (pauseTimer) {
+          clearTimeout(pauseTimer);
+          pauseTimer = null;
+        }
+
+        // If we've had a pause after some speech, send EVERYTHING accumulated
+        pauseTimer = setTimeout(async () => {
+          pauseTimer = null; // Clear timer reference
+          
+          const text = finalTranscript.trim();
+          
+          // Skip if already sending, no text, or duplicate message
+          if (isSending || !text) {
+            return;
+          }
+          
+          // Dedup: Don't send if it's the same message within 3 seconds
+          const now = Date.now();
+          if (text === lastSentMessage && (now - lastSentTime) < 3000) {
+            console.log(`[Speech] ⏭️ Skipping duplicate: "${text}"`);
+            return;
+          }
+          
+          console.log(`[Speech] 🚀 Sending to Slunt: "${text}"`);
+          
+          // Lock to prevent duplicate sends
+          isSending = true;
+          lastSentMessage = text;
+          lastSentTime = now;
+          finalTranscript = ''; // Reset for next thought
+          transcriptEl.textContent = text;
+          
+          // ONLY interrupt if Slunt is CURRENTLY playing audio
+          try {
+            if (!audioEl.paused) {
+              console.log('[Speech] ⚠️ Interrupting Slunt (user spoke while he was talking)');
+              audioEl.pause();
+              audioEl.currentTime = 0;
+            }
+          } catch (e) {}
+
+          try {
+            const res = await fetch('/api/voice', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text })
+            });
+            const data = await res.json();
+            replyEl.textContent = data.reply || '[No reply]';
+            if (data.audioUrl) {
+              audioEl.src = data.audioUrl;
+              audioEl.style.display = 'block';
+              audioEl.play();
+            } else if (window.speechSynthesis && data.reply) {
+              // Fallback to browser TTS if server could not provide audio
+              try {
+                window.speechSynthesis.cancel();
+                synthUtterance = new SpeechSynthesisUtterance(data.reply);
+                ensurePreferredVoice();
+                if (preferredVoice) synthUtterance.voice = preferredVoice;
+                synthUtterance.rate = 1.0;
+                synthUtterance.pitch = 1.0;
+                window.speechSynthesis.speak(synthUtterance);
+              } catch (e) {
+                console.warn('Speech synthesis failed:', e);
+              }
+            }
+          } catch (err) {
+            console.error('[Speech] ❌ Send failed:', err);
+            replyEl.textContent = '❌ Failed to send message';
+          } finally {
+            // Unlock after response or error
+            isSending = false;
+          }
+        }, PAUSE_MS + 10); // Minimal extra delay for snappy responses
+      };
+      recognition.onerror = (e) => {
+        transcriptEl.textContent = 'Error: ' + e.error;
+      };
+      recognition.onend = () => {
+        if (listenContinuously) {
+          recognition.start();
+        } else {
+          isListening = false;
+          startBtn.disabled = false;
+          stopBtn.disabled = true;
+        }
+      };
+    }
+
+    startBtn.onclick = () => {
+      if (recognition && !isListening) {
+        listenContinuously = true;
+        recognition.start();
+        isListening = true;
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+        transcriptEl.textContent = 'Listening (continuous)...';
+      }
+    };
+    stopBtn.onclick = () => {
+      if (recognition && isListening) {
+        listenContinuously = false;
+        recognition.stop();
+        isListening = false;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+      }
+    };
+  </script>
+</body>
+</html>

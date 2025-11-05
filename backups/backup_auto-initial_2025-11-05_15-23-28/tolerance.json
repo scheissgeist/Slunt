@@ -1,0 +1,6706 @@
+{
+  "userBehaviors": [
+    [
+      "Bryozoa",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761870120434,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1761870120434,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Capegourd",
+      {
+        "behaviors": {
+          "question": {
+            "count": 25,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762332094219,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762325782340,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762317435627,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 31,
+        "lastInteraction": 1762332094219,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "frensheep",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761870090554,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761870090554,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "bryxby",
+      {
+        "behaviors": {
+          "question": {
+            "count": 28,
+            "tolerance": 0.95,
+            "lastOccurrence": 1761879471728,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761879043449,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761873669042,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761880345680,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 39,
+        "lastInteraction": 1761880345680,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "thebignic",
+      {
+        "behaviors": {
+          "question": {
+            "count": 22,
+            "tolerance": 0.95,
+            "lastOccurrence": 1761874622060,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761871165487,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1761874517873,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761873583996,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761873656553,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 33,
+        "lastInteraction": 1761874622060,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "churchill1941.",
+      {
+        "behaviors": {
+          "question": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762031642782,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762024898149,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762023755524,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762023965350,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762031642782,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Davedalus",
+      {
+        "behaviors": {
+          "question": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762317390541,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761876368048,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762284186674,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762308891814,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762230537089,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762283972961,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 19,
+        "lastInteraction": 1762317390541,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "ZoomerTbagger2",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762228280744,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762228280744,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "decube",
+      {
+        "behaviors": {
+          "question": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1761874036096,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761873887015,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1761874036096,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "radzuse",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761876158321,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1761876158321,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "doscomputer",
+      {
+        "behaviors": {
+          "question": {
+            "count": 14,
+            "tolerance": 0.8413030972429927,
+            "lastOccurrence": 1762315157029,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213810427,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762315199785,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762241213603,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762314403427,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 24,
+        "lastInteraction": 1762315199785,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "artimenner1",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761879242628,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761876483852,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761874418355,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761874506275,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761875030091,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761879562549,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 12,
+        "lastInteraction": 1761879562549,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "miles_gloriosus",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761871499348,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761871499348,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "albino5stargeneral",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761967120976,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761887514492,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761967232807,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761886536774,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762033754257,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 15,
+        "lastInteraction": 1762033754257,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Miles_Gloriosus",
+      {
+        "behaviors": {
+          "question": {
+            "count": 20,
+            "tolerance": 0.9458340748040764,
+            "lastOccurrence": 1762381364138,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762252700859,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762252343347,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762021210452,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 34,
+        "lastInteraction": 1762381364138,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "gutmatant",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761875415970,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761875513406,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762301378536,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762301378536,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "b_bnab",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761871157051,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762306757679,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309275241,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762309275241,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "sickillusion",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761876082356,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761876082356,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "sag_nag",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762302006044,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762303251418,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761876444412,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761875941735,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 13,
+        "lastInteraction": 1762303251418,
+        "expectedBehavior": "joke"
+      }
+    ],
+    [
+      "fifthcouncil",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1761874599776,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761874628423,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761873545645,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 13,
+        "lastInteraction": 1761874628423,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "optimuslime1",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761872300501,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761871531634,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1761872300501,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "huculberryfinn",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761876482955,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761877725589,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1761877725589,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "robofussin",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761876491197,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761872329902,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761872363716,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761876494701,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1761876494701,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "steescribbles",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761874461749,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761874461749,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "scornzow",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761873233809,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761873233809,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "scouragous",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761873336613,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762042796678,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762042796678,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "bbnab",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761968820759,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762020762249,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762022788294,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762022788294,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "smkingweed420",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762301759085,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761880524084,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761880538787,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309369583,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762309369583,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "beboy360",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761873602048,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761953475003,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1761953475003,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "riproarinn",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761873613780,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761873613780,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Sagnag",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761873641939,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761873641939,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      ".blueeyeswhitesupremacist",
+      {
+        "behaviors": {
+          "question": {
+            "count": 45,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762051389925,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762047866304,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762046212102,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761886151706,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762045551669,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762046243966,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 66,
+        "lastInteraction": 1762051389925,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "shazbot885",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761966613728,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761967110054,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 17,
+            "tolerance": 0.8979444735226818,
+            "lastOccurrence": 1761968103091,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761969673182,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761955099099,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 30,
+        "lastInteraction": 1761969673182,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "broteam",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761874458414,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761874458414,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "rottencheeseca",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762051629135,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761874669459,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762051629135,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "jhaumrith",
+      {
+        "behaviors": {
+          "question": {
+            "count": 24,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762045539790,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762045449208,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761884207816,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761969896970,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762027328327,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 30,
+        "lastInteraction": 1762045539790,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "wwhomo",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761880208312,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761876587534,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761879756670,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1761880208312,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "shitstainafficionado_04919",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762032569528,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 13,
+            "tolerance": 0.8198692565977803,
+            "lastOccurrence": 1762052451777,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762049509316,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762051041710,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762051112597,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 19,
+        "lastInteraction": 1762052451777,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "unhuggable",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761875524711,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762272061520,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762045340903,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762272061520,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "fargerdinklor",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761958079266,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761958079266,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "whomo.",
+      {
+        "behaviors": {
+          "question": {
+            "count": 13,
+            "tolerance": 0.8198692565977803,
+            "lastOccurrence": 1762052349062,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761880453409,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761964966850,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762042814343,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761962145293,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761963699776,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 23,
+        "lastInteraction": 1762052349062,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "fusionfountain",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761877097119,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761877097119,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "sadcum420",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761878887025,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761879435701,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761879435701,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "uncledoctor",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762049959114,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761950478811,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762023532602,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761953477078,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762049959114,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "hued",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762049221958,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762023308180,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761888728871,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761969662793,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762049221958,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "miknugget_",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761963614482,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761963399497,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1761963614482,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "OrbMeat",
+      {
+        "behaviors": {
+          "question": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762382225427,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762217146928,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762288049600,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762291804765,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 15,
+        "lastInteraction": 1762382225427,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "radfather",
+      {
+        "behaviors": {
+          "question": {
+            "count": 12,
+            "tolerance": 0.7968463205835412,
+            "lastOccurrence": 1761970036499,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762046470531,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761969244248,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761970514465,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 22,
+        "lastInteraction": 1762046470531,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "glowInTheDark",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762238300443,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762239194430,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762238375565,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762241102217,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 18,
+        "lastInteraction": 1762241102217,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "SickIllu",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762382816350,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762382816350,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "PukeThroat",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1761951205309,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761950707031,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761884593335,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761950200217,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 16,
+        "lastInteraction": 1761951205309,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "Brotherimbread",
+      {
+        "behaviors": {
+          "question": {
+            "count": 37,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762332129271,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762290602989,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762293738874,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762317550780,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762331467936,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762311654486,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 60,
+        "lastInteraction": 1762332129271,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "BbNaB",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762306644509,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762330748840,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762306696838,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762330748840,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Wiggums",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761886747392,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761886454021,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1761886747392,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "pat8925",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762025592237,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762024638121,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 15,
+            "tolerance": 0.8613531161467861,
+            "lastOccurrence": 1762033561735,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762025791975,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762026265108,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 28,
+        "lastInteraction": 1762033561735,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "orbmeat",
+      {
+        "behaviors": {
+          "question": {
+            "count": 19,
+            "tolerance": 0.9306765580733931,
+            "lastOccurrence": 1762051572369,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762044704568,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762043403448,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761901889950,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 34,
+        "lastInteraction": 1762051572369,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Huculberry",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762209348686,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1761959936552,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761970169916,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761970488747,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761939968777,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762049815865,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 32,
+        "lastInteraction": 1762209348686,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "electriqwizard",
+      {
+        "behaviors": {
+          "question": {
+            "count": 11,
+            "tolerance": 0.7719796553163858,
+            "lastOccurrence": 1762278346177,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762279188179,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762231125236,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 18,
+        "lastInteraction": 1762279188179,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "nam420",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761885068612,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761963816039,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761885161418,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761886023945,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1761963816039,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "WankingPrep",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761885142701,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761885142701,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "gangstalker_of_gangstalkers",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762046159994,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762046420482,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761887917178,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 12,
+        "lastInteraction": 1762046420482,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "jello_noir",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762027256047,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761960635487,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761969829282,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762027256047,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "pleasehelp9532",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761885362114,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761885362114,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "winggweeps",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761952260816,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761952260816,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "vaporwar3",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762046548340,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1761967330879,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762021178255,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762046548340,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "baddibarbie",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762050606059,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761966576429,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762049126099,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762033666704,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 15,
+        "lastInteraction": 1762050606059,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "burceburce",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761887902949,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761887902949,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "gorgelgargle",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761888046038,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762043387178,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762043387178,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "wowman",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762238095143,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762209122938,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762238085125,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 12,
+        "lastInteraction": 1762238095143,
+        "expectedBehavior": "joke"
+      }
+    ],
+    [
+      "stevepugwaredev",
+      {
+        "behaviors": {
+          "question": {
+            "count": 65,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762045156671,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761901910396,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762045013404,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762025917225,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762028162455,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 71,
+        "lastInteraction": 1762045156671,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "alanminder",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761984992143,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762021097096,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762025339807,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762025339807,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Applecooler",
+      {
+        "behaviors": {
+          "question": {
+            "count": 25,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762306247274,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762304122444,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762382861425,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762286699860,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761963765845,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762285547972,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 48,
+        "lastInteraction": 1762382861425,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Juice_Kelly",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761937512671,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761939958865,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761939958865,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Taikunoaku",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761950170658,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761950523381,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762025163822,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762025163822,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      ".zcanaan",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762032641023,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762032641023,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "big_moof",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761949621697,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761949883643,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761949883643,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "_slamminsalmon",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762033199281,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762024541011,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762031538347,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762033199281,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "picklebond",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761949849498,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761954160827,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1761954160827,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "taikunoaku",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761967746779,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761959913596,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1761967746779,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "SteeScribbles",
+      {
+        "behaviors": {
+          "question": {
+            "count": 40,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762381995077,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762286011012,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762026679410,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762290774835,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762285843412,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214017575,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 58,
+        "lastInteraction": 1762381995077,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "dammitwesley",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762048239265,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762052426522,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762023902170,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 9,
+        "lastInteraction": 1762052426522,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "braybray9876",
+      {
+        "behaviors": {
+          "question": {
+            "count": 29,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762051662738,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762027789317,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762028538596,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 31,
+        "lastInteraction": 1762051662738,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "aoi.yume",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761964850132,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1761964850132,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      ".loweffort",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762026310981,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 9,
+        "lastInteraction": 1762026310981,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Klumb",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762301374103,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761957041087,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762044129586,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762047670588,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 15,
+        "lastInteraction": 1762301374103,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "sithlord8448",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762033714493,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761958196294,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762033714493,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "what.tha",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761952130067,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762052498703,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762051566911,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762052498703,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "rottencheeseCA",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762314124930,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762382235431,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762382065183,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213912581,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762289011143,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 13,
+        "lastInteraction": 1762382235431,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "lapome",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761952915700,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762282975100,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761985518401,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762288265617,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762288265617,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "scarpelt",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761952998896,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761967518992,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1761967518992,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "psycho_dad",
+      {
+        "behaviors": {
+          "question": {
+            "count": 28,
+            "tolerance": 0.95,
+            "lastOccurrence": 1761960365536,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762045517474,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761960486665,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762045286295,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 36,
+        "lastInteraction": 1762045517474,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "quantum_magus",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1761954835342,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1761954835342,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "belzaboom",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761954278601,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762025892620,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762025892620,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "subtrfuge",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761969734362,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761969734362,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "._.fug",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762051547951,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761967195793,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762045787497,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762047763189,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762051547951,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "sforlord",
+      {
+        "behaviors": {
+          "question": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762205835469,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762205835469,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "jin_joe",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761955145173,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761955874538,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761957059149,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762032942445,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762032942445,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "QuantumSun",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761955468383,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761956464337,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1761969370914,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761961748296,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761963787234,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 18,
+        "lastInteraction": 1761969370914,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "ducky006446",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762051277971,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761984475433,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762045778239,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761985722190,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762045733495,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 19,
+        "lastInteraction": 1762051277971,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "ghello",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761955994290,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761955994290,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "spaceman_1996",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761959007170,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761959007170,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "davedalus",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762050848843,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762050876816,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762050876816,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "bonkersizewonga",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761960298386,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761960298386,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "bomelette",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761960369482,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762228335786,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762228335786,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "patterson1",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762033507189,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762031909426,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762033849089,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762033849089,
+        "expectedBehavior": "complaint"
+      }
+    ],
+    [
+      "Migi",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1761960791129,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1761960791129,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "bangbangbangbang",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761984192995,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761961470753,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761984227937,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1761984227937,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "sluxslol",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761961744887,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761961744887,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "ensell",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761962389919,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1761962389919,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Frigurt",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761962766076,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1761962766076,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "plaguejackal",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762043225603,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762046586856,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762045328085,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762046698561,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762046698561,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Voteskip passed",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762048557795,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762048557795,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "mr.bones888",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1761967859921,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1761967859921,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "soapyoid",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761967308629,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761967818988,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1761969414922,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762052419585,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762052419585,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "realest_zetto",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1761984630621,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1761984630621,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "net.stalker",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762027845501,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762028066722,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762028066722,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "BunnBunn",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762381704702,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762021196122,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762381704702,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "Gutmatant",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762023667216,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762023667216,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Palestine_Forever",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762284588827,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762023886624,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762284709010,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762284709010,
+        "expectedBehavior": "agreement"
+      }
+    ],
+    [
+      "sams0n1999",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762025099778,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762025274729,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762025215518,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762025274729,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "the_brofessor.",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762047945466,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762025962843,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762047308700,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762047526919,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762047967065,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762047967065,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "cassidy6969",
+      {
+        "behaviors": {
+          "question": {
+            "count": 20,
+            "tolerance": 0.9458340748040764,
+            "lastOccurrence": 1762045824823,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762027338385,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 21,
+        "lastInteraction": 1762045824823,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "4mypr0phet",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762027232220,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762027232220,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "catfractal",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762040960528,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762040914638,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762040960528,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "sheebomincinerator",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762031719771,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762031719771,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "manticrow",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762051644087,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762047272647,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762051644087,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "southeefrica",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762303903319,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762304112104,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762303514877,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762303926559,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 17,
+        "lastInteraction": 1762304112104,
+        "expectedBehavior": "agreement"
+      }
+    ],
+    [
+      "gr8itsn8",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762046232466,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762046232466,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "gfyr",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762291789710,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762287568935,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294510030,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762294510030,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "perpetuallyhuman",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762050485778,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762050509705,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762050509705,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "bobbyboon",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762050709560,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762050832580,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762050832580,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Canpilled Consciousness",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762289423741,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762292391409,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762274207643,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762271588333,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762289354167,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762294640300,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 38,
+        "lastInteraction": 1762294640300,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "zCanaan",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762287935879,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762286794625,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762287935879,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Dink Smallwood",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762208984017,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762381259678,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762293747248,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762260002976,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762381195529,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 12,
+        "lastInteraction": 1762381259678,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "unspookable",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762271757477,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762206845279,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762268471973,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762271757477,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "BobbyBoon",
+      {
+        "behaviors": {
+          "question": {
+            "count": 17,
+            "tolerance": 0.8979444735226818,
+            "lastOccurrence": 1762382368767,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762269735616,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762269758432,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762382486848,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762382489506,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 21,
+        "lastInteraction": 1762382489506,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Juice",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762206672346,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762206672346,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "theghostrin",
+      {
+        "behaviors": {
+          "question": {
+            "count": 18,
+            "tolerance": 0.9147414002175752,
+            "lastOccurrence": 1762288089279,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762264218869,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214799741,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762270529299,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 25,
+        "lastInteraction": 1762288089279,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "UncleDoctor",
+      {
+        "behaviors": {
+          "question": {
+            "count": 13,
+            "tolerance": 0.8198692565977803,
+            "lastOccurrence": 1762319208570,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762319714593,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762319257686,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762382158718,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 27,
+        "lastInteraction": 1762382158718,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Bryxby",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762208041311,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762207302249,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762225541279,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762225541279,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Oil",
+      {
+        "behaviors": {
+          "question": {
+            "count": 15,
+            "tolerance": 0.8613531161467861,
+            "lastOccurrence": 1762306661410,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762219616378,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762306743676,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 19,
+        "lastInteraction": 1762306743676,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Jinjo",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762264671602,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762208065840,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762268265973,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762268353799,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762311550046,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762268249168,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 13,
+        "lastInteraction": 1762311550046,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Wing Gweeps",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762310026716,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762314682479,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762312847904,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762310836696,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762313467165,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762313995834,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762314682479,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Shazbot",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762207972165,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762383444700,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762383444700,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "aSoapytyfys",
+      {
+        "behaviors": {
+          "question": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762271470876,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762311603308,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762311561123,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 17,
+        "lastInteraction": 1762311603308,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "gangstalker",
+      {
+        "behaviors": {
+          "question": {
+            "count": 38,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762314813858,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213899696,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214388397,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762287284063,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762307016205,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 43,
+        "lastInteraction": 1762314813858,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "HuculberryFinn",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762303751284,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762230773254,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762239449164,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762312292133,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762312292133,
+        "expectedBehavior": "joke"
+      }
+    ],
+    [
+      "juicekelly",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213348446,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762213348446,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "RoboFussin",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213373058,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213990749,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762307156813,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762307156813,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Hanswurst151",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213537265,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762213537265,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "handini_",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762313123565,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762311464387,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762239239092,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762312489481,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 24,
+        "lastInteraction": 1762313123565,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "DarianBro",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762213866853,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762214019247,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762254044174,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762254044174,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Ducky",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762264612699,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214472832,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 21,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762321700965,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762225312344,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762257842807,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762321729358,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 40,
+        "lastInteraction": 1762321729358,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "sluntbot",
+      {
+        "behaviors": {
+          "question": {
+            "count": 9,
+            "tolerance": 0.7153382790366967,
+            "lastOccurrence": 1762313650287,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 15,
+            "tolerance": 0.8613531161467861,
+            "lastOccurrence": 1762313718696,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762315186744,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762251324932,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762313742500,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 45,
+        "lastInteraction": 1762315186744,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "aSoapyoid",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214128073,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762303072510,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762303072510,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Radzuse",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762306180079,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762306180079,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Scarpelius",
+      {
+        "behaviors": {
+          "question": {
+            "count": 11,
+            "tolerance": 0.7719796553163858,
+            "lastOccurrence": 1762306225908,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762306225908,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "kvatch__433",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762303828032,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762303828032,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "PotionDweller",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214515506,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762214515506,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "brainfiend",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762214696884,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762214696884,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "sugartuts",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214614852,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762214614852,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "FifthCouncil",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762313671726,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762313671726,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "𝔅𝔯𝔬𝔣𝔢𝔰𝔰𝔬𝔯🖕",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762214950574,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762277129675,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762306714617,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762306714617,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "S3xyL3xy",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762215642566,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762215642566,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Jon_Conley",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762217166949,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762217201991,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762217201991,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "rox",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762217126958,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762217126958,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Pussy",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762217295177,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762217295177,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "lasagna5000",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762225423338,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762225423338,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "OptimusLime1",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762225431900,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 11,
+            "tolerance": 0.7719796553163858,
+            "lastOccurrence": 1762306267658,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762304143298,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 13,
+        "lastInteraction": 1762306267658,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "SickIllusion",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762245151141,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762245151141,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "whomo",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762381193232,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762231586524,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762287120673,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762381193232,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "handini",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762382450809,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762382851425,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 8,
+        "lastInteraction": 1762382851425,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Hued",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762228495638,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762282059706,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762317695097,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762317695097,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "proud white cumstain man",
+      {
+        "behaviors": {
+          "question": {
+            "count": 17,
+            "tolerance": 0.8979444735226818,
+            "lastOccurrence": 1762313554426,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762286364488,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762272443674,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762271945458,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762278334666,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762286320414,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 28,
+        "lastInteraction": 1762313554426,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "forgottenpasstoasted",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762231650644,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762231650644,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Pretqu",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762238215607,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762238215607,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Emperorjony",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762238263185,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762238263185,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Bones",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762238307100,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762241394140,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762241394140,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "artyom1024",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762239529156,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762251816876,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762251129973,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762251816876,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "bambambangbang",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762241224051,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762249276611,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762249276611,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "codythedragonrude",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762249206463,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762249206463,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Mean guy Steve",
+      {
+        "behaviors": {
+          "question": {
+            "count": 13,
+            "tolerance": 0.8198692565977803,
+            "lastOccurrence": 1762254598583,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762244901584,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762248527775,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762254306853,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762249306180,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 18,
+        "lastInteraction": 1762254598583,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "ducky125",
+      {
+        "behaviors": {
+          "question": {
+            "count": 14,
+            "tolerance": 0.8413030972429927,
+            "lastOccurrence": 1762254221540,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762252029881,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 11,
+            "tolerance": 0.7719796553163858,
+            "lastOccurrence": 1762254271669,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762250772919,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 30,
+        "lastInteraction": 1762254271669,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "蓝色梦想",
+      {
+        "behaviors": {
+          "question": {
+            "count": 43,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762273081721,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762267821416,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 7,
+            "tolerance": 0.6460148371100896,
+            "lastOccurrence": 1762269012479,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762260211262,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762261933234,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 56,
+        "lastInteraction": 1762273081721,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "codytherudeguy",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762250546818,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762304249319,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 22,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762307197703,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762253009649,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762251335309,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 36,
+        "lastInteraction": 1762307197703,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "I_am_Boner",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762248110235,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762248110235,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Pugware",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762248948256,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762248948256,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "kingofnowhere",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762249521817,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762254397207,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762254241146,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762254397207,
+        "expectedBehavior": "joke"
+      }
+    ],
+    [
+      "Val",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762291901472,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762259027970,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762271573319,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762332056440,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762332307922,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762332307922,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Aoiyume",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762249348798,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762249348798,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "waywardhavoc",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762250499626,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762251503543,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762252402196,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762252402196,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Scourge",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762254330963,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762320807408,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762320807408,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "The holocaust never happened?",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762254856157,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762254856157,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "The holocaust?",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762255207855,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762255207855,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "911 was an inside job",
+      {
+        "behaviors": {
+          "question": {
+            "count": 12,
+            "tolerance": 0.7968463205835412,
+            "lastOccurrence": 1762257240075,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762256716996,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762257200839,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762257240075,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Slunt loves Hitler",
+      {
+        "behaviors": {
+          "question": {
+            "count": 11,
+            "tolerance": 0.7719796553163858,
+            "lastOccurrence": 1762258319673,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762257859574,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 12,
+        "lastInteraction": 1762258319673,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "I am the REAL prophet Mohammed",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762258307732,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762257963579,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258403666,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258602768,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762258602768,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Bhb",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258026305,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762258026305,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "füg",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258194706,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762279020693,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762382511235,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762279173583,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762382424213,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762382553475,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762382553475,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Slunt thinks jews did 911",
+      {
+        "behaviors": {
+          "question": {
+            "count": 14,
+            "tolerance": 0.8413030972429927,
+            "lastOccurrence": 1762258988169,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258505920,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762259002822,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762259079532,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 18,
+        "lastInteraction": 1762259079532,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Slunt is the prophet Mohammed",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258667813,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258769077,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762258835472,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762259103158,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762259103158,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Slunt kissed Hitler",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762259216085,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762259528313,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762259528313,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Tricky dude Steve",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762259875402,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762259728137,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762259875402,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Wiggerlicious Mohammed prophet",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762259779287,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762259779287,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Adrenochrome harvesting from kid",
+      {
+        "behaviors": {
+          "question": {
+            "count": 14,
+            "tolerance": 0.8413030972429927,
+            "lastOccurrence": 1762260590999,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762260665308,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 15,
+        "lastInteraction": 1762260665308,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "tom",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762294155498,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762294069672,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762293977343,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762294155498,
+        "expectedBehavior": "disagreement"
+      }
+    ],
+    [
+      "Adrenochrome from kids!",
+      {
+        "behaviors": {
+          "question": {
+            "count": 114,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762294504010,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762291161975,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762294199165,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762290106500,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762263364418,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762292367480,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 131,
+        "lastInteraction": 1762294504010,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Ведьмак",
+      {
+        "behaviors": {
+          "question": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762269879096,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762265177120,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762265802935,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762269879096,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "MikNugget",
+      {
+        "behaviors": {
+          "question": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762308435449,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294041954,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762384002907,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 10,
+        "lastInteraction": 1762384002907,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "thankerware 🦃",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762311489390,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762285515431,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762311661455,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762311661455,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "skubd",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762270431045,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762270431045,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Dontgiftmesubsidiots",
+      {
+        "behaviors": {
+          "question": {
+            "count": 39,
+            "tolerance": 0.95,
+            "lastOccurrence": 1762277206205,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762275786447,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762276520590,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 41,
+        "lastInteraction": 1762277206205,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Artimenner",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762294124953,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762277183532,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762277166315,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762294124953,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Daniboy",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762313877354,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762273259355,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 6,
+        "lastInteraction": 1762313877354,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Handshake",
+      {
+        "behaviors": {
+          "question": {
+            "count": 10,
+            "tolerance": 0.7449480512024891,
+            "lastOccurrence": 1762285582050,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762272766781,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 11,
+        "lastInteraction": 1762285582050,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "hawkiipoi",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762272887375,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762272887375,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Rasmus Hansen",
+      {
+        "behaviors": {
+          "question": {
+            "count": 12,
+            "tolerance": 0.7968463205835412,
+            "lastOccurrence": 1762276314956,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762275604389,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762275918369,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 14,
+        "lastInteraction": 1762276314956,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "SubTRfugE",
+      {
+        "behaviors": {
+          "question": {
+            "count": 6,
+            "tolerance": 0.6045309775610838,
+            "lastOccurrence": 1762384545172,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762306248075,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762384545172,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Karthus the Mage",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762277245795,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762277245795,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Sams0n",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762278139770,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762278076824,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762278139770,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Belzaboom King of Israel",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762277895096,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762277895096,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "cummoner",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762383285925,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762289350737,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762294013779,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 9,
+        "lastInteraction": 1762383285925,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "thank________",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762287708047,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762287722296,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309927533,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762309927533,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "OMNI",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762281818714,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762281921771,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762313472850,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762313472850,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Zetto",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762282405527,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762282405527,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "grug",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762293658776,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762290614620,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294039273,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294069316,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762294069316,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "badevin",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762285854078,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762285854078,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "CHURCH1941",
+      {
+        "behaviors": {
+          "question": {
+            "count": 8,
+            "tolerance": 0.6826061944859854,
+            "lastOccurrence": 1762310446052,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762286819314,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762318072000,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762313318710,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762317910044,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 16,
+        "lastInteraction": 1762318072000,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "KilledAlive",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762286745155,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762286745155,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Spaceman",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762287133195,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762287133195,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Robofussin",
+      {
+        "behaviors": {
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762290595596,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762294600204,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294259624,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762294289680,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762381529440,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 9,
+        "lastInteraction": 1762381529440,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "FrenSheep",
+      {
+        "behaviors": {
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762290949883,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762318051401,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762318051401,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "https",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762291065309,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762291065309,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "AshkenEntree",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762291695634,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762291471883,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762291695634,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Soy Ant",
+      {
+        "behaviors": {
+          "question": {
+            "count": 3,
+            "tolerance": 0.43067655807339306,
+            "lastOccurrence": 1762304089699,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762304089699,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "butter_men",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762301311159,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762301311159,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "toasted1",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762301346743,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762301362194,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762301362194,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Sithlord8448",
+      {
+        "behaviors": {
+          "question": {
+            "count": 17,
+            "tolerance": 0.8979444735226818,
+            "lastOccurrence": 1762320854733,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762314985024,
+            "averageImpact": 0
+          },
+          "roast": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762315012114,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 19,
+        "lastInteraction": 1762320854733,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "theirin",
+      {
+        "behaviors": {
+          "question": {
+            "count": 4,
+            "tolerance": 0.5,
+            "lastOccurrence": 1762302385874,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762302485582,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762381301004,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 7,
+        "lastInteraction": 1762381301004,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "Artimenner1",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762301652210,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762307219150,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762307219150,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Bunn_Bunn",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762302948202,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762302948202,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "unMartwo",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762306826789,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762306785631,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 3,
+        "lastInteraction": 1762306826789,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Nam",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762303854637,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762303854637,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "yarpenzinger",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762303961798,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762303961798,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Secretsquirrel83",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762310274851,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762306795217,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762309448296,
+            "averageImpact": 0
+          },
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762307181894,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 9,
+        "lastInteraction": 1762310274851,
+        "expectedBehavior": "joke"
+      }
+    ],
+    [
+      "KR-B",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762308466656,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762308466656,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Coolmen",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762308977200,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762308977200,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "superhitler",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309262715,
+            "averageImpact": 0
+          },
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762311529242,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762311529242,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Jiro",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309855908,
+            "averageImpact": 0
+          },
+          "disagreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762309947448,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762309947448,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Zharum",
+      {
+        "behaviors": {
+          "question": {
+            "count": 5,
+            "tolerance": 0.5566413762796892,
+            "lastOccurrence": 1762313673000,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 5,
+        "lastInteraction": 1762313673000,
+        "expectedBehavior": "question"
+      }
+    ],
+    [
+      "That_Hollow",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762310065986,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762310065986,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "tappoli",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762310846522,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762310846522,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "FatMac91",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762310917681,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762310917681,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "makka_pan",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762311451459,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762311451459,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Jello_Noir",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762311529918,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762311529918,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Ghello",
+      {
+        "behaviors": {
+          "joke": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762313528495,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762313528495,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "unclejalepino",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762317806175,
+            "averageImpact": 0
+          },
+          "agreement": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762317987592,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762317987592,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "goobsthesalesman",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762317961467,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762317961467,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "yallahabibis",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762326215681,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762326215681,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "Phagsgiving",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762326245923,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762326245923,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "BoanerPains",
+      {
+        "behaviors": {
+          "agreement": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762332328420,
+            "averageImpact": 0
+          },
+          "joke": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762332084853,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 4,
+        "lastInteraction": 1762332328420,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "milk_man",
+      {
+        "behaviors": {
+          "complaint": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762381128716,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762381128716,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "rart",
+      {
+        "behaviors": {
+          "question": {
+            "count": 2,
+            "tolerance": 0.3413030972429926,
+            "lastOccurrence": 1762382761301,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 2,
+        "lastInteraction": 1762382761301,
+        "expectedBehavior": null
+      }
+    ],
+    [
+      "PrimeSuspect",
+      {
+        "behaviors": {
+          "question": {
+            "count": 1,
+            "tolerance": 0.21533827903669653,
+            "lastOccurrence": 1762382621079,
+            "averageImpact": 0
+          }
+        },
+        "totalInteractions": 1,
+        "lastInteraction": 1762382621079,
+        "expectedBehavior": null
+      }
+    ]
+  ]
+}

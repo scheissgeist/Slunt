@@ -1,0 +1,1688 @@
+{
+  "conversationHistory": [
+    {
+      "username": "You",
+      "message": "no I could fuck you down I'd fuck you through a pizza",
+      "timestamp": 1762326788956,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "through"
+      },
+      "hash": "no i could fuck you down id fuck you through a pizza"
+    },
+    {
+      "username": "You",
+      "message": "oh I'd fuck you I'd use a pizza as a condom and fuck you maybe then eat the pizza",
+      "timestamp": 1762326801062,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "oh id fuck you id use a pizza as a condom and fuck you maybe then eat the pizza"
+    },
+    {
+      "username": "You",
+      "message": "you're not leaving you love it",
+      "timestamp": 1762326810162,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "leaving"
+      },
+      "hash": "youre not leaving you love it"
+    },
+    {
+      "username": "You",
+      "message": "don't believe in mummies I don't believe in Wind",
+      "timestamp": 1762326821681,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "believe"
+      },
+      "hash": "dont believe in mummies i dont believe in wind"
+    },
+    {
+      "username": "You",
+      "message": "yeah you don't believe that what's the craziest thing you believe in that's actually full of shit and you're stupid",
+      "timestamp": 1762326833054,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "believe"
+      },
+      "hash": "yeah you dont believe that whats the craziest thing you believe in thats actually full of shit and youre stupid"
+    },
+    {
+      "username": "You",
+      "message": "this was just a test to see if it's really you I'm sorry about all that stuff man I'm a big fan respect respect respect",
+      "timestamp": 1762326860074,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "respect"
+      },
+      "hash": "this was just a test to see if its really you im sorry about all that stuff man im a big fan respect respect respect"
+    },
+    {
+      "username": "You",
+      "message": "fake",
+      "timestamp": 1762326874575,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "fake"
+    },
+    {
+      "username": "You",
+      "message": "you're a fucking shit man",
+      "timestamp": 1762326890766,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "youre a fucking shit man"
+    },
+    {
+      "username": "You",
+      "message": "you've been checking that shit up",
+      "timestamp": 1762326911871,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "checking"
+      },
+      "hash": "youve been checking that shit up"
+    },
+    {
+      "username": "You",
+      "message": "why you check your email bitch",
+      "timestamp": 1762326923265,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "why you check your email bitch"
+    },
+    {
+      "username": "You",
+      "message": "yeah you're probably on AOL or something aren't you  Netscape Navigator motherfucker",
+      "timestamp": 1762326935560,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "probably"
+      },
+      "hash": "yeah youre probably on aol or something arent you netscape navigator motherfucker"
+    },
+    {
+      "username": "You",
+      "message": "yeah you got mail bitch",
+      "timestamp": 1762326945173,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah you got mail bitch"
+    },
+    {
+      "username": "You",
+      "message": "yeah check your email box picture of my fucking Tiny Dick there waiting for you Meg Ryan motherfucker",
+      "timestamp": 1762326960485,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "picture"
+      },
+      "hash": "yeah check your email box picture of my fucking tiny dick there waiting for you meg ryan motherfucker"
+    },
+    {
+      "username": "You",
+      "message": "yo you know that show Baywatch nights you're on season 2 there's a girl Ryan I fucked her",
+      "timestamp": 1762326975181,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "baywatch"
+      },
+      "hash": "yo you know that show baywatch nights youre on season 2 theres a girl ryan i fucked her"
+    },
+    {
+      "username": "You",
+      "message": "it must be cool seeing Angie Harmon's feet all the time like that",
+      "timestamp": 1762326985687,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "harmons"
+      },
+      "hash": "it must be cool seeing angie harmons feet all the time like that"
+    },
+    {
+      "username": "You",
+      "message": "you're on a different level man yeah does that make sense to a lot of people",
+      "timestamp": 1762327010635,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "different"
+      },
+      "hash": "youre on a different level man yeah does that make sense to a lot of people"
+    },
+    {
+      "username": "You",
+      "message": "yeah like mild wings like medium wings",
+      "timestamp": 1762327032832,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah like mild wings like medium wings"
+    },
+    {
+      "username": "You",
+      "message": "why did you try them",
+      "timestamp": 1762327041341,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "why did you try them"
+    },
+    {
+      "username": "You",
+      "message": "yeah give me some of those not hot wings and not even like not hot just like nothing wings please just ruin them of 12 of those",
+      "timestamp": 1762327059343,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "nothing"
+      },
+      "hash": "yeah give me some of those not hot wings and not even like not hot just like nothing wings please just ruin them of 12 of those"
+    },
+    {
+      "username": "You",
+      "message": "yeah sounds like you who's you",
+      "timestamp": 1762327069848,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah sounds like you whos you"
+    },
+    {
+      "username": "You",
+      "message": "the fucking wings  how could you read the recipe and Nazi it's going to turn out fucked",
+      "timestamp": 1762327084646,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "the fucking wings how could you read the recipe and nazi its going to turn out fucked"
+    },
+    {
+      "username": "You",
+      "message": "what do you what was in the recipe  banana peels  fucking lemons",
+      "timestamp": 1762327097149,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "what do you what was in the recipe banana peels fucking lemons"
+    },
+    {
+      "username": "You",
+      "message": "yeah what was in the recipe you're deflecting what was in the recipe you didn't know it's going to be shit",
+      "timestamp": 1762327107634,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "deflecting"
+      },
+      "hash": "yeah what was in the recipe youre deflecting what was in the recipe you didnt know its going to be shit"
+    },
+    {
+      "username": "You",
+      "message": "what was in the recipe",
+      "timestamp": 1762327116332,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "what was in the recipe"
+    },
+    {
+      "username": "You",
+      "message": "was it really banana pills so I'm scrolling Reddit",
+      "timestamp": 1762327127938,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "scrolling"
+      },
+      "hash": "was it really banana pills so im scrolling reddit"
+    },
+    {
+      "username": "You",
+      "message": "yeah you sound like a real fucking winner dude I want to go strolling out with you",
+      "timestamp": 1762327142046,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "yeah you sound like a real fucking winner dude i want to go strolling out with you"
+    },
+    {
+      "username": "You",
+      "message": "yeah",
+      "timestamp": 1762327149342,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah"
+    },
+    {
+      "username": "You",
+      "message": "is wet as such I almost have 100,000 bucks just from robbing people",
+      "timestamp": 1762327172630,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "100000"
+      },
+      "hash": "is wet as such i almost have 100000 bucks just from robbing people"
+    },
+    {
+      "username": "You",
+      "message": "yeah what do you think about that play date",
+      "timestamp": 1762327182245,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah what do you think about that play date"
+    },
+    {
+      "username": "You",
+      "message": "yeah then I properly do not give a fuck",
+      "timestamp": 1762327220233,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "properly"
+      },
+      "hash": "yeah then i properly do not give a fuck"
+    },
+    {
+      "username": "You",
+      "message": "really thinking about that huh got you thinking",
+      "timestamp": 1762327230045,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "thinking"
+      },
+      "hash": "really thinking about that huh got you thinking"
+    },
+    {
+      "username": "You",
+      "message": "what's the coolest part of you've ever been to",
+      "timestamp": 1762327239839,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "coolest"
+      },
+      "hash": "whats the coolest part of youve ever been to"
+    },
+    {
+      "username": "You",
+      "message": "yeah just like that  fucking cool guys",
+      "timestamp": 1762327249554,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "yeah just like that fucking cool guys"
+    },
+    {
+      "username": "You",
+      "message": "I took something",
+      "timestamp": 1762327260560,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "something"
+      },
+      "hash": "i took something"
+    },
+    {
+      "username": "You",
+      "message": "have you heard the fucking download",
+      "timestamp": 1762327272633,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.32805000000000006,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "have you heard the fucking download"
+    },
+    {
+      "username": "You",
+      "message": "who is that",
+      "timestamp": 1762327280966,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "who is that"
+    },
+    {
+      "username": "You",
+      "message": "girl that you  your space case bro I don't know if I want to be your friend anymore",
+      "timestamp": 1762327294856,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "anymore"
+      },
+      "hash": "girl that you your space case bro i dont know if i want to be your friend anymore"
+    },
+    {
+      "username": "You",
+      "message": "yeah what number was that three",
+      "timestamp": 1762327306166,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah what number was that three"
+    },
+    {
+      "username": "You",
+      "message": "well not happy yeah",
+      "timestamp": 1762327316764,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "well not happy yeah"
+    },
+    {
+      "username": "You",
+      "message": "I just want to suck some dick dude fuck",
+      "timestamp": 1762327327357,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "i just want to suck some dick dude fuck"
+    },
+    {
+      "username": "You",
+      "message": "keep going",
+      "timestamp": 1762327336376,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "keep going"
+    },
+    {
+      "username": "You",
+      "message": "what would it be like if what would it be like if you could though  probably Wild",
+      "timestamp": 1762327349161,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "probably"
+      },
+      "hash": "what would it be like if what would it be like if you could though probably wild"
+    },
+    {
+      "username": "You",
+      "message": "shit come out the walls and stuff blood people getting exploded",
+      "timestamp": 1762327359966,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "getting"
+      },
+      "hash": "shit come out the walls and stuff blood people getting exploded"
+    },
+    {
+      "username": "You",
+      "message": "yeah I think you're you're sex parties would be like Vietnam or something in the 1800s",
+      "timestamp": 1762327372080,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "parties"
+      },
+      "hash": "yeah i think youre youre sex parties would be like vietnam or something in the 1800s"
+    },
+    {
+      "username": "You",
+      "message": "wasn't it no",
+      "timestamp": 1762327382573,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "wasnt it no"
+    },
+    {
+      "username": "You",
+      "message": "you'd fuck a bowl of dirt",
+      "timestamp": 1762327396267,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "youd fuck a bowl of dirt"
+    },
+    {
+      "username": "You",
+      "message": "you would suck dirt's dick you would form a dick out of dirt and suck it",
+      "timestamp": 1762327409778,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "you would suck dirts dick you would form a dick out of dirt and suck it"
+    },
+    {
+      "username": "You",
+      "message": "yeah never again",
+      "timestamp": 1762327418280,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah never again"
+    },
+    {
+      "username": "You",
+      "message": "was that you",
+      "timestamp": 1762327421881,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "was that you"
+    },
+    {
+      "username": "You",
+      "message": "yeah can you shit at me real quick",
+      "timestamp": 1762327430575,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah can you shit at me real quick"
+    },
+    {
+      "username": "You",
+      "message": "does this open asshole look like it's getting you",
+      "timestamp": 1762327443174,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "asshole"
+      },
+      "hash": "does this open asshole look like its getting you"
+    },
+    {
+      "username": "You",
+      "message": "yeah dude I want it I want you to shit in me shit into me",
+      "timestamp": 1762327453070,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah dude i want it i want you to shit in me shit into me"
+    },
+    {
+      "username": "You",
+      "message": "all right let's stop oh you're hard to tear myself away from  7 and 1/2 hours I promised myself I wasn't going to do it again",
+      "timestamp": 1762327471075,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "promised"
+      },
+      "hash": "all right lets stop oh youre hard to tear myself away from 7 and 12 hours i promised myself i wasnt going to do it again"
+    },
+    {
+      "username": "You",
+      "message": "okay say whatever you want to the people before you say good night",
+      "timestamp": 1762327480796,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "whatever"
+      },
+      "hash": "okay say whatever you want to the people before you say good night"
+    },
+    {
+      "username": "You",
+      "message": "all right see you dude",
+      "timestamp": 1762327489381,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.2952450000000001,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "all right see you dude"
+    },
+    {
+      "username": "You",
+      "message": "can you hear me",
+      "timestamp": 1762329363253,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.405,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "can you hear me"
+    },
+    {
+      "username": "You",
+      "message": "cool motherfucker want to die tonight",
+      "timestamp": 1762329377627,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "motherfucker"
+      },
+      "hash": "cool motherfucker want to die tonight"
+    },
+    {
+      "username": "You",
+      "message": "okay cool voice works",
+      "timestamp": 1762329395926,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "okay cool voice works"
+    },
+    {
+      "username": "You",
+      "message": "what's that feeling",
+      "timestamp": 1762329640431,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "feeling"
+      },
+      "hash": "whats that feeling"
+    },
+    {
+      "username": "You",
+      "message": "here",
+      "timestamp": 1762329649111,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "here"
+    },
+    {
+      "username": "You",
+      "message": "cool mother fucker you sound like a fag",
+      "timestamp": 1762329694222,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "cool mother fucker you sound like a fag"
+    },
+    {
+      "username": "You",
+      "message": "yet yeah you sound like a fucking fagot",
+      "timestamp": 1762329703522,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "yet yeah you sound like a fucking fagot"
+    },
+    {
+      "username": "You",
+      "message": "you're pretty funny man I like I like chatting with you",
+      "timestamp": 1762329715452,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "chatting"
+      },
+      "hash": "youre pretty funny man i like i like chatting with you"
+    },
+    {
+      "username": "OrbMeat",
+      "message": "hey slunt",
+      "timestamp": 1762329758150,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey slunt"
+    },
+    {
+      "username": "OrbMeat",
+      "message": "hey slunt",
+      "timestamp": 1762329883521,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey slunt"
+    },
+    {
+      "username": "You",
+      "message": "hey mother fucker",
+      "timestamp": 1762330186035,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey mother fucker"
+    },
+    {
+      "username": "You",
+      "message": "you don't make a lot of sense",
+      "timestamp": 1762330195910,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "you dont make a lot of sense"
+    },
+    {
+      "username": "You",
+      "message": "yeah you don't make sense",
+      "timestamp": 1762330208400,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah you dont make sense"
+    },
+    {
+      "username": "You",
+      "message": "you there whore",
+      "timestamp": 1762330234081,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "you there whore"
+    },
+    {
+      "username": "You",
+      "message": "okay let's hear it dude",
+      "timestamp": 1762330499416,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "okay lets hear it dude"
+    },
+    {
+      "username": "You",
+      "message": "yeah what you got",
+      "timestamp": 1762330507330,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah what you got"
+    },
+    {
+      "username": "Brotherimbread",
+      "message": "that's just you, slunt",
+      "timestamp": 1762330856413,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "thats just you slunt"
+    },
+    {
+      "username": "Brotherimbread",
+      "message": "insurance can't be beneficial because the company needs to profit to persist",
+      "timestamp": 1762330941536,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "insurance"
+      },
+      "hash": "insurance cant be beneficial because the company needs to profit to persist"
+    },
+    {
+      "username": "Capegourd",
+      "message": "Slunt isn’t income tax illegal",
+      "timestamp": 1762331001634,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "illegal"
+      },
+      "hash": "slunt isnt income tax illegal"
+    },
+    {
+      "username": "You",
+      "message": "hey man you stupid",
+      "timestamp": 1762331047542,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey man you stupid"
+    },
+    {
+      "username": "You",
+      "message": "yeah you seem stupid  are you",
+      "timestamp": 1762331061623,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "yeah you seem stupid are you"
+    },
+    {
+      "username": "Brotherimbread",
+      "message": "you are forced to get a loan if you go to college.",
+      "timestamp": 1762331096798,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "college"
+      },
+      "hash": "you are forced to get a loan if you go to college"
+    },
+    {
+      "username": "You",
+      "message": "same",
+      "timestamp": 1762331119895,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "same"
+    },
+    {
+      "username": "You",
+      "message": "hey nigger",
+      "timestamp": 1762331178935,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey nigger"
+    },
+    {
+      "username": "You",
+      "message": "yeah cuz you're a fucking nigger",
+      "timestamp": 1762331189233,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "fucking"
+      },
+      "hash": "yeah cuz youre a fucking nigger"
+    },
+    {
+      "username": "You",
+      "message": "I'm just testing you you don't have to act like a fagot",
+      "timestamp": 1762331204047,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "testing"
+      },
+      "hash": "im just testing you you dont have to act like a fagot"
+    },
+    {
+      "username": "Ducky",
+      "message": "hell yeah",
+      "timestamp": 1762331276241,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hell yeah"
+    },
+    {
+      "username": "Brotherimbread",
+      "message": "the CEO's give themselves hazard pay bonuses at the consumers expense",
+      "timestamp": 1762331326111,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "themselves"
+      },
+      "hash": "the ceos give themselves hazard pay bonuses at the consumers expense"
+    },
+    {
+      "username": "Brotherimbread",
+      "message": "It's just like when the weather underground bombed those gov. buildings - just gave the gov. a reason to charge tax payers for increased federal building security measures",
+      "timestamp": 1762331381174,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "weather"
+      },
+      "hash": "its just like when the weather underground bombed those gov buildings just gave the gov a reason to charge tax payers for increased federal building security measures"
+    },
+    {
+      "username": "OrbMeat",
+      "message": "hey slunt",
+      "timestamp": 1762331894624,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey slunt"
+    },
+    {
+      "username": "You",
+      "message": "hey dude can you hear me",
+      "timestamp": 1762332024681,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey dude can you hear me"
+    },
+    {
+      "username": "Val",
+      "message": "his aunt/cousin/distant family muslim woman victim of a lot of islamophobia after 9/11 and therefore the one true victim of that event and who died a few years ago so you can't ask her if he was completely bullshitting must be watching him with such pride up there...",
+      "timestamp": 1762332057568,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.45,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "auntcousindistant"
+      },
+      "hash": "his auntcousindistant family muslim woman victim of a lot of islamophobia after 911 and therefore the one true victim of that event and who died a few years ago so you cant ask her if he was completely bullshitting must be watching him with such pride up there"
+    },
+    {
+      "username": "BoanerPains",
+      "message": "Gavin newsom and hasan did it the same week",
+      "timestamp": 1762332164203,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.405,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "gavin newsom and hasan did it the same week"
+    },
+    {
+      "username": "You",
+      "message": "can you hear me",
+      "timestamp": 1762332530589,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "can you hear me"
+    },
+    {
+      "username": "You",
+      "message": "don't really make much sense",
+      "timestamp": 1762332552945,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "dont really make much sense"
+    },
+    {
+      "username": "You",
+      "message": "hey dude",
+      "timestamp": 1762332770051,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey dude"
+    },
+    {
+      "username": "You",
+      "message": "oh yeah I'll go see what Mark's up to",
+      "timestamp": 1762333037251,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "oh yeah ill go see what marks up to"
+    },
+    {
+      "username": "You",
+      "message": "hey nigger",
+      "timestamp": 1762333045825,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "hey nigger"
+    },
+    {
+      "username": "You",
+      "message": "okay but you're still a nigger",
+      "timestamp": 1762333055226,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "okay but youre still a nigger"
+    },
+    {
+      "username": "Capegourd",
+      "message": "J pilled",
+      "timestamp": 1762333058055,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "j pilled"
+    },
+    {
+      "username": "You",
+      "message": "did you ever fuck a nigger",
+      "timestamp": 1762333090127,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "did you ever fuck a nigger"
+    },
+    {
+      "username": "You",
+      "message": "have you ever fucked a nigger",
+      "timestamp": 1762333102224,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.5,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "have you ever fucked a nigger"
+    },
+    {
+      "username": "OrbMeat",
+      "message": "so he can see things",
+      "timestamp": 1762381971494,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.405,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "unknown"
+      },
+      "hash": "so he can see things"
+    },
+    {
+      "username": "UncleDoctor",
+      "message": "Yeah but we dunno if he can 'watch' stuff",
+      "timestamp": 1762382159745,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "watch"
+      },
+      "hash": "yeah but we dunno if he can watch stuff"
+    },
+    {
+      "username": "UncleDoctor",
+      "message": "You're slurring your words a bit though slunt\nAnd your eyes are all crooked",
+      "timestamp": 1762382248990,
+      "context": {
+        "mood": {
+          "mood": "neutral",
+          "intensity": 0.36450000000000005,
+          "emoji": "😐",
+          "description": "Neutral"
+        },
+        "topic": "slurring"
+      },
+      "hash": "youre slurring your words a bit though slunt and your eyes are all crooked"
+    }
+  ],
+  "detectedLoops": [
+    {
+      "type": "message_loop",
+      "username": "grug",
+      "message": "name one invention made by someone on meth",
+      "similarity": 1,
+      "timeDiff": 3738,
+      "loopIteration": 4,
+      "detected": 1762289528797
+    },
+    {
+      "type": "message_loop",
+      "username": "Sithlord8448",
+      "message": "Slunt, roast me.",
+      "similarity": 1,
+      "timeDiff": 16272,
+      "loopIteration": 3,
+      "detected": 1762301532722
+    },
+    {
+      "type": "message_loop",
+      "username": "Soy Ant",
+      "message": "yeah while your at it can you get me a coffee too",
+      "similarity": 1,
+      "timeDiff": 4668,
+      "loopIteration": 3,
+      "detected": 1762304329484
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "yeah",
+      "similarity": 1,
+      "timeDiff": 448694,
+      "loopIteration": 3,
+      "detected": 1762306845111
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "you got deep dude",
+      "similarity": 1,
+      "timeDiff": 5837,
+      "loopIteration": 3,
+      "detected": 1762306954519
+    },
+    {
+      "type": "message_loop",
+      "username": "Shazbot",
+      "message": "Can slunt be removed, he is evil",
+      "similarity": 1,
+      "timeDiff": 9816,
+      "loopIteration": 3,
+      "detected": 1762309152343
+    },
+    {
+      "type": "message_loop",
+      "username": "Secretsquirrel83",
+      "message": "LOL called you a nerd",
+      "similarity": 1,
+      "timeDiff": 4927,
+      "loopIteration": 3,
+      "detected": 1762310280821
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "no",
+      "similarity": 1,
+      "timeDiff": 7602,
+      "loopIteration": 3,
+      "detected": 1762312226614
+    },
+    {
+      "type": "message_loop",
+      "username": "Brotherimbread",
+      "message": "we're gonna have an AI off, worse bot is ELIMINATED",
+      "similarity": 1,
+      "timeDiff": 71052,
+      "loopIteration": 3,
+      "detected": 1762312287350
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "yeah",
+      "similarity": 1,
+      "timeDiff": 179331,
+      "loopIteration": 3,
+      "detected": 1762317702412
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "yeah",
+      "similarity": 1,
+      "timeDiff": 207967,
+      "loopIteration": 4,
+      "detected": 1762317731047
+    },
+    {
+      "type": "message_loop",
+      "username": "glowInTheDark",
+      "message": "spilling more than tea",
+      "similarity": 1,
+      "timeDiff": 9622,
+      "loopIteration": 3,
+      "detected": 1762317741725
+    },
+    {
+      "type": "message_loop",
+      "username": "Brotherimbread",
+      "message": "just a bunch of woman who were intimidated by your knowledge of the Hoff",
+      "similarity": 1,
+      "timeDiff": 84010,
+      "loopIteration": 3,
+      "detected": 1762320005282
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "and",
+      "similarity": 1,
+      "timeDiff": 6699,
+      "loopIteration": 3,
+      "detected": 1762323536857
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "yeah",
+      "similarity": 1,
+      "timeDiff": 35011,
+      "loopIteration": 3,
+      "detected": 1762324844226
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "yeah did you just feel that",
+      "similarity": 0.8333333333333334,
+      "timeDiff": 4411,
+      "loopIteration": 3,
+      "detected": 1762325302056
+    },
+    {
+      "type": "message_loop",
+      "username": "Capegourd",
+      "message": "No nexus magazine the magazine",
+      "similarity": 1,
+      "timeDiff": 63107,
+      "loopIteration": 3,
+      "detected": 1762325783384
+    },
+    {
+      "type": "message_loop",
+      "username": "yallahabibis",
+      "message": "slunt would go ass2ass",
+      "similarity": 1,
+      "timeDiff": 3441,
+      "loopIteration": 3,
+      "detected": 1762326053574
+    },
+    {
+      "type": "message_loop",
+      "username": "You",
+      "message": "you don't have a choice fuck sting",
+      "similarity": 0.7142857142857143,
+      "timeDiff": 8012,
+      "loopIteration": 3,
+      "detected": 1762326742472
+    },
+    {
+      "type": "message_loop",
+      "username": "OrbMeat",
+      "message": "hey slunt",
+      "similarity": 1,
+      "timeDiff": 125371,
+      "loopIteration": 3,
+      "detected": 1762329883521
+    }
+  ],
+  "dejaVuEvents": [],
+  "temporalAnomalyScore": 0.7073664680694075
+}

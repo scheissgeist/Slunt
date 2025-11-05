@@ -1,0 +1,50 @@
+[
+  {
+    "startTime": 1762300602012,
+    "platforms": {
+      "coolhole": {
+        "messagesSent": 0,
+        "messagesReceived": 0,
+        "errors": 0
+      },
+      "discord": {
+        "messagesSent": 0,
+        "messagesReceived": 0,
+        "errors": 0
+      },
+      "twitch": {
+        "messagesSent": 0,
+        "messagesReceived": 0,
+        "errors": 0
+      }
+    },
+    "responses": {
+      "total": 0,
+      "successful": 0,
+      "failed": 0,
+      "skipped": 0,
+      "blocked": 0,
+      "avgLength": 0,
+      "avgGenerationTime": 0
+    },
+    "quality": {
+      "truncated": 0,
+      "split": 0,
+      "duplicates": 0,
+      "chaosModified": 0,
+      "contentFiltered": 0
+    },
+    "users": {
+      "totalInteracted": 0,
+      "newUsers": 0,
+      "activeUsers": []
+    },
+    "errors": {
+      "total": 0,
+      "critical": 0,
+      "byType": {}
+    },
+    "endTime": 1762300605107,
+    "duration": 3095
+  }
+]

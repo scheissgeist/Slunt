@@ -85,6 +85,11 @@ data/*.json
 dist/
 build/
 
+# Voice synthesis models
+piper/
+
+# Browser profile data (for automated testing)
+.browser-profile/
 
 *.jpg
 *.png

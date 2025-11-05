@@ -1,0 +1,280 @@
+{
+  "cookies": [
+    {
+      "name": "ip-session",
+      "value": "s%3A75.155.140.228%3A1762217759927.DbjrnNWob14tDgr0Jzijkm8KYI%2Bsc12vHY43UldX0Cs",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": 1796777760.05572,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__cf_bm",
+      "value": "WB8YvPvkm0ObWQkXZeqpdAH8GZ4TOZM7ckWmVoqRMho-1762217760-1.0.1.1-S9dsnrSTxn6n0ObBTo0M2jKY7Kh6XLruS36.8dbuh1PN3C7Ev_fPa4AGYyK9YBvs",
+      "domain": ".vimeo.com",
+      "path": "/",
+      "expires": 1762219560.136745,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "VISITOR_INFO1_LIVE",
+      "value": "j6yuaxj5AlM",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777769760.207472,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "VISITOR_PRIVACY_METADATA",
+      "value": "CgJDQRIEGgAgRA%3D%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777769760.20749,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "unique_id",
+      "value": "6d9651713742f233",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": 1796346264.882833,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "unique_id_durable",
+      "value": "6d9651713742f233",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": 1796346264.882863,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "referrer_url",
+      "value": "https://coolhole.org/",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": 1762220064,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "experiment_overrides",
+      "value": "{%22experiments%22:{}%2C%22disabled%22:[]}",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": 1796345761,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "api_token",
+      "value": "twilight.3a8368c989ce63d326b84e21ef0e6e6d",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": 1796345761,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "ad-id",
+      "value": "A097AMqEdUOniUYgWKtCqIU",
+      "domain": ".amazon-adsystem.com",
+      "path": "/",
+      "expires": 1782867865.366112,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "ad-privacy",
+      "value": "0",
+      "domain": ".amazon-adsystem.com",
+      "path": "/",
+      "expires": 1796778265.366154,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "auth",
+      "value": "s%3ASlunt%3A1762822565000%3AALV3FTl7J180svfGFBozOAl9k2W6w4vU%3AH45lHLCmZcpt%2Fq%2BiRdHO5AXWHaO4fdI0s9ObV58fhvU%3D%3A1.EbNk6bNcg%2BmPXThicE1%2B9Q3wxRfTbOs%2FGZRLh3aAGmk",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": 1762822566.014111,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "__Secure-ROLLOUT_TOKEN",
+      "value": "CMP5xrG56qiulAEQxbPy3KTXkAMYhfuU4KTXkAM%3D",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": 1777769767.080385,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "_csrf",
+      "value": "s%3AzyMDSv6TqZDrZTKuJBusYY7R.3Lfyenv3A5k%2Bpxg2HN6XQXvg2Y3eufRdRJQ3i15S3jk",
+      "domain": "coolhole.org",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": false,
+      "sameSite": "Lax"
+    },
+    {
+      "name": "YSC",
+      "value": "WTDGaxRj_PE",
+      "domain": ".youtube.com",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None",
+      "partitionKey": "https://coolhole.org",
+      "_crHasCrossSiteAncestor": true
+    },
+    {
+      "name": "server_session_id",
+      "value": "b7e9b2a85724413bb8ca1140b4c5db4e",
+      "domain": ".twitch.tv",
+      "path": "/",
+      "expires": -1,
+      "httpOnly": false,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "ga__15_abel-ssn",
+      "value": "0MflMZOhFCFXrLU7EB9gLNF5jES7edNpL8Aqq2paiswDo3qjxdgHCzSnkW8loyLycfXKi9KszQ8YRztJIEqaRqiGJyZurKaVT6s7RCOT4lLQFliAw5EoxlQ3BDZpPR0HuuXrO0UDu3JznF6fRsR3fhUjsXIAXsr0P8lYD71axsYA9m0c",
+      "domain": "passport.twitch.tv",
+      "path": "/",
+      "expires": 1762304665.851156,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    },
+    {
+      "name": "KP_UIDZ_1-ssn",
+      "value": "0Z5jGJ69hr2wglR1cNvvoou4M4f2hFouE8SwXVEFexnmXylCptm0hzAOcCqzQzYyGCVkQgsoHjzryir8sUlmwHkvNGvjVZgwJO5RnDzHP03woZ6zMIe76xkPJ7MkI2j6ADlkIk8agHaQl7kqx4VxxWBhFmXBNhFYoIMZ2OKJPzGPwK5h",
+      "domain": "gql.twitch.tv",
+      "path": "/",
+      "expires": 1762304665.95309,
+      "httpOnly": true,
+      "secure": true,
+      "sameSite": "None"
+    }
+  ],
+  "origins": [
+    {
+      "origin": "https://coolhole.org",
+      "localStorage": [
+        {
+          "name": "theme",
+          "value": "\"/css/themes/shale.css\""
+        },
+        {
+          "name": "sfxModEnabled",
+          "value": "false"
+        },
+        {
+          "name": "sfxStackEnabled",
+          "value": "false"
+        },
+        {
+          "name": "sfxGlobalEnabled",
+          "value": "false"
+        },
+        {
+          "name": "emoteVolume",
+          "value": "50"
+        },
+        {
+          "name": "layout",
+          "value": "\"fluid\""
+        },
+        {
+          "name": "secVolume",
+          "value": "50"
+        },
+        {
+          "name": "channel_js_pref",
+          "value": "{\"coolesthole_embedded\":\"ALLOW\"}"
+        },
+        {
+          "name": "version",
+          "value": "3"
+        }
+      ]
+    },
+    {
+      "origin": "https://player.twitch.tv",
+      "localStorage": [
+        {
+          "name": "amazon_ivs_device_config_v1_player-web-v1_state",
+          "value": "{\"fetchServer\":\"prod.ivs-device-config.live-video.net\",\"lastFetchWhenMs\":1762215015901,\"lastFetchEtagHeader\":\"W/\\\"a7df965883eac94efca0075a94eaa307\\\"\",\"lastFetchWhenFullMs\":1762213215769}"
+        },
+        {
+          "name": "_amazon_ivs_dc_player-web-v1_b8e4f7c1",
+          "value": "{\"version\":1,\"features\":{\"experiment_foobar\":{\"rolloutState\":{\"rolloutId\":1,\"assignedVariant\":\"control\",\"rolloutConfig\":{\"variants\":[{\"control\":1},{\"treatment\":0}],\"feature-id\":\"experiment_foobar\",\"rollout-id\":1,\"version\":1},\"trackingId\":\"4cc8847d-c9c2-40bc-9a2c-6840a9abcc9b\"}}}}"
+        },
+        {
+          "name": "local_storage_device_id",
+          "value": "\"09279b972ac2ab5c\""
+        },
+        {
+          "name": "local_storage_app_session_id",
+          "value": "\"50fb4dde053c19ac\""
+        },
+        {
+          "name": "__last-unload",
+          "value": "1762215373425"
+        },
+        {
+          "name": "CV7o9fRC/gx24wn2-rc",
+          "value": "[g\u0000Y\u000bTkz\u001a^I\u0004\u0007CB\u0010QF\u000f4\u0013 (\u0011T+5\u000bz\u0001rZL\u0004\u0005\rIL\u0015GU@^\u001d\u0012J\u0015}-W7!Z\u000b\u0007Xn5X\u0001_\u000f56]\u0006\f[[\u0019\u001d\u0010[\u0003E$3Yg6R\t\u001cI&{[\u0000^\u0001;-HEBFF\u0002\u000bOM\f\u00157$\u001a+0R\n\u0017\u001fy-\u0015\fK\u001f\"7@$\u0010SX\u001b\u000b\\\u0006\u0012\u0015k-W&1E\u0016\u0016S7\u0006V\u001dX\u000b77J\u0015\u000b\u0010\u000e\fLV\b\u0011Q85\u0000)0NFI\fsz\u0015\u001cL\u00041+N\u000b\u0014WZ\u0010\u000bq\u000e\u0002Y%tOwh\u0015\u0017\u0016X'\u0005B\t_\u000f*a\u0015EZOI[L^\u000e\u0010{4 \u0010)f\rQC@>\u000b"
+        },
+        {
+          "name": "amazon_ivs_device_config_v1_player-web-v1_data",
+          "value": "{\"fetchServer\":\"prod.ivs-device-config.live-video.net\",\"json\":{\"version\":\"1.0\",\"properties\":[{\"name\":\"experiment_foobar\",\"type\":\"json\",\"value_json\":\"WwogIHsKICAgICJjcml0ZXJpYSI6IHsKICAgICAgInZlcnNpb24iOiAxLAogICAgICAicnVsZXMiOiB7fQogICAgfSwKICAgICJwYXlsb2FkIjogewogICAgICAidmFyaWFudHMiOiBbCiAgICAgICAgeyAiY29udHJvbCI6IDEgfSwKICAgICAgICB7ICJ0cmVhdG1lbnQiOiAwIH0KICAgICAgXSwKICAgICAgImZlYXR1cmUtaWQiOiAiZXhwZXJpbWVudF9mb29iYXIiLAogICAgICAicm9sbG91dC1pZCI6IDEsCiAgICAgICJ2ZXJzaW9uIjogMQogICAgfQogIH0KXQ==\",\"value_analytics\":\"565eaf70-4540-4bad-aa16-1986527c5254\",\"encoding\":\"base64\"},{\"name\":\"media\",\"type\":\"json\",\"value_json\":\"WwogICAgewogICAgICAgICJjcml0ZXJpYSI6IHsKICAgICAgICAgICAgInZlcnNpb24iOiAxLAogICAgICAgICAgICAicnVsZXMiOiB7CiAgICAgICAgICAgICAgICAic2RrVmVyc2lvbiI6IFsiMS40NS4wLW5pZ2h0bHkuNThkZjI2OHguMjAyNTA5MTkiXQogICAgICAgICAgICB9CiAgICAgICAgfSwKICAgICAgICAicGF5bG9hZCI6IHsKICAgICAgICAgICAgIm1lZGlhIjogewogICAgICAgICAgICAgICAgImFiciI6IHsKICAgICAgICAgICAgICAgICAgICAidXNlUHJvYmVFbmRwb2ludCI6IGZhbHNlCiAgICAgICAgICAgICAgICB9CiAgICAgICAgICAgIH0KICAgICAgICB9CiAgICB9Cl0=\",\"value_analytics\":\"815d1698-7c70-4a6e-a022-8a63da103cfd\",\"encoding\":\"base64\"},{\"name\":\"network\",\"type\":\"json\",\"value_json\":\"[]\",\"value_analytics\":\"efb2b133-6cf6-4fb9-a5a0-66f77aef1c3d\"},{\"name\":\"sr_model_f16\",\"type\":\"json\",\"value_analytics\":\"foo_bar_abc_prod\"}]}}"
+        },
+        {
+          "name": "local_copy_unique_id",
+          "value": "\"5fee7972f7426ac5\""
+        },
+        {
+          "name": "sentry_device_id",
+          "value": "\"c8f360e0de649da1\""
+        },
+        {
+          "name": "CV7o9fRC/gx24wn2",
+          "value": "{tP\u001eUH&4F\u0013\u001bZ\u001a\u0003\u0018\u0010[\f\u001548\u0016* R\u00000Q*3Y\u001bm\t9&AEB\u0010\u0004D_(-X33:\u0015\u0012O&1o\u0006`mWL\u0000\u0018+K$\u001cW`$\u0016k\u000b\u0019T'\u001c\u0011(qU\"\u0001y\u00170\u0004\\^W;\"h\r5Tc\u0005%\u0004\u0017\u0018uh\u0003\u0007/&X3\u001d~u\u0015TZ\nU&rER6f\u0004\u0006\\E0\u0015oi\u001c\u0004)r`T\u0012Q&\"d%U/\u000b;W\u0004,bzD\u001d\u0001\u0011\u001dmi?B\u0015\u0002pP\u0004\f\u0015\u001f]\nu,b+_\b4KZ.\f{,\u0007\u0001\u0004!\u001b\t\u0001\u0007>\u0004z?f;z7\u00117y\u00052HP-\u0014\u0002%B\u0015}t\u00167=G\u0010\u001c~+7[\u0003\\\b5&j\t\u0019PX\u0012\n\u0010[\u0003E$3Yg1D\u0001\u0001|$3Y\u001b\u001b\\p\u000e@\u001d\u0011^X\u0016A\u0007OG\u0017y\u0001\u001c+ X\u0013\u0000\u001d\r\u0002\u0017^\tHbx\u000f0\u0011\\\u0002CU\u0012\u0019A\u0003xv454[\u0001$X!\u001d^\u001b\u0016Sat\u0001TN\u0012\u001c<&f,;\u001bq:\u001c.!\u0017#\u0016^(9\u001eOz\u000e ,B\u0002W\u0003\u0006G@\u0002OG\u0019av&$\"V\u0016\u001a\u0012ve\u0000A\nPpo\r\u0014\u001d@B\u0012\u001cf\b\u001aRslDrr\u0005VB\bwe\u000e_\u0000^~aL\u000b\u0011WZ\u0003:[\f\u0012\u0015kgBsv\u0005UF\tpo\u0006W\u0001\u001b~a_\u0006\u000bAD\u0018\u001cFO\u0003@8\"\u0016-jC\u0012Q\u00078tR\u0001Z\t6&K$\u0014[Q\u0019\u001af\u000e\u001cR?tOgt\u0004\u0000&E\u001aaS]x,\u0011\u0004\u001c\u000e\u0017xB\u00039t\u0013\u0004}+9& \u0014\\\u0006*X\u0017\u0002Q%V6=+\u0018\u0003!H~EX{2\u0005r$,!\u000f2y\u0007\u0012\n\"3d]IS\u0017\u0012\u0018\t5u\r8\\pP\u0007c;/\u001c\u0001\"o\u001e\u0012e{f@9K\t8.\r\u000fu\u00075\n`,'\u0003(0\u001c*4\u0007\t1s9,U\u0006\u000b7\u0015q\u001a\u0005M\u0007D\u000f4h.\u0014~$\"-$6v,\u0003O\u00022*S\u000b\u0018\u0001I,L^]#\rd\u001b\u0011v?\u0011\u001d\u00144A\u0006\u0001\u000b%t\u001bMZ\u0014+3[\b;ZU\u001b\u0002W\u000f\u0010R\u00148\u0014'(R\u0000Q\u00077$B\n\u0015D'0J\u00159UQ\u0019\u001a\u0010[Uz>,\u001c)(VKF\u0013sv\u001f8P\b6,X\u0014X|`W_\u0002OG\fq\u0001\u001c+r\u0003_SEub\u001eOx\u0016\"/J0\u001dP\u001e\u001a\u001dTD\u0000eCel|,'p\u000fz\u0017\u0003P\r7ch\u0002\u001bY[^Nq\t\u0005X<3Ztv\u0007JC\u0013sx\u0007Oj\u00074\"]\u000eW\u0007\u0007@@\u0001WU\u001bs%\u001072R\u0016'T.3\u0015U\bQdq\u001dVM\u0006\u0007N\\\u0002P[\u00152:\u001c *C0\u001aP&t\r^\u000eP`q\u001eRL\u0001\rE_\u0004\u001c\n"
+        }
+      ]
+    }
+  ]
+}
