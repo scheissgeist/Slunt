@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated": "2025-11-06T00:00:00Z",
+  "features": {
+    "emotionTone": true,
+    "recallHint": true,
+    "followUpQuestions": true,
+    "clarifiers": false,
+    "commitmentTracking": false,
+    "ragMemory": false,
+    "engagementVariants": false,
+    "socialCalibration": false,
+    "nameForgiveness": false,
+    "lateCareFollowup": false
+  }
+}

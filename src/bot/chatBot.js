@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const logger = require('./logger');
 const CoolPointsHandler = require('./coolPointsHandler');
+const CommandParser = require('./CommandParser');
 const EmotionalEngine = require('../ai/EmotionalEngine');
 const YouTubeSearch = require('../video/youtubeSearch');
 const StabilityManager = require('../stability/StabilityManager');
@@ -216,6 +217,9 @@ const ResponseQualityEnhancer = require('../ai/ResponseQualityEnhancer');
 const RateLimitingSystem = require('../ai/RateLimitingSystem');
 const CrossPlatformIntelligence = require('../ai/CrossPlatformIntelligence');
 const ProactiveStarters = require('../ai/ProactiveStarters');
+const fs = require('fs');
+const { isAmbiguous, buildClarifier } = require('./modules/clarifier');
+const RagMemory = require('../memory/ragMemory');
 const VideoReactionSystem = require('../ai/VideoReactionSystem');
 const CorrectionLearning = require('../ai/CorrectionLearning');
 
@@ -270,6 +274,10 @@ class ChatBot extends EventEmitter {
     this.coolhole = coolholeClient;
     this.videoManager = videoManager;
     this.coolPointsHandler = new CoolPointsHandler();
+    this.commandParser = new CommandParser({
+      coolPoints: this.coolPointsHandler,
+      botName: 'Slunt'
+    });
     this.emotionalEngine = new EmotionalEngine();
     this.youtubeSearch = new YouTubeSearch();
     
@@ -751,6 +759,8 @@ class ChatBot extends EventEmitter {
     };
     this.pendingQuestions = [];
     this.lastQuestionTime = 0;
+  // Per-user follow-up nudge cooldown tracking
+  this.lastFollowUpByUser = new Map();
     this.memoryPath = path.resolve(process.cwd(), 'data', 'slunt_brain.json');
     this.lastSentAt = 0;
     this.lastIntendedMessage = null;
@@ -790,6 +800,30 @@ class ChatBot extends EventEmitter {
     // Topic diversity - track recent topics to avoid obsessive repetition
     this.recentMentionedTopics = []; // Track last 5 topics Slunt mentioned
     this.maxRecentTopics = 5;
+    
+    // === FEATURE FLAGS (hot-reloadable) ===
+    this.featureFlags = {
+      emotionTone: true,
+      recallHint: true,
+      followUpQuestions: true,
+      clarifiers: false,
+      commitmentTracking: false,
+      ragMemory: false,
+      engagementVariants: false,
+      socialCalibration: false,
+      nameForgiveness: false,
+      lateCareFollowup: false
+    };
+    this.flagsPath = path.resolve(process.cwd(), 'data', 'flags.json');
+    this.loadFeatureFlags();
+
+    // RAG memory (lightweight)
+    try {
+      this.ragMemory = new RagMemory(this);
+    } catch (e) {
+      console.warn('⚠️ [RAG] Failed to init RagMemory:', e.message);
+      this.ragMemory = null;
+    }
     
     // === PERIODIC TASKS FOR ADVANCED SYSTEMS 🚀 ===
     
@@ -877,6 +911,55 @@ class ChatBot extends EventEmitter {
         console.error('❌ [Cross-Platform] Matching failed:', error.message);
       }
     }, 10 * 60 * 1000); // Every 10 minutes
+
+    // Gentle follow-up loop for unanswered questions (every ~30s with jitter)
+    try {
+      const JitterScheduler = require('../util/jitterScheduler');
+      this.followUpScheduler = new JitterScheduler(() => {
+        try {
+          if (!this.isFeatureEnabled('followUpQuestions')) return;
+          if (!Array.isArray(this.pendingQuestions) || this.pendingQuestions.length === 0) return;
+          this.checkPendingQuestionsForFollowup();
+        } catch (err) {
+          logger?.warn?.(`⚠️ [FollowUp] Loop error: ${err.message}`);
+        }
+      }, { intervalMs: 30000, jitterRatio: 0.2, runOnStart: false });
+      this.followUpScheduler.start();
+    } catch (err) {
+      // Fallback to setInterval if scheduler not available
+      setInterval(() => {
+        try {
+          if (!this.isFeatureEnabled('followUpQuestions')) return;
+          if (!Array.isArray(this.pendingQuestions) || this.pendingQuestions.length === 0) return;
+          this.checkPendingQuestionsForFollowup();
+        } catch (err2) {
+          logger?.warn?.(`⚠️ [FollowUp] Loop error: ${err2.message}`);
+        }
+      }, 30 * 1000);
+    }
+
+    // Commitments reminder scheduler (~60s with jitter)
+    try {
+      const JitterScheduler = require('../util/jitterScheduler');
+      this.commitments = [];
+      this.commitmentScheduler = new JitterScheduler(() => {
+        try {
+          if (!this.isFeatureEnabled('commitmentTracking')) return;
+          const now = Date.now();
+          this.commitments = (this.commitments || []).filter(c => {
+            if (c.sent) return false;
+            if (now >= c.remindAt) {
+              const msg = c.targetUser ? `btw ${c.targetUser}, I didn't forget. ${c.note || 'circle back?'}` : `btw I didn't forget. ${c.note || 'circle back?'}`;
+              this.sendMessage(msg, { isFollowUp: true, platform: c.platform, channel: c.channel, respondingTo: c.targetUser || undefined });
+              c.sent = true;
+              return false;
+            }
+            return true;
+          });
+        } catch (e) { logger?.warn?.(`[Commitment] Loop error: ${e.message}`); }
+      }, { intervalMs: 60000, jitterRatio: 0.3 });
+      this.commitmentScheduler.start();
+    } catch (_) { /* ignore */ }
     
     // DISABLED: Startup sequence slows boot and clutters chat
     // setTimeout(() => {
@@ -892,6 +975,20 @@ class ChatBot extends EventEmitter {
     // Multi-platform support
     this.platformManager = null;
     this.currentPlatform = 'coolhole'; // Default platform
+  }
+
+  /**
+   * Deterministic command parsing wrapper
+   */
+  async parseCommand(text, username, platform) {
+    try {
+      if (!this.commandParser) return null;
+      const res = await this.commandParser.parse(text, { username, platform });
+      return res;
+    } catch (e) {
+      logger.warn(`[Command] Failed to parse command: ${e.message}`);
+      return null;
+    }
   }
   
   /**
@@ -2706,14 +2803,22 @@ class ChatBot extends EventEmitter {
       this.currentChannel = channel; // This will be channelId for Discord/Twitch
 
       // Skip own messages - Slunt's usernames across platforms:
-      // Coolhole/Discord: "Slunt"
-      // Twitch: "sluntbot" 
       const myUsernames = ['Slunt', 'sluntbot'];
       const isMyMessage = myUsernames.some(name => username.toLowerCase() === name.toLowerCase());
-      
       if (isMyMessage) {
         logger.info(`[${getTimestamp()}] ⏭️ Skipping own message from ${username} on ${platform}`);
         return;
+      }
+
+      // === PRIORITIZE COMMAND PARSING ===
+      if (this.parseCommand && typeof this.parseCommand === 'function') {
+        const maybeResult = this.parseCommand(text, username, platform);
+        const commandResult = (maybeResult && typeof maybeResult.then === 'function') ? await maybeResult : maybeResult;
+        if (commandResult && commandResult.handled) {
+          logger.info(`[${getTimestamp()}] 🛠️ Command parsed and handled: ${commandResult.response}`);
+          await this.sendMessage(commandResult.response, { isCommand: true }, platform, channel);
+          return;
+        }
       }
       
       // === 🔋 CONVERSATION ENERGY: Check if we need a break ===
@@ -2872,6 +2977,18 @@ class ChatBot extends EventEmitter {
         
         setTimeout(async () => {
           try {
+            // Notify UI that Slunt is composing a reply
+            let startedTyping = false;
+            try {
+              this.emit('typing:start', {
+                platform: responsePlatform,
+                channel: responseChannel,
+                respondingTo: username,
+                timestamp: Date.now()
+              });
+              startedTyping = true;
+            } catch (_) {}
+
             let response = await this.generateResponse(data);
             if (!response) return;
             
@@ -2996,6 +3113,73 @@ class ChatBot extends EventEmitter {
             });
             
             logger.info(`⏱️ [Timing] Waiting ${(optimalDelay / 1000).toFixed(1)}s before responding`);
+
+            // NEW: Human backchannel ping (fast, lightweight acknowledgement)
+            try {
+              // Initialize map lazily
+              if (!this.lastBackchannelByUser) this.lastBackchannelByUser = new Map();
+              const now = Date.now();
+              const lastTs = this.lastBackchannelByUser.get(username) || 0;
+              const cooldownOk = now - lastTs > 10000; // 10s per-user cooldown
+
+              const eligiblePlatform = (responsePlatform === 'coolhole' || responsePlatform === 'twitch' || responsePlatform === 'voice' || responsePlatform === 'voice-chat');
+              const shortMsg = typeof text === 'string' && text.length > 2 && text.length <= 60;
+              const notQuestion = typeof text === 'string' && !text.includes('?');
+              const chance = Math.random() < 0.22; // ~22% when eligible
+
+              if (eligiblePlatform && shortMsg && notQuestion && cooldownOk && chance) {
+                // Pick a backchannel based on simple sentiment
+                const lower = text.toLowerCase();
+                const positive = /(lol|lmao|haha|nice|great|good|awesome|love|cool)/.test(lower);
+                const negative = /(wtf|hate|bad|sucks|bro|damn|yikes|cringe)/.test(lower);
+
+                let options = ['mm', 'yeah', 'ok', 'go on'];
+                if (positive) options = ['lol', 'haha', 'true', 'nice'];
+                if (negative) options = ['yikes', 'damn', 'huh', 'wait'];
+
+                // Twitch variant: prefer emote-y acknowledgements sometimes
+                if (responsePlatform === 'twitch' && Math.random() < 0.4) {
+                  if (positive) options = ['lol', 'LUL', 'KEKW'];
+                  else if (negative) options = ['Hmmm', 'uh'];
+                  else options = ['yeah', 'ok'];
+                }
+
+                const backchannel = options[Math.floor(Math.random() * options.length)];
+                // Schedule quick send (300–700ms) while main reply is composing
+                setTimeout(() => {
+                  try {
+                    this.sendMessage(backchannel, {
+                      platform: responsePlatform,
+                      channelId: responseChannel,
+                      isBackchannel: true,
+                      respondingTo: username
+                    });
+                    this.lastBackchannelByUser.set(username, Date.now());
+                  } catch (_) {}
+                }, 300 + Math.random() * 400);
+              }
+            } catch (_) {}
+            
+            // Stream a live preview to the dashboard while "typing"
+            try {
+              const deadline = Date.now() + Math.max(200, Math.min(optimalDelay, 5000));
+              const words = String(response).split(/\s+/).filter(Boolean);
+              const step = Math.max(3, Math.min(8, Math.floor(words.length / 6) || 3));
+              let idx = 0;
+              const streamNext = async () => {
+                if (Date.now() >= deadline || idx >= words.length) {
+                  this.emit('message:partial', { done: true, platform: responsePlatform, channel: responseChannel });
+                  return;
+                }
+                idx = Math.min(words.length, idx + step);
+                const partial = words.slice(0, idx).join(' ');
+                this.emit('message:partial', { text: partial, platform: responsePlatform, channel: responseChannel });
+                await new Promise(r => setTimeout(r, 120 + Math.random()*80));
+                return streamNext();
+              };
+              // Fire and forget
+              streamNext();
+            } catch (_) {}
             
             // 9. Wait for optimal timing delay
             await new Promise(resolve => setTimeout(resolve, optimalDelay));
@@ -3059,6 +3243,14 @@ class ChatBot extends EventEmitter {
             logger.error('Error generating response:', error.message);
             logger.error(error.stack);
           } finally {
+            // Always notify that typing has finished if we started
+            try {
+              this.emit('typing:stop', {
+                platform: responsePlatform,
+                channel: responseChannel,
+                timestamp: Date.now()
+              });
+            } catch (_) {}
             // Unlock response generation
             this.isGeneratingResponse = false;
           }
@@ -4616,10 +4808,29 @@ You:`;
     return '';
   }
 
+  // Topic guess helper reused by RAG
+  guessTopic(text) {
+    return this.detectTopic(text);
+  }
+
   /**
    * Generate contextual response to a message
    */
   async generateResponse(data) {
+    // === COMPANION FEEDBACK INTEGRATION ===
+    if (this.companionFeedback && typeof this.companionFeedback.getFeedback === 'function') {
+      const feedback = this.companionFeedback.getFeedback(data);
+      if (feedback && feedback.suppressResponse) {
+        logger.info(`[Companion] Suppressing response due to feedback: ${feedback.reason}`);
+        try { this.emit('companion:action', { type: 'suppress', reason: feedback.reason, data }); } catch (_) {}
+        return null;
+      }
+      if (feedback && feedback.suggestedResponse) {
+        logger.info(`[Companion] Using suggested response from companion: ${feedback.suggestedResponse}`);
+        try { this.emit('companion:action', { type: 'override', reason: feedback.reason || 'suggested', suggestion: feedback.suggestedResponse, data }); } catch (_) {}
+        return feedback.suggestedResponse;
+      }
+    }
     const { username, text, voiceMode } = data;
 
     // === REMOVED: No more "fast path" - voice gets FULL personality ===
@@ -4631,6 +4842,17 @@ You:`;
     const userProfile = isKnownUser ? this.userProfiles.get(username) : null;
     const platform = voiceMode ? 'voice' : (data.platform || this.currentPlatform || 'coolhole');
     const channel = data.channel || null;
+
+    // === CLARIFIER (ambiguous user input) ===
+    try {
+      if (this.isFeatureEnabled && this.isFeatureEnabled('clarifiers')) {
+        if (isAmbiguous(text) && Math.random() < 0.25) {
+          const clarifier = buildClarifier({ user: username, platform });
+          logger.info(`💬 [Clarifier] Asking for clarification from ${username}: ${clarifier}`);
+          return clarifier;
+        }
+      }
+    } catch (_) { /* ignore clarifier errors */ }
 
     // Log voice mode - LOW token limit for TIGHT, NATURAL responses
     if (platform === 'voice') {
@@ -4777,9 +4999,31 @@ You:`;
 
               const basePrompt = `${this.systemPrompt}\n\n${guidance}\n${ambient ? `\n${ambient}\n` : ''}${crossPlatform}Recent chat:\n${lastFew || '(none)'}\n\nUser (${username}): ${text}\n\nSlunt:`;
 
-              // Use AI engine properly - it only has one method signature
+              // Use AI engine, prefer true streaming when available
               let modelResponse;
-              if (this.ai && this.ai.provider === 'ollama') {
+              if (this.ai && this.ai.canStream && typeof this.ai.generateResponseStream === 'function' && platform !== 'voice') {
+                const plat = platform; const ch = channel;
+                modelResponse = await this.ai.generateResponseStream(text, username, basePrompt, {
+                  maxTokens: 90,
+                  isVoiceMode: false,
+                  onUpdate: (partial, done) => {
+                    try {
+                      if (done) {
+                        this.emit('message:partial', { done: true, platform: plat, channel: ch });
+                      } else if (typeof partial === 'string' && partial.length) {
+                        this.emit('message:partial', { text: partial, platform: plat, channel: ch });
+                      }
+                    } catch (_) {}
+                  }
+                });
+                if (!modelResponse || typeof modelResponse !== 'string') {
+                  if (this.ai.provider === 'ollama') {
+                    modelResponse = await this.ai.generateOllamaResponse(text, username, basePrompt, 90);
+                  } else {
+                    modelResponse = await this.ai.generateOpenAIResponse(text, username, basePrompt);
+                  }
+                }
+              } else if (this.ai && this.ai.provider === 'ollama') {
                 modelResponse = await this.ai.generateOllamaResponse(text, username, basePrompt, 90);
               } else if (this.ai && this.ai.provider === 'openai') {
                 modelResponse = await this.ai.generateOpenAIResponse(text, username, basePrompt);
@@ -5013,6 +5257,20 @@ You:`;
         const neggingContext = this.neggingDetector.getContext();
         if (neggingContext) {
           ultraContext += neggingContext;
+        }
+
+        // 10. RAG PERSONAL FACTS (if enabled)
+        if (this.ragMemory && this.isFeatureEnabled && this.isFeatureEnabled('ragMemory')) {
+          try {
+            const topicGuess = this.guessTopic(text || '');
+            const facts = this.ragMemory.search({ user: username, topic: topicGuess, query: text, k: 3 });
+            if (facts && facts.length) {
+              ultraContext += '\n\n=== RELEVANT PAST BITS (soft context, do not quote) ===\n';
+              for (const f of facts) {
+                ultraContext += `- ${f.text}\n`;
+              }
+            }
+          } catch (_) {}
         }
         
         // === 🌟 REVOLUTIONARY INTERNALLY-DRIVEN SYSTEMS 💀🎭 ===
@@ -6037,13 +6295,24 @@ You:`;
             // 🚫 Final pass: remove overused zoomer slang (e.g., "lowkey") unless explicitly intended elsewhere
             let outbound = this.filterBannedSlang(chaos);
             // ✅ Ensure we don't send cut-off sentences in chat mode
-            const cutOffTail = /(,|\b(and|but|or|because|so|if|when|while|that|which|who)\s*)$/i;
+            // Improved: Remove trailing conjunctions/fragments and enforce complete sentence
+            const cutOffTail = /(,|\b(and|but|or|because|so|if|when|while|that|which|who|wait|um|uh|like)\s*)$/i;
             if (cutOffTail.test(outbound)) {
               outbound = outbound.replace(cutOffTail, '').trim();
             }
+            // If sentence ends with a fragment, drop it
+            outbound = outbound.replace(/(\b(wait|um|uh|like|actually|no wait|let me rephrase)[^.!?]*$)/i, '').trim();
             if (outbound.length > 3 && !/[.!?]$/.test(outbound)) {
               outbound += '.';
             }
+          // === TOPIC RELEVANCE CHECK ===
+          if (typeof this.extractTopics === 'function' && typeof this.isRelevantTopic === 'function') {
+            const userTopics = this.extractTopics(text);
+            if (!this.isRelevantTopic(outbound, userTopics)) {
+              logger.warn(`[Quality] Response off-topic, suppressing.`);
+              return null;
+            }
+          }
             
             // === CORE SYSTEMS: Update memory after response ===
             if (coreSystemsResult && this.coreSystems) {
@@ -6902,6 +7171,45 @@ You:`;
         });
       }
       
+      // === 🎚️ EMOTION-WEIGHTED TONE SHAPING (human warmth/snark, platform-aware) ===
+      try {
+        const respondingTo = meta.respondingTo || (this.conversationContext.length > 0 ? this.conversationContext[this.conversationContext.length - 1].username : 'unknown');
+        const lastUserMsg = [...(this.conversationContext || [])].reverse().find(m => m && m.username === respondingTo);
+        const toneCtx = {
+          platform: targetPlatform,
+          mood: this.moodTracker ? this.moodTracker.getMood() : 'neutral',
+          relTier: this.relationshipEvolution?.getRelationshipContext(respondingTo)?.tier || 'stranger',
+          emotion: (this.emotionalMomentum?.getLingeringEffect?.() || { emotion: 'neutral', intensity: 0.4 }).emotion,
+          intensity: (this.emotionalMomentum?.getLingeringEffect?.() || { emotion: 'neutral', intensity: 0.4 }).intensity,
+          lastUserText: lastUserMsg?.text || ''
+        };
+        styledMessage = this.applyEmotionTone(styledMessage, toneCtx);
+      } catch (toneErr) {
+        logger.warn(`⚠️ [Tone] Emotion-weighted tone shaping failed: ${toneErr.message}`);
+      }
+
+      // === 🧠 CONVERSATIONAL RECALL HINTS (low-key continuity) ===
+      try {
+        const respondingTo = meta.respondingTo || (this.conversationContext.length > 0 ? this.conversationContext[this.conversationContext.length - 1].username : 'unknown');
+        if (respondingTo && respondingTo !== 'unknown' && this.isFeatureEnabled('recallHint')) {
+          if (!this.lastRecallByUser) this.lastRecallByUser = new Map();
+          const now = Date.now();
+          const lastTs = this.lastRecallByUser.get(respondingTo) || 0;
+          const cooldownOk = now - lastTs > 180000; // 3 minutes per-user
+          const chance = Math.random() < 0.14; // ~14%
+          if (cooldownOk && chance) {
+            const recallCtx = { platform: targetPlatform, user: respondingTo };
+            const withRecall = this.applyRecallHint(styledMessage, recallCtx);
+            if (withRecall !== styledMessage) {
+              styledMessage = withRecall;
+              this.lastRecallByUser.set(respondingTo, now);
+            }
+          }
+        }
+      } catch (recallErr) {
+        logger.warn(`⚠️ [Recall] Hint injection failed: ${recallErr.message}`);
+      }
+
       // === 🌟👑 PREMIER FEATURES: Apply interruptions, streaming consciousness, etc ===
       try {
         // 1. Interrupt & Distraction - Maybe send partial message
@@ -7066,17 +7374,49 @@ You:`;
           if (isVictory && this.victoryCelebration.shouldCelebrate()) {
             // Trigger proud mood
             this.moodTracker.adjustMood('proud', 0.3);
+
+            // 🎯 Social calibration closer: lightly self-aware closer after a win
+            try {
+              if (this.isFeatureEnabled && this.isFeatureEnabled('socialCalibration')) {
+                // Low probability to avoid overuse
+                if (Math.random() < 0.2) {
+                  const closerVariants = [
+                    "alright I’ll stop now",
+                    "ok I’m done being insufferable",
+                    "I’ll give you a second to recover",
+                    "we’re good, I’ll chill",
+                    "ok ok I’ll behave"
+                  ];
+                  const closer = closerVariants[Math.floor(Math.random() * closerVariants.length)];
+                  const delay = 3000 + Math.floor(Math.random() * 4000); // 3–7s
+                  setTimeout(() => {
+                    try {
+                      this.sendMessage(closer, { isCloser: true, respondingTo: lastUser }, targetPlatform, targetChannel);
+                    } catch (e) {
+                      logger?.warn?.(`⚠️ [SocialCloser] Failed to send closer: ${e.message}`);
+                    }
+                  }, delay);
+                }
+              }
+            } catch (e) {
+              logger?.warn?.(`⚠️ [SocialCloser] Error scheduling closer: ${e.message}`);
+            }
           }
         }
 
         // Emit event for dashboard
         this.emit('message:sent', { message: styledMessage, timestamp: Date.now() });
         // Track if we asked a question
-        if (styledMessage.includes('?')) {
+        if (styledMessage.includes('?') && this.isFeatureEnabled('followUpQuestions')) {
           this.chatStats.questionsAsked++;
           this.pendingQuestions.push({
             question: styledMessage,
-            askedAt: Date.now()
+            askedAt: Date.now(),
+            // Prefer explicit meta, fallback to last non-bot user
+            targetUser: (meta.respondingTo || lastUser || 'unknown'),
+            platform: targetPlatform,
+            channel: targetChannel,
+            nudges: 0
           });
           this.lastQuestionTime = Date.now();
           // Keep only last 3 questions
@@ -7084,6 +7424,41 @@ You:`;
             this.pendingQuestions.shift();
           }
           logger.info(`[${getTimestamp()}] ❓ Asked question, waiting for responses...`);
+        }
+        
+        // 🌱 Commitment detection: if we promised something, enqueue a gentle reminder
+        try {
+          if (this.isFeatureEnabled && this.isFeatureEnabled('commitmentTracking')) {
+            const promiseRegex = /\b(i'll|i will|i\s*will|gonna|going to|remind|follow up|circle back|later|after|tonight|tomorrow|next time)\b/i;
+            if (promiseRegex.test(styledMessage)) {
+              const nowTs = Date.now();
+              const noteMatch = styledMessage.match(/(remind|follow up|circle back|tomorrow|tonight|later|next time)[^.!?]{0,60}/i);
+              const note = noteMatch ? noteMatch[0] : 'following up';
+              const remindAt = nowTs + (2 * 60 * 1000) + Math.floor(Math.random() * (3 * 60 * 1000)); // 2–5 minutes
+
+              // Avoid duplicate reminders for same user/channel within 10 minutes
+              const tUser = meta.respondingTo || (this.conversationContext.length > 1 ? this.conversationContext[this.conversationContext.length - 2].username : undefined);
+              const sameWindow = (this.commitments || []).some(c => (
+                c.platform === targetPlatform && c.channel === targetChannel &&
+                c.targetUser === (tUser || null) && (nowTs - (c.askedAt || nowTs)) < (10 * 60 * 1000)
+              ));
+              if (!sameWindow) {
+                this.commitments = this.commitments || [];
+                this.commitments.push({
+                  targetUser: tUser || null,
+                  platform: targetPlatform,
+                  channel: targetChannel,
+                  note,
+                  remindAt,
+                  askedAt: nowTs,
+                  sent: false
+                });
+                logger.info(`📝 [Commitment] Tracked promise for ${tUser || 'anyone'} @ ${targetPlatform}#${targetChannel} (in ${(Math.round((remindAt-nowTs)/1000))}s)`);
+              }
+            }
+          }
+        } catch (e) {
+          logger?.warn?.(`⚠️ [Commitment] Detection error: ${e.message}`);
         }
         // Log our own message for learning context
         this.conversationContext.push({
@@ -7200,6 +7575,221 @@ You:`;
     }
   }
 
+  /**
+   * Check unanswered questions and send a gentle follow-up if needed.
+   * Contract:
+   *  - Nudge at most once per question (nudges <= 1)
+   *  - Per-user cooldown = 2 minutes
+   *  - First nudge window: 45–75s after asking
+   *  - Auto-clear if any answer detected (by target user if known; else any non-bot reply)
+   *  - Drop stale questions after 10 minutes
+   */
+  checkPendingQuestionsForFollowup() {
+    try {
+      const now = Date.now();
+      if (!Array.isArray(this.pendingQuestions) || this.pendingQuestions.length === 0) return;
+
+      // Filter out stale ones early
+      this.pendingQuestions = this.pendingQuestions.filter(pq => (now - pq.askedAt) < 10 * 60 * 1000);
+
+      for (const pq of this.pendingQuestions) {
+        if (!pq || typeof pq !== 'object') continue;
+
+        // Consider it answered if target user replied after askedAt
+        const target = pq.targetUser && pq.targetUser !== 'unknown' ? pq.targetUser : null;
+        const answered = (this.conversationContext || []).some(m => {
+          if (!m || m.username === 'Slunt') return false;
+          if (m.timestamp <= pq.askedAt) return false;
+          return target ? (m.username === target) : true;
+        });
+        if (answered) {
+          pq.answered = true;
+          continue;
+        }
+
+        // Already nudged enough? keep quiet
+        const nudges = pq.nudges || 0;
+        if (nudges >= 1) continue;
+
+        // Time window to nudge: 45–75s after question
+        if (!pq.initialDelayMs) {
+          pq.initialDelayMs = 45000 + Math.floor(Math.random() * 30000);
+        }
+        const elapsed = now - pq.askedAt;
+        if (elapsed < pq.initialDelayMs) continue;
+
+        // Respect per-user cooldown
+        const userKey = target || 'any';
+        const lastTs = (this.lastFollowUpByUser && this.lastFollowUpByUser.get(userKey)) || 0;
+        if (now - lastTs < 2 * 60 * 1000) continue;
+
+        // Compose a concise, platform-aware nudge
+        const platform = (pq.platform || this.currentPlatform || 'coolhole').toLowerCase();
+        const sep = platform === 'twitch' ? ' - ' : ' — ';
+        let msg;
+        if (target) {
+          msg = `still curious${sep} what do you think, ${target}?`;
+        } else {
+          msg = `still curious${sep} thoughts?`;
+        }
+
+        // Send follow-up to the same platform/channel
+        this.sendMessage(msg, { respondingTo: target || undefined, isFollowUp: true, platform: pq.platform, channel: pq.channel });
+        pq.nudges = nudges + 1;
+        pq.lastNudgedAt = now;
+        if (this.lastFollowUpByUser) this.lastFollowUpByUser.set(userKey, now);
+        logger.info(`🔁 [FollowUp] Nudge sent (user=${userKey}, platform=${platform})`);
+      }
+
+      // Remove answered items or those that exceeded limits
+      this.pendingQuestions = this.pendingQuestions.filter(pq => !pq.answered && (pq.nudges || 0) <= 1 && (now - pq.askedAt) < 10 * 60 * 1000);
+    } catch (e) {
+      logger.warn(`⚠️ [FollowUp] check failed: ${e.message}`);
+    }
+  }
+
+  /**
+   * Apply subtle platform-aware, emotion-weighted tone shaping to the final message
+   * Contract:
+   *  - Input: text (string), ctx { platform, mood, relTier, emotion, intensity, lastUserText }
+   *  - Output: string (<= 1.2x length of input)
+   *  - Safe: no profanity injection; avoid emojis on Twitch; keep changes minimal
+   */
+  applyEmotionTone(text, ctx = {}) {
+    try {
+      if (!text || typeof text !== 'string') return text;
+      if (!this.isFeatureEnabled || !this.isFeatureEnabled('emotionTone')) return text;
+      const platform = (ctx.platform || '').toLowerCase();
+      const emotion = (ctx.emotion || 'neutral').toLowerCase();
+      const mood = (ctx.mood || 'neutral').toLowerCase();
+      const intensity = Math.max(0, Math.min(1, Number(ctx.intensity || 0)));
+      const relTier = (ctx.relTier || 'stranger').toLowerCase();
+      const lastUser = String(ctx.lastUserText || '');
+
+      // Hard caps on changes
+      const maxAdded = Math.floor(Math.min(40, text.length * 0.2));
+      let added = '';
+
+      // Heuristic: vulnerability in last user msg
+      const vulnerable = /\b(sorry|sad|hurt|scared|worried|alone|tired|anxious|stressed)\b/i.test(lastUser);
+
+      // Reduce shoutiness if we’re heated and relationship is weak
+      if ((emotion === 'angry' || mood === 'frustrated') && (relTier === 'stranger' || relTier === 'acquaintance')) {
+        // Replace multiple ! with . and trim trailing spaces
+        text = text.replace(/!{2,}/g, '.').replace(/\s+$/,'');
+      }
+
+      // Add gentle hedge for sensitive contexts
+      if (vulnerable && (emotion === 'neutral' || emotion === 'sad' || mood === 'soft')) {
+        const hedge = ' if that makes sense';
+        if (!text.endsWith('?') && added.length + hedge.length <= maxAdded && text.length < 180) {
+          text = text.replace(/[.!]*$/,'');
+          added += hedge;
+          text += hedge + '.';
+        }
+      }
+
+      // Warmth: positive emotion, moderate intensity → one softener
+      if ((emotion === 'happy' || mood === 'chill') && intensity >= 0.4 && intensity <= 0.8) {
+        const softeners = [' for real', ' honestly'];
+        const pick = softeners[Math.floor(Math.random()*softeners.length)];
+        if (!/\b(honestly|for real)\b/i.test(text) && added.length + pick.length <= maxAdded && text.length < 200) {
+          text = text.replace(/[.!]*$/,'');
+          added += pick;
+          text += pick + '.';
+        }
+      }
+
+      // Minimal exclamation allowance when very positive
+      if ((emotion === 'happy' || mood === 'excited') && intensity > 0.7) {
+        if (!/[!?]$/.test(text) && added.length + 1 <= maxAdded && text.length < 180) {
+          text += '!';
+          added += '!';
+        }
+      }
+
+      // Discord can get a tiny emoji sometimes; avoid on Twitch; Coolhole minimal
+      const canEmoji = platform === 'discord';
+      if (canEmoji && (emotion === 'happy' || mood === 'chill') && Math.random() < 0.15) {
+        const emoji = ' 🙂';
+        if (!/🙂|😀|😂/.test(text) && added.length + emoji.length <= maxAdded && text.length < 180) {
+          text += emoji;
+          added += emoji;
+        }
+      }
+
+      return text;
+    } catch (_) {
+      return text;
+    }
+  }
+
+  /**
+   * Insert a tiny recall clause about the user's interests or recent topics.
+   * Keeps total addition <= 40 chars and avoids Twitch emoji. Returns original text if no suitable hint.
+   */
+  applyRecallHint(text, ctx = {}) {
+    try {
+      if (!text || typeof text !== 'string') return text;
+      if (!this.isFeatureEnabled || !this.isFeatureEnabled('recallHint')) return text;
+      const platform = (ctx.platform || '').toLowerCase();
+      const user = ctx.user;
+      if (!user) return text;
+
+      // Find a plausible topic to reference
+      let topic = null;
+      const profile = this.userProfiles?.get ? this.userProfiles.get(user) : null;
+      if (profile) {
+        // Try explicit interests first
+        const interests = Array.isArray(profile.interests) ? profile.interests : (profile.interests ? Array.from(profile.interests) : []);
+        if (interests && interests.length > 0) {
+          topic = String(interests[Math.floor(Math.random()*interests.length)]).trim();
+        }
+        // Fallback: top topic from topics map
+        if (!topic && profile.topics) {
+          const topicsArr = Array.from(profile.topics).sort((a,b) => (b[1]||0)-(a[1]||0));
+          if (topicsArr.length) topic = String(topicsArr[0][0]).trim();
+        }
+      }
+      // Fallback to recent messages from this user
+      if (!topic && Array.isArray(this.conversationContext)) {
+        const recentFromUser = [...this.conversationContext].reverse().filter(m => m && m.username === user).slice(0, 10);
+        const candidates = [];
+        recentFromUser.forEach(m => {
+          const tops = this.extractTopics(m.text || '');
+          tops.forEach(t => candidates.push(t));
+        });
+        if (candidates.length) topic = candidates[Math.floor(Math.random()*candidates.length)];
+      }
+      if (!topic || topic.length < 3 || /https?:\/\//i.test(topic)) return text;
+
+      // Build a tiny clause, prepend or append
+      const maxAdded = 40;
+      const name = user.length <= 18 ? user : user.slice(0, 18);
+      const prepend = Math.random() < 0.5;
+      // Avoid heavy punctuation/emojis for Twitch
+      const sep = platform === 'twitch' ? ' - ' : ' — ';
+      const hintStart = `btw ${name}, about ${topic}${sep}`;
+      const hintEnd = platform === 'twitch' ? ` also still thinking about ${topic}.` : ` also still thinking about ${topic}.`;
+
+      let result = text;
+      if (prepend) {
+        if (hintStart.length <= maxAdded && (hintStart.length + text.length) <= Math.floor(text.length * 1.2) + 40) {
+          result = hintStart + text;
+        }
+      } else {
+        if (hintEnd.length <= maxAdded && (hintEnd.length + text.length) <= Math.floor(text.length * 1.2) + 40) {
+          // Ensure sentence end punctuation
+          result = /[.!?]$/.test(text) ? text : (text + '.');
+          result += hintEnd;
+        }
+      }
+      return result;
+    } catch (_) {
+      return text;
+    }
+  }
+
   saveMemory() {
     try {
       // ...existing code...
@@ -7308,10 +7898,38 @@ You:`;
         communityEvents: (this.communityEvents && typeof this.communityEvents === 'object') ? {
           totalEvents: this.communityEvents.events?.length ?? 0,
           recentEvents: this.communityEvents.getRecentEvents ? this.communityEvents.getRecentEvents(5) : []
-        } : { totalEvents: 0, recentEvents: [] }
+        } : { totalEvents: 0, recentEvents: [] },
+        flags: this.featureFlags
       };
     } catch (e) {
       return {};
+    }
+  }
+
+  // === FEATURE FLAGS HELPERS ===
+  loadFeatureFlags() {
+    try {
+      if (!fs.existsSync(this.flagsPath)) return;
+      const raw = fs.readFileSync(this.flagsPath, 'utf-8');
+      const data = JSON.parse(raw);
+      if (data && data.features && typeof data.features === 'object') {
+        this.featureFlags = { ...this.featureFlags, ...data.features };
+        logger.info(`[Flags] Loaded feature flags: ${Object.keys(this.featureFlags).filter(k => this.featureFlags[k]).join(', ')}`);
+      }
+    } catch (e) {
+      logger.warn(`[Flags] Failed to load flags: ${e.message}`);
+    }
+    if (!this.flagsReloadScheduled) {
+      this.flagsReloadScheduled = true;
+      setInterval(() => this.loadFeatureFlags(), 2 * 60 * 1000);
+    }
+  }
+
+  isFeatureEnabled(name) {
+    try {
+      return !!(this.featureFlags && this.featureFlags[name]);
+    } catch {
+      return false;
     }
   }
   detectSentiment(message) {

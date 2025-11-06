@@ -506,6 +506,28 @@ app.post('/api/voice', async (req, res) => {
     // Get TTS audio from selected provider (MP3)
     try {
       const provider = (process.env.VOICE_TTS_PROVIDER || 'elevenlabs').toLowerCase();
+
+      // If a remote Voice Service URL is configured, offload synthesis synchronously
+      const VOICE_SERVICE_URL = process.env.VOICE_SERVICE_URL;
+      if (VOICE_SERVICE_URL) {
+        try {
+          const axios = require('axios');
+          const resp = await axios.post(`${VOICE_SERVICE_URL.replace(/\/$/,'')}/tts`, {
+            text: reply,
+            provider,
+            voiceId: process.env.ELEVENLABS_VOICE_ID || undefined,
+            speed: process.env.VOICE_OPENAI_SPEED ? Number(process.env.VOICE_OPENAI_SPEED) : undefined,
+            wait: true
+          }, { timeout: 60000 });
+          const data = resp.data || {};
+          if (data.status === 'completed' && data.audioUrl) {
+            return res.json({ reply, audioUrl: data.audioUrl, tts: data.tts || { provider } });
+          }
+          // fall through to local if remote didn't complete
+        } catch (remoteErr) {
+          console.warn('⚠️  [Voice] Remote voice service failed, falling back to local TTS:', remoteErr.message);
+        }
+      }
       let audioBuffer;
       let ttsMeta = { provider };
       
@@ -709,6 +731,34 @@ chatBot.on('message:sent', (data) => {
     message: data.message,
     timestamp: Date.now()
   });
+});
+
+// Broadcast typing status to dashboard
+chatBot.on('typing:start', (info) => {
+  io.emit('bot:typing', { active: true, ...info });
+});
+chatBot.on('typing:stop', (info) => {
+  io.emit('bot:typing', { active: false, ...info });
+});
+
+// Forward partial streaming previews to dashboard
+chatBot.on('message:partial', (data) => {
+  io.emit('bot:partial', data);
+});
+
+// Forward companion visibility actions (suppress/override) to dashboard
+chatBot.on('companion:action', (payload) => {
+  try {
+    io.emit('companion:action', {
+      type: payload?.type,
+      reason: payload?.reason,
+      suggestion: payload?.suggestion,
+      data: payload?.data || null,
+      timestamp: Date.now()
+    });
+  } catch (e) {
+    console.warn('⚠️  Failed to emit companion:action:', e?.message || e);
+  }
 });
 
 // Broadcast bot stats periodically
@@ -2104,6 +2154,43 @@ if (enableCoolhole) {
         
         // Let ChatBot handle the message
         await chatBot.handleMessage(chatData);
+
+        // Emit context-based quick replies for dashboard convenience
+        try {
+          const genQuickReplies = (text) => {
+            if (!text || typeof text !== 'string') return [];
+            const t = text.toLowerCase();
+            const replies = [];
+            const add = (x) => { if (replies.length < 6) replies.push(x); };
+            if (t.includes('?')) {
+              add('What do you mean exactly?');
+              add("I don't fully agree—why?");
+              add('Give me an example.');
+            }
+            if (/(music|song|band|album)/.test(t)) {
+              add('What’s your favorite right now?');
+              add('Send a link.');
+            }
+            if (/(game|steam|ps5|xbox)/.test(t)) {
+              add('Worth playing this week?');
+              add('Solo or co‑op?');
+            }
+            if (/(movie|show|netflix|series)/.test(t)) {
+              add('No spoilers—rate it 1‑10.');
+              add('Short pitch me.');
+            }
+            if (replies.length === 0) {
+              add('Go on.');
+              add('Explain that.');
+              add('Why though?');
+            }
+            return replies.slice(0, 6);
+          };
+          const suggestions = genQuickReplies(chatData.text || chatData.message);
+          if (suggestions.length) {
+            io.emit('quickreplies:update', { suggestions });
+          }
+        } catch (e) { /* ignore */ }
       } catch (error) {
         console.error(`❌ Error handling ${chatData.platform} message:`, error.message);
       }
@@ -2252,25 +2339,9 @@ if (enableCoolhole) {
     console.error('❌ Error initializing platforms:', error);
   });
   
-  // Initialize Explorer and Vision Analyzer after connection
-  // Lightweight greeting on every connection (including reconnects)
-  coolholeClient.on('connected', async () => {
-    try {
-      console.log('✅ Coolhole connected - ULTRA MINIMAL MODE');
-      console.log('⚠️  [DEBUG] All initialization DISABLED - only chat handlers');
-      
-      // MINIMAL: Just register message handler, nothing else
-      coolholeClient.on('message', (data) => {
-        console.log('💬 [Coolhole]', data.username + ':', data.message);
-      });
-      
-      console.log('✅ Chat handler registered - NO STARTUP, NO ADVANCED FEATURES');
-    } catch (e) {
-      console.error('[Startup] Handler failed:', e.message);
-    }
-  });
-
-  console.log('⚠️  [DEBUG] Advanced features (Vision/Cursor) DISABLED to prevent crash');
+  // Coolhole connection events are handled via PlatformManager and ChatBot handlers
+  // Advanced features remain disabled unless explicitly enabled via env flags
+  console.log('ℹ️  Coolhole wired through PlatformManager; advanced features disabled unless enabled');
 } else {
   console.log('Coolhole connection disabled - running in test mode');
 }

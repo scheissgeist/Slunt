@@ -80,6 +80,7 @@ Thumbs.db
 # Data files (keep structure but ignore data)
 data/*.json
 !data/.gitkeep
+!data/flags.json
 
 # Backups (contain sensitive data/tokens)
 backups/
