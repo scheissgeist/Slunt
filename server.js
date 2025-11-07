@@ -2422,7 +2422,7 @@ process.on('uncaughtException', (error) => {
   });
   tempJanitor.start();
   
-  server.listen(PORT, () => {
+  server.listen(PORT, '0.0.0.0', () => {
     console.log(`\n${'='.repeat(60)}`);
     console.log(`🚀 Coolhole.org Chatbot Server - RUNNING`);
     console.log(`${'='.repeat(60)}`);
