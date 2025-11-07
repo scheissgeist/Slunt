@@ -440,6 +440,25 @@
         </header>
 
         <div class="grid">
+            <!-- Quick Replies -->
+            <div class="card">
+                <h2>⚡ Quick Replies</h2>
+                <div id="quickReplies" style="display:flex; flex-wrap:wrap; gap:8px;">
+                    <div style="opacity:0.6;">Waiting for suggestions…</div>
+                </div>
+                <div id="qrToast" style="display:none; margin-top:10px; font-size:0.9em; color:#10b981;">Copied</div>
+            </div>
+            <!-- Companion Oversight -->
+            <div class="card">
+                <h2>🧭 Companion Oversight</h2>
+                <div class="stat">
+                    <span class="stat-label">Recent actions:</span>
+                    <span class="stat-value" id="companionCount">0</span>
+                </div>
+                <div id="companionActions" style="max-height: 220px; overflow-y:auto; margin-top:10px;">
+                    <div style="opacity:0.6; text-align:center; padding: 12px;">No companion activity yet…</div>
+                </div>
+            </div>
             <!-- Voice Conversation Memory -->
             <div class="card" style="grid-column: span 2;">
                 <h2>🎤 Voice Conversation Memory</h2>
@@ -612,6 +631,13 @@
             <!-- Mental State -->
             <div class="card full-width">
                 <h2>💬 Recent Chat</h2>
+                <div id="typingIndicator" style="display:none; margin: 6px 0; color:#10b981; font-weight:600;">
+                    Slunt is typing…
+                </div>
+                <div id="livePreview" style="display:none; margin-bottom:8px; padding:10px; border-left:3px solid #10b981; background:rgba(16,185,129,0.15); border-radius:6px;">
+                  <span style="opacity:0.8; font-size:0.85em;">live:</span>
+                  <span id="livePreviewText"></span>
+                </div>
                 <div class="chat-messages" id="chatMessages">
                     <div style="text-align: center; opacity: 0.5; padding: 20px;">Waiting for messages...</div>
                 </div>
@@ -868,6 +894,103 @@
         socket.on('bot:stats', (stats) => {
             updateBotStats(stats);
             updateLastUpdate();
+        });
+
+        // Typing indicator
+        socket.on('bot:typing', (data) => {
+            const el = document.getElementById('typingIndicator');
+            if (!el) return;
+            if (data && data.active) {
+                el.style.display = 'block';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        // Live partial preview
+        socket.on('bot:partial', (data) => {
+            const wrap = document.getElementById('livePreview');
+            const textEl = document.getElementById('livePreviewText');
+            if (!wrap || !textEl) return;
+            if (data?.done) {
+                wrap.style.display = 'none';
+                textEl.textContent = '';
+                return;
+            }
+            if (data?.text) {
+                wrap.style.display = 'block';
+                textEl.textContent = data.text;
+            }
+        });
+
+        // Quick replies rendering
+        socket.on('quickreplies:update', ({ suggestions = [] } = {}) => {
+            const container = document.getElementById('quickReplies');
+            const toast = document.getElementById('qrToast');
+            if (!container) return;
+            container.innerHTML = '';
+            if (!suggestions.length) {
+                const div = document.createElement('div');
+                div.style.opacity = '0.6';
+                div.textContent = 'No suggestions right now.';
+                container.appendChild(div);
+                return;
+            }
+            suggestions.forEach(text => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-tab';
+                btn.style.fontSize = '0.85em';
+                btn.textContent = text;
+                btn.onclick = async () => {
+                    try {
+                        await navigator.clipboard.writeText(text);
+                        if (toast) {
+                            toast.textContent = 'Copied: ' + text;
+                            toast.style.display = 'block';
+                            setTimeout(() => { toast.style.display = 'none'; }, 1200);
+                        }
+                    } catch {}
+                };
+                container.appendChild(btn);
+            });
+        });
+
+        // Companion visibility events (suppress/override)
+        socket.on('companion:action', (payload = {}) => {
+            const list = document.getElementById('companionActions');
+            const count = document.getElementById('companionCount');
+            if (!list || !count) return;
+
+            // Remove placeholder on first entry
+            const placeholder = list.querySelector('[style*="text-align:center"]');
+            if (placeholder) placeholder.remove();
+
+            const type = (payload.type || '').toUpperCase();
+            const reason = payload.reason || 'No reason provided';
+            const sugg = payload.suggestion ? `<div style="margin-top:6px; opacity:0.9;"><span style="opacity:0.7; font-size:0.85em;">override →</span> ${escapeHtml(payload.suggestion)}</div>` : '';
+            const ts = payload.timestamp ? new Date(payload.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+
+            const div = document.createElement('div');
+            div.className = 'user-card';
+            div.style.borderLeftColor = type === 'SUPPRESS' ? '#ef4444' : '#10b981';
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-weight:600;">${type === 'SUPPRESS' ? '⛔ Suppressed' : '✅ Override'}</div>
+                    <div style="opacity:0.6; font-size:0.85em;">${ts}</div>
+                </div>
+                <div style="margin-top:4px; opacity:0.9;">
+                    <span style="opacity:0.7;">reason:</span> ${escapeHtml(reason)}
+                </div>
+                ${sugg}
+            `;
+            list.insertBefore(div, list.firstChild);
+
+            // Keep last 15
+            while (list.children.length > 15) list.removeChild(list.lastChild);
+
+            // Update count
+            const current = parseInt(count.textContent) || 0;
+            count.textContent = current + 1;
         });
 
         // Mental State Updates

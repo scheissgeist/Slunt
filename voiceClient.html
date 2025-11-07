@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slunt Voice Client</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Courier New', monospace;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+      color: #eee;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    header {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      text-align: center;
+      border-bottom: 2px solid #0f3460;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+      font-size: 2.5em;
+      color: #e94560;
+      text-shadow: 0 0 10px rgba(233, 69, 96, 0.5);
+      letter-spacing: 3px;
+    }
+
+    .status {
+      margin-top: 10px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+
+    .status.connected {
+      color: #2ecc71;
+    }
+
+    .status.disconnected {
+      color: #e74c3c;
+    }
+
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow: hidden;
+    }
+
+    .transcript-container {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.4);
+      border: 2px solid #0f3460;
+      border-radius: 10px;
+      padding: 20px;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .message {
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 8px;
+      line-height: 1.6;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message.user {
+      background: rgba(52, 152, 219, 0.2);
+      border-left: 4px solid #3498db;
+      margin-left: 20px;
+    }
+
+    .message.slunt {
+      background: rgba(233, 69, 96, 0.2);
+      border-left: 4px solid #e94560;
+      margin-right: 20px;
+    }
+
+    .message.system {
+      background: rgba(149, 165, 166, 0.2);
+      border-left: 4px solid #95a5a6;
+      text-align: center;
+      font-style: italic;
+      color: #bbb;
+    }
+
+    .speaker {
+      font-weight: bold;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.85em;
+    }
+
+    .message.user .speaker {
+      color: #3498db;
+    }
+
+    .message.slunt .speaker {
+      color: #e94560;
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.3);
+      border-top: 2px solid #0f3460;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 15px 30px;
+      font-size: 1.1em;
+      font-family: 'Courier New', monospace;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      letter-spacing: 1px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn-primary {
+      background: #e94560;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #d63447;
+    }
+
+    .btn-primary.listening {
+      background: #2ecc71;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 0 0 rgba(46, 204, 113, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 0 20px rgba(46, 204, 113, 0);
+      }
+    }
+
+    .btn-secondary {
+      background: #3498db;
+      color: white;
+    }
+
+    .btn-secondary:hover {
+      background: #2980b9;
+    }
+
+    .btn-danger {
+      background: #e74c3c;
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: #c0392b;
+    }
+
+    .settings {
+      background: rgba(0, 0, 0, 0.3);
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #0f3460;
+    }
+
+    .settings label {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 0.9em;
+    }
+
+    .settings input {
+      padding: 8px 12px;
+      background: rgba(0, 0, 0, 0.5);
+      border: 1px solid #0f3460;
+      border-radius: 5px;
+      color: #eee;
+      font-family: 'Courier New', monospace;
+      width: 250px;
+    }
+
+    .settings input:focus {
+      outline: none;
+      border-color: #e94560;
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: #e94560;
+      border-radius: 5px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: #d63447;
+    }
+
+    .error {
+      background: rgba(231, 76, 60, 0.2);
+      border: 2px solid #e74c3c;
+      color: #e74c3c;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      text-align: center;
+      animation: shake 0.5s ease;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .connection-status {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-left: 10px;
+      animation: blink 1.5s infinite;
+    }
+
+    .connection-status.connected {
+      background: #2ecc71;
+      animation: none;
+    }
+
+    .connection-status.disconnected {
+      background: #e74c3c;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎤 SLUNT VOICE CLIENT</h1>
+    <div class="status disconnected" id="connection-status">
+      Disconnected <span class="connection-status disconnected"></span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="settings">
+      <label>
+        <span>Server URL:</span>
+        <input type="text" id="server-url" value="http://localhost:3000" placeholder="http://server-ip:3000">
+      </label>
+      <label>
+        <span>Username:</span>
+        <input type="text" id="username" value="You" placeholder="Your name">
+      </label>
+    </div>
+
+    <div id="error-container"></div>
+
+    <div class="transcript-container" id="transcript">
+      <div class="message system">
+        <div>🔌 Enter server URL and click "Connect" to start</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-secondary" id="connect-btn" onclick="connectToServer()">Connect</button>
+    <button class="btn btn-primary" id="listen-btn" onclick="toggleListening()" disabled>🎤 Start Listening</button>
+    <button class="btn btn-secondary" id="interrupt-btn" onclick="interrupt()" disabled>⏸️ Interrupt</button>
+    <button class="btn btn-danger" id="clear-btn" onclick="clearMemory()" disabled>🗑️ Clear Memory</button>
+  </div>
+
+  <!-- Hidden audio element for playback -->
+  <audio id="audio-player" hidden></audio>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    let socket = null;
+    let recognition = null;
+    let isListening = false;
+    let serverUrl = 'http://localhost:3000';
+
+    // Initialize speech recognition
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+      recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = false;
+      recognition.lang = 'en-US';
+
+      recognition.onresult = (event) => {
+        const last = event.results.length - 1;
+        const text = event.results[last][0].transcript;
+        handleSpeech(text);
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        if (event.error === 'no-speech') {
+          // Silently ignore no-speech errors
+          return;
+        }
+        showError(`Speech recognition error: ${event.error}`);
+      };
+
+      recognition.onend = () => {
+        if (isListening) {
+          // Restart if still supposed to be listening
+          recognition.start();
+        }
+      };
+    } else {
+      showError('Speech recognition not supported in this browser. Use Chrome or Edge.');
+    }
+
+    function connectToServer() {
+      const urlInput = document.getElementById('server-url');
+      serverUrl = urlInput.value.trim();
+
+      if (!serverUrl) {
+        showError('Please enter a server URL');
+        return;
+      }
+
+      if (socket && socket.connected) {
+        socket.disconnect();
+      }
+
+      addMessage('system', 'Connecting to server...');
+
+      try {
+        socket = io(serverUrl, {
+          transports: ['websocket', 'polling'],
+          reconnection: true,
+          reconnectionAttempts: 5,
+          reconnectionDelay: 1000
+        });
+
+        socket.on('connect', () => {
+          updateConnectionStatus(true);
+          addMessage('system', '✅ Connected to Slunt server');
+          enableControls(true);
+          clearError();
+        });
+
+        socket.on('disconnect', () => {
+          updateConnectionStatus(false);
+          addMessage('system', '❌ Disconnected from server');
+          enableControls(false);
+          stopListening();
+        });
+
+        socket.on('connect_error', (error) => {
+          updateConnectionStatus(false);
+          showError(`Connection failed: ${error.message}. Check server URL and firewall.`);
+          enableControls(false);
+        });
+
+        socket.on('voice:response', (data) => {
+          addMessage('slunt', data.text);
+          playAudio(data.audioUrl);
+        });
+
+        socket.on('voice:transcript', (data) => {
+          // Server echo - already displayed locally
+        });
+
+        socket.on('voice:error', (data) => {
+          showError(`Slunt error: ${data.message}`);
+        });
+
+      } catch (error) {
+        showError(`Failed to connect: ${error.message}`);
+      }
+    }
+
+    function updateConnectionStatus(connected) {
+      const statusEl = document.getElementById('connection-status');
+      const dot = statusEl.querySelector('.connection-status');
+
+      if (connected) {
+        statusEl.className = 'status connected';
+        statusEl.innerHTML = 'Connected <span class="connection-status connected"></span>';
+      } else {
+        statusEl.className = 'status disconnected';
+        statusEl.innerHTML = 'Disconnected <span class="connection-status disconnected"></span>';
+      }
+    }
+
+    function enableControls(enabled) {
+      document.getElementById('listen-btn').disabled = !enabled;
+      document.getElementById('interrupt-btn').disabled = !enabled;
+      document.getElementById('clear-btn').disabled = !enabled;
+      document.getElementById('connect-btn').textContent = enabled ? 'Reconnect' : 'Connect';
+    }
+
+    function toggleListening() {
+      if (!recognition) {
+        showError('Speech recognition not available');
+        return;
+      }
+
+      if (isListening) {
+        stopListening();
+      } else {
+        startListening();
+      }
+    }
+
+    function startListening() {
+      if (!socket || !socket.connected) {
+        showError('Not connected to server');
+        return;
+      }
+
+      try {
+        recognition.start();
+        isListening = true;
+        const btn = document.getElementById('listen-btn');
+        btn.textContent = '🔴 Listening...';
+        btn.classList.add('listening');
+        addMessage('system', '🎤 Listening for your voice...');
+      } catch (error) {
+        console.error('Failed to start listening:', error);
+      }
+    }
+
+    function stopListening() {
+      if (recognition && isListening) {
+        recognition.stop();
+        isListening = false;
+        const btn = document.getElementById('listen-btn');
+        btn.textContent = '🎤 Start Listening';
+        btn.classList.remove('listening');
+      }
+    }
+
+    function handleSpeech(text) {
+      if (!text || !socket || !socket.connected) return;
+
+      const username = document.getElementById('username').value || 'You';
+
+      addMessage('user', text);
+
+      socket.emit('voice:speech', {
+        text: text,
+        username: username
+      });
+    }
+
+    function interrupt() {
+      if (!socket || !socket.connected) {
+        showError('Not connected to server');
+        return;
+      }
+
+      socket.emit('voice:interrupt');
+
+      const audioPlayer = document.getElementById('audio-player');
+      audioPlayer.pause();
+      audioPlayer.currentTime = 0;
+
+      addMessage('system', '⏸️ Interrupted');
+    }
+
+    function clearMemory() {
+      if (!socket || !socket.connected) {
+        showError('Not connected to server');
+        return;
+      }
+
+      socket.emit('clear_memory');
+
+      const transcript = document.getElementById('transcript');
+      transcript.innerHTML = '';
+
+      addMessage('system', '🗑️ Memory cleared');
+    }
+
+    function playAudio(audioUrl) {
+      const fullUrl = serverUrl + audioUrl;
+      const audioPlayer = document.getElementById('audio-player');
+
+      audioPlayer.src = fullUrl;
+      audioPlayer.play().catch(error => {
+        console.error('Audio playback failed:', error);
+        showError('Failed to play audio. Check server connection.');
+      });
+    }
+
+    function addMessage(type, text) {
+      const transcript = document.getElementById('transcript');
+      const message = document.createElement('div');
+      message.className = `message ${type}`;
+
+      if (type === 'user' || type === 'slunt') {
+        const speaker = document.createElement('div');
+        speaker.className = 'speaker';
+        speaker.textContent = type === 'user' ? document.getElementById('username').value : 'Slunt';
+        message.appendChild(speaker);
+      }
+
+      const content = document.createElement('div');
+      content.textContent = text;
+      message.appendChild(content);
+
+      transcript.appendChild(message);
+      transcript.scrollTop = transcript.scrollHeight;
+    }
+
+    function showError(message) {
+      const errorContainer = document.getElementById('error-container');
+      errorContainer.innerHTML = `<div class="error">${message}</div>`;
+
+      setTimeout(() => {
+        clearError();
+      }, 5000);
+    }
+
+    function clearError() {
+      const errorContainer = document.getElementById('error-container');
+      errorContainer.innerHTML = '';
+    }
+
+    // Save settings to localStorage
+    document.getElementById('server-url').addEventListener('change', (e) => {
+      localStorage.setItem('slunt-server-url', e.target.value);
+    });
+
+    document.getElementById('username').addEventListener('change', (e) => {
+      localStorage.setItem('slunt-username', e.target.value);
+    });
+
+    // Load settings from localStorage
+    window.addEventListener('load', () => {
+      const savedUrl = localStorage.getItem('slunt-server-url');
+      const savedUsername = localStorage.getItem('slunt-username');
+
+      if (savedUrl) {
+        document.getElementById('server-url').value = savedUrl;
+      }
+
+      if (savedUsername) {
+        document.getElementById('username').value = savedUsername;
+      }
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', () => {
+      if (socket && socket.connected) {
+        socket.disconnect();
+      }
+      stopListening();
+    });
+  </script>
+</body>
+</html>

@@ -13,6 +13,7 @@ class AIEngine {
     this.ollama = null;
     this.model = 'gpt-4o-mini';
     this.responseValidator = new ResponseValidator();
+  this.canStream = false;
     
     // Try Ollama first (local, free, private)
     try {
@@ -24,6 +25,7 @@ class AIEngine {
 
       this.enabled = true;
       this.provider = 'ollama';
+  this.canStream = true;
       console.log('🤖 AI Engine enabled with Ollama (local) - QUALITY OPTIMIZED');
       console.log(`   Model: ${this.model} (3.2B parameters)`);
       console.log('   💡 For even better results: ollama pull llama3.1:8b');
@@ -40,6 +42,7 @@ class AIEngine {
         this.model = 'gpt-4o-mini';
         this.enabled = true;
         this.provider = 'openai';
+        this.canStream = true;
         console.log('🤖 AI Engine enabled with OpenAI');
       }
     }
@@ -246,6 +249,139 @@ CRITICAL OUTPUT RULES:
       engagement: 0.7,    // Messages that got responses
       sluntMessages: 0.6  // Slunt's own messages for continuity
     };
+  }
+
+  /**
+   * Stream response generation with partial token callbacks.
+   * Mirrors generateOllamaResponse/generateOpenAIResponse but emits deltas.
+   * @param {string} message - The current user message
+   * @param {string} username - Username speaking
+   * @param {string} additionalContext - Pre-built prompt/context text
+   * @param {object} options - { maxTokens, isVoiceMode, onUpdate(part, done) }
+   * @returns {Promise<string>} final cleaned response
+   */
+  async generateResponseStream(message, username, additionalContext = '', options = {}) {
+    if (!this.enabled || !this.canStream) {
+      return null;
+    }
+
+    const onUpdate = typeof options.onUpdate === 'function' ? options.onUpdate : () => {};
+    const isVoiceMode = !!options.isVoiceMode;
+    const maxTokens = options.maxTokens || (isVoiceMode ? 80 : 150);
+
+    try {
+      if (this.provider === 'ollama') {
+        // Build prompt similar to generateOllamaResponse
+        const userMessage = username + ': ' + message;
+        let contextText = '';
+
+        if (isVoiceMode) {
+          contextText = additionalContext || '';
+        } else {
+          if (additionalContext) {
+            const convoMatch = additionalContext.match(/Recent chat:([\s\S]*?)\n\nUser/)
+              || additionalContext.match(/Recent conversation in THIS channel:([\s\S]*?)(\[Important:|$)/);
+            if (convoMatch && convoMatch[1]) {
+              const fullContext = convoMatch[1].trim();
+              const lines = fullContext.split('\n').slice(-8);
+              contextText = lines.join('\n') + '\n';
+            }
+            const otherContext = additionalContext.replace(/Recent conversation in THIS channel:[\s\S]*?(\[Important:|$)/, '');
+            if (otherContext.trim()) contextText += '\n' + otherContext.trim() + '\n\n';
+          }
+          contextText += userMessage;
+        }
+
+        const lengthGuidance = isVoiceMode ? '5-20 words' : '15-40 words (1-2 sentences)';
+        const voicePrompt = `You're Slunt. Quick, raw, natural.
+They said: "${userMessage}"
+${contextText}
+React naturally (short). Slunt:`;
+        const chatPrompt = this.systemPrompt + '\n\n' + (additionalContext || contextText) + `\n\nRespond as Slunt (${lengthGuidance}):`;
+        const finalPrompt = isVoiceMode ? voicePrompt : chatPrompt;
+
+        const chunks = await this.ollama.generate({
+          model: this.model,
+          prompt: finalPrompt,
+          stream: true,
+          options: {
+            temperature: isVoiceMode ? 0.7 : 0.85,
+            top_p: 0.9,
+            top_k: 40,
+            num_predict: maxTokens,
+            repeat_penalty: isVoiceMode ? 1.2 : 1.1
+          }
+        });
+
+        let aggregated = '';
+        for await (const part of chunks) {
+          const delta = part?.response || '';
+          if (delta) {
+            aggregated += delta;
+            onUpdate(aggregated, false);
+          }
+        }
+        onUpdate(null, true);
+
+        // Cleanup using same logic as chat mode
+        let cleaned = (aggregated || '').trim().replace(/\s+/g, ' ').replace(/\s([.!?])/g, '$1');
+        // Enforce max two sentences and cap length
+        const sentences = cleaned.split(/[.!?]+\s+/).filter(s => s.trim().length > 0);
+        if (sentences.length > 2) {
+          cleaned = sentences.slice(0, 2).join('. ').trim();
+          if (!/[.!?]$/.test(cleaned)) cleaned += '.';
+        }
+        if (cleaned.length > 220) {
+          cleaned = cleaned.slice(0, 210);
+          const cutAt = Math.max(cleaned.lastIndexOf('.'), cleaned.lastIndexOf('!'), cleaned.lastIndexOf('?'), cleaned.lastIndexOf(' '));
+          cleaned = cleaned.slice(0, Math.max(cutAt, 140)).trim();
+          if (!/[.!?]$/.test(cleaned)) cleaned += '.';
+        }
+        const validation = this.responseValidator.validateResponse(cleaned, { lastMessage: message });
+        if (!validation.isValid) return null;
+        const processed = this.responseValidator.processResponse(cleaned, { isVoiceMode: isVoiceMode });
+        return processed || cleaned;
+      }
+
+      if (this.provider === 'openai') {
+        const messages = [
+          { role: 'system', content: this.systemPrompt }
+        ];
+        if (additionalContext) messages.push({ role: 'user', content: additionalContext });
+        messages.push({ role: 'user', content: username + ': ' + message });
+
+        const stream = await this.openai.chat.completions.create({
+          model: this.model,
+          messages,
+          max_tokens: maxTokens,
+          temperature: 0.8,
+          presence_penalty: 0.6,
+          frequency_penalty: 0.3,
+          stream: true
+        });
+
+        let aggregated = '';
+        for await (const chunk of stream) {
+          const delta = chunk?.choices?.[0]?.delta?.content || '';
+          if (delta) {
+            aggregated += delta;
+            onUpdate(aggregated, false);
+          }
+        }
+        onUpdate(null, true);
+
+        let cleaned = (aggregated || '').trim().replace(/\s+/g, ' ').replace(/\s([.!?])/g, '$1');
+        const validation = this.responseValidator.validateResponse(cleaned, { lastMessage: message });
+        if (!validation.isValid) return null;
+        const processed = this.responseValidator.processResponse(cleaned, { isVoiceMode: false });
+        return processed || cleaned;
+      }
+
+      return null;
+    } catch (e) {
+      console.warn('Streaming generation error:', e.message);
+      return null;
+    }
   }
 
   /**

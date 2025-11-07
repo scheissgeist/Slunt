@@ -218,7 +218,7 @@ app.use((req, res, next) => {
 });
 const io = socketIo(server, {
   cors: {
-    origin: process.env.ALLOWED_ORIGINS?.split(',') || ["http://localhost:3000", "http://localhost:3001"],
+    origin: process.env.ALLOWED_ORIGINS?.split(',') || true, // Allow all origins for remote voice clients
     methods: ["GET", "POST"],
     credentials: true
   },
@@ -231,7 +231,7 @@ app.use(helmet({
   crossOriginEmbedderPolicy: false
 }));
 app.use(cors({
-  origin: ["http://localhost:3000", "http://localhost:3001"],
+  origin: process.env.ALLOWED_ORIGINS?.split(',') || true, // Allow all origins for remote voice clients
   credentials: true
 }));
 app.use(express.json());
@@ -277,6 +277,11 @@ app.get('/sentiment', (req, res) => {
 // Serve Voice Chat page
 app.get('/voice', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'voice-demo.html'));
+});
+
+// Serve Remote Voice Client (for connecting from other machines)
+app.get('/voice-client', (req, res) => {
+  res.sendFile(path.join(__dirname, 'voiceClient.html'));
 });
 
 // Initialize bot components

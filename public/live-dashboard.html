@@ -330,6 +330,14 @@
             margin: 10px 0;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
+        .companion-item {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 10px;
+            margin: 6px 0;
+            border-radius: 6px;
+            border-left: 3px solid #10b981;
+        }
+        .companion-item.suppress { border-left-color: #ef4444; }
     </style>
 </head>
 <body>
@@ -490,6 +498,18 @@
                 </button>
             </div>
 
+            <!-- Companion Oversight Card -->
+            <div class="card">
+                <h2>🧭 Companion Oversight</h2>
+                <div class="stat">
+                    <span class="stat-label">Recent actions:</span>
+                    <span class="stat-value" id="companionCount">0</span>
+                </div>
+                <div id="companionActions" style="max-height: 220px; overflow-y:auto; margin-top:10px;">
+                    <div style="opacity:0.6; text-align:center; padding: 12px;">No companion activity yet…</div>
+                </div>
+            </div>
+
             <!-- Commands Card -->
             <div class="card full-width">
                 <h2>⚡ Available Commands</h2>
@@ -636,6 +656,40 @@
             console.log('🖱️ Cursor interaction:', data);
             updateCursorInteraction(data);
             updateLastUpdate();
+        });
+
+        // Companion visibility events
+        socket.on('companion:action', (payload = {}) => {
+            const list = document.getElementById('companionActions');
+            const count = document.getElementById('companionCount');
+            if (!list || !count) return;
+
+            const placeholder = list.querySelector('[style*="text-align:center"]');
+            if (placeholder) placeholder.remove();
+
+            const type = (payload.type || '').toLowerCase();
+            const reason = payload.reason || 'No reason provided';
+            const suggestion = payload.suggestion || '';
+            const ts = payload.timestamp ? new Date(payload.timestamp).toLocaleTimeString() : new Date().toLocaleTimeString();
+
+            const div = document.createElement('div');
+            div.className = `companion-item ${type === 'suppress' ? 'suppress' : ''}`;
+            div.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div style="font-weight:600;">${type === 'suppress' ? '⛔ Suppressed' : '✅ Override'}</div>
+                    <div style="opacity:0.6; font-size:0.85em;">${ts}</div>
+                </div>
+                <div style="margin-top:4px; opacity:0.9;">
+                    <span style="opacity:0.7;">reason:</span> ${escapeHtml(reason)}
+                </div>
+                ${suggestion ? `<div style=\"margin-top:6px; opacity:0.9;\"><span style=\"opacity:0.7; font-size:0.85em;\">override →</span> ${escapeHtml(suggestion)}</div>` : ''}
+            `;
+            list.insertBefore(div, list.firstChild);
+
+            while (list.children.length > 15) list.removeChild(list.lastChild);
+
+            const current = parseInt(count.textContent) || 0;
+            count.textContent = current + 1;
         });
 
         function addChatMessage(data) {
