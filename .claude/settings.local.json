@@ -7,7 +7,8 @@
       "Bash(Get-ChildItem -Path \"c:\\Users\\Batman\\Desktop\\Slunt\\Slunt\\src\\ai\")",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []
