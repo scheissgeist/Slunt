@@ -112,3 +112,6 @@ test-*.bat
 # Corrupted data files
 *.corrupted*
 *.corrupt
+
+OpenVoice/
+openvoice-env/
