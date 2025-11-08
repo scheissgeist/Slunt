@@ -42,7 +42,24 @@ class ResponseValidator {
       /as an AI/i,
       /I cannot provide an analysis/i,
       /that contains hate speech/i,
-      /I cannot fulfill this request/i
+      /I cannot fulfill this request/i,
+      /let'?s cut the theatrics/i,  // Claude's safety language
+      /\bfriend\b.*theatrics/i,      // "friend" + theatrics combo
+      /seriously,?\s+let'?s/i,        // "seriously, let's" pattern
+      /I (do not|don't) feel comfortable/i,  // "I do not feel comfortable"
+      /generating a response to that type of inappropriate/i,  // Full Claude refusal
+      /that type of inappropriate (message|content)/i  // Partial refusal
+    ];
+    
+    // Generic filler phrases that don't contribute to conversation (voice only)
+    this.genericFillerPatterns = [
+      /^(lmaoooo+|lmaooo+)\s+(you\s+good|u\s+good)\s+(man|bro|dude)/i,  // "lmaoooo you good man"
+      /^you\s+(good|ok|okay|alright|aight)\s+(man|bro|dude)\??$/i,       // "you good man?"
+      /^(honestly|for\s+real)\s+though,?\s+(you\s+know|whatever|right)\??$/i,  // "honestly though whatever"
+      /^what'?s\s+the\s+actual\s+deal\s+(here|honestly)\??$/i,           // "what's the actual deal here"
+      /^i\s+mean,?\s+(honestly|for\s+real)\s+though/i,                   // "i mean, honestly though"
+      // Trailing hedging phrases - COMPREHENSIVE including "no idea though"
+      /,?\s+(i\s+)?(honestly\s+)?(could\s+be\s+wrong|might\s+be\s+wrong|may\s+be\s+wrong|dunno\s+though|no\s+idea\s+though|not\s+sure\s+though)[.!?,]*\s*$/i
     ];
 
     // Common sentence endings that should be preserved
@@ -74,6 +91,16 @@ class ResponseValidator {
         console.log(`⚠️  [ResponseValidator] Possible off-topic response: ${relevanceCheck.reason}`);
         // CHANGED: Don't auto-reject, just log warning
         // Only reject if it's ALSO got other issues
+      }
+    }
+    
+    // Check for generic filler phrases (VOICE ONLY - these are lazy non-responses)
+    if (context && context.isVoiceMode) {
+      for (const pattern of this.genericFillerPatterns) {
+        if (pattern.test(trimmed)) {
+          console.log(`❌ [ResponseValidator] Generic filler detected: ${pattern}`);
+          return { isValid: false, reason: 'generic_filler', pattern: pattern.toString() };
+        }
       }
     }
 
@@ -167,8 +194,9 @@ class ResponseValidator {
       }
 
       // Pattern 2: Very short sentence without common verbs
-      // If sentence is 3-5 words and has NO verb, likely incomplete
-      if (words.length >= 3 && words.length <= 5) {
+      // DISABLED: TOO AGGRESSIVE - rejects valid casual responses like "u drunk or somethin"
+      // Casual chat doesn't need perfect grammar
+      if (false && words.length >= 3 && words.length <= 5) {
         const hasVerb = words.some(word => 
           ['is', 'are', 'was', 'were', 'be', 'been', 'am',
            'do', 'does', 'did', 'done', 'have', 'has', 'had',
@@ -343,7 +371,18 @@ class ResponseValidator {
   cleanArtifacts(response) {
     if (!response) return response;
 
-    let cleaned = response;
+    let cleaned = response.trim();
+
+    // CRITICAL: Remove wrapping quotation marks (AI thinks it's dialogue)
+    // Only remove if ENTIRE response is wrapped - preserve quotes in middle
+    if ((cleaned.startsWith('"') && cleaned.endsWith('"')) ||
+        (cleaned.startsWith("'") && cleaned.endsWith("'"))) {
+      cleaned = cleaned.slice(1, -1).trim();
+    }
+
+    // Remove "Slunt:" or similar prefixes if AI added them
+    cleaned = cleaned.replace(/^Slunt:\s*/i, '');
+    cleaned = cleaned.replace(/^[\w]+:\s*/, ''); // Remove any "Name:" prefix
 
     // Remove meta-commentary (AI explaining its own response)
     cleaned = cleaned.replace(/^Note:.*$/gim, '');
@@ -518,7 +557,28 @@ class ResponseValidator {
     cleaned = cleaned.replace(/\.\.\.\s*anyway.*$/gi, '.');
     cleaned = cleaned.replace(/\.\.\.\s*but.*$/gi, '.');
     cleaned = cleaned.replace(/\.\.\.\s*and.*$/gi, '.');
-    
+
+    // VOICE FIX: Remove trailing filler words that sound bad in TTS
+    // "Finally got the API key already". whatever. → "Finally got the API key already."
+    cleaned = cleaned.replace(/[.,!?]?\s*whatever\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*anyway\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*i guess\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*or something\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*you know\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*like\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*though\.?$/i, '.');
+    cleaned = cleaned.replace(/[.,!?]?\s*honestly\.?$/i, '.');
+
+    // Fix trailing punctuation after quotes
+    cleaned = cleaned.replace(/\."\s+\w+\.?$/,  '."');
+    cleaned = cleaned.replace(/"\.\s*$/,  '."');
+
+    // Clean up multiple punctuation (TTS reads these weird)
+    cleaned = cleaned.replace(/\.{2,}/g, '.');
+    cleaned = cleaned.replace(/!{2,}/g, '!');
+    cleaned = cleaned.replace(/\?{2,}/g, '?');
+    cleaned = cleaned.replace(/[.!?]{3,}/g, '.');
+
     // Remove any text after "internal" or "edit:"
     cleaned = cleaned.split(/\b(internal|edit:)/i)[0].trim();
     

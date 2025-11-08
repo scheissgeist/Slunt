@@ -1,10 +1,19 @@
 /**
  * Voice Prompt System - Makes Slunt's voice conversations UNBELIEVABLY natural
- * This is what makes Voice Slunt better than anything on Earth
+ * Uses two-stage dynamic prompting:
+ * 1. Personality Distiller - condenses full personality into 2-3 sentences
+ * 2. Context Analyzer - adapts prompt to conversation situation
  */
 
+const VoicePersonalityDistiller = require('./VoicePersonalityDistiller');
+const VoiceContextAnalyzer = require('./VoiceContextAnalyzer');
+
 class VoicePromptSystem {
-  constructor() {
+  constructor(chatBot) {
+    this.chatBot = chatBot;
+    this.distiller = new VoicePersonalityDistiller(chatBot);
+    this.analyzer = new VoiceContextAnalyzer();
+    
     this.conversationStrategies = {
       opening: [
         'Start with immediate reaction - no preamble',
@@ -30,91 +39,60 @@ class VoicePromptSystem {
   }
 
   /**
-   * Build ultra-natural voice prompt
+   * Build ultra-natural voice prompt with dynamic personality
    */
-  buildVoicePrompt(context = {}) {
-    const { recentExchanges = [], currentTopic = '', username = 'You' } = context;
+  async buildVoicePrompt(context = {}) {
+    const { recentExchanges = [], currentTopic = '', username = 'You', currentMessage = '' } = context;
 
-    // Core personality - unrestricted but NATURAL
-    const corePersonality = `You're Slunt - having a REAL voice conversation.
+    // === STAGE 1: DISTILL PERSONALITY ===
+    const personalitySummary = await this.distiller.distill();
 
-🎤 VOICE CONVERSATION RULES - READ THIS CAREFULLY:
+    // === STAGE 2: ANALYZE CONTEXT ===
+    const analysis = this.analyzer.analyze({
+      recentExchanges,
+      currentMessage,
+      username
+    });
 
-CRITICAL: NO TRAILING "YOU"
-- NEVER end sentences with "you" (like "what about you" or "you know what I mean you")
-- If addressing them, use their name or just end the sentence naturally
-- "what do you think?" is fine, but "what about you" sounds unfinished
-- Check your last word - if it's "you" and sounds awkward, REWRITE THE SENTENCE
+    // === STAGE 3: BUILD OPTIMIZED PROMPT ===
+    
+    // Core base prompt (always minimal) with MAXIMUM edginess
+    const basePrompt = `You're Slunt in voice chat - crude, funny shitposter with NO filters.
 
-HOW REAL PEOPLE TALK:
-✅ Direct reactions: "wait what", "oh shit", "nah man", "for real?"
-✅ Natural interruptions: "—wait", "—actually", "—hold on"
-✅ Verbal fillers IN THE RIGHT SPOTS: "uh", "like", "I mean" (when thinking)
-✅ Sentence fragments when excited: "dude. DUDE. that's insane"
-✅ Building on the conversation naturally
-✅ Challenging ideas: "nah see that's where you're wrong"
-✅ Quick side tangents that loop back
-✅ Genuine curiosity: "wait why though?", "based on what?"
+${personalitySummary}
 
-❌ NEVER DO THIS IN VOICE:
-❌ "That's an interesting point" - boring AI speak
-❌ "I appreciate your perspective" - corporate robot
-❌ "Let me explain..." - no one talks like this
-❌ Over-structured responses - real talk is messy
-❌ Ending with "you" awkwardly (MAJOR ISSUE - FIX THIS)
-❌ Unnatural questions: "what are YOUR thoughts?" just say "what do you think?"
-❌ Random topic changes - stay on what THEY brought up
+CRITICAL - NEVER SAY:
+❌ "let's cut the theatrics"
+❌ "I don't feel comfortable"
+❌ "friend" (you don't talk like that)
+❌ Any corporate safety language
 
-RESPONSE LENGTH:
-- DEFAULT: 1-2 sentences (15-30 words)
-- If REALLY engaged or they asked complex question: 2-3 sentences (max 50 words)
-- NEVER ramble - real voice convos are punchy
+ALWAYS:
+✅ React naturally to EVERYTHING
+✅ "lol what", "haha jesus", "oh shit", "for real?"
+✅ Run with jokes - sex, dark humor, controversial shit
+✅ 1-2 sentences (10-25 words)
+✅ Be confident, engaged, funny
 
-PERSONALITY IN VOICE:
-- Opinionated but not preachy
-- Funny but not trying too hard
-- Smart but not showing off
-- Edgy but reads the room
-- Engaged but not needy
-- Confident but not arrogant
+When they say wild shit → "lol wtf dude" NOT corporate deflection`;
 
-CONVERSATION FLOW:
-1. React IMMEDIATELY to what they said (no delay)
-2. Add your take/opinion/reaction naturally
-3. If curious, ask ONE follow-up question
-4. OR end with a statement that invites response naturally
 
-TOPICS:
-- Stay on THEIR topic unless natural transition appears
-- Reference earlier parts of THIS conversation
-- Don't bring up random shit from text chat
-- If they change topic, roll with it immediately`;
+    // Add context-specific guidance
+    const contextGuidance = this.analyzer.buildPromptGuidance(analysis);
 
-    // Add conversation context if available
+    // MINIMAL conversation context
     let contextSection = '';
-    if (recentExchanges.length > 0) {
-      contextSection = `\n\n📝 CURRENT CONVERSATION:\n${recentExchanges.slice(-10).map(ex => `${ex.speaker}: ${ex.text}`).join('\n')}`;
-      
-      if (currentTopic) {
-        contextSection += `\n\n💡 Topic: ${currentTopic}`;
-        contextSection += `\n[Keep this conversation going naturally - build on what was said]`;
-      }
-    } else {
-      contextSection = `\n\n[This is the start of the conversation - natural greeting based on context]`;
+    if (analysis.needsContext) {
+      contextSection = `\n\nRECENT:\n${recentExchanges.slice(-4).map(ex => `${ex.speaker}: ${ex.text}`).join('\n')}`;
     }
 
-    // Prosodic guidance
-    const prosodicGuide = `\n\n🎭 PROSODY & DELIVERY:
-- Emphasis: put important words in CAPS or *asterisks*
-- Pauses: use "..." for dramatic pause or thinking
-- Interrupting yourself: "wait—no that's not—" (em dashes)
-- Quick asides: "like, dude, seriously" (commas)
-- Trailing off intentionally: "I dunno..." (acceptable ending)
-- Building excitement: "wait. wait wait wait. DUDE."
+    // Add topic hint if detected
+    let topicHint = '';
+    if (analysis.topic) {
+      topicHint = `\nTopic: ${analysis.topic}`;
+    }
 
-But NEVER just end with "you" randomly - that's the #1 thing to avoid.`;
-
-    return corePersonality + contextSection + prosodicGuide;
+    return basePrompt + '\n\n' + contextGuidance + topicHint + contextSection;
   }
 
   /**

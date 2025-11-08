@@ -354,17 +354,19 @@ Return as array format:
 
 Split messages:`;
 
-      const response = await this.chatBot.ai.generateCompletion(prompt, {
+      const response = await this.chatBot.ai?.generateCompletion?.(prompt, {
         temperature: 0.7,
         max_tokens: 100
       });
 
       // Try to parse as array
-      const match = response.match(/\[".*?"\s*(?:,\s*".*?")*\]/);
-      if (match) {
-        const parts = JSON.parse(match[0]);
-        console.log(`💬 [MultiMsg] Split into ${parts.length} messages`);
-        return parts;
+      if (response) {
+        const match = response.match(/\[".*?"\s*(?:,\s*".*?")*\]/);
+        if (match) {
+          const parts = JSON.parse(match[0]);
+          console.log(`💬 [MultiMsg] Split into ${parts.length} messages`);
+          return parts;
+        }
       }
     } catch (error) {
       console.error('Failed to split message:', error);

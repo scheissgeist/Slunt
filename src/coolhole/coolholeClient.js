@@ -386,18 +386,36 @@ class CoolholeClient extends EventEmitter {
         try {
           // Only log if we find messages to reduce spam
           const messages = await this.page.evaluate(() => {
+            // DEBUG: Log chat structure once
+            if (!window._chatStructureLogged) {
+              const chatBuffer = document.querySelector('#messagebuffer');
+              if (chatBuffer) {
+                const sample = chatBuffer.querySelector('div');
+                if (sample) {
+                  console.log('[DEBUG] Sample chat element:', sample.outerHTML.substring(0, 200));
+                  console.log('[DEBUG] Sample classes:', sample.className);
+                }
+              }
+              window._chatStructureLogged = true;
+            }
+            
             const chatBuffer = document.querySelector('#messagebuffer');
             if (!chatBuffer) {
               // Don't spam logs when chat not found
               return [];
             }
             
-            // Try multiple possible selectors
-            let messageElements = chatBuffer.querySelectorAll('div.chat-msg-Slunt, div.chat-msg-OrbMeat, div[class*="chat-msg"]');
+            // Try multiple possible selectors - UPDATED for new Coolhole structure
+            // SKIP server messages (server-msg-* classes)
+            let messageElements = chatBuffer.querySelectorAll('div[class*="chat-msg"]:not([class*="server-msg"]), div.msg:not([class*="server-msg"]), li.chat-msg, li:not([class*="server-msg"])');
 
-            // If that doesn't work, get ALL divs (silently)
+            // If that doesn't work, get ALL direct children BUT filter out server messages
             if (messageElements.length === 0) {
-              messageElements = chatBuffer.querySelectorAll('div');
+              messageElements = Array.from(chatBuffer.children).filter(el => 
+                !el.className.includes('server-msg') && 
+                !el.className.includes('poll-notify') &&
+                !el.className.includes('drink')
+              );
             }
             
             const messages = [];

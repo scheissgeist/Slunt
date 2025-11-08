@@ -137,25 +137,18 @@ class ConversationThreads {
    * Use AI to identify conversation topic
    */
   async identifyTopic(message, context = {}) {
-    const prompt = `Analyze this chat message and identify the main topic in 2-5 words.
-
-Message: "${message}"
-Context: ${JSON.stringify(context)}
-
-What is this conversation about? Be specific and concise.
-Topic:`;
-
-    try {
-      const response = await this.aiEngine.generateCompletion(prompt, {
-        temperature: 0.3,
-        max_tokens: 20
-      });
-
-      return response ? response.trim().replace(/^["']|["']$/g, '') || 'general chat' : 'general chat';
-    } catch (error) {
-      console.error('Failed to identify topic:', error);
-      return 'general chat';
-    }
+    // Simple keyword-based topic detection (AI method removed)
+    const lower = message.toLowerCase();
+    
+    // Common topics
+    if (lower.includes('video') || lower.includes('watch') || lower.includes('movie')) return 'videos';
+    if (lower.includes('game') || lower.includes('play')) return 'gaming';
+    if (lower.includes('music') || lower.includes('song')) return 'music';
+    if (lower.includes('food') || lower.includes('eat')) return 'food';
+    
+    // Extract key words
+    const words = message.split(/\s+/).filter(w => w.length > 4);
+    return words[0] ? words[0].toLowerCase() : 'general chat';
   }
 
   /**

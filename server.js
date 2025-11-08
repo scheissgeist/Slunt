@@ -895,7 +895,9 @@ chatBot.on('companion:action', (payload) => {
   }
 });
 
-// Broadcast bot stats periodically
+// Broadcast bot stats periodically - DISABLED TO AVOID CRASHES
+// (Enable if you need real-time dashboard updates)
+/*
 setInterval(() => {
   const stats = chatBot.getChatStatistics();
   const advancedStats = chatBot.getAdvancedStats();
@@ -934,19 +936,22 @@ setInterval(() => {
     io.emit('clips:update', clipStatus);
   }
   
-  // Send user profiles
-  const userProfiles = Array.from(chatBot.userProfiles.entries()).map(([username, profile]) => ({
-    username,
-    ...profile
-  }));
-  userProfiles.forEach(profile => {
-    io.emit('bot:user_profile', profile);
-  });
+  // Send user profiles - DISABLED FOR MINIMAL MODE
+  if (chatBot.userProfiles) {
+    const userProfiles = Array.from(chatBot.userProfiles.entries()).map(([username, profile]) => ({
+      username,
+      ...profile
+    }));
+    userProfiles.forEach(profile => {
+      io.emit('bot:user_profile', profile);
+    });
+  }
   
   // Send community insights
   const insights = chatBot.getCommunityInsights();
   io.emit('bot:community_insights', insights);
 }, 5000); // Update every 5 seconds
+*/
 
 // Broadcast comprehensive inner mind data
 setInterval(() => {
@@ -2601,6 +2606,60 @@ process.on('uncaughtException', (error) => {
   });
   tempJanitor.start();
   
+  // 🗣️ PROACTIVE VOICE: Slunt can speak without prompting!
+  let voiceProactiveTimer = null;
+  const startProactiveVoice = () => {
+    if (voiceProactiveTimer) return; // Already running
+    
+    voiceProactiveTimer = setInterval(async () => {
+      // Only speak if there's been recent conversation
+      if (!chatBot.voiceMemory || chatBot.voiceMemory.length === 0) return;
+      
+      // Check if last message was from user and some time has passed (15-45 seconds)
+      const lastMessage = chatBot.voiceMemory[chatBot.voiceMemory.length - 1];
+      const timeSinceLastMessage = Date.now() - lastMessage.timestamp;
+      
+      // Random chance (20%) to speak proactively after 15-45 seconds of silence
+      if (lastMessage.speaker === 'You' && timeSinceLastMessage > 15000 && timeSinceLastMessage < 45000 && Math.random() < 0.2) {
+        console.log(`🎤 [Proactive] Slunt is thinking of something to say...`);
+        
+        try {
+          const proactivePrompt = "Continue the conversation naturally. Share an insight, ask a question, or make an observation about what was just discussed.";
+          const reply = await chatBot.generateResponse({
+            platform: 'voice',
+            username: 'You',
+            text: proactivePrompt,
+            timestamp: Date.now(),
+            channel: 'voice',
+            voiceMode: true,
+            isProactive: true
+          });
+          
+          if (reply && String(reply).trim()) {
+            chatBot.voiceMemory.push({
+              speaker: 'Slunt',
+              text: reply,
+              timestamp: Date.now(),
+              proactive: true
+            });
+            
+            console.log(`🗣️ [Proactive] Slunt says: "${reply}"`);
+            
+            // Emit proactive message via socket for voice client to pick up
+            io.emit('voice:proactive', {
+              reply,
+              timestamp: Date.now()
+            });
+          }
+        } catch (error) {
+          console.error(`❌ [Proactive] Error:`, error.message);
+        }
+      }
+    }, 5000); // Check every 5 seconds
+    
+    console.log(`🗣️ [Proactive Voice] Started - Slunt can now speak unprompted!`);
+  };
+  
   server.listen(PORT, '0.0.0.0', () => {
     console.log(`\n${'='.repeat(60)}`);
     console.log(`🚀 Coolhole.org Chatbot Server - RUNNING`);
@@ -2616,6 +2675,9 @@ process.on('uncaughtException', (error) => {
       console.log(`🎙️  OpenVoice Server: http://localhost:${openvoicePort}`);
     }
     console.log(`${'='.repeat(60)}\n`);
+    
+    // Start proactive voice system
+    startProactiveVoice();
     
     // Broadcast voice memory updates every 2 seconds to all connected dashboards
     setInterval(() => {

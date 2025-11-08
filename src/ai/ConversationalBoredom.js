@@ -75,23 +75,18 @@ class ConversationalBoredom {
    * Detect topic from message
    */
   async detectTopic(message) {
-    const prompt = `What is the main topic of this message in 2-3 words?
-
-"${message}"
-
-Topic:`;
-
-    try {
-      const response = await this.aiEngine.generateCompletion(prompt, {
-        temperature: 0.3,
-        max_tokens: 15
-      });
-
-      return response ? response.trim().toLowerCase() : 'general';
-    } catch (error) {
-      console.error('Failed to detect topic:', error);
-      return 'general';
-    }
+    // Simple keyword-based topic detection (AI method removed)
+    const lower = message.toLowerCase();
+    
+    // Common topic keywords
+    if (lower.includes('video') || lower.includes('watch')) return 'videos';
+    if (lower.includes('game') || lower.includes('play')) return 'gaming';
+    if (lower.includes('music') || lower.includes('song')) return 'music';
+    if (lower.includes('food') || lower.includes('eat')) return 'food';
+    
+    // Extract first noun-like word as topic
+    const words = message.split(/\s+/).filter(w => w.length > 4);
+    return words[0] ? words[0].toLowerCase() : 'general';
   }
 
   /**

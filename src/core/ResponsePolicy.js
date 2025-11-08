@@ -5,13 +5,13 @@ class ResponsePolicy {
   constructor(config = {}) {
     this.config = Object.assign(
       {
-        maxWords: 15,
-        maxChars: 120,
-        cutToOneSentenceWhenMulti: true,
+        maxWords: 40,        // 🔥 COMEDY FIX: 15 → 40 (allow setup + punchline)
+        maxChars: 250,       // 🔥 COMEDY FIX: 120 → 250 (jokes need room!)
+        cutToOneSentenceWhenMulti: false,  // 🔥 COMEDY FIX: Allow 2-sentence jokes
         platformPresets: {
-          coolhole: { maxWords: 15, maxChars: 120 },
-          discord: { maxWords: 15, maxChars: 120 },
-          twitch: { maxWords: 12, maxChars: 100 },
+          coolhole: { maxWords: 40, maxChars: 250 },
+          discord: { maxWords: 40, maxChars: 250 },
+          twitch: { maxWords: 30, maxChars: 200 },  // Twitch faster, but still allow jokes
         },
       },
       config
@@ -237,31 +237,58 @@ class ResponsePolicy {
     const maxChars = preset.maxChars || this.config.maxChars;
     let t = txt;
 
-    // AGGRESSIVE: Cut to first sentence for text chat (but allow multiple for voice)
-    // Voice conversations need complete thoughts with natural pacing
-    const sentences = t.split(/[.!?]+\s+/).filter((s) => s.trim().length > 5);
-    if (sentences.length >= 2 && ctx.platform !== 'voice') {
-      t = sentences[0].trim();
+    // Cut to complete sentences - NO FRAGMENTS
+    const sentences = t.split(/[.!?]+/).filter((s) => s.trim().length > 5);
+    
+    // 🔥 COMEDY FIX: Allow 2 sentences for chat (setup + punchline), 3 for voice
+    const maxSentences = ctx.platform === 'voice' ? 3 : 2;
+    
+    if (sentences.length > maxSentences) {
+      t = sentences.slice(0, maxSentences).join('. ').trim();
       if (!/[.!?]$/.test(t)) t += '.';
     }
 
-    // HARD ENFORCEMENT: If still over limits, truncate ruthlessly
+    // HARD ENFORCEMENT: If still over limits, truncate at sentence boundary
     const words = t.split(/\s+/).filter(w => w.length > 0);
     if (words.length > maxWords) {
-      // Cut at word boundary
-      t = words.slice(0, maxWords).join(' ').trim();
-      if (!/[.!?]$/.test(t)) t += '.';
+      // Find last complete sentence within word limit
+      let shortened = words.slice(0, maxWords).join(' ');
+      const lastPunc = Math.max(
+        shortened.lastIndexOf('.'),
+        shortened.lastIndexOf('!'),
+        shortened.lastIndexOf('?')
+      );
+      
+      if (lastPunc > 20) {
+        // Cut at last sentence
+        t = shortened.substring(0, lastPunc + 1).trim();
+      } else {
+        // No sentence boundary found - cut at word and add period
+        t = shortened.trim();
+        if (!/[.!?]$/.test(t)) t += '.';
+      }
     }
     
     if (t.length > maxChars) {
-      // Try to cut at sentence; else cut at word boundary
+      // Cut at last sentence boundary within char limit
       let truncated = t.substring(0, maxChars);
-      const lastSpace = truncated.lastIndexOf(' ');
-      if (lastSpace > 20) {
-        truncated = truncated.substring(0, lastSpace).trim();
+      const lastPunc = Math.max(
+        truncated.lastIndexOf('.'),
+        truncated.lastIndexOf('!'),
+        truncated.lastIndexOf('?')
+      );
+      
+      if (lastPunc > 20) {
+        t = truncated.substring(0, lastPunc + 1).trim();
+      } else {
+        // Cut at word boundary
+        const lastSpace = truncated.lastIndexOf(' ');
+        if (lastSpace > 20) {
+          truncated = truncated.substring(0, lastSpace).trim();
+        }
+        if (!/[.!?]$/.test(truncated)) truncated += '.';
+        t = truncated;
       }
-      if (!/[.!?]$/.test(truncated)) truncated += '.';
-      return truncated;
     }
     
     return t;

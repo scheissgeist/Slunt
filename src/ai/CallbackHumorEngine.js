@@ -17,8 +17,8 @@ class CallbackHumorEngine {
     
     // Configuration
     this.maxMoments = 100;
-    this.callbackChance = 0.02; // 2% chance to reference old moment (REDUCED from 10%)
-    this.minTimeBetweenCallbacks = 15 * 60 * 1000; // 15 minutes (INCREASED from 5)
+    this.callbackChance = 0.30; // 🔥 COMEDY FIX: 2% → 30% (10X increase - actually use callbacks!)
+    this.minTimeBetweenCallbacks = 2 * 60 * 1000; // 🔥 COMEDY FIX: 15 min → 2 min (let running gags run!)
     this.lastCallback = 0;
     
     this.dataPath = path.join(__dirname, '../../data/callback_humor.json');

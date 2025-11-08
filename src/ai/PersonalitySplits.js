@@ -86,7 +86,7 @@ class PersonalitySplits {
         strength: 0,
         vocabulary: {
           prefixes: ['okay but', 'remember when you', 'interesting how', 'oh so now', 'funny how'],
-          suffixes: ['just saying', 'but whatever', 'not that it matters', 'if you ask me', 'but go off'],
+          suffixes: ['but whatever', 'not that it matters', 'if you ask me', 'but go off'],
           reactions: ['mhm', 'sure', 'okay', 'right', 'if you say so'],
           typos: false,
           enthusiasm: 'passive-aggressive'

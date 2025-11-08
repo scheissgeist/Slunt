@@ -190,7 +190,6 @@ class ConversationalPersonality {
       const trailingThoughts = [
         "you know?",
         "if that makes sense",
-        "just saying",
         "idk though",
         "could be wrong"
       ];

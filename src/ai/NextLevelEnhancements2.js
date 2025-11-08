@@ -270,7 +270,6 @@ class AttentionFragmentation {
     const messages = [
       'wait what were we talking about',
       'sorry was doing something else',
-      'mb wasnt paying attention',
       'what',
       'huh'
     ];

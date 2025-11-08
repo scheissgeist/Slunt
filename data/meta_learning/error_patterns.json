@@ -1,0 +1,110 @@
+[
+  {
+    "timestamp": 1762584254193,
+    "user": "You",
+    "userMessage": "eating  even mean speaking of",
+    "sluntResponse": "hey what the actual fuck are you trying to say honestly though whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762584751729,
+    "user": "You",
+    "userMessage": "yo dude  how's you Mr f  we're just playing slide  oh I'm talking about computer games man",
+    "sluntResponse": "haha what the actual fuck are you even talking about. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762585076202,
+    "user": "You",
+    "userMessage": "what would you do  let me restart to apply I'll fix this you know what the hell  can you train off of Discord and cool data and just watch them  graph that on your head  I can give you logs",
+    "sluntResponse": "haha sounds like you're having a total tech meltdown right now. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762585994479,
+    "user": "You",
+    "userMessage": "this is strong  your hahaha class yeah I was in your hahaha class remember I sat in the front",
+    "sluntResponse": "Dude, what are you even talking about. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762586403690,
+    "user": "You",
+    "userMessage": "hey man  hey  no it's too long",
+    "sluntResponse": "Sounds like you're mid-conversation and got caught in some weird message loop. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762587251360,
+    "user": "You",
+    "userMessage": "you at",
+    "sluntResponse": "Sounds like a garbled fragment. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762589079626,
+    "user": "superhitler",
+    "userMessage": "this is slunt",
+    "sluntResponse": "yo what. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": false
+  },
+  {
+    "timestamp": 1762590842277,
+    "user": "You",
+    "userMessage": "fuck",
+    "sluntResponse": "fair enough whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": true
+  },
+  {
+    "timestamp": 1762595885415,
+    "user": "BoanerPains",
+    "userMessage": "Thats true",
+    "sluntResponse": "haha for real though what we talkin bout. whatever.",
+    "userReaction": null,
+    "errors": [
+      "trailing_filler"
+    ],
+    "emotionalState": null,
+    "voiceMode": false
+  }
+]

@@ -61,9 +61,13 @@ class StyleAdapter {
       }
 
       // 6) Human-like hesitations occasionally (not for commands)
+      // DISABLED: These hedges make Slunt sound like a low-confidence zoomer
+      // "idk", "maybe", "i think" etc. at the end of every sentence is annoying
+      /*
       if (!out.startsWith('/') && !out.startsWith('!') && Math.random() < 0.08 && out.length < 120) {
         out = this._injectHedge(out);
       }
+      */
 
       return out.trim();
     } catch (e) {

@@ -31,8 +31,8 @@ class SelfAwarenessSystem {
       // Addiction state
       addictions: /\b(addicted|addiction|craving|withdrawal|need)\b/i,
       
-      // Obsessions/fixations
-      obsessed: /\b(obsessed|fixated|into|favorite|loving)\b/i,
+      // Obsessions/fixations - ONLY when asking about Slunt's obsessions
+      obsessed: /\b(you|u|slunt).*(obsessed|fixated|into)/i,
       
       // General status
       status: /\b(how (are|r) (you|u)|what's up|status|doing|going)\b/i
@@ -310,7 +310,8 @@ class SelfAwarenessSystem {
       return `really into ${band.name} right now. been listening nonstop`;
     }
     
-    return `not obsessed with anything particular at the moment`;
+    // Don't return a fallback - let AI generate dynamic response instead
+    return null;
   }
 
   /**

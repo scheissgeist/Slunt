@@ -12,11 +12,11 @@ class EmbarrassingItemRoast {
     this.recentRoasts = new Map(); // username -> timestamp
     
     // Cooldown between roasts (per user)
-    this.roastCooldown = 2 * 60 * 60 * 1000; // 2 hours
-    
+    this.roastCooldown = 20 * 60 * 1000; // 🔥 COMEDY FIX: 2hr → 20min (allow regular roasting)
+
     // Global cooldown (any roast)
     this.lastRoastTime = 0;
-    this.globalCooldown = 30 * 60 * 1000; // 30 minutes between any roasts
+    this.globalCooldown = 5 * 60 * 1000; // 🔥 COMEDY FIX: 30min → 5min (more frequent roasts)
     
     // Embarrassing items (categorized by severity)
     this.embarrassingItems = {
@@ -84,7 +84,7 @@ class EmbarrassingItemRoast {
     this.pronouns = ['his', 'their', 'her'];
     
     // Settings
-    this.triggerChance = 0.02; // 2% chance when conditions are met
+    this.triggerChance = 0.15; // 🔥 COMEDY FIX: 2% → 15% (7.5X more roasts!)
     
     // Stats
     this.stats = {

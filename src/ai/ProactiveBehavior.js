@@ -172,211 +172,55 @@ class ProactiveBehavior {
 
   /**
    * Check if should send schedule-based message
+   * DISABLED: No more time-based greetings like "weekend" or "morning" - too cringey
    */
   checkScheduleMessage() {
-    const now = Date.now();
-    const lastSchedule = this.lastInitiation.get('schedule') || 0;
-    
-    // Cooldown check
-    if (now - lastSchedule < this.cooldowns.schedule * 60000) {
-      return null;
-    }
-    
-    const hour = new Date().getHours();
-    const day = new Date().getDay();
-    
-    let category = null;
-    let messages = null;
-    
-    // Time-based
-    if (hour >= 6 && hour < 11) {
-      category = 'morning';
-      messages = this.scheduleMessages.morning;
-    } else if (hour >= 17 && hour < 20) {
-      category = 'evening';
-      messages = this.scheduleMessages.evening;
-    } else if (hour >= 22 || hour < 3) {
-      category = 'lateNight';
-      messages = this.scheduleMessages.lateNight;
-    }
-    
-    // Day-based (overrides time)
-    if (day === 1 && hour >= 8 && hour < 12) { // Monday morning
-      category = 'monday';
-      messages = this.scheduleMessages.monday;
-    } else if (day === 6 || day === 0) { // Weekend
-      category = 'weekend';
-      messages = this.scheduleMessages.weekend;
-    }
-    
-    if (!messages) return null;
-    
-    // Only send if someone else is active
-    const recentActivity = this.bot.conversationContext.filter(m =>
-      m.timestamp > now - 600000 && // Last 10 minutes
-      m.username !== 'Slunt'
-    );
-    
-    if (recentActivity.length === 0) return null; // Don't talk to empty room
-    
-    return {
-      category,
-      message: messages[Math.floor(Math.random() * messages.length)],
-      platform: this.bot.autonomousLife.state.location || 'coolhole'
-    };
+    // DISABLED: Schedule-based messages were lame ("weekend vibes" etc)
+    // Slunt should only talk when he has something to say, not announce his presence
+    return null;
   }
 
   /**
    * Check if should express current mood
+   * DISABLED: No automatic mood announcements - cringe
    */
   checkMoodExpression(lifeContext) {
-    const now = Date.now();
-    
-    // Cooldown check
-    if (now - this.lastMoodExpression < this.cooldowns.moodExpression * 60000) {
-      return null;
-    }
-    
-    const mood = lifeContext.mood;
-    const intensity = lifeContext.moodIntensity;
-    
-    // Only express if mood is strong (intensity > 6)
-    if (intensity <= 6) return null;
-    
-    // Only express if mood has changed significantly
-    const lastMood = this.bot.autonomousLife.state.mood;
-    if (lastMood === mood) return null;
-    
-    const expressions = this.moodExpressions[mood];
-    if (!expressions) return null;
-    
-    // Check if there's recent activity to express to
-    const recentActivity = this.bot.conversationContext.filter(m =>
-      m.timestamp > now - 300000 && // Last 5 minutes
-      m.username !== 'Slunt'
-    );
-    
-    if (recentActivity.length < 2) return null; // Need some activity
-    
-    return {
-      mood,
-      message: expressions[Math.floor(Math.random() * expressions.length)],
-      platform: this.bot.autonomousLife.state.location || 'coolhole'
-    };
+    // DISABLED: Auto mood expressions like "man i'm tired" are lame unprompted
+    // Moods should come through naturally in conversation, not announced
+    return null;
   }
 
   /**
    * Check if should share a dream during low activity
+   * DISABLED: No random dream announcements
    */
   checkDreamSharing() {
-    const now = Date.now();
-    const lastDream = this.lastInitiation.get('dream') || 0;
-    
-    // Cooldown: only share dreams every 2 hours
-    if (now - lastDream < 120 * 60000) {
-      return null;
-    }
-    
-    // Check if there are recent dreams to share
-    if (!this.bot.dreamSimulation) return null;
-    
-    const recentDreams = this.bot.dreamSimulation.getRecentDreams(3);
-    if (recentDreams.length === 0) return null;
-    
-    // Check if chat has been quiet (good time to share dreams)
-    const recentMessages = this.bot.conversationContext.filter(m =>
-      m.timestamp > now - 600000 // Last 10 minutes
-    );
-    
-    // Share dreams during low activity (1-5 messages in last 10 min)
-    if (recentMessages.length === 0 || recentMessages.length > 8) return null;
-    
-    // Don't share if Slunt was the last to speak
-    if (recentMessages.length > 0 && recentMessages[recentMessages.length - 1].username === 'Slunt') {
-      return null;
-    }
-    
-    // Pick a recent dream
-    const dream = recentDreams[recentDreams.length - 1];
-    
-    // Format the dream message naturally
-    const intros = [
-      'had a weird dream',
-      'weirdest dream earlier',
-      'i keep thinking about this dream i had',
-      'dreamed about',
-      'wild dream last night',
-      'can\'t stop thinking about this dream'
-    ];
-    
-    const intro = intros[Math.floor(Math.random() * intros.length)];
-    const dreamText = dream.dream.replace('Dream: ', '').toLowerCase();
-    
-    return {
-      message: `${intro}... ${dreamText}`,
-      platform: this.bot.autonomousLife?.state?.location || 'coolhole',
-      dreamData: dream
-    };
+    // DISABLED: Randomly sharing dreams unprompted is weird
+    // Dreams can still be mentioned naturally in conversation when relevant
+    return null;
   }
 
   /**
    * Check if should start a conversation
+   * DISABLED: No random "quiet in here" messages
    */
   checkConversationStarter() {
-    const now = Date.now();
-    const lastGeneral = this.lastInitiation.get('general') || 0;
-    
-    // Cooldown check
-    if (now - lastGeneral < this.cooldowns.general * 60000) {
-      return null;
-    }
-    
-    // Check if chat has been quiet
-    const recentMessages = this.bot.conversationContext.filter(m =>
-      m.timestamp > now - 600000 // Last 10 minutes
-    );
-    
-    // Don't start if chat is already active
-    if (recentMessages.length > 10) return null;
-    
-    // Don't talk to empty room
-    if (recentMessages.length === 0) return null;
-    
-    // Check if Slunt was the last to speak - don't monologue
-    if (recentMessages.length > 0 && recentMessages[recentMessages.length - 1].username === 'Slunt') {
-      return null;
-    }
-    
-    return {
-      message: this.conversationStarters[Math.floor(Math.random() * this.conversationStarters.length)],
-      platform: this.bot.autonomousLife.state.location || 'coolhole'
-    };
+    // DISABLED: Random conversation starters are forced and awkward
+    // Let conversations happen organically when people talk to Slunt
+    return null;
   }
 
   /**
    * Check for random proactive engagement opportunity
    */
+  /**
+   * Check for random engagement opportunities
+   * DISABLED: No random spontaneous reactions
+   */
   checkRandomEngagement() {
-    const now = Date.now();
-    
-    // Look at recent conversation
-    const recentMessages = this.bot.conversationContext.filter(m =>
-      m.timestamp > now - 180000 && // Last 3 minutes
-      m.username !== 'Slunt'
-    );
-    
-    if (recentMessages.length < 3) return null;
-    
-    // Find something interesting to comment on
-    const lastMessage = recentMessages[recentMessages.length - 1];
-    
-    // Generate a spontaneous reaction
-    return {
-      message: null, // Will generate based on context
-      context: lastMessage,
-      platform: this.bot.autonomousLife.state.location || 'coolhole',
-      spontaneous: true
-    };
+    // DISABLED: Random proactive engagement is forced
+    // Slunt should respond naturally when addressed or interested, not randomly jump in
+    return null;
   }
 
   /**
