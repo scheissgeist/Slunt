@@ -18,6 +18,7 @@ const { Ollama } = require('ollama');
 const logger = require('./logger');
 const CoolPointsHandler = require('./coolPointsHandler');
 const CommandParser = require('./CommandParser');
+const BetaAnalytics = require('../monitoring/BetaAnalytics');
 
 class ChatBotBeta extends EventEmitter {
   constructor(coolholeClient = null, discordClient = null, twitchClient = null, videoManager = null) {
@@ -51,9 +52,14 @@ class ChatBotBeta extends EventEmitter {
     // Response probability
     this.baseResponseChance = 0.4; // 40% chance to respond to normal messages
 
+    // Analytics - track everything for improvement
+    this.analytics = new BetaAnalytics();
+    this.analytics.startPeriodicSave();
+
     logger.info('🤖 Slunt Beta initialized - Minimal mode');
     logger.info('   AI: Ollama (llama3.2:1b) only');
     logger.info('   Systems: MINIMAL (no personality, no learning)');
+    logger.info('   Analytics: ENABLED (tracking all data)');
   }
 
   /**
@@ -61,11 +67,22 @@ class ChatBotBeta extends EventEmitter {
    */
   async handleMessage(username, text, platform = 'coolhole', channelId = 'default', userInfo = {}) {
     try {
+      // Analytics - log incoming message
+      this.analytics.logMessage(username, text, platform, channelId);
+
       // Store message in recent history
       this.addToRecentMessages(channelId, username, text);
 
       // Check for commands first
       if (text.startsWith('!')) {
+        // Special analytics command
+        if (text.toLowerCase() === '!betastats' || text.toLowerCase() === '!stats') {
+          const stats = this.analytics.getStats();
+          const response = `📊 Beta Stats: ${stats.totalMessages} msg, ${stats.totalResponses} resp (${stats.responseRate}), Avg: ${stats.avgResponseTime}, Context: ${stats.contextHitRate}, Continuity: ${stats.topicContinuityRate}`;
+          this.sendMessage(response, platform, channelId);
+          return;
+        }
+
         const response = await this.commandParser.parse(text, username, platform);
         if (response) {
           this.sendMessage(response, platform, channelId);
@@ -74,13 +91,32 @@ class ChatBotBeta extends EventEmitter {
       }
 
       // Decide if should respond
-      if (!this.shouldRespond(username, text, platform)) {
+      const shouldRespond = this.shouldRespond(username, text, platform);
+
+      if (!shouldRespond.respond) {
+        this.analytics.logDecision(username, text, 'skip', shouldRespond.reason);
         return;
       }
 
+      this.analytics.logDecision(username, text, 'respond', shouldRespond.reason);
+
       // Generate and send response
+      const responseStart = Date.now();
       const response = await this.generateResponse(username, text, channelId, platform);
+      const responseEnd = Date.now();
+
       if (response) {
+        // Analytics - log response with context
+        const context = this.recentMessages.get(channelId) || [];
+        this.analytics.logResponse(
+          username,
+          text,
+          context,
+          response,
+          { start: responseStart, end: responseEnd },
+          platform
+        );
+
         this.sendMessage(response, platform, channelId);
       }
 
@@ -118,21 +154,21 @@ class ChatBotBeta extends EventEmitter {
 
     // Always respond to direct mentions
     if (lowerText.includes('slunt') || lowerText.includes('@slunt')) {
-      return true;
+      return { respond: true, reason: 'mentioned' };
     }
 
     // Rate limiting - don't spam
     const timeSinceLastResponse = Date.now() - this.lastResponseTime;
     if (timeSinceLastResponse < this.minResponseInterval) {
-      return false;
+      return { respond: false, reason: 'rate_limit' };
     }
 
     // Random chance for normal messages
     if (Math.random() < this.baseResponseChance) {
-      return true;
+      return { respond: true, reason: 'probability' };
     }
 
-    return false;
+    return { respond: false, reason: 'probability' };
   }
 
   /**
