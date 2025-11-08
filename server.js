@@ -8,7 +8,21 @@ const helmet = require('helmet');
 const path = require('path');
 const { execSync } = require('child_process');
 const VoiceGreetings = require('./src/voice/VoiceGreetings');
-require('dotenv').config();
+const dotenvResult = require('dotenv').config({ override: true });
+
+// DEBUG: Print voice ID immediately after loading .env
+console.log('━'.repeat(60));
+console.log('🔍 [DEBUG] Dotenv loading (with override=true):');
+console.log(`   Working directory: ${process.cwd()}`);
+console.log(`   Dotenv path: ${dotenvResult.parsed ? 'loaded' : 'NOT FOUND'}`);
+console.log(`   Dotenv error: ${dotenvResult.error || 'none'}`);
+if (dotenvResult.parsed) {
+  console.log(`   Dotenv PARSED value for ELEVENLABS_VOICE_ID: "${dotenvResult.parsed.ELEVENLABS_VOICE_ID}"`);
+}
+console.log('🔍 [DEBUG] Environment variables loaded:');
+console.log(`   process.env.ELEVENLABS_VOICE_ID = "${process.env.ELEVENLABS_VOICE_ID}"`);
+console.log(`   ELEVENLABS_API_KEY exists = ${!!process.env.ELEVENLABS_API_KEY}`);
+console.log('━'.repeat(60));
 
 // ============ SMART PORT DETECTION ============
 // Auto-detects available port to avoid conflicts between multiple instances
@@ -48,10 +62,20 @@ process.on('unhandledRejection', (reason, promise) => {
 
 process.on('SIGTERM', () => {
   console.log('⚠️  SIGTERM received - graceful shutdown');
+  if (global.openvoiceProcess) {
+    console.log('🎤 [XTTS] Shutting down voice server...');
+    global.openvoiceProcess.kill('SIGTERM');
+  }
+  process.exit(0);
 });
 
 process.on('SIGINT', () => {
   console.log('⚠️  SIGINT received - graceful shutdown');
+  if (global.openvoiceProcess) {
+    console.log('🎤 [XTTS] Shutting down voice server...');
+    global.openvoiceProcess.kill('SIGTERM');
+  }
+  process.exit(0);
 });
 // ========================================================================
 
@@ -279,6 +303,11 @@ app.get('/voice', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'voice-demo.html'));
 });
 
+// Voice model comparison page
+app.get('/voice-comparison', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'voice-comparison.html'));
+});
+
 // Serve Remote Voice Client (for connecting from other machines)
 app.get('/voice-client', (req, res) => {
   res.sendFile(path.join(__dirname, 'voiceClient.html'));
@@ -461,8 +490,13 @@ Slunt:`;
 
 app.post('/api/voice', async (req, res) => {
   try {
+    console.log(`📞 [Voice API] Received request:`, req.body);
     const { text } = req.body;
-    if (!text) return res.status(400).json({ error: 'No text provided' });
+    if (!text) {
+      console.log(`❌ [Voice API] No text provided`);
+      return res.status(400).json({ error: 'No text provided' });
+    }
+    console.log(`📝 [Voice API] Processing text: "${text}"`);
     
     // 🚫 Filter out UI control phrases that shouldn't be treated as conversation
     const controlPhrases = ['start listening', 'stop listening', 'clear memory', 'stop', 'start'];
@@ -511,6 +545,7 @@ app.post('/api/voice', async (req, res) => {
     // Get TTS audio from selected provider (MP3)
     try {
       const provider = (process.env.VOICE_TTS_PROVIDER || 'elevenlabs').toLowerCase();
+      console.log(`🎤 [Voice] Using TTS provider: ${provider}`);
 
       // If a remote Voice Service URL is configured, offload synthesis synchronously
       const VOICE_SERVICE_URL = process.env.VOICE_SERVICE_URL;
@@ -666,23 +701,116 @@ app.post('/api/voice', async (req, res) => {
           console.warn('⚠️  [Voice] Error:', openaiErr.message);
           audioBuffer = null;
         }
+      } else if (provider === 'resemble') {
+        // Resemble.AI - Cloud, voice cloning with custom trained voice
+        try {
+          const ResembleClient = require('./src/voice/resemble-client');
+          const resembleClient = new ResembleClient(
+            process.env.RESEMBLE_API_KEY,
+            process.env.RESEMBLE_PROJECT_UUID
+          );
+
+          const voiceUuid = process.env.RESEMBLE_VOICE_UUID || process.env.RESEMBLE_PROJECT_UUID;
+
+          console.log(`🎙️ [Voice] Resemble.AI generating speech with custom voice`);
+          audioBuffer = await resembleClient.textToSpeech(reply || '', {
+            voice_uuid: voiceUuid
+          });
+
+          ttsMeta.provider = 'resemble';
+          ttsMeta.voice = voiceUuid.substring(0, 8);
+          ttsMeta.format = 'wav';
+        } catch (resembleErr) {
+          console.warn('⚠️  [Voice] Resemble.AI TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', resembleErr.message);
+          audioBuffer = null;
+        }
+      } else if (provider === 'openvoice') {
+        // OpenVoice - Local, free, voice cloning
+        try {
+          const OpenVoiceClient = require('./src/voice/openvoice-client');
+          const openvoiceClient = new OpenVoiceClient(
+            process.env.OPENVOICE_SERVER_URL || 'http://localhost:3002'
+          );
+
+          const referenceVoice = process.env.OPENVOICE_REFERENCE_VOICE;
+          const language = process.env.OPENVOICE_LANGUAGE || 'EN';
+
+          console.log(`🎙️ [Voice] OpenVoice generating speech (language: ${language})`);
+          if (referenceVoice) {
+            console.log(`   Using voice clone: ${path.basename(referenceVoice)}`);
+            audioBuffer = await openvoiceClient.cloneVoice(referenceVoice, reply || '', language);
+          } else {
+            console.log('   Using base TTS (no reference voice)');
+            audioBuffer = await openvoiceClient.textToSpeech(reply || '', language);
+          }
+
+          ttsMeta.referenceVoice = referenceVoice ? path.basename(referenceVoice) : 'base';
+          ttsMeta.language = language;
+          ttsMeta.format = 'wav';
+        } catch (openvoiceErr) {
+          console.warn('⚠️  [Voice] OpenVoice TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', openvoiceErr.message);
+          if (openvoiceErr.message.includes('ECONNREFUSED') || openvoiceErr.message.includes('not responding')) {
+            console.warn('⚠️  [Voice] OpenVoice server may not be running');
+          }
+          audioBuffer = null;
+        }
+      } else if (provider === 'xtts') {
+        // XTTS - Local, fine-tuned David Hasselhoff voice
+        try {
+          const axios = require('axios');
+          const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
+          
+          console.log(`🎙️ [Voice] XTTS generating speech (fine-tuned Hoff model)`);
+          const response = await axios.post(`${xttsUrl}/tts`, {
+            text: reply || '',
+            language: 'en',
+            speaker_wav: null
+          }, {
+            responseType: 'arraybuffer',
+            timeout: 60000
+          });
+          
+          audioBuffer = Buffer.from(response.data);
+          ttsMeta.model = 'xtts_v2_finetuned';
+          ttsMeta.format = 'wav';
+          console.log(`✅ [Voice] XTTS generated ${audioBuffer.length} bytes`);
+        } catch (xttsErr) {
+          console.warn('⚠️  [Voice] XTTS TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', xttsErr.message);
+          if (xttsErr.message.includes('ECONNREFUSED') || xttsErr.code === 'ECONNREFUSED') {
+            console.warn('⚠️  [Voice] XTTS server may not be running on', process.env.XTTS_SERVER_URL || 'http://localhost:5002');
+          }
+          audioBuffer = null;
+        }
       } else {
         // Unknown provider - use browser TTS
         console.warn(`⚠️  [Voice] Unknown TTS provider: ${provider}, falling back to browser TTS`);
         audioBuffer = null;
       }
-      // Ensure temp/audio directory exists
-      const tempDir = path.join(__dirname, 'temp', 'audio');
-      if (!fs.existsSync(tempDir)) {
-        fs.mkdirSync(tempDir, { recursive: true });
+      // If audio generation succeeded, save to file
+      if (audioBuffer) {
+        // Ensure temp/audio directory exists
+        const tempDir = path.join(__dirname, 'temp', 'audio');
+        if (!fs.existsSync(tempDir)) {
+          fs.mkdirSync(tempDir, { recursive: true });
+        }
+        // Save audio to temp file for playback
+        const fileExt = ttsMeta.format === 'wav' ? 'wav' : 'mp3';
+        const audioRelPath = `temp/audio/voice_reply_${Date.now()}.${fileExt}`;
+        const audioFile = path.join(__dirname, audioRelPath);
+        fs.writeFileSync(audioFile, audioBuffer);
+        const response = { reply, audioUrl: `/${audioRelPath}`, tts: ttsMeta };
+        console.log(`✅ [Voice API] Sending response with audio:`, { reply: reply?.substring(0, 50), audioUrl: response.audioUrl });
+        // Respond with reply text and audio URL (+meta)
+        res.json(response);
+      } else {
+        const response = { reply, audioUrl: null, tts: ttsMeta };
+        console.log(`⚠️  [Voice API] Sending response without audio (browser TTS fallback):`, { reply: reply?.substring(0, 50) });
+        // No audio buffer - let browser handle TTS
+        res.json(response);
       }
-      // Save audio to temp file for playback
-      const fileExt = ttsMeta.format === 'wav' ? 'wav' : 'mp3';
-      const audioRelPath = `temp/audio/voice_reply_${Date.now()}.${fileExt}`;
-      const audioFile = path.join(__dirname, audioRelPath);
-      fs.writeFileSync(audioFile, audioBuffer);
-      // Respond with reply text and audio URL (+meta)
-      res.json({ reply, audioUrl: `/${audioRelPath}`, tts: ttsMeta });
     } catch (ttsErr) {
       // Graceful fallback: return text without audio so client can use browser TTS
       const ttsMsg = ttsErr?.code === 'NO_API_KEY' ? 'OPENAI_API_KEY is not configured' : (ttsErr.message || 'TTS failed');
@@ -690,8 +818,9 @@ app.post('/api/voice', async (req, res) => {
       res.json({ reply, audioUrl: null, ttsError: ttsMsg });
     }
   } catch (err) {
-    console.error('Voice API error:', err);
-    res.status(500).json({ error: 'Voice API error' });
+    console.error('❌ [Voice API] Fatal error:', err);
+    console.error('❌ [Voice API] Stack:', err.stack);
+    res.status(500).json({ error: 'Voice API error', details: err.message });
   }
 });
 
@@ -2407,7 +2536,57 @@ process.on('uncaughtException', (error) => {
   
   // Initialize backup system
   await backupManager.initialize();
-  
+
+  // Auto-start XTTS fine-tuned Hoff voice server if using openvoice TTS provider
+  if (process.env.VOICE_TTS_PROVIDER === 'openvoice') {
+    const { spawn } = require('child_process');
+    const openvoicePort = process.env.OPENVOICE_SERVER_URL?.match(/:(\d+)/)?.[1] || '5001';
+
+    console.log('🎤 [XTTS] Starting fine-tuned Hoff voice server (5.6GB model)...');
+    console.log('   This may take 30-60 seconds to load the model...');
+
+    const pythonCmd = path.join(__dirname, 'OpenVoice', 'venv', 'Scripts', 'python.exe');
+    const openvoiceProcess = spawn(pythonCmd, ['api_server_xtts.py'], {
+      cwd: path.join(__dirname, 'OpenVoice'),
+      stdio: ['ignore', 'pipe', 'pipe'],
+      detached: false
+    });
+
+    openvoiceProcess.stdout.on('data', (data) => {
+      const output = data.toString();
+      console.log(`[XTTS] ${output.trim()}`);
+      if (output.includes('Running on')) {
+        console.log(`✅ [XTTS] Fine-tuned Hoff voice server ready on port ${openvoicePort}`);
+      }
+    });
+
+    openvoiceProcess.stderr.on('data', (data) => {
+      const error = data.toString();
+      if (!error.includes('FutureWarning') && !error.includes('weight_norm')) {
+        console.error(`[XTTS] ${error.trim()}`);
+      }
+    });
+
+    openvoiceProcess.on('error', (err) => {
+      console.error('❌ [XTTS] Failed to start:', err.message);
+      console.error('   Voice TTS will not be available');
+    });
+
+    openvoiceProcess.on('exit', (code) => {
+      if (code !== 0 && code !== null) {
+        console.error(`⚠️  [OpenVoice] Server exited with code ${code}`);
+      }
+    });
+
+    // Store process reference for cleanup
+    global.openvoiceProcess = openvoiceProcess;
+
+    // Wait for OpenVoice models to load (takes ~15-20 seconds)
+    console.log('⏳ [OpenVoice] Waiting for models to load (this takes ~20 seconds)...');
+    await new Promise(resolve => setTimeout(resolve, 25000));
+    console.log('✅ [OpenVoice] Startup wait complete');
+  }
+
   // Start cleanup interval for rate limiter
   setInterval(() => {
     rateLimiter.cleanup();
@@ -2432,6 +2611,10 @@ process.on('uncaughtException', (error) => {
     console.log(`🧠 Mind: http://localhost:${PORT}/mind`);
     console.log(`🎯 Platforms: http://localhost:${PORT}/platforms`);
     console.log(`🌐 Health: http://localhost:${PORT}/api/health`);
+    if (process.env.VOICE_TTS_PROVIDER === 'openvoice') {
+      const openvoicePort = process.env.OPENVOICE_SERVER_URL?.match(/:(\d+)/)?.[1] || '3002';
+      console.log(`🎙️  OpenVoice Server: http://localhost:${openvoicePort}`);
+    }
     console.log(`${'='.repeat(60)}\n`);
     
     // Broadcast voice memory updates every 2 seconds to all connected dashboards

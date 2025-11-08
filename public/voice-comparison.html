@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hoff Voice Comparison - 3 Models</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+      color: #fff;
+      text-align: center;
+      padding: 40px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: rgba(0,0,0,0.3);
+      border-radius: 20px;
+      padding: 40px;
+      backdrop-filter: blur(10px);
+    }
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .subtitle {
+      font-size: 1.2em;
+      color: #ffd700;
+      margin-bottom: 40px;
+    }
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 30px;
+      margin-bottom: 40px;
+    }
+    .option-card {
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      padding: 30px;
+      border: 3px solid transparent;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .option-card:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateY(-5px);
+    }
+    .option-card.active {
+      border-color: #ffd700;
+      background: rgba(255,215,0,0.2);
+      box-shadow: 0 0 20px rgba(255,215,0,0.5);
+    }
+    .option-number {
+      font-size: 4em;
+      font-weight: bold;
+      color: #ffd700;
+      margin-bottom: 10px;
+    }
+    .option-title {
+      font-size: 1.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .option-desc {
+      font-size: 0.9em;
+      color: #aaa;
+      margin-bottom: 15px;
+    }
+    .option-status {
+      display: inline-block;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.8em;
+      margin-top: 10px;
+    }
+    .status-loading {
+      background: #ff9800;
+      color: #000;
+    }
+    .status-ready {
+      background: #4caf50;
+      color: #fff;
+    }
+    .status-error {
+      background: #f44336;
+      color: #fff;
+    }
+    .test-section {
+      background: rgba(0,0,0,0.3);
+      border-radius: 15px;
+      padding: 30px;
+      margin-top: 30px;
+    }
+    .input-group {
+      margin: 20px 0;
+    }
+    textarea {
+      width: 100%;
+      max-width: 800px;
+      height: 100px;
+      font-size: 1.1em;
+      padding: 15px;
+      border-radius: 10px;
+      border: 2px solid #444;
+      background: rgba(0,0,0,0.5);
+      color: #fff;
+      resize: vertical;
+    }
+    button {
+      font-size: 1.3em;
+      padding: 15px 40px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #fff;
+      cursor: pointer;
+      margin: 10px;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+      transform: none;
+    }
+    audio {
+      margin: 20px auto;
+      width: 100%;
+      max-width: 600px;
+      display: block;
+    }
+    .loading {
+      font-size: 1.2em;
+      color: #ffd700;
+      margin: 20px 0;
+    }
+    .badge {
+      display: inline-block;
+      background: #4caf50;
+      color: white;
+      padding: 5px 15px;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .recommended {
+      background: #ffd700;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎤 Hoff Voice Comparison</h1>
+    <p class="subtitle">Choose a model and test David Hasselhoff's voice</p>
+    
+    <div class="options-grid">
+      <div class="option-card" data-option="1" onclick="selectOption(1)">
+        <div class="option-number">1</div>
+        <div class="option-title">First Training</div>
+        <div class="option-desc">100 samples (mixed quality)<br>Port 5003</div>
+        <div class="option-status status-loading" id="status-1">Checking...</div>
+      </div>
+      
+      <div class="option-card active" data-option="2" onclick="selectOption(2)">
+        <div class="option-number">2</div>
+        <div class="option-title">Second Training
+          <span class="badge recommended">YOUR FAVORITE</span>
+        </div>
+        <div class="option-desc">82 samples - Epoch 9<br>Port 5002</div>
+        <div class="option-status status-loading" id="status-2">Checking...</div>
+      </div>
+      
+      <div class="option-card" data-option="3" onclick="selectOption(3)">
+        <div class="option-number">3</div>
+        <div class="option-title">Third Training</div>
+        <div class="option-desc">82 samples - Epoch 7<br>Port 5004</div>
+        <div class="option-status status-loading" id="status-3">Checking...</div>
+      </div>
+    </div>
+    
+    <div class="test-section">
+      <h2>🗣️ Test Selected Model</h2>
+      <div class="input-group">
+        <textarea id="testText" placeholder="Enter text for Hoff to say...">Hey there! I'm David Hasselhoff, and I'm here to help you out!</textarea>
+      </div>
+      <button id="generateBtn" onclick="generateSpeech()">🎙️ Generate Speech</button>
+      <button onclick="playComparison()">🎵 Play Sample Comparison</button>
+      <div id="loading" class="loading" style="display:none;">⏳ Generating speech...</div>
+      <audio id="audioPlayer" controls style="display:none;"></audio>
+      <div id="selectedModel" style="margin-top:20px; font-size:1.2em;">
+        Currently selected: <strong>Option 2</strong>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedOption = 2; // Default to option 2 (your favorite)
+    
+    const modelPorts = {
+      1: 5003,
+      2: 5002,
+      3: 5004
+    };
+    
+    const modelNames = {
+      1: "Option 1 (First Training)",
+      2: "Option 2 (Second Training Epoch 9)",
+      3: "Option 3 (Third Training Epoch 7)"
+    };
+    
+    // Check server status for all models
+    async function checkServers() {
+      for (let option of [1, 2, 3]) {
+        const port = modelPorts[option];
+        const statusEl = document.getElementById(`status-${option}`);
+        
+        try {
+          // Use current hostname instead of localhost so it works from any device
+          const hostname = window.location.hostname;
+          const response = await fetch(`http://${hostname}:${port}/health`, { timeout: 3000 });
+          const data = await response.json();
+          
+          if (data.status === 'healthy') {
+            statusEl.textContent = data.model_loaded ? '✓ Ready' : '⏳ Loading...';
+            statusEl.className = `option-status ${data.model_loaded ? 'status-ready' : 'status-loading'}`;
+          } else {
+            statusEl.textContent = '❌ Error';
+            statusEl.className = 'option-status status-error';
+          }
+        } catch (err) {
+          statusEl.textContent = '⚠️ Offline';
+          statusEl.className = 'option-status status-error';
+        }
+      }
+    }
+    
+    function selectOption(option) {
+      selectedOption = option;
+      
+      // Update UI
+      document.querySelectorAll('.option-card').forEach(card => {
+        card.classList.remove('active');
+      });
+      document.querySelector(`.option-card[data-option="${option}"]`).classList.add('active');
+      document.getElementById('selectedModel').innerHTML = `Currently selected: <strong>${modelNames[option]}</strong>`;
+    }
+    
+    async function generateSpeech() {
+      const text = document.getElementById('testText').value.trim();
+      if (!text) {
+        alert('Please enter some text!');
+        return;
+      }
+      
+      const port = modelPorts[selectedOption];
+      const loadingEl = document.getElementById('loading');
+      const audioPlayer = document.getElementById('audioPlayer');
+      const generateBtn = document.getElementById('generateBtn');
+      
+      loadingEl.style.display = 'block';
+      audioPlayer.style.display = 'none';
+      generateBtn.disabled = true;
+      
+      try {
+        // Use current hostname instead of localhost so it works from any device
+        const hostname = window.location.hostname;
+        const response = await fetch(`http://${hostname}:${port}/tts`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            text: text,
+            temperature: 0.65,
+            repetition_penalty: 10.0
+          })
+        });
+        
+        if (!response.ok) {
+          throw new Error('Generation failed');
+        }
+        
+        const blob = await response.blob();
+        const audioUrl = URL.createObjectURL(blob);
+        
+        audioPlayer.src = audioUrl;
+        audioPlayer.style.display = 'block';
+        audioPlayer.play();
+        
+      } catch (err) {
+        alert(`Failed to generate speech: ${err.message}\n\nMake sure the voice server on port ${port} is running!`);
+      } finally {
+        loadingEl.style.display = 'none';
+        generateBtn.disabled = false;
+      }
+    }
+    
+    function playComparison() {
+      alert('Opening comparison samples folder...\n\nListen to sample_1.wav, sample_2.wav, sample_3.wav in each model folder to compare quality!');
+      // In a real implementation, you'd serve these files
+    }
+    
+    // Check server status on load and every 10 seconds
+    checkServers();
+    setInterval(checkServers, 10000);
+  </script>
+</body>
+</html>
