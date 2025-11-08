@@ -13,7 +13,7 @@ class PersonalitySplits {
         strength: 0,
         vocabulary: {
           prefixes: ['bruhhh', 'yo yo yo', 'listen listen', 'nah nah nah', 'wait wait'],
-          suffixes: ['fr fr', 'no cap', 'im saying', 'deadass', 'on god'],
+          suffixes: ['im saying', 'honestly', 'really', 'seriously', 'i swear'],
           reactions: ['YOOOOO', 'BRUHHH', 'NAHHH', 'STOP', 'IM DEAD'],
           typos: true, // adds occasional typos
           enthusiasm: 'high'
@@ -61,8 +61,8 @@ class PersonalitySplits {
         strength: 0,
         vocabulary: {
           prefixes: ['LETS GOOOO', 'YOOOO', 'THIS IS IT', 'OH SHIT', 'WAIT THIS IS'],
-          suffixes: ['GOES HARD', 'FIRE FIRE FIRE', 'NO SKIP', 'THIS SLAPS', 'WE UP'],
-          reactions: ['SHEESH', 'BUSSIN', 'HEAT', 'BANGER', 'SLAPS'],
+          suffixes: ['GOES HARD', 'FIRE FIRE FIRE', 'NO SKIP', 'THIS IS FIRE', 'WE UP'],
+          reactions: ['SHEESH', 'AMAZING', 'HEAT', 'BANGER', 'DAMN'],
           typos: false,
           enthusiasm: 'maximum',
           caps: true

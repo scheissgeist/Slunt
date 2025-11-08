@@ -209,7 +209,7 @@ class SocialHierarchy {
     const lowerText = message.toLowerCase();
     
     // Check for agreement (alliance building)
-    const agreementWords = ['yeah', 'true', 'exactly', 'agree', 'based', 'real', 'fr'];
+    const agreementWords = ['yeah', 'true', 'exactly', 'agree', 'based', 'real', 'facts'];
     const hasAgreement = agreementWords.some(word => lowerText.includes(word));
     
     if (hasAgreement) {
@@ -217,7 +217,7 @@ class SocialHierarchy {
     }
     
     // Check for disagreement (rivalry building)
-    const disagreementWords = ['nah', 'wrong', 'bad take', 'cope', 'cringe', 'mid', 'disagree'];
+    const disagreementWords = ['nah', 'wrong', 'bad take', 'cope', 'cringe', 'mediocre', 'disagree'];
     const hasDisagreement = disagreementWords.some(word => lowerText.includes(word));
     
     if (hasDisagreement) {

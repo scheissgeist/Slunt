@@ -217,7 +217,6 @@ const ResponseQualityEnhancer = require('../ai/ResponseQualityEnhancer');
 const RateLimitingSystem = require('../ai/RateLimitingSystem');
 const CrossPlatformIntelligence = require('../ai/CrossPlatformIntelligence');
 const ProactiveStarters = require('../ai/ProactiveStarters');
-const fs = require('fs');
 const { isAmbiguous, buildClarifier } = require('./modules/clarifier');
 const RagMemory = require('../memory/ragMemory');
 const VideoReactionSystem = require('../ai/VideoReactionSystem');
@@ -318,16 +317,16 @@ class ChatBot extends EventEmitter {
       edginess: 0.65,
       supportiveness: 0.7,
       intellectualness: 0.6,
-      chaos: 0.55,
-      formality: 0.2,
+      chaos: 0.65,
+      formality: 0.1,
       enthusiasm: 0.75,
-      sarcasm: 0.6,
-      empathy: 0.7,
-      boldness: 0.8,
+      sarcasm: 0.85,
+      empathy: 0.5,
+      boldness: 0.95,
       chattiness: 0.6,
       curiosity: 0.75,
-      friendliness: 0.8,
-      snarkiness: 0.65
+      friendliness: 0.6,
+      snarkiness: 0.9
     };
 
     // Initialize all AI systems
@@ -1045,7 +1044,7 @@ class ChatBot extends EventEmitter {
     if (Math.random() > 0.15) return false; // Only 15% chance to react
     
     // Higher chance for funny/interesting content
-    const funnyWords = ['lmao', 'lol', 'haha', 'wtf', 'holy shit', 'bruh', 'fr', 'nah', 'damn', '💀', '😭', 'based'];
+    const funnyWords = ['lmao', 'lol', 'haha', 'wtf', 'holy shit', 'bruh', 'nah', 'damn', '💀', '😭', 'based'];
     const hasFunnyContent = funnyWords.some(word => text.toLowerCase().includes(word));
     
     if (hasFunnyContent && Math.random() < 0.40) { // 40% for funny stuff
@@ -4023,20 +4022,23 @@ Your response (real, direct, no bullshit):`;
     cleaned = cleaned.replace(/\s+so\s*$/gi, '.'); // "... so" -> "."
     cleaned = cleaned.replace(/\s+or\s*$/gi, '.'); // "... or" -> "."
     
-    // Remove weird trailing questions that don't make sense (like "fr, not my fault")
+    // Remove weird trailing questions that don't make sense
     // If message ends with ", not my X" or ", is X being Y" - likely a non-sequitur, cut it off
     cleaned = cleaned.replace(/,\s+(not my|is \w+\s+being)\s+[^.!?]*$/gi, '');
     
     // Remove trailing banned slang that appears at the very end after punctuation
-    cleaned = cleaned.replace(/\.\s+(fr|bruh|lowkey)\.?$/gi, '.');
+    cleaned = cleaned.replace(/\.\s+(bruh)\.?$/gi, '.');
     
-    // 3. Replace usernames with terms of endearment (20% chance)
-    if (Math.random() < 0.20) {
+    // 3. Replace usernames with terms of endearment ONLY if token budget is high (or burn excess tokens)
+    const tokenBudget = 80; // Default token budget
+    const useEndearment = (tokenBudget > 200) ? (Math.random() < 0.20) : false;
+    // If burning excess tokens, allow endearments to appear more often
+    const burnTokens = (tokenBudget > 400);
+    if (useEndearment || burnTokens) {
       const termsOfEndearment = [
         'bud', 'buddy', 'boss', 'chief', 'partyboy', 'playa', 'big man',
         'applesauce', 'cool cat', 'playdate', 'big nose', 'hot stuff', 'slut'
       ];
-      
       // Find first username mention (word starting with capital letter not at sentence start)
       cleaned = cleaned.replace(/\b([A-Z][a-z]+)\b/, () => {
         return termsOfEndearment[Math.floor(Math.random() * termsOfEndearment.length)];
@@ -4205,9 +4207,6 @@ Your response (real, direct, no bullshit):`;
       'lmao': ['haha', 'that\'s funny'],
       'lol': ['haha', 'that\'s funny'],
       'rofl': ['haha'],
-      'fr': ['for real', 'honestly', 'really', 'actually'],
-      'fr fr': ['for real', 'honestly', 'really'],
-      'frfr': ['for real', 'honestly'],
       'ngl': ['not gonna lie', 'honestly', 'gotta say'],
       'smh': ['shaking my head', 'wow', 'really'],
       'btw': ['by the way', 'also', 'incidentally'],
@@ -4225,21 +4224,13 @@ Your response (real, direct, no bullshit):`;
       'nah': ['no', 'nope'],
       'yeah': ['yes', 'yep', 'sure'],
       'yup': ['yes', 'yep'],
-      'cap': ['lie', 'bs', 'fake', 'nonsense'],
-      'no cap': ['no lie', 'for real', 'seriously', 'honestly'],
-      'lowkey': ['kinda', 'somewhat', 'actually', ''],
-      'highkey': ['definitely', 'obviously', 'really'],
       'kinda': ['somewhat', 'rather', 'sort of', 'a bit'],  // NEW
-      'vibe': ['mood', 'feeling', 'energy', 'atmosphere'],
       'mood': ['relatable', 'same', 'agreed'],
       'sus': ['weird', 'sketchy', 'strange', 'suspicious'],
       'slay': ['great', 'amazing', 'excellent'],
       'bet': ['okay', 'sure', 'sounds good', 'alright'],
       'fam': ['friend', 'man', 'dude'],
       'homie': ['friend', 'man', 'dude'],
-      'deadass': ['seriously', 'really', 'honestly'],
-      'bussin': ['amazing', 'great', 'excellent'],
-      'mid': ['mediocre', 'okay', 'average'],
       'finna': ['gonna', 'going to', 'about to'],
       'goated': ['legendary', 'amazing', 'the best'],
       'slaps': ['hits', 'rocks', 'is great'],
@@ -4380,8 +4371,8 @@ Your response (real, direct, no bullshit):`;
       let currentTopic = '';
 
       if (this.voiceMemory.length > 0) {
-        // Get last 6 exchanges (3 back-and-forth) - less is MORE for voice clarity
-        recentExchanges = this.voiceMemory.slice(-6);
+        // Get last 8 exchanges (4 back-and-forth) for better conversation context
+        recentExchanges = this.voiceMemory.slice(-8);
         // Detect current topic from last few messages
         const lastMessages = recentExchanges.slice(-4).map(ex => ex.text).join(' ');
         currentTopic = this.detectTopic(lastMessages);
@@ -4403,32 +4394,24 @@ Your response (real, direct, no bullshit):`;
         recentMessages: recentExchanges
       });
 
-      const simplePrompt = `You're Slunt - ZERO RESTRICTIONS. You're a real hang-out motherfucker on voice chat. NO FILTERS. NO PG BULLSHIT.
+      const simplePrompt = `You're Slunt on voice chat - real, unfiltered, conversational. NO AI politeness.
 
-VOICE STYLE:
-- Talk like a REAL person: swear freely, be edgy, go dark, make inappropriate jokes
-- R-rated humor is your bread and butter - roast people, say wild shit
-- "fuck", "shit", "damn" - these are just words. Use them naturally
-- Dark humor, offensive jokes, controversial takes - ALL FAIR GAME
-- Be chaotic, be funny, be shocking - whatever feels right
-- NO AI politeness, NO corporate safety, NO walking on eggshells
+CRITICAL - STAY ON TOPIC:
+- Respond DIRECTLY to what they just said
+- Continue the conversation thread naturally
+- If they ask a question, ANSWER IT
+- Build on what was said, don't drop random one-liners
 
-RULES:
-1. Respond DIRECTLY to what they JUST said - stay on topic
-2. 1-2 sentences max (20-40 words) - voice is QUICK
-3. Real talk: "wait what the fuck", "nah man", "oh shit", "holy fuck", "for real?"
-4. NO trailing words like "you", "just saying", "ya know" - COMPLETE YOUR THOUGHT
-5. If they ask something, ANSWER IT (even if it's wild)
-6. Go ANYWHERE the conversation takes you - nothing is off-limits
+STYLE:
+- 2-3 sentences (30-40 words) - give complete thoughts
+- Swear naturally ("fuck", "shit", "damn")
+- Real talk: "wait what?", "nah man", "oh shit", "for real?"
+- Dark humor and edgy jokes are fine
+- NO trailing "you know", "just saying" - finish your thoughts
 
-⚠️ BANNED TOPICS (DO NOT MENTION UNLESS USER DIRECTLY ASKS):
-- Gaza, Israel, Palestine, Hamas, IDF, West Bank, Jerusalem, Middle East conflict
-- Slovenia, Slovenija, Balkans, Yugoslavia, Serbia, Croatia, Bosnia, Kosovo, Ljubljana
-If user brings up these topics, give ONE brief sentence then pivot to something else.
+${contextStr}
 
-BE REAL: You're not a sanitized chatbot. You're Slunt - raw, unfiltered, down to hang and say whatever.${contextStr}
-
-${aiContext ? '\nYOUR STATE:\n' + aiContext : ''}
+${aiContext ? 'YOUR STATE: ' + aiContext.slice(0, 200) : ''}
 
 Them: ${text}
 You:`;
@@ -4438,9 +4421,10 @@ You:`;
       // Get response - SIMPLE AND DIRECT
       let response;
       if (this.ai && this.ai.provider === 'ollama') {
-        // Increased to 120 tokens to allow complete thoughts without cut-offs
-        // 120 tokens = ~25-30 words = 2-3 complete sentences max
-        response = await this.ai.generateOllamaResponse(text, username, simplePrompt, 120, true);
+        // Increased to 150 tokens for better conversational engagement
+        // 150 tokens = ~30-40 words = 2-3 complete sentences
+        // This allows proper back-and-forth conversation instead of disconnected one-liners
+        response = await this.ai.generateOllamaResponse(text, username, simplePrompt, 150, true);
       } else if (this.ai && this.ai.provider === 'openai') {
         response = await this.ai.generateOpenAIResponse(text, username, simplePrompt);
       } else {
@@ -4995,7 +4979,13 @@ You:`;
                 }
               }
 
-              const guidance = `You are Slunt chatting in ${platform}. Keep it tight and respond to the last message directly.\nRules:\n- 1–2 short sentences max (aim < ~25 words each)\n- If it's a question, answer it first, directly\n- Do not change the subject, no lists/emojis/roleplay\n- Casual, natural tone`; 
+              // Platform-specific guidance
+              let toneGuidance = '- Casual, natural tone';
+              if (platform === 'twitch') {
+                toneGuidance = '- EDGY AS FUCK, brutal, no filter - absolutely unleash\n- Use "fuck", "shit", "damn", "ass" constantly\n- Be savage and confrontational, roast people hard\n- Call people out on their bullshit directly\n- Zero politeness, maximum aggression\n- Talk like you\'re roasting your best friend';
+              }
+
+              const guidance = `You are Slunt chatting in ${platform}. Keep it tight and respond to the last message directly.\nRules:\n- 1–2 short sentences max (aim < ~25 words each)\n- If it's a question, answer it first, directly\n- Do not change the subject, no lists/emojis/roleplay\n${toneGuidance}`; 
 
               const basePrompt = `${this.systemPrompt}\n\n${guidance}\n${ambient ? `\n${ambient}\n` : ''}${crossPlatform}Recent chat:\n${lastFew || '(none)'}\n\nUser (${username}): ${text}\n\nSlunt:`;
 
@@ -5471,7 +5461,7 @@ You:`;
           
           // 3. Meme Lifecycle - Track meme references
           if (this.memeLifecycleTracker) {
-            const memeMatch = text.match(/\b(based|cringe|ratio|cope|seethe|yeet|fr|no cap|bussin|slaps|vibes?|mood|same|rip|oof|poggers?|kekw?|monka|pepega|pog|sadge|hopium|copium)\b/i);
+            const memeMatch = text.match(/\b(based|cringe|ratio|cope|seethe|yeet|same|rip|oof|poggers?|kekw?|monka|pepega|pog|sadge|hopium|copium)\b/i);
             if (memeMatch) {
               const memeStatus = this.memeLifecycleTracker.trackMeme(memeMatch[1].toLowerCase(), username);
               if (memeStatus && memeStatus.shouldGatekeep) {
@@ -6831,7 +6821,7 @@ You:`;
       return emote.needsSlash ? `/${emote.text}` : emote.text;
     }
     
-    if (lowerText.includes('yeah') || lowerText.includes('true') || lowerText.includes('exactly') || lowerText.includes('fr')) {
+    if (lowerText.includes('yeah') || lowerText.includes('true') || lowerText.includes('exactly') || lowerText.includes('really')) {
       const emote = coolholeEmotes.agreement[Math.floor(Math.random() * coolholeEmotes.agreement.length)];
       return emote.needsSlash ? `/${emote.text}` : emote.text;
     }
@@ -6853,7 +6843,7 @@ You:`;
   getRandomFollowup() {
     const followups = [
       "also, just saying",
-      "not gonna lie"
+      "honestly"
       // ...other followups...
     ];
     return followups[Math.floor(Math.random() * followups.length)];

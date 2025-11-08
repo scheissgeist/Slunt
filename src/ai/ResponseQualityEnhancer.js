@@ -27,7 +27,7 @@ class ResponseQualityEnhancer {
                 existential: ['why', 'existence', 'meaning', 'purpose', 'real', 'consciousness'],
                 technical: ['algorithm', 'function', 'process', 'system', 'logic', 'data'],
                 // BANNED zoomer slang
-                zoomerSlang: ['mb', 'ngl', 'fr', 'frfr', 'lowkey', 'highkey', 'no cap', 'on god', 'based', 'mid', 'bussin', 'slaps', 'goes hard', 'hits different', 'rent free']
+                zoomerSlang: ['mb', 'ngl', 'goes hard', 'hits different', 'rent free']
             },
             
             // Humor timing

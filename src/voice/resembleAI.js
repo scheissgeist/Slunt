@@ -31,11 +31,13 @@ async function resembleAI(text, options = {}) {
         const createResponse = await axios.post(
             `https://app.resemble.ai/api/v2/projects/${process.env.RESEMBLE_PROJECT_ID}/clips`,
             {
-                data: text,
-                voice_uuid: voiceId,
-                is_public: false,
-                sample_rate: 22050,
-                output_format: 'mp3'
+                data: {
+                    body: text,
+                    voice_uuid: voiceId,
+                    is_public: false,
+                    sample_rate: 22050,
+                    output_format: 'mp3'
+                }
             },
             {
                 headers: {

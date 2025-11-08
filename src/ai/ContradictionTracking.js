@@ -42,12 +42,12 @@ Claims:`;
         max_tokens: 100
       });
 
-      if (response.trim().toUpperCase() === 'NONE') return;
+      if (!response || response.trim().toUpperCase() === 'NONE') return;
 
       const statement = {
         id: `stmt_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         message,
-        claims: response.trim(),
+        claims: response ? response.trim() : '',
         timestamp: Date.now(),
         contradicted: false
       };

@@ -67,7 +67,7 @@ Answer with just: MEMORABLE or FORGETTABLE`;
         max_tokens: 10
       });
 
-      if (response.trim().toUpperCase().includes('MEMORABLE')) {
+      if (response && response.trim().toUpperCase().includes('MEMORABLE')) {
         await this.saveMoment(username, message, context);
       }
     } catch (error) {

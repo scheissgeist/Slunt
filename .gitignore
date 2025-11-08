@@ -96,4 +96,19 @@ piper/
 .browser-profile/
 
 *.jpg
-*.png
+*.png# Browser profile cache (Puppeteer)
+.browser-profile/
+
+# Temporary files
+temp/
+nul
+
+# Voice training (separate drive)
+voice_training/
+
+# Test files
+test-*.bat
+
+# Corrupted data files
+*.corrupted*
+*.corrupt

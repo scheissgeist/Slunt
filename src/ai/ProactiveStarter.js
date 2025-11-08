@@ -211,8 +211,8 @@ class ProactiveStarter {
     const opinions = [
       `${topic} is honestly overrated`,
       `${topic} goes hard`,
-      `${topic} is mid`,
-      `${topic} hits different`,
+      `${topic} is mediocre`,
+      `${topic} is pretty good`,
       `people sleep on ${topic}`
     ];
     return opinions[Math.floor(Math.random() * opinions.length)];

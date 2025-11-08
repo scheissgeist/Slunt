@@ -36,7 +36,7 @@ class StyleAnalyzer {
       let totalLen = 0, emojiCount = 0, emoteCount = 0, capsCount = 0, exclaimCount = 0;
       let questionCount = 0, slangCount = 0, laughCount = 0, profCount = 0, elongCount = 0;
 
-      const slang = /\b(fr|ngl|tbh|ikr|idk|wdym|btw|irl|af|gg|pog|based|cringe|sus|cap)\b/i;
+      const slang = /\b(ngl|tbh|ikr|idk|wdym|btw|irl|af|gg|pog|based|cringe|sus|cap)\b/i;
       const laugh = /\b(lol|lmao|rofl|haha|hehe|xd)\b/i;
       const profanity = /\b(fuck|shit|bitch|ass|wtf|damn|hell)\b/i;
       const emojiRegex = /[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/u;

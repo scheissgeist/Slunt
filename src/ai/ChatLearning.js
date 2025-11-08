@@ -144,8 +144,8 @@ class ChatLearning {
     
     // BLACKLIST - Overused zoomer phrases that make you sound like a tryhard
     const slangBlacklist = [
-      'fr', 'frfr', 'ong', 'sus', 'susaf', 'ngl', 'tbh', 'deadass',
-      'bussin', 'mid', 'ratio', 'goated', 'slaps', 'finna', 'no cap'
+      'ong', 'sus', 'susaf', 'ngl', 'tbh', 
+      'ratio', 'goated', 'finna'
     ];
     
     // HIGH-QUALITY slang (actually conversational)
@@ -159,8 +159,6 @@ class ChatLearning {
     const slangPatterns = [
       /^[a-z]{2,4}$/,  // Short abbreviations
       /^[a-z]+af$/,    // *af patterns (wildaf, crazyaf)
-      /^lowkey$/,
-      /^highkey$/,
       /^based$/,
       /^cringe$/
     ];

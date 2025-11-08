@@ -150,8 +150,8 @@ Topic:`;
         temperature: 0.3,
         max_tokens: 20
       });
-      
-      return response.trim().replace(/^["']|["']$/g, '') || 'general chat';
+
+      return response ? response.trim().replace(/^["']|["']$/g, '') || 'general chat' : 'general chat';
     } catch (error) {
       console.error('Failed to identify topic:', error);
       return 'general chat';

@@ -29,7 +29,7 @@ class StyleMimicry {
       typos: [], // intentional typos like 'rn', 'u', 'ur'
       abbreviations: new Map(),
       casualPhrases: [],
-      reactions: [] // like "lmao", "bruh", "fr", "nah"
+      reactions: [] // like "lmao", "bruh", "nah"
     };
   }
 
@@ -85,10 +85,9 @@ class StyleMimicry {
 
     // BANNED ZOOMER SLANG - Slunt should NEVER use these
     const bannedZoomerSlang = [
-      'fr', 'lowkey', 'highkey', 'deadass', 'bet', 'cap', 'no cap', 'finna',
-      'vibe', 'vibes', 'mood', 'oof', 'yeet', 'lit', 'fire', 'based', 'mid',
-      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 'ngl',
-      'bruh', 'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
+      'oof', 'yeet', 'lit', 'fire', 
+      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 
+      'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
     ];
 
     // Learn slang and casual phrases (excluding banned zoomer slang)
@@ -217,10 +216,9 @@ class StyleMimicry {
 
     // BANNED ZOOMER SLANG - never use these in responses
     const bannedWords = [
-      'fr', 'lowkey', 'highkey', 'deadass', 'bet', 'cap', 'no cap', 'finna',
-      'vibe', 'vibes', 'mood', 'oof', 'yeet', 'lit', 'fire', 'based', 'mid',
-      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 'ngl',
-      'bruh', 'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
+      'oof', 'yeet', 'lit', 'fire', 
+      'ratio', 'cope', 'seethe', 'mald', 'touch grass', 'go outside', 
+      'queen', 'king', 'slay', 'periodt', 'ate', 'slaps', 'bop'
     ];
 
     // Filter banned slang from top slang and strip zoomer words from message

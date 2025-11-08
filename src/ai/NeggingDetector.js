@@ -33,7 +33,7 @@ class NeggingDetector {
         /ok slunt/i,
         /sure thing slunt/i,
         /slunt.*(shut up|stfu|quiet|nobody asked)/i,
-        /slunt.*(cringe|mid|mid bot|boring)/i,
+        /slunt.*(cringe|mediocre|boring)/i,
         /slunt.*(trying too hard|tryhard)/i,
         /who (asked|cares).*(slunt)?/i
       ],

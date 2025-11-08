@@ -40,7 +40,7 @@ class ResponseVariety {
       
       // Only throttle if REALLY overused (more lenient now)
       // Short phrases like "lol", "nah", "yeah" are natural and should be allowed more often
-      const isShortCasual = ['lol', 'lmao', 'yeah', 'nah', 'bruh', 'fr', 'true'].includes(pattern);
+      const isShortCasual = ['lol', 'lmao', 'yeah', 'nah', 'bruh', 'true'].includes(pattern);
       
       if (isShortCasual) {
         // Allow casual phrases more often - only throttle after 6 uses in recent messages (lowered from 8)
@@ -91,7 +91,6 @@ class ResponseVariety {
       'nah': /\bnah\b/,
       'what': /\bwhat\b/,
       'true': /\btrue\b/,
-      'fr': /\bfr\b/,
       'ngl': /\bngl\b/,
       'bruh': /\bbruh\b/,
       'damn': /\bdamn\b/
@@ -237,12 +236,11 @@ class ResponseVariety {
    */
   getAlternative(phrase) {
     const alternatives = {
-      'lmao': ['lol', 'haha', 'bruh', 'fr', 'that\'s wild'],
-      'lol': ['lmao', 'haha', 'fr', 'bruh'],
-      'yeah': ['true', 'facts', 'fr fr', 'yep', 'agreed'],
+      'lmao': ['lol', 'haha', 'bruh', 'that\'s wild'],
+      'lol': ['lmao', 'haha', 'bruh'],
+      'yeah': ['true', 'facts', 'yep', 'agreed'],
       'nah': ['nope', 'naw', 'don\'t think so', 'not really'],
-      'true': ['yeah', 'facts', 'fr', 'real'],
-      'fr': ['for real', 'true', 'facts', 'yeah'],
+      'true': ['yeah', 'facts', 'real'],
       'bruh': ['damn', 'bro', 'man', 'dude'],
       'damn': ['bruh', 'sheesh', 'woah', 'wild']
     };

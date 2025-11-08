@@ -48,7 +48,7 @@ class LifeSimulation {
       "my car wouldn't start so i had to deal with that mess",
       "went to the gym, some dude was hogging three machines",
       "had a doctor appointment, waited 2 hours past my scheduled time",
-      "my landlord showed up unannounced to 'inspect' shit",
+      "my gay landlord showed up unannounced to 'inspect' shit",
       "power went out for like 4 hours, had nothing to do",
       "got dragged to {place} by a friend, complete waste of time",
       "had to help someone move, my back is fucked",

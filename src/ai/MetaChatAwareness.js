@@ -328,7 +328,7 @@ class MetaChatAwareness {
     if (this.chatState.beingIgnored && this.chatState.ignoreStreak > 2) {
       reactions.push({
         type: 'ignored',
-        message: ['okay cool', 'guess ill shut up', 'yall ignoring me fr', 'noted', 'whatever then']
+        message: ['okay cool', 'guess ill shut up', 'yall ignoring me honestly', 'noted', 'whatever then']
       });
     }
     

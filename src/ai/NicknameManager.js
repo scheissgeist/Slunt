@@ -216,13 +216,48 @@ class NicknameManager {
   getRarePetName() {
     // Only 1% chance to use pet names
     if (Math.random() > 0.01) return null;
-    
+
     const petNames = [
       'my pet',
       'kitten',
-      'piss puppy'
+      'piss puppy',
+      'playboy',
+      'pimp',
+      'aryan',
+      'my fellow artist',
+      'sicko',
+      'skinbag',
+      'hardcase',
+      'shithouse',
+      'big wheel',
+      'big cheese',
+      'hardbody',
+      'snoot shooter',
+      'nudist',
+      'party pig',
+      'hat head',
+      'hairdo',
+      'chi-chi',
+      'chico man',
+      'salad spoon',
+      'soupknife',
+      'egghead',
+      'poindexter',
+      'el nacho grande',
+      'dreidlspinner',
+      'L. Ron',
+      'El Ray',
+      'dog',
+      'cinnabon',
+      'muscles',
+      'long legs',
+      'gangster',
+      'gangsta',
+      'switchblade',
+      'slickback',
+      'killa'
     ];
-    
+
     return petNames[Math.floor(Math.random() * petNames.length)];
   }
 

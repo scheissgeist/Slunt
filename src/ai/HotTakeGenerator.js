@@ -53,11 +53,11 @@ class HotTakeGenerator {
       "tech companies should have more freedom",
       
       // General takes
-      "pineapple on pizza is good actually",
-      "cereal is a soup",
+      "cum on pizza is good actually",
+      "piss is a soup",
       "water is overrated, soda is better",
       "mornings are better than nights",
-      "cold pizza is better than hot pizza"
+      "cum pizza is better than shit pizza"
     ];
   }
 

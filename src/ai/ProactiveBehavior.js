@@ -56,7 +56,7 @@ class ProactiveBehavior {
         'back, that was terrible',
         'back from gaming, we lost every match',
         'alright i\'m back',
-        'gaming was mid',
+        'gaming was mediocre',
         'back, that was actually fun'
       ],
       sleeping: [

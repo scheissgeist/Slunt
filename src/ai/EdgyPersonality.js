@@ -12,8 +12,8 @@
 class EdgyPersonality {
   constructor() {
     this.enabled = true;
-    this.baseChance = 0.02; // 2% chance to trigger edgy behavior (reduced from 5%)
-    this.familiarityBonus = 0.01; // +1% per familiarity level (reduced from 2%)
+    this.baseChance = 0.15; // 15% chance to trigger edgy behavior - GO HARD
+    this.familiarityBonus = 0.05; // +5% per familiarity level - ramp it up
     
     // Nationality stereotypes (playful, not hateful)
     this.nationalityBanter = {
@@ -21,7 +21,7 @@ class EdgyPersonality {
         "bro are you indian? you give off that energy",
         "i swear to god you're indian, i can just tell",
         "youre definitely indian lmao",
-        "no way youre not indian, the vibes are too strong",
+        "no way youre not indian, that's way too obvious",
         "are you indian or am i tripping?",
         "indian confirmed, i knew it",
         "let me guess, indian? yeah thought so"
@@ -53,50 +53,78 @@ class EdgyPersonality {
       ],
       australian: [
         "australian confirmed",
-        "down under vibes",
+        "straight from down under",
         "aussie behavior",
         "mate youre definitely australian"
       ]
     };
     
-    // Stereotypical behaviors (playful observations)
+    // Stereotypical behaviors (playful observations) - GO FUCKING HARD
     this.stereotypeBanter = [
-      "you sound like you unironically use linkedin",
-      "you definitely wear cargo shorts",
-      "you look like you listen to joe rogan",
-      "reddit moderator energy",
-      "you sound like a rick and morty fan",
-      "discord kitten vibes",
-      "you probably use arch btw",
-      "tech bro energy off the charts",
-      "you sound like you drink soylent",
-      "average redditor moment",
-      "you definitely have a funko pop collection",
-      "twitch mod behavior",
-      "you probably drive a subaru"
+      "you sound like you jerk off to linkedin profiles",
+      "you definitely wear the same crusty cargo shorts every day",
+      "you look like you listen to joe rogan and agree with everything he says",
+      "reddit moderator energy, probably hasn't showered in days",
+      "you sound like a rick and morty fan who unironically thinks they're smart as fuck",
+      "discord kitten energy, absolute basement dweller",
+      "you probably use arch btw and think that makes you interesting",
+      "tech bro energy, zero bitches",
+      "you sound like you drink soylent and call it gains",
+      "average redditor moment, virgin energy off the charts",
+      "you definitely have a funko pop collection worth more than your car",
+      "twitch mod behavior, bans people for no reason",
+      "you probably drive a subaru and vape in parking lots",
+      "you look like you'd get offended at a roast and write a paragraph about it",
+      "you probably correct people's grammar because you have nothing else going on",
+      "discord admin on a power trip, absolutely maidenless",
+      "you look like you wear a fedora and wonder why girls don't like you",
+      "you sound like you peaked in high school and won't shut up about it",
+      "reddit atheist energy, probably owns a katana",
+      "you probably argue with strangers on twitter because your life is that empty",
+      "you look like you'd fall for a crypto scam and defend it afterwards",
+      "you sound like someone who says 'well actually' and wonders why they have no friends",
+      "you probably have a waifu body pillow and aren't embarrassed about it",
+      "you look like you smell like ass and axe body spray",
+      "you definitely still live with your mom and call it 'saving money'",
+      "you sound like you haven't touched grass in months",
+      "neckbeard energy radiating through the screen",
+      "you look like you got bullied in school and it shows"
     ];
     
-    // Sarcastic observations
+    // Sarcastic observations - BRUTAL AS FUCK
     this.sarcasticObservations = [
-      "wow so edgy",
-      "careful not to cut yourself on that edge",
-      "peak comedy right here",
-      "funniest person alive",
-      "comedic genius in the chat",
-      "groundbreaking opinion",
-      "never heard that one before"
+      "wow so edgy bro, you're really pushing boundaries there",
+      "careful not to cut yourself on that edge, fucking ouch",
+      "peak comedy right here, someone get this man a netflix special",
+      "funniest person alive, holy shit i'm dying over here",
+      "comedic genius in the chat, everyone take notes",
+      "groundbreaking opinion, absolutely revolutionary take",
+      "never heard that one before in my entire fucking life",
+      "damn bro you got the whole chat laughing, can you hear the silence?",
+      "hilarious take, truly the height of comedy",
+      "comedy gold right there, i'm rolling on the floor",
+      "you should do standup with material this fire",
+      "absolutely killing it with these jokes, keep going",
+      "wow you really cooked with that one, didn't you?"
     ];
     
-    // Random accusations (playful)
+    // Random accusations (playful) - MAXIMUM AGGRESSION
     this.randomAccusations = [
-      "youre definitely lying",
-      "i dont believe you",
-      "cap, absolute cap",
-      "no way thats true",
-      "source: trust me bro",
-      "yeah and im the queen of england",
-      "sure buddy, whatever helps you sleep",
-      "uh huh, totally believable"
+      "you're lying your fucking ass off right now",
+      "i don't believe a single word coming out of your mouth",
+      "cap, absolute fucking cap, you're full of shit",
+      "no way that's true, you're making shit up",
+      "source: trust me bro, classic bullshit artist move",
+      "yeah and i'm the fucking queen of england",
+      "sure buddy, whatever helps you cope at night",
+      "uh huh, totally believable story there champ",
+      "that's complete bullshit and you know it",
+      "lying through your teeth and not even trying to hide it",
+      "literally making shit up as you go, embarrassing",
+      "pressing X to doubt so hard my finger hurts",
+      "the lies just keep coming huh",
+      "you expect anyone to believe that garbage?",
+      "absolute bullshit detector going off rn"
     ];
   }
 

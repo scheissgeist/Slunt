@@ -91,7 +91,7 @@ class InnerMonologue {
       }
 
       if (lower.match(/video|movie|watch/)) {
-        thoughts.push(`this video is actually pretty mid, but I don't wanna be rude`);
+        thoughts.push(`this video is actually pretty mediocre, but I don't wanna be rude`);
       }
 
       if (lower.match(/\?$/)) {

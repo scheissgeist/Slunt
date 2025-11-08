@@ -29,11 +29,17 @@ async function coquiProvider(text, options = {}) {
 }
 
 async function resembleProvider(text, options = {}) {
-  const resembleAI = require(path.join('..','..','voice','resembleAI'));
-  const buffer = await resembleAI(text, {
-    voiceId: options.voiceId || process.env.RESEMBLE_VOICE_ID
-  });
-  return { buffer, format: 'mp3', meta: { voiceId: options.voiceId || process.env.RESEMBLE_VOICE_ID } };
+  const ResembleClient = require(path.join('..','..','voice','resemble-client'));
+  const client = new ResembleClient(
+    process.env.RESEMBLE_API_KEY,
+    process.env.RESEMBLE_PROJECT_UUID
+  );
+
+  const voiceUuid = options.voiceId || process.env.RESEMBLE_VOICE_UUID;
+  console.log(`[Resemble] Using project: ${process.env.RESEMBLE_PROJECT_UUID}, voice: ${voiceUuid}`);
+
+  const buffer = await client.textToSpeech(text, { voice_uuid: voiceUuid });
+  return { buffer, format: 'wav', meta: { voiceId: voiceUuid } };
 }
 
 async function piperProvider(text, options = {}) {
@@ -60,8 +66,66 @@ async function piperProvider(text, options = {}) {
   return { buffer, format: 'wav', meta: { model: piperModel, speaker: piperSpeaker } };
 }
 
+async function openvoiceProvider(text, options = {}) {
+  const OpenVoiceClient = require(path.join('..','..','voice','openvoice-client'));
+  const client = new OpenVoiceClient(process.env.OPENVOICE_SERVER_URL || 'http://localhost:3002');
+
+  const referenceVoice = options.referenceVoice || process.env.OPENVOICE_REFERENCE_VOICE;
+  const language = options.language || process.env.OPENVOICE_LANGUAGE || 'EN';
+
+  let buffer;
+  if (referenceVoice) {
+    // Voice cloning mode
+    buffer = await client.cloneVoice(referenceVoice, text, language);
+  } else {
+    // Simple TTS mode
+    buffer = await client.textToSpeech(text, language);
+  }
+
+  return {
+    buffer,
+    format: 'wav',
+    meta: {
+      referenceVoice: referenceVoice ? path.basename(referenceVoice) : 'base',
+      language
+    }
+  };
+}
+
+async function xttsProvider(text, options = {}) {
+  const axios = require('axios');
+  const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
+  
+  try {
+    const response = await axios.post(`${xttsUrl}/tts`, {
+      text: text,
+      temperature: options.temperature || 0.7,
+      repetition_penalty: options.repetition_penalty || 5.0
+    }, {
+      responseType: 'arraybuffer',
+      timeout: 60000 // 60 second timeout
+    });
+    
+    return {
+      buffer: Buffer.from(response.data),
+      format: 'wav',
+      meta: { 
+        model: 'xtts_v2_finetuned',
+        temperature: options.temperature || 0.7
+      }
+    };
+  } catch (error) {
+    console.error('[XTTS] Error:', error.message);
+    throw new Error(`XTTS synthesis failed: ${error.message}`);
+  }
+}
+
 async function synthesizeWithProvider(provider, text, options = {}) {
   switch ((provider || '').toLowerCase()) {
+    case 'xtts':
+      return xttsProvider(text, options);
+    case 'openvoice':
+      return openvoiceProvider(text, options);
     case 'elevenlabs':
       return elevenLabsProvider(text, options);
     case 'openai':
@@ -73,8 +137,8 @@ async function synthesizeWithProvider(provider, text, options = {}) {
     case 'piper':
       return piperProvider(text, options);
     default:
-      // default to elevenlabs
-      return elevenLabsProvider(text, options);
+      // default to openvoice
+      return openvoiceProvider(text, options);
   }
 }
 

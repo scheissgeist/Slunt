@@ -38,7 +38,7 @@ class StyleAdapter {
             out += Math.random() < 0.5 ? ' lol' : ' LMAO';
           }
           if (profile.slangRate > 0.2 && Math.random() < 0.2) {
-            out = this._injectAfterFirstClause(out, Math.random() < 0.5 ? 'fr' : 'tbh');
+            out = this._injectAfterFirstClause(out, Math.random() < 0.5 ? 'honestly' : 'tbh');
           }
         } else {
           if (profile.questionRate > 0.35 && !out.endsWith('?') && Math.random() < 0.15) {

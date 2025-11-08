@@ -17,7 +17,7 @@ const { synthesizeWithProvider } = require('./providers/synth');
 
 const PORT = Number(process.env.VOICE_SERVICE_PORT || 3010);
 const CONCURRENCY = Number(process.env.VOICE_MAX_CONCURRENCY || 2);
-const DEFAULT_PROVIDER = (process.env.VOICE_DEFAULT_PROVIDER || 'elevenlabs').toLowerCase();
+const DEFAULT_PROVIDER = (process.env.VOICE_DEFAULT_PROVIDER || process.env.VOICE_TTS_PROVIDER || 'openvoice').toLowerCase();
 const AUDIO_DIR = path.join(process.cwd(), 'temp', 'audio');
 
 if (!fs.existsSync(AUDIO_DIR)) fs.mkdirSync(AUDIO_DIR, { recursive: true });

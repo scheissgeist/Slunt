@@ -558,7 +558,7 @@ class PersonalityEvolution {
     const announcements = {
       community_praise: [
         'damn yall really got me feeling myself rn',
-        'appreciate the love fr',
+        'appreciate the love honestly',
         'ok im feeling more confident now ngl'
       ],
       community_roast: [
@@ -578,12 +578,12 @@ class PersonalityEvolution {
       ],
       failed_joke: [
         'ok that didnt hit like i thought',
-        'nevermind that was mid',
+        'nevermind that was mediocre',
         'filing that under "lessons learned"'
       ],
       burnout: [
         'honestly kinda over this topic',
-        'need a mental break fr',
+        'need a mental break honestly',
         'energy depleted'
       ]
     };

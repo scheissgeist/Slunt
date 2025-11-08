@@ -86,8 +86,8 @@ Topic:`;
         temperature: 0.3,
         max_tokens: 15
       });
-      
-      return response.trim().toLowerCase();
+
+      return response ? response.trim().toLowerCase() : 'general';
     } catch (error) {
       console.error('Failed to detect topic:', error);
       return 'general';

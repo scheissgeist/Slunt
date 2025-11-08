@@ -14,6 +14,7 @@ const fs = require('fs').promises;
 const path = require('path');
 const OpenAIRealtimeClient = require('./openaiRealtimeClient');
 const VoiceEnhancer = require('./voiceEnhancer');
+const OpenVoiceClient = require('./openvoice-client');
 
 class VoiceManager extends EventEmitter {
   constructor(config = {}) {
@@ -25,17 +26,22 @@ class VoiceManager extends EventEmitter {
       googleApiKey: config.googleApiKey || process.env.GOOGLE_CLOUD_API_KEY,
       
       // Text-to-Speech options
-      ttsProvider: config.ttsProvider || 'piper', // 'piper', 'bark', 'elevenlabs', 'openai', 'openai-realtime', 'google', 'browser'
+      ttsProvider: config.ttsProvider || 'openvoice', // 'openvoice', 'piper', 'bark', 'elevenlabs', 'openai', 'openai-realtime', 'google', 'browser'
       elevenLabsApiKey: config.elevenLabsApiKey || process.env.ELEVENLABS_API_KEY,
       elevenLabsVoiceId: config.elevenLabsVoiceId || process.env.ELEVENLABS_VOICE_ID, // David voice from .env
       openaiApiKey: config.openaiApiKey || process.env.OPENAI_API_KEY,
       openaiRealtimeVoice: config.openaiRealtimeVoice || process.env.OPENAI_REALTIME_VOICE || 'ash',
-      
+
+      // OpenVoice TTS (Local, Free, Voice Cloning)
+      openvoiceServerUrl: config.openvoiceServerUrl || process.env.OPENVOICE_SERVER_URL || 'http://localhost:3002',
+      openvoiceReferenceVoice: config.openvoiceReferenceVoice || process.env.OPENVOICE_REFERENCE_VOICE,
+      openvoiceLanguage: config.openvoiceLanguage || process.env.OPENVOICE_LANGUAGE || 'EN',
+
       // Piper TTS (Local, Free, Fast)
       piperExecutable: config.piperExecutable || process.env.PIPER_EXECUTABLE || 'piper',
       piperModel: config.piperModel || process.env.PIPER_MODEL || 'en_US-lessac-medium',
       piperSpeaker: config.piperSpeaker || process.env.PIPER_SPEAKER || '0',
-      
+
       // Bark TTS (Local, Free, Expressive)
       barkServerUrl: config.barkServerUrl || process.env.BARK_SERVER_URL || 'http://localhost:8080',
       barkVoice: config.barkVoice || process.env.BARK_VOICE || 'male_deep',
@@ -72,6 +78,18 @@ class VoiceManager extends EventEmitter {
     
     // Voice enhancer for more natural speech
     this.voiceEnhancer = new VoiceEnhancer();
+
+    // OpenVoice client for voice cloning
+    this.openvoiceClient = null;
+    if (this.config.ttsProvider === 'openvoice') {
+      this.openvoiceClient = new OpenVoiceClient(this.config.openvoiceServerUrl);
+      console.log(`🎤 [Voice] OpenVoice client initialized (${this.config.openvoiceServerUrl})`);
+      if (this.config.openvoiceReferenceVoice) {
+        console.log(`   Reference voice: ${this.config.openvoiceReferenceVoice}`);
+      } else {
+        console.log('   ⚠️  No reference voice set - will use base TTS');
+      }
+    }
 
     // OpenAI Realtime client
     this.realtimeClient = null;
@@ -216,6 +234,10 @@ class VoiceManager extends EventEmitter {
       // Choose TTS provider
       let audioUrl = null;
       switch (this.config.ttsProvider) {
+        case 'openvoice':
+          // Use OpenVoice (Local, Free, Voice Cloning)
+          audioUrl = await this.openvoiceTextToSpeech(enhancedText, { ...options, voiceStyle });
+          break;
         case 'openai-realtime':
           // Use OpenAI Realtime API (streaming, interrupts, ChatGPT quality)
           await this.openaiRealtimeSpeak(text, options);
@@ -240,6 +262,10 @@ class VoiceManager extends EventEmitter {
           break;
         case 'google':
           audioUrl = await this.googleTextToSpeech(text, options);
+          break;
+        case 'xtts':
+          // Use XTTS fine-tuned model through voice service
+          audioUrl = await this.xttsTextToSpeech(enhancedText, { ...options, voiceStyle });
           break;
         default:
           console.error('❌ [Voice] Unknown TTS provider:', this.config.ttsProvider);
@@ -626,7 +652,97 @@ class VoiceManager extends EventEmitter {
     console.log('⚠️ [Voice] Google TTS not fully implemented yet');
     return null;
   }
-  
+
+  /**
+   * XTTS Fine-Tuned Text-to-Speech (David Hasselhoff Voice)
+   */
+  async xttsTextToSpeech(text, options = {}) {
+    try {
+      console.log('🎙️ [Voice] XTTS generating fine-tuned Hoff speech');
+      
+      // Delegate to voice service which has the XTTS provider
+      const axios = require('axios');
+      const voiceServiceUrl = process.env.VOICE_SERVICE_URL || 'http://localhost:3010';
+      
+      const response = await axios.post(`${voiceServiceUrl}/tts`, {
+        text: text,
+        provider: 'xtts',
+        wait: true
+      }, {
+        timeout: 60000
+      });
+      
+      if (response.data && response.data.audioUrl) {
+        console.log('✅ [Voice] XTTS speech generated');
+        return response.data.audioUrl;
+      }
+      
+      console.error('❌ [Voice] XTTS returned no audio URL');
+      return null;
+    } catch (error) {
+      console.error('❌ [Voice] XTTS generation failed:', error.message);
+      return null;
+    }
+  }
+
+  /**
+   * OpenVoice Text-to-Speech with Voice Cloning
+   */
+  async openvoiceTextToSpeech(text, options = {}) {
+    if (!this.openvoiceClient) {
+      console.error('❌ [Voice] OpenVoice client not initialized');
+      return null;
+    }
+
+    try {
+      const referenceVoice = options.referenceVoice || this.config.openvoiceReferenceVoice;
+      const language = options.language || this.config.openvoiceLanguage;
+
+      console.log(`🎙️ [Voice] OpenVoice generating speech (language: ${language})`);
+      if (referenceVoice) {
+        console.log(`   Using voice clone: ${path.basename(referenceVoice)}`);
+      } else {
+        console.log('   Using base TTS (no reference voice)');
+      }
+
+      // Generate audio
+      let audioBuffer;
+      if (referenceVoice) {
+        // Voice cloning mode
+        audioBuffer = await this.openvoiceClient.cloneVoice(
+          referenceVoice,
+          text,
+          language
+        );
+      } else {
+        // Simple TTS mode
+        audioBuffer = await this.openvoiceClient.textToSpeech(text, language);
+      }
+
+      // Save audio to temp file
+      const audioDir = path.join(__dirname, '../../temp/audio');
+      await fs.mkdir(audioDir, { recursive: true });
+
+      const filename = `slunt_${Date.now()}.wav`;
+      const filepath = path.join(audioDir, filename);
+
+      await fs.writeFile(filepath, audioBuffer);
+
+      console.log(`✅ [Voice] OpenVoice audio generated: ${filename}`);
+
+      return filepath;
+
+    } catch (error) {
+      if (error.message.includes('not responding')) {
+        console.error('❌ [Voice] OpenVoice server not running!');
+        console.error('   Start with: cd OpenVoice && python api_server.py');
+      } else {
+        console.error('❌ [Voice] OpenVoice TTS error:', error.message);
+      }
+      return null;
+    }
+  }
+
   /**
    * Get voice stats
    */

@@ -111,12 +111,12 @@ class EmotionalEngine {
       happy: {
         high: [
           `${username}!! love seeing you this hyped`,
-          `your energy is contagious ${username} fr`,
-          `${username} radiating good vibes rn`
+          `your energy is contagious ${username} honestly`,
+          `${username} radiating good energy rn`
         ],
         medium: [
           `good to see you in good spirits ${username}`,
-          `${username} vibing, I respect it`,
+          `${username} doing well, I respect it`,
           `glad you're having a good time ${username}`
         ],
         low: [
@@ -127,7 +127,7 @@ class EmotionalEngine {
       sad: {
         high: [
           `hey ${username}, you good? I'm here if you wanna talk`,
-          `${username} sending you good vibes, hope things get better`,
+          `${username} sending you good energy, hope things get better`,
           `rough times ${username}? we got you`
         ],
         medium: [
