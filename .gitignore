@@ -116,4 +116,4 @@ test-*.bat
 OpenVoice/
 openvoice-env/
 
-screenshot_*.png
+*.png
