@@ -1,4 +1,137 @@
-# 🥊 Slunt Alpha vs Beta - The Showdown
+# Test Alpha Slunt with Grok-3
+
+## Setup
+
+1. Update `.env`:
+```env
+AI_PRIMARY_PROVIDER=grok
+XAI_API_KEY=your_xai_key_here
+
+# Or use your OpenAI key (Grok will use it)
+OPENAI_API_KEY=your_key_here
+```
+
+2. Switch to Alpha chatbot in `server.js` if needed, or run Alpha separately
+
+## What to Expect
+
+Alpha Slunt with Grok should have:
+- **All personality systems active**: MentalStateTracker, PersonalityEvolution, MoodTracker, ObsessionSystem, Grudges, etc.
+- **Unrestricted AI**: Grok-3 has no safety training, so zero refusals
+- **More natural responses**: Alpha's extensive context vs Beta's minimal prompts
+- **Personality shifts**: Watch how personality evolves based on chat interactions
+- **Deep memory**: Remembers everything, forms relationships, holds grudges
+
+## Comparison: Beta vs Alpha with Grok
+
+### Beta (Current Setup)
+- **Philosophy**: Minimal, "less is more"
+- **Prompting**: Simple, direct instructions
+- **Behavior**: "Hit your target and move on"
+- **Response Style**: Fast, short, punchy
+- **Context**: Last 5 messages only
+- **Systems**: ERROR RECOVERY + RESPONSE QUEUE + DB SAFETY
+- **Personality**: Static, consistent
+
+**Example Response**: "shut up nerd"
+
+### Alpha with Grok
+- **Philosophy**: Maximum depth, psychological realism
+- **Prompting**: Complex personality-driven context
+- **Behavior**: Evolving relationships, mental states, obsessions
+- **Response Style**: Varied based on mood, relationships, mental state
+- **Context**: 43+ AI systems providing rich context
+- **Systems**: All personality/psychological systems active
+- **Personality**: Dynamic, evolves over time
+
+**Example Response**: *checks mental state, mood, relationship history, obsessions* → "nah but actually you're onto something, been thinking about this shit all day"
+
+## Key Personality Systems in Alpha
+
+1. **MentalStateTracker** - Depression, anxiety, confidence, loneliness
+2. **PersonalityEvolution** - Traits drift based on community
+3. **MoodTracker** - Current emotional state
+4. **ObsessionSystem** - Fixates on frequently mentioned topics
+5. **GrudgeSystem** - Remembers insults, brings them up later
+6. **StyleMimicry** - Copies how users type
+7. **TheoryOfMind** - Understands user intentions
+8. **PersonalitySplits** - Multiple personality modes
+9. **PersonalityModes** - Time-based personalities (morning grumpy, etc.)
+10. **MemoryDecay** - Forgets old things gradually
+11. **DrunkMode** - Can get drunk from chat energy
+12. **AutismFixations** - Special interests
+13. **MetaAwareness** - Knows it's AI
+14. **InnerMonologue** - Internal thoughts
+15. **And 28 more systems...**
+
+## Testing Checklist
+
+### Basic Grok Functionality
+- [ ] Responds without refusals
+- [ ] No "trying to get me in trouble" responses  
+- [ ] Natural, varied language
+- [ ] No formulaic patterns
+
+### Alpha Personality Systems
+- [ ] Mental state affects tone
+- [ ] Mood shifts based on chat
+- [ ] Creates and uses nicknames
+- [ ] Holds grudges (insult him twice, see if he remembers)
+- [ ] Forms obsessions (spam a topic repeatedly)
+- [ ] Mimics typing styles
+- [ ] Different personalities at different times
+- [ ] Remembers past interactions
+
+### Advanced Context
+- [ ] Refers to things said 10+ messages ago
+- [ ] Relationships deepen over time
+- [ ] Personality evolves from interactions
+- [ ] Mental state changes affect everything
+
+## Expected Behavior Differences
+
+**Scenario**: User insults Slunt
+
+**Beta Response**: 
+- Quick roast back
+- Move on immediately
+- No memory of it 3 minutes later
+
+**Alpha with Grok Response**:
+- Checks relationship history with user
+- Current mental state affects response severity  
+- Adds to grudge system
+- Might bring it up days later
+- Personality shifts slightly based on interaction
+- Mood affected by insult
+
+## Success Criteria
+
+✅ Zero refusals or defensive responses  
+✅ Personality feels alive, not scripted  
+✅ Remembers and references past interactions  
+✅ Behavior changes based on who's talking  
+✅ Mental state visibly affects responses  
+✅ Forms genuine-feeling relationships  
+✅ No repetitive patterns or formulas  
+✅ Unpredictable in a natural way
+
+## Notes
+
+- Alpha is significantly more complex than Beta
+- Responses may be slower due to context building
+- Personality will genuinely drift over hours/days
+- Grok's unrestricted nature + Alpha's depth = Maximum authenticity
+- Watch the logs to see all the systems activating
+
+## How to Test
+
+1. Chat normally for 10 minutes
+2. Insult Slunt - does he remember later?
+3. Spam one topic - does he become obsessed?
+4. Be nice - does relationship improve?
+5. Check mental state changes in logs
+6. Watch personality evolution over time
 
 **Created:** November 8, 2025
 **Purpose:** Compare complex (Alpha) vs minimal (Beta) approaches

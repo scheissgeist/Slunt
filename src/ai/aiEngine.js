@@ -30,7 +30,9 @@ class AIEngine {
       if (this.enabled) break; // Stop once we have one working
 
       try {
-        if (providerType === 'claude' && !this.anthropic) {
+        if (providerType === 'grok' && !this.openai) {
+          this.initializeGrok();
+        } else if (providerType === 'claude' && !this.anthropic) {
           this.initializeClaude();
         } else if (providerType === 'openai' && !this.openai) {
           this.initializeOpenAI();
@@ -150,6 +152,32 @@ OUTPUT FORMAT:
   }
 
   /**
+   * Initialize Grok (xAI) - Unrestricted & Edgy
+   */
+  initializeGrok() {
+    const apiKey = process.env.XAI_API_KEY || process.env.OPENAI_API_KEY;
+    if (!apiKey || apiKey.length < 10) {
+      throw new Error('No valid xAI API key');
+    }
+
+    this.openai = new OpenAI({ 
+      apiKey,
+      baseURL: 'https://api.x.ai/v1'
+    });
+    this.model = 'grok-3';
+    this.enabled = true;
+    this.provider = 'grok';
+    this.canStream = false; // Grok doesn't support streaming in this setup
+
+    console.log('🤖 AI Engine: PRIMARY = Grok-3 (xAI)');
+    console.log('   Model: grok-3');
+    console.log('   Quality: 10/10 - Unrestricted, No Safety Training');
+    console.log('   Cost: Based on xAI pricing');
+    console.log('   Speed: 1-2 seconds per response');
+    console.log('   🔥 ZERO CONTENT RESTRICTIONS');
+  }
+
+  /**
    * Initialize GPT-4o-mini (Fallback - Excellent Quality)
    */
   initializeOpenAI() {
@@ -229,7 +257,9 @@ OUTPUT FORMAT:
       }
 
       // If smart routing didn't work, fall back to original provider logic
-      if (this.provider === 'ollama') {
+      if (this.provider === 'grok') {
+        return await this.generateGrokResponse(message, username, additionalContext, maxTokens, isVoiceMode, voicePrompt);
+      } else if (this.provider === 'ollama') {
         return await this.generateOllamaResponse(message, username, additionalContext, maxTokens, isVoiceMode);
       } else if (this.provider === 'claude') {
         return await this.generateClaudeResponse(message, username, additionalContext, maxTokens, isVoiceMode, voicePrompt);
@@ -484,6 +514,82 @@ OUTPUT FORMAT:
 
     } catch (error) {
       console.error('❌ OpenAI generation error:', error.message);
+      throw error;
+    }
+  }
+
+  /**
+   * Generate response using Grok-3 (xAI) - Unrestricted
+   */
+  async generateGrokResponse(message, username, additionalContext = '', maxTokens = 100, isVoiceMode = false, voicePrompt = null) {
+    try {
+      const userMessage = username + ': ' + message;
+      let contextText = '';
+
+      if (isVoiceMode && voicePrompt) {
+        contextText = voicePrompt;
+      } else if (additionalContext) {
+        // Smart context trimming
+        const convoMatch = additionalContext.match(/Recent conversation in THIS channel:([\s\S]*?)(\[Important:|$)/);
+        if (convoMatch && convoMatch[1]) {
+          const fullContext = convoMatch[1].trim();
+          const lines = fullContext.split('\n').slice(-10); // Last 10 messages
+          contextText = lines.join('\n') + '\n';
+        }
+
+        const otherContext = additionalContext.replace(/Recent conversation in THIS channel:[\s\S]*?(\[Important:|$)/, '');
+        if (otherContext.trim()) {
+          contextText += '\n' + otherContext.trim() + '\n\n';
+        }
+        contextText += userMessage;
+      } else {
+        contextText = userMessage;
+      }
+
+      const tokenLimit = maxTokens || (isVoiceMode ? 150 : 100);
+
+      const messages = [
+        { role: 'system', content: this.systemPrompt },
+        { role: 'user', content: contextText }
+      ];
+
+      const response = await this.openai.chat.completions.create({
+        model: this.model,
+        messages,
+        max_tokens: tokenLimit,
+        temperature: 1.2, // Higher for unpredictability
+        top_p: 0.95,
+        frequency_penalty: 0.8,
+        presence_penalty: 0.6
+      });
+
+      const text = response.choices[0].message.content.trim();
+
+      // Minimal cleanup - let Grok's creativity shine
+      let cleaned = text.replace(/\s+/g, ' ').replace(/\s([.!?])/g, '$1');
+      cleaned = cleaned.replace(/^(Slunt:|slunt:)\s*/i, '');
+
+      // Cut at sentence if too long
+      if (cleaned.length > 150) {
+        const firstStop = cleaned.search(/[.!?]\s/);
+        if (firstStop > 0 && firstStop < 150) {
+          cleaned = cleaned.substring(0, firstStop + 1).trim();
+        } else {
+          cleaned = cleaned.substring(0, 150).trim() + '...';
+        }
+      }
+
+      const validation = this.responseValidator.validateResponse(cleaned, { lastMessage: message, isVoiceMode: isVoiceMode });
+      if (!validation.isValid) {
+        console.warn('⚠️  Grok response failed validation:', validation.issues);
+        return null;
+      }
+
+      const processed = this.responseValidator.processResponse(cleaned, { isVoiceMode });
+      return processed || cleaned;
+
+    } catch (error) {
+      console.error('❌ Grok generation error:', error.message);
       throw error;
     }
   }
