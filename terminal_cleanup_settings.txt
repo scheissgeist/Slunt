@@ -1,0 +1,5 @@
+﻿// Add these settings to your VS Code settings.json (Ctrl+Shift+P > "Preferences: Open User Settings (JSON)")
+{
+  "terminal.integrated.enablePersistentSessions": false,
+  "terminal.integrated.persistentSessionReviveProcess": "never"
+}

@@ -2340,19 +2340,7 @@ if (enableCoolhole) {
       }
     });
 
-    // Setup reaction handler for Discord
-    if (discordClient) {
-      discordClient.on('reaction', async (reactionData) => {
-        try {
-          console.log(`🎭 [Reaction] Processing ${reactionData.type}: ${reactionData.emoji} from ${reactionData.username}`);
-          
-          // Let ChatBot handle the reaction
-          await chatBot.handleReaction(reactionData);
-        } catch (error) {
-          console.error(`❌ Error handling reaction:`, error.message);
-        }
-      });
-    }
+    // Reaction handling is now done internally in ChatBot via setupReactionHandlers()
 
     // ✅ BETA: Give ChatBot access to platform clients and manager
     console.log('🤖 Connecting Beta to all platform clients...');
@@ -2457,6 +2445,8 @@ if (enableCoolhole) {
     console.log('💗 Health monitoring started');
     
     // Initialize clip creator if Twitch is available
+    // DISABLED: Method doesn't exist, clip creation not critical for chat
+    /*
     if (twitchClient) {
       chatBot.initializeClipCreator(twitchClient);
       
@@ -2465,6 +2455,7 @@ if (enableCoolhole) {
         io.emit('clip:created', clipInfo);
       });
     }
+    */
     
     // Initialize stream status monitor for platform switching
     if (twitchClient && process.env.TWITCH_CLIENT_ID && process.env.TWITCH_OAUTH_TOKEN) {

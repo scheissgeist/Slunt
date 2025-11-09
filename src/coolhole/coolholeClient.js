@@ -425,6 +425,12 @@ class CoolholeClient extends EventEmitter {
             for (let i = startIdx; i < messageElements.length; i++) {
               const msgDiv = messageElements[i];
               
+              // Check if message is gold (sparkly gold text)
+              const isGold = msgDiv.className.includes('gold') || 
+                            msgDiv.querySelector('.gold') !== null ||
+                            msgDiv.style.color === 'gold' ||
+                            msgDiv.style.color === '#ffd700';
+              
               // Try to extract username and message from any structure
               const fullText = msgDiv.textContent || '';
               
@@ -436,7 +442,8 @@ class CoolholeClient extends EventEmitter {
                   timestamp: match[1],
                   username: match[2],
                   text: match[3].trim(),
-                  fullText: fullText.trim()
+                  fullText: fullText.trim(),
+                  isGold: isGold
                 });
               } else {
                 // Try alternate method
@@ -448,7 +455,8 @@ class CoolholeClient extends EventEmitter {
                     username: usernameSpan.textContent.trim(),
                     text: messageSpan.textContent.trim(),
                     timestamp: '',
-                    fullText: fullText.trim()
+                    fullText: fullText.trim(),
+                    isGold: isGold
                   });
                 }
               }
@@ -478,7 +486,7 @@ class CoolholeClient extends EventEmitter {
                 this.seenMessages.delete(firstKey);
               }
               
-              console.log(`[DOM Polling] 📩 New message from ${msg.username}: ${msg.text.substring(0, 50)}`);
+              console.log(`[DOM Polling] 📩 New message from ${msg.username}: ${msg.text.substring(0, 50)}${msg.isGold ? ' 💛 GOLD' : ''}`);
               
               // Handle the message directly
               this.handleMessage({
@@ -486,7 +494,8 @@ class CoolholeClient extends EventEmitter {
                 username: msg.username,
                 text: msg.text,
                 timestamp: Date.now(),
-                source: 'dom-polling'
+                source: 'dom-polling',
+                isGold: msg.isGold || false
               });
             }
           }
@@ -1451,6 +1460,245 @@ class CoolholeClient extends EventEmitter {
    */
   async sendMessage(_channel, content, _options = {}) {
     return this.sendChat(content);
+  }
+
+  /**
+   * Send a private message (PM) to a user on Coolhole
+   * Uses the /pm command: /pm username message
+   * @param {string} username - Username to PM
+   * @param {string} message - Message content
+   * @returns {boolean} Success status
+   */
+  async sendPM(username, message) {
+    if (!this.connected || !this.page) {
+      console.error('[CoolholeClient] Cannot send PM - not connected');
+      return false;
+    }
+
+    try {
+      // Format as PM command
+      const pmCommand = `/pm ${username} ${message}`;
+      console.log(`💬 [Coolhole] Sending PM to ${username}: ${message.substring(0, 50)}...`);
+      
+      // Use sendChat to send the /pm command
+      const success = await this.sendChat(pmCommand);
+      
+      if (success) {
+        console.log(`✅ [Coolhole] PM sent to ${username}`);
+      } else {
+        console.error(`❌ [Coolhole] Failed to send PM to ${username}`);
+      }
+      
+      return success;
+      
+    } catch (error) {
+      console.error(`❌ [Coolhole] PM error:`, error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Queue a YouTube video and send PM notification
+   * Perfect for pranking: "here's u" + cringe video
+   * @param {string} username - Username to prank
+   * @param {string} message - PM message
+   * @param {string} videoUrl - YouTube URL to queue
+   * @returns {boolean} Success status
+   */
+  async prankWithVideo(username, message, videoUrl) {
+    if (!this.connected || !this.page) {
+      console.error('[CoolholeClient] Cannot prank - not connected');
+      return false;
+    }
+
+    try {
+      console.log(`😈 [Coolhole] Pranking ${username} with video...`);
+      
+      // Queue the video first
+      const queueCommand = `/q ${videoUrl}`;
+      const videoQueued = await this.sendChat(queueCommand);
+      
+      if (!videoQueued) {
+        console.error(`❌ [Coolhole] Failed to queue prank video`);
+        return false;
+      }
+
+      // Wait a moment for video to queue
+      await this.page.waitForTimeout(1000);
+
+      // Send the PM
+      const pmSent = await this.sendPM(username, message);
+      
+      if (pmSent) {
+        console.log(`✅ [Coolhole] Prank complete: Video queued + PM sent to ${username}`);
+      }
+      
+      return pmSent;
+      
+    } catch (error) {
+      console.error(`❌ [Coolhole] Prank error:`, error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Get the current video queue from Coolhole
+   * Reads the playlist UI to see what's queued
+   * @returns {Array} Array of queued videos with titles and info
+   */
+  async getVideoQueue() {
+    if (!this.connected || !this.page) {
+      console.error('[CoolholeClient] Cannot get queue - not connected');
+      return [];
+    }
+
+    try {
+      const queueData = await this.page.evaluate(() => {
+        const queue = [];
+        
+        // Try multiple selectors for queue items
+        const queueSelectors = [
+          '#queue li',
+          '.queue-item',
+          '[id*="queue"] li',
+          '.playlist li',
+          '#playlist li'
+        ];
+
+        let queueItems = [];
+        for (const selector of queueSelectors) {
+          queueItems = document.querySelectorAll(selector);
+          if (queueItems.length > 0) break;
+        }
+
+        queueItems.forEach((item, index) => {
+          const titleEl = item.querySelector('.qe_title, .queue-title, a, span');
+          const title = titleEl ? titleEl.textContent.trim() : 'Unknown';
+          
+          const byEl = item.querySelector('.qe_by, .queue-by');
+          const queuedBy = byEl ? byEl.textContent.trim() : 'Unknown';
+
+          const timeEl = item.querySelector('.qe_time, .queue-time');
+          const duration = timeEl ? timeEl.textContent.trim() : 'Unknown';
+
+          queue.push({
+            position: index + 1,
+            title,
+            queuedBy,
+            duration
+          });
+        });
+
+        return queue;
+      });
+
+      if (queueData.length > 0) {
+        console.log(`📋 [Coolhole] Queue has ${queueData.length} videos`);
+      }
+
+      return queueData;
+
+    } catch (error) {
+      console.error(`❌ [Coolhole] Error reading queue:`, error.message);
+      return [];
+    }
+  }
+
+  /**
+   * Get currently playing video info
+   * @returns {Object} Current video info
+   */
+  async getCurrentVideo() {
+    if (!this.connected || !this.page) {
+      console.error('[CoolholeClient] Cannot get current video - not connected');
+      return null;
+    }
+
+    try {
+      const videoInfo = await this.page.evaluate(() => {
+        // Try to get video title from various places
+        const titleSelectors = [
+          '#currenttitle',
+          '.video-title',
+          '#videowrap .title',
+          'h3.title'
+        ];
+
+        let title = 'Unknown';
+        for (const selector of titleSelectors) {
+          const el = document.querySelector(selector);
+          if (el && el.textContent.trim()) {
+            title = el.textContent.trim();
+            break;
+          }
+        }
+
+        // Get video element info
+        const video = document.querySelector('video');
+        let currentTime = 0;
+        let duration = 0;
+        let paused = true;
+
+        if (video) {
+          currentTime = video.currentTime || 0;
+          duration = video.duration || 0;
+          paused = video.paused;
+        }
+
+        return {
+          title,
+          currentTime: Math.floor(currentTime),
+          duration: Math.floor(duration),
+          paused
+        };
+      });
+
+      return videoInfo;
+
+    } catch (error) {
+      console.error(`❌ [Coolhole] Error getting current video:`, error.message);
+      return null;
+    }
+  }
+
+  /**
+   * Queue a video by URL or search term
+   * @param {string} input - YouTube URL or search term
+   * @param {string} position - 'next' or 'end' (default: 'end')
+   * @returns {boolean} Success status
+   */
+  async queueVideo(input, position = 'end') {
+    if (!this.connected || !this.page) {
+      console.error('[CoolholeClient] Cannot queue video - not connected');
+      return false;
+    }
+
+    try {
+      let command;
+      
+      // Check if it's a URL or search term
+      if (input.includes('youtube.com') || input.includes('youtu.be') || input.startsWith('http')) {
+        // Direct URL
+        command = position === 'next' ? `/qn ${input}` : `/q ${input}`;
+      } else {
+        // Search term (use ytsearch:)
+        command = position === 'next' ? `/qn ytsearch:${input}` : `/q ytsearch:${input}`;
+      }
+
+      console.log(`🎬 [Coolhole] Queueing video: ${input} (${position})`);
+      
+      const success = await this.sendChat(command);
+      
+      if (success) {
+        console.log(`✅ [Coolhole] Video queued successfully`);
+      }
+      
+      return success;
+
+    } catch (error) {
+      console.error(`❌ [Coolhole] Error queueing video:`, error.message);
+      return false;
+    }
   }
 
   /**

@@ -1,0 +1,30 @@
+{
+  "sessionId": 1762665208174,
+  "startTime": 1762665208174,
+  "totalMessages": 3,
+  "totalResponses": 1,
+  "totalSkipped": 2,
+  "avgResponseTime": 1431,
+  "responseTimes": [
+    1431
+  ],
+  "contextHits": [],
+  "contextMisses": [],
+  "topicContinuity": [],
+  "platforms": {
+    "coolhole": {
+      "messages": 3,
+      "responses": 1
+    },
+    "discord": {
+      "messages": 0,
+      "responses": 0
+    },
+    "twitch": {
+      "messages": 0,
+      "responses": 0
+    }
+  },
+  "sessionDuration": 60010,
+  "timestamp": 1762665268184
+}

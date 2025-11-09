@@ -1,0 +1,6 @@
+{"type":"message","timestamp":1762653621651,"username":"pissass","text":"wait what show is this","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762653621651,"username":"pissass","text":"wait what show is this","decision":"respond","reason":"probability"}
+{"type":"message","timestamp":1762653621652,"username":"SteeScribbles","text":"Sliders","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762653621653,"username":"SteeScribbles","text":"Sliders","decision":"respond","reason":"probability"}
+{"type":"message","timestamp":1762653621653,"username":"BbNaB","text":"Sliders","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762653621654,"username":"BbNaB","text":"Sliders","decision":"skip","reason":"probability"}

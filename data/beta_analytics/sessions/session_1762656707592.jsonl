@@ -1,0 +1,25 @@
+{"type":"message","timestamp":1762656714661,"username":"Taikunoaku","text":"damn","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656714662,"username":"Taikunoaku","text":"damn","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762656714662,"username":"SteeScribbles","text":"ha","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656714662,"username":"SteeScribbles","text":"ha","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762656714663,"username":"forgottenpasstoasted","text":"i am wounded","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656714663,"username":"forgottenpasstoasted","text":"i am wounded","decision":"respond","reason":"probability"}
+{"type":"message","timestamp":1762656714665,"username":"Taikunoaku","text":"communism everywhere but still have rap","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656714665,"username":"Taikunoaku","text":"communism everywhere but still have rap","decision":"skip","reason":"probability"}
+{"type":"response","timestamp":1762656715731,"username":"forgottenpasstoasted","userMessage":"i am wounded","context":[{"username":"Taikunoaku","text":"damn"},{"username":"SteeScribbles","text":"ha"},{"username":"forgottenpasstoasted","text":"i am wounded"},{"username":"Taikunoaku","text":"communism everywhere but still have rap"}],"response":"Shit, what happened? You okay, or just being dramatic? /pleaselaugh","responseTime":1066,"platform":"coolhole"}
+{"type":"message","timestamp":1762656719662,"username":"forgottenpasstoasted","text":"it's 7 btw","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656719662,"username":"forgottenpasstoasted","text":"it's 7 btw","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762656719663,"username":"Taikunoaku","text":"atari","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656719663,"username":"Taikunoaku","text":"atari","decision":"respond","reason":"probability"}
+{"type":"response","timestamp":1762656721168,"username":"Taikunoaku","userMessage":"atari","context":[{"username":"SteeScribbles","text":"ha"},{"username":"forgottenpasstoasted","text":"i am wounded"},{"username":"Taikunoaku","text":"communism everywhere but still have rap"},{"username":"forgottenpasstoasted","text":"it's 7 btw"},{"username":"Taikunoaku","text":"atari"}],"response":"SteeScribbles, what's so funny?","responseTime":1505,"platform":"coolhole"}
+{"type":"message","timestamp":1762656729672,"username":"forgottenpasstoasted","text":"so fuk u","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762656729672,"username":"forgottenpasstoasted","text":"so fuk u","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762656783757,"username":"jin_joe","text":"https://tenor.com/view/hyrule-squadala-man-dancing-zelda-ytp-gif-22475579","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762656783758,"username":"jin_joe","text":"https://tenor.com/view/hyrule-squadala-man-dancing-zelda-ytp-gif-22475579","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762656787484,"username":"jin_joe","text":"your majesty","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762656787485,"username":"jin_joe","text":"your majesty","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762656790292,"username":"jin_joe","text":"You must die","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762656790292,"username":"jin_joe","text":"You must die","decision":"respond","reason":"probability"}
+{"type":"response","timestamp":1762656791551,"username":"jin_joe","userMessage":"You must die","context":[{"username":"jin_joe","text":"https://tenor.com/view/hyrule-squadala-man-dancing-zelda-ytp-gif-22475579"},{"username":"jin_joe","text":"your majesty"},{"username":"jin_joe","text":"You must die"}],"response":"jin_joe, what the hell is this dancing madness? Absolute chaos, I love it.","responseTime":1258,"platform":"discord"}
+{"type":"message","timestamp":1762656799133,"username":"whomo.","text":"jinjo did you ever uhhh","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762656799134,"username":"whomo.","text":"jinjo did you ever uhhh","decision":"skip","reason":"probability"}

@@ -394,6 +394,127 @@ class DiscordClient extends EventEmitter {
   }
 
   /**
+   * Send a DM to a user
+   * @param {string} userId - Discord user ID
+   * @param {string|Object} content - Message content or options object
+   * @param {Object} options - Additional options (ignored if content is object)
+   * @returns {boolean} Success status
+   */
+  async sendDM(userId, content, options = {}) {
+    if (!this.isReady) {
+      console.warn('⚠️ [Discord] Not ready, cannot send DM');
+      return false;
+    }
+
+    try {
+      const user = await this.client.users.fetch(userId);
+      
+      if (!user) {
+        console.error('❌ [Discord] User not found:', userId);
+        return false;
+      }
+
+      // Create or fetch existing DM channel
+      const dmChannel = await user.createDM();
+      
+      // Rate limiting for DMs
+      const now = Date.now();
+      const lastSent = this.rateLimits.get(`dm_${userId}`) || 0;
+      const timeSince = now - lastSent;
+      
+      if (timeSince < 3000) { // 3 seconds between DMs
+        const waitTime = 3000 - timeSince;
+        await new Promise(resolve => setTimeout(resolve, waitTime));
+      }
+
+      // Handle content as object (with embeds) or string
+      if (typeof content === 'object' && content !== null) {
+        // Content is already an options object with embeds, etc.
+        await dmChannel.send(content);
+        this.rateLimits.set(`dm_${userId}`, Date.now());
+        console.log(`💬 [Discord] DM sent to ${user.username} (with embeds)`);
+        return true;
+      }
+
+      // Content is a string - split long messages
+      const messages = this.splitMessage(content, 2000);
+      
+      for (const msg of messages) {
+        await dmChannel.send({
+          content: msg,
+          ...options
+        });
+        
+        this.rateLimits.set(`dm_${userId}`, Date.now());
+        
+        if (messages.length > 1) {
+          await new Promise(resolve => setTimeout(resolve, 1000));
+        }
+      }
+
+      console.log(`💬 [Discord] DM sent to ${user.username}: ${content.substring(0, 50)}...`);
+      return true;
+      
+    } catch (error) {
+      console.error('❌ [Discord] DM error:', error.message);
+      return false;
+    }
+  }
+
+  /**
+   * Send a DM with username lookup (convenience method)
+   * @param {string} username - Discord username or display name
+   * @param {string} content - Message content
+   * @param {string} guildId - Guild ID to search in (optional)
+   * @returns {boolean} Success status
+   */
+  async sendDMByUsername(username, content, guildId = null) {
+    try {
+      let userId = null;
+
+      if (guildId) {
+        // Search in specific guild
+        const guild = await this.client.guilds.fetch(guildId);
+        const members = await guild.members.fetch();
+        
+        const member = members.find(m => 
+          m.user.username.toLowerCase() === username.toLowerCase() ||
+          m.displayName.toLowerCase() === username.toLowerCase()
+        );
+        
+        if (member) {
+          userId = member.user.id;
+        }
+      } else {
+        // Search in all guilds
+        for (const [, guild] of this.client.guilds.cache) {
+          const members = await guild.members.fetch();
+          const member = members.find(m => 
+            m.user.username.toLowerCase() === username.toLowerCase() ||
+            m.displayName.toLowerCase() === username.toLowerCase()
+          );
+          
+          if (member) {
+            userId = member.user.id;
+            break;
+          }
+        }
+      }
+
+      if (!userId) {
+        console.error('❌ [Discord] Could not find user:', username);
+        return false;
+      }
+
+      return await this.sendDM(userId, content);
+      
+    } catch (error) {
+      console.error('❌ [Discord] DM by username error:', error.message);
+      return false;
+    }
+  }
+
+  /**
    * Split long messages
    */
   splitMessage(content, maxLength) {

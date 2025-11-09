@@ -68,6 +68,7 @@ class MemoryCore {
     if (!this.users.has(username)) {
       this.users.set(username, {
         id: username,
+        nickname: null,  // Slunt's nickname for this person
         platforms: [],
         firstMet: Date.now(),
         lastSeen: Date.now(),
@@ -137,11 +138,17 @@ class MemoryCore {
   getUserContext(username, maxChars = 100) {
     const user = this.getUser(username);
     
-    // Strangers: no context
-    if (user.tier === 'stranger') return '';
+    // Strangers: no context (but might have a nickname already)
+    if (user.tier === 'stranger') {
+      return user.nickname ? `Your nickname for them: "${user.nickname}"` : '';
+    }
     
     // Friends: brief context
     const parts = [];
+    
+    if (user.nickname) {
+      parts.push(`Your nickname: "${user.nickname}"`);
+    }
     
     if (user.tier === 'friend' || user.tier === 'close') {
       const timeKnown = Math.floor((Date.now() - user.firstMet) / (1000 * 60 * 60 * 24 * 30));

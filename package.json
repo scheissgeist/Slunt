@@ -10,6 +10,8 @@
     "start:voice": "node src/voice-service/index.js",
     "check": "node check.js",
     "setup": "npm install && node check.js",
+    "cleanup": "powershell -ExecutionPolicy Bypass -File cleanup-terminals.ps1",
+    "restart": "npm run cleanup && npm start",
     "deploy-24-7": "node production-slunt-24-7.js",
     "deploy-advanced": "node advanced-slunt-learning.js",
     "deploy-visual": "node visual-slunt-monitor.js",
