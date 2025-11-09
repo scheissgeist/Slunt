@@ -2357,7 +2357,13 @@ if (enableCoolhole) {
       chatBot.discordClient = discordClient;
       console.log('🎮 [Discord] Client reference set for reactions');
     }
-    
+
+    // ✅ BETA FIX: Setup platform listeners (Coolhole, Discord, Twitch)
+    if (typeof chatBot.setupListeners === 'function') {
+      chatBot.setupListeners();
+      console.log('✅ Platform listeners attached to ChatBot');
+    }
+
     // Give ChatBot access to rate limiter for spam protection
     chatBot.setRateLimiter(rateLimiter);
     

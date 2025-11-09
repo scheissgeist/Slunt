@@ -307,6 +307,24 @@ Now respond naturally to this:`;
   }
 
   /**
+   * Compatibility methods for server.js (Alpha compatibility)
+   */
+  setPlatformManager(platformManager) {
+    this.platformManager = platformManager;
+    logger.info('✅ Platform manager set');
+  }
+
+  setRateLimiter(rateLimiter) {
+    // Beta has its own simple rate limiting, ignore this
+    logger.info('✅ Rate limiter (ignored - using Beta rate limiting)');
+  }
+
+  setContentFilter(contentFilter) {
+    // Beta has zero restrictions, ignore this
+    logger.info('✅ Content filter (ignored - zero restrictions)');
+  }
+
+  /**
    * Attach platform listeners
    */
   setupListeners() {
