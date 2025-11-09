@@ -21,14 +21,17 @@ const CommandParser = require('./CommandParser');
 const BetaAnalytics = require('../monitoring/BetaAnalytics');
 
 class ChatBotBeta extends EventEmitter {
-  constructor(coolholeClient = null, discordClient = null, twitchClient = null, videoManager = null) {
+  constructor(coolholeClient = null, videoManager = null) {
     super();
 
-    // Platform clients
+    // Platform clients (matches Alpha signature)
     this.coolholeClient = coolholeClient;
-    this.discordClient = discordClient;
-    this.twitchClient = twitchClient;
     this.videoManager = videoManager;
+
+    // Platform references (set by server.js)
+    this.discordClient = null;
+    this.twitchClient = null;
+    this.platformManager = null;
 
     // Essential systems only
     this.coolPointsHandler = new CoolPointsHandler();
@@ -63,10 +66,22 @@ class ChatBotBeta extends EventEmitter {
   }
 
   /**
-   * Main message handler
+   * Main message handler - accepts unified chatData format from PlatformManager
+   * (same signature as Alpha for compatibility)
    */
-  async handleMessage(username, text, platform = 'coolhole', channelId = 'default', userInfo = {}) {
+  async handleMessage(chatData) {
     try {
+      // Extract data from unified format
+      const platform = chatData.platform || 'coolhole';
+      const username = chatData.username || chatData.displayName || 'Anonymous';
+      const text = chatData.text || chatData.msg || '';
+      const channelId = chatData.channel || chatData.channelId || 'default';
+
+      // Validate text exists
+      if (!text || typeof text !== 'string' || text.trim().length === 0) {
+        return;
+      }
+
       // Analytics - log incoming message
       this.analytics.logMessage(username, text, platform, channelId);
 
@@ -79,13 +94,13 @@ class ChatBotBeta extends EventEmitter {
         if (text.toLowerCase() === '!betastats' || text.toLowerCase() === '!stats') {
           const stats = this.analytics.getStats();
           const response = `📊 Beta Stats: ${stats.totalMessages} msg, ${stats.totalResponses} resp (${stats.responseRate}), Avg: ${stats.avgResponseTime}, Context: ${stats.contextHitRate}, Continuity: ${stats.topicContinuityRate}`;
-          this.sendMessage(response, platform, channelId);
+          this.sendMessage(response, platform, channelId, chatData);
           return;
         }
 
         const response = await this.commandParser.parse(text, username, platform);
         if (response) {
-          this.sendMessage(response, platform, channelId);
+          this.sendMessage(response, platform, channelId, chatData);
           return;
         }
       }
@@ -117,7 +132,7 @@ class ChatBotBeta extends EventEmitter {
           platform
         );
 
-        this.sendMessage(response, platform, channelId);
+        this.sendMessage(response, platform, channelId, chatData);
       }
 
     } catch (error) {
@@ -285,19 +300,36 @@ Now respond naturally to this:`;
   }
 
   /**
-   * Send message to platform
+   * Send message to platform - uses PlatformManager (like Alpha)
    */
-  sendMessage(text, platform, channelId) {
+  async sendMessage(text, platform, channelId, chatData = {}) {
     try {
-      if (platform === 'coolhole' && this.coolholeClient) {
-        this.coolholeClient.sendMessage(text);
-      } else if (platform === 'discord' && this.discordClient) {
-        const channel = this.discordClient.channels.cache.get(channelId);
-        if (channel) {
-          channel.send(text);
+      // Use PlatformManager if available
+      if (this.platformManager) {
+        // Check for Discord reply
+        if (platform === 'discord' && chatData.rawMessage) {
+          await this.platformManager.sendMessage(platform, channelId, text, {
+            replyTo: chatData.rawMessage
+          });
+        } else {
+          await this.platformManager.sendMessage(platform, channelId, text);
         }
-      } else if (platform === 'twitch' && this.twitchClient) {
-        this.twitchClient.say(channelId, text);
+      } else {
+        // Fallback to direct sending (legacy)
+        if (platform === 'coolhole' && this.coolholeClient) {
+          this.coolholeClient.sendMessage(text);
+        } else if (platform === 'discord' && this.discordClient) {
+          const channel = this.discordClient.client?.channels.cache.get(channelId);
+          if (channel) {
+            if (chatData.rawMessage) {
+              await chatData.rawMessage.reply(text);
+            } else {
+              await channel.send(text);
+            }
+          }
+        } else if (platform === 'twitch' && this.twitchClient) {
+          await this.twitchClient.say(channelId, text);
+        }
       }
 
       logger.info(`✅ [${platform}] Sent: ${text.substring(0, 100)}`);
@@ -322,45 +354,6 @@ Now respond naturally to this:`;
   setContentFilter(contentFilter) {
     // Beta has zero restrictions, ignore this
     logger.info('✅ Content filter (ignored - zero restrictions)');
-  }
-
-  /**
-   * Attach platform listeners
-   */
-  setupListeners() {
-    // Coolhole
-    if (this.coolholeClient) {
-      this.coolholeClient.on('chatMessage', (data) => {
-        const username = data.username || 'Anonymous';
-        const text = data.msg || '';
-        if (username !== 'Slunt') {
-          this.handleMessage(username, text, 'coolhole', 'coolhole-main', data);
-        }
-      });
-      logger.info('✅ Coolhole listeners attached');
-    }
-
-    // Discord
-    if (this.discordClient) {
-      this.discordClient.on('messageCreate', (message) => {
-        if (message.author.bot) return;
-        const username = message.author.username;
-        const text = message.content;
-        const channelId = message.channel.id;
-        this.handleMessage(username, text, 'discord', channelId, { message });
-      });
-      logger.info('✅ Discord listeners attached');
-    }
-
-    // Twitch
-    if (this.twitchClient) {
-      this.twitchClient.on('message', (channel, tags, message, self) => {
-        if (self) return;
-        const username = tags['display-name'] || tags.username;
-        this.handleMessage(username, message, 'twitch', channel, tags);
-      });
-      logger.info('✅ Twitch listeners attached');
-    }
   }
 }
 

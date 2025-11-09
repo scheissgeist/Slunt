@@ -317,14 +317,15 @@ app.get('/voice-client', (req, res) => {
 const videoManager = new VideoManager();
 const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
 
-// NOTE: ChatBot initialization moved to after Discord/Twitch clients are created (around line 2400)
-// This is because Beta needs all platform clients passed to constructor
-let chatBot = null; // Will be initialized later
+// Initialize ChatBot with Alpha signature (coolholeClient, videoManager)
+const ChatBotClass = require('./src/bot/chatBot');
+const chatBot = new ChatBotClass(coolholeClient, videoManager);
 
 const sluntManager = new SluntManager();
 
-// Voice greeting system will be initialized after chatBot is created
-let voiceGreetings = null;
+// Voice greeting system
+const VoiceGreetings = require('./src/voice/VoiceGreetings');
+const voiceGreetings = new VoiceGreetings(chatBot);
 
 // Voice API for web demo
 const openaiTTS = require('./src/voice/openaiTTS');
@@ -2352,42 +2353,27 @@ if (enableCoolhole) {
         }
       });
     }
-    
-    // ✅ BETA FIX: Initialize ChatBot with ALL platform clients (Coolhole, Discord, Twitch)
-    console.log('🤖 Initializing ChatBot with platform clients...');
-    const ChatBotClass = require('./src/bot/chatBot');
-    chatBot = new ChatBotClass(
-      coolholeClient,  // Coolhole client
-      discordClient,   // Discord client (may be null)
-      twitchClient,    // Twitch client (may be null)
-      videoManager     // Video manager
-    );
-    console.log('✅ ChatBot initialized with all platforms');
+
+    // ✅ BETA: Give ChatBot access to platform clients and manager
+    console.log('🤖 Connecting Beta to all platform clients...');
+
+    // Store platform client references
+    if (discordClient) {
+      chatBot.discordClient = discordClient;
+      console.log('✅ [Discord] Client reference set');
+    }
+
+    if (twitchClient) {
+      chatBot.twitchClient = twitchClient;
+      console.log('✅ [Twitch] Client reference set');
+    }
 
     // Give ChatBot access to platform manager for sending messages
     chatBot.setPlatformManager(platformManager);
+    console.log('✅ [PlatformManager] Connected to ChatBot');
 
-    // Give ChatBot access to Discord client for reactions
-    if (discordClient) {
-      chatBot.discordClient = discordClient;
-      console.log('🎮 [Discord] Client reference set for reactions');
-    }
-
-    // ✅ BETA FIX: Setup platform listeners (Coolhole, Discord, Twitch)
-    if (typeof chatBot.setupListeners === 'function') {
-      chatBot.setupListeners();
-      console.log('✅ Platform listeners attached to ChatBot');
-    }
-
-    // Initialize voice greeting system now that chatBot exists
-    const VoiceGreetings = require('./src/voice/VoiceGreetings');
-    voiceGreetings = new VoiceGreetings(chatBot);
-    console.log('🎤 Voice greetings initialized');
-
-    // Give ChatBot access to rate limiter for spam protection
+    // Give ChatBot access to rate limiter and content filter (compatibility)
     chatBot.setRateLimiter(rateLimiter);
-    
-    // Give ChatBot access to content filter for TOS compliance
     chatBot.setContentFilter(contentFilter);
 
     // ========================================
