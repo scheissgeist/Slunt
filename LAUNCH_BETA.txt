@@ -1,0 +1,42 @@
+▶️ SLUNT BETA - LAUNCH COMMAND ▶️
+
+cd "c:\Users\Batman\Desktop\Slunt\Slunt" && npm start
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+✅ CHECKLIST - ALL READY:
+- Beta code active (chatBot.js = 12KB)
+- Platform listeners fixed
+- Analytics enabled
+- Zero restrictions prompt loaded
+- Coolhole/Discord/Twitch connected
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+WATCH FOR ON STARTUP:
+✅ "Slunt Beta initialized - Minimal mode"
+✅ "Analytics: ENABLED (tracking all data)"
+✅ "Platform listeners attached to ChatBot"
+✅ "Coolhole listeners attached"
+✅ "Discord listeners attached"
+✅ "Twitch listeners attached"
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+EVERY 60 SECONDS YOU'LL SEE:
+📊 ===== BETA ANALYTICS STATS =====
+Session: [ID] ([time])
+Messages: X | Responses: Y (Z%)
+Avg Response Time: Xms
+Context Hit Rate: X%
+Topic Continuity: X%
+====================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+AFTER TESTING, SHARE THIS WITH CLAUDE:
+cat data/beta_analytics/metrics.json
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🚀 READY TO LAUNCH! 🚀

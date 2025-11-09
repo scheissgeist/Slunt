@@ -316,7 +316,11 @@ app.get('/voice-client', (req, res) => {
 // Initialize bot components
 const videoManager = new VideoManager();
 const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
-const chatBot = new ChatBot(coolholeClient, videoManager);
+
+// NOTE: ChatBot initialization moved to after Discord/Twitch clients are created (around line 2400)
+// This is because Beta needs all platform clients passed to constructor
+let chatBot = null; // Will be initialized later
+
 const sluntManager = new SluntManager();
 
 // Initialize voice greeting system
@@ -2349,9 +2353,20 @@ if (enableCoolhole) {
       });
     }
     
+    // ✅ BETA FIX: Initialize ChatBot with ALL platform clients (Coolhole, Discord, Twitch)
+    console.log('🤖 Initializing ChatBot with platform clients...');
+    const ChatBotClass = require('./src/bot/chatBot');
+    chatBot = new ChatBotClass(
+      coolholeClient,  // Coolhole client
+      discordClient,   // Discord client (may be null)
+      twitchClient,    // Twitch client (may be null)
+      videoManager     // Video manager
+    );
+    console.log('✅ ChatBot initialized with all platforms');
+
     // Give ChatBot access to platform manager for sending messages
     chatBot.setPlatformManager(platformManager);
-    
+
     // Give ChatBot access to Discord client for reactions
     if (discordClient) {
       chatBot.discordClient = discordClient;
