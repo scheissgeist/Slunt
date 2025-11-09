@@ -10,6 +10,9 @@ const { execSync } = require('child_process');
 // VoiceGreetings moved to after ChatBot initialization (line 2383)
 const dotenvResult = require('dotenv').config({ override: true });
 
+// Track startup time for SIGINT detection
+global.startupTime = Date.now();
+
 // DEBUG: Print voice ID immediately after loading .env
 console.log('━'.repeat(60));
 console.log('🔍 [DEBUG] Dotenv loading (with override=true):');
@@ -48,17 +51,7 @@ const PREFERRED_PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 let PORT = PREFERRED_PORT; // Will be updated by findAvailablePort in startup
 
 // ============ CRITICAL: CATCH ALL ERRORS TO PREVENT CRASHES ============
-process.on('uncaughtException', (error) => {
-  console.error('💥💥💥 UNCAUGHT EXCEPTION:', error);
-  console.error('Stack:', error.stack);
-  // Don't exit - log it and continue
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('💥💥💥 UNHANDLED REJECTION at:', promise);
-  console.error('Reason:', reason);
-  // Don't exit - log it and continue
-});
+// REMOVED - duplicate error handlers defined later in file
 
 process.on('SIGTERM', () => {
   console.log('⚠️  SIGTERM received - graceful shutdown');
@@ -69,13 +62,44 @@ process.on('SIGTERM', () => {
   process.exit(0);
 });
 
+// Track SIGINT to prevent spurious shutdowns from Windows/VS Code terminal issues
+let sigintCount = 0;
+let lastSigintTime = 0;
+
 process.on('SIGINT', () => {
+  const now = Date.now();
+  sigintCount++;
+  
+  // If we get rapid SIGINTs (within 1 second), it's likely a real Ctrl+C
+  const timeSinceLastSigint = now - lastSigintTime;
+  const isRapidSigint = timeSinceLastSigint < 1000;
+  
   console.log('⚠️  SIGINT received - graceful shutdown');
-  if (global.openvoiceProcess) {
-    console.log('🎤 [XTTS] Shutting down voice server...');
-    global.openvoiceProcess.kill('SIGTERM');
+  console.log(`📊 Shutdown info: SIGINT #${sigintCount}, time since last: ${timeSinceLastSigint}ms`);
+  console.log('📊 Shutdown reason: User interrupt (Ctrl+C) or system signal');
+  console.log(`🕐 Time: ${new Date().toISOString()}`);
+  
+  // Ignore first SIGINT if it happens right after startup (likely spurious Windows signal)
+  if (sigintCount === 1 && Date.now() - global.startupTime < 30000) {
+    console.log('⚠️  IGNORING spurious SIGINT during startup phase');
+    console.log('⚠️  Press Ctrl+C again within 1 second to actually shut down');
+    lastSigintTime = now;
+    return;
   }
-  process.exit(0);
+  
+  // If this is a second SIGINT within 1 second, definitely shut down
+  if (isRapidSigint || sigintCount > 1) {
+    console.log('✅ Confirmed shutdown request');
+    if (global.openvoiceProcess) {
+      console.log('🎤 [XTTS] Shutting down voice server...');
+      global.openvoiceProcess.kill('SIGTERM');
+    }
+    process.exit(0);
+  }
+  
+  // First real SIGINT - wait for confirmation
+  console.log('⚠️  Press Ctrl+C again within 1 second to confirm shutdown');
+  lastSigintTime = now;
 });
 // ========================================================================
 
@@ -120,7 +144,6 @@ const logger = winston.createLogger({
 const SluntManager = require('./src/services/SluntManager');
 const BackupManager = require('./src/services/BackupManager');
 const RateLimiter = require('./src/services/RateLimiter');
-const ContentFilter = require('./src/services/ContentFilter');
 const GracefulShutdown = require('./src/stability/GracefulShutdown');
 const ConnectionHealthMonitor = require('./src/services/ConnectionHealthMonitor');
 
@@ -135,8 +158,6 @@ const rateLimiter = new RateLimiter({
   maxCommandsPerMinute: 5,
   maxGlobalMessagesPerMinute: 100
 });
-
-const contentFilter = new ContentFilter();
 
 // Initialize connection health monitor
 const healthMonitor = new ConnectionHealthMonitor({
@@ -191,13 +212,7 @@ function generateKnowledgeFragments(topic, count) {
 }
 
 // Global error handlers
-process.on('uncaughtException', (error) => {
-  logger.error(`[Uncaught Exception] ${error.stack || error}`);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  logger.error(`[Unhandled Rejection] ${reason}`);
-});
+// REMOVED - duplicate error handlers defined later in file
 
 const ChatBot = require('./src/bot/chatBot');
 logger.info('Slunt server starting...');
@@ -342,7 +357,12 @@ app.post('/api/voice/clear-memory', async (req, res) => {
     res.json({ success: true, message: 'Voice memory cleared' });
   } catch (error) {
     console.error('❌ [Voice] Failed to clear memory:', error);
-    res.status(500).json({ error: 'Failed to clear memory' });
+    res.status(500).json({ 
+      error: 'Failed to clear memory',
+      message: 'Voice memory could not be cleared',
+      suggestion: 'Try reloading the page or restart the bot',
+      canRetry: true
+    });
   }
 });
 
@@ -489,7 +509,12 @@ Slunt:`;
     });
   } catch (error) {
     console.error('❌ [Voice] Proactive generation failed:', error);
-    res.status(500).json({ error: 'Failed to generate proactive message' });
+    res.status(500).json({ 
+      error: 'Failed to generate proactive message',
+      message: 'AI response generation failed temporarily',
+      suggestion: 'Slunt is still listening - try speaking to him directly',
+      canRetry: false
+    });
   }
 });
 
@@ -499,7 +524,12 @@ app.post('/api/voice', async (req, res) => {
     const { text } = req.body;
     if (!text) {
       console.log(`❌ [Voice API] No text provided`);
-      return res.status(400).json({ error: 'No text provided' });
+      return res.status(400).json({ 
+        error: 'No text provided',
+        message: 'Speech recognition did not capture any text',
+        suggestion: 'Try speaking louder or closer to the microphone',
+        canRetry: true
+      });
     }
     console.log(`📝 [Voice API] Processing text: "${text}"`);
     
@@ -825,7 +855,13 @@ app.post('/api/voice', async (req, res) => {
   } catch (err) {
     console.error('❌ [Voice API] Fatal error:', err);
     console.error('❌ [Voice API] Stack:', err.stack);
-    res.status(500).json({ error: 'Voice API error', details: err.message });
+    res.status(500).json({ 
+      error: 'Voice API error', 
+      message: 'Failed to process voice request',
+      details: err.message,
+      suggestion: 'Check if AI services are available, then try again',
+      canRetry: true
+    });
   }
 });
 
@@ -2360,9 +2396,8 @@ if (enableCoolhole) {
     chatBot.setPlatformManager(platformManager);
     console.log('✅ [PlatformManager] Connected to ChatBot');
 
-    // Give ChatBot access to rate limiter and content filter (compatibility)
+    // Give ChatBot access to rate limiter (compatibility)
     chatBot.setRateLimiter(rateLimiter);
-    chatBot.setContentFilter(contentFilter);
 
     // ========================================
     // STEP 1: Initialize all platforms FIRST
@@ -2394,7 +2429,8 @@ if (enableCoolhole) {
       healthMonitor.registerPlatform('discord', discordClient, {
         enabled: true,
         critical: false,
-        reconnectOnFail: false // DISABLED - don't auto-reconnect Discord
+        reconnectOnFail: true, // ENABLED - auto-reconnect Discord
+        maxReconnectAttempts: 999 // Effectively unlimited
       });
     }
 
@@ -2402,7 +2438,8 @@ if (enableCoolhole) {
       healthMonitor.registerPlatform('twitch', twitchClient, {
         enabled: true,
         critical: false,
-        reconnectOnFail: false // DISABLED - don't auto-reconnect Twitch
+        reconnectOnFail: true, // ENABLED - auto-reconnect Twitch
+        maxReconnectAttempts: 999 // Effectively unlimited
       });
     }
 
@@ -2524,14 +2561,23 @@ const killPortProcess = async (port) => {
 process.on('unhandledRejection', (reason, promise) => {
   console.error('❌ [CRITICAL] Unhandled Promise Rejection:', reason);
   console.error('Promise:', promise);
-  // Don't exit - keep server running
+  console.error('Stack:', reason?.stack);
+  // Don't exit - keep server running (bot should be resilient)
+  console.log('✅ [Recovery] Continuing despite error - bot remains operational');
 });
 
 process.on('uncaughtException', (error) => {
   console.error('❌ [CRITICAL] Uncaught Exception:', error);
+  console.error('Stack:', error.stack);
+  
   // Don't exit - keep server running unless it's truly fatal
-  if (error.code === 'ERR_IPC_CHANNEL_CLOSED' || error.code === 'ECONNRESET') {
-    console.log('⚠️  Non-fatal error, continuing...');
+  if (error.code === 'ERR_IPC_CHANNEL_CLOSED' || 
+      error.code === 'ECONNRESET' ||
+      error.code === 'EPIPE' ||
+      error.code === 'ETIMEDOUT') {
+    console.log('⚠️  Non-fatal network error, continuing...');
+  } else {
+    console.log('⚠️  Exception caught - bot remains operational');
   }
 });
 

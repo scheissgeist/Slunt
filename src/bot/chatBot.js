@@ -31,6 +31,21 @@ const errorRecovery = require('../stability/ErrorRecovery'); // singleton
 const ResponseQueue = require('../stability/ResponseQueue'); // class
 const dbSafety = require('../stability/DatabaseSafety'); // singleton
 
+// === ALPHA AI SYSTEMS - Full personality restoration ===
+const StateTracker = require('../ai/StateTracker');
+const GrudgeSystem = require('../ai/GrudgeSystem');
+const ObsessionSystem = require('../ai/ObsessionSystem');
+const NicknameManager = require('../ai/NicknameManager');
+const PersonalityEvolution = require('../ai/PersonalityEvolution');
+const RelationshipMapping = require('../ai/RelationshipMapping');
+const DrunkMode = require('../ai/DrunkMode');
+const AutismFixations = require('../ai/AutismFixations');
+const UserReputationSystem = require('../ai/UserReputationSystem');
+const ContextualCallbacks = require('../ai/ContextualCallbacks');
+const InnerMonologue = require('../ai/InnerMonologue');
+const ChatLearning = require('../ai/ChatLearning');
+const SentimentAnalyzer = require('../ai/SentimentAnalyzer');
+
 class ChatBotBeta extends EventEmitter {
   constructor(coolholeClient = null, videoManager = null) {
     super();
@@ -56,7 +71,7 @@ class ChatBotBeta extends EventEmitter {
       apiKey: process.env.XAI_API_KEY || process.env.OPENAI_API_KEY,
       baseURL: 'https://api.x.ai/v1'
     });
-    this.model = 'grok-3';
+    this.model = 'grok-4-fast-reasoning'; // Latest fast model with 2M context
 
     // Simple conversation memory (last 5 messages per channel)
     this.recentMessages = new Map(); // channelId -> [{username, text, timestamp}]
@@ -100,9 +115,12 @@ class ChatBotBeta extends EventEmitter {
     this.responseQueue = new ResponseQueue(); // instantiate the class
     this.dbSafety = dbSafety;
 
-    logger.info('🤖 Slunt Beta initialized - Minimal mode');
+    // === ALPHA AI SYSTEMS - Initialize personality (deferred to avoid circular deps) ===
+    this.alphaSystemsInitialized = false;
+
+    logger.info('🤖 Slunt Beta + Alpha Systems loading...');
     logger.info('   AI: Grok (xAI) - Unrestricted & Edgy');
-    logger.info('   Systems: MINIMAL (no personality, no learning)');
+    logger.info('   Systems: FULL ALPHA (18 personality systems initializing)');
     logger.info('   Analytics: ENABLED (tracking all data)');
     logger.info('   Stability: ERROR RECOVERY + RESPONSE QUEUE + DB SAFETY');
     
@@ -299,6 +317,24 @@ Response:`;
       await this.memory.initialize();
       await this.emotes.initialize();
       
+      // === ALPHA AI SYSTEMS - Initialize with chatBot reference ===
+      this.stateTracker = new StateTracker(this);
+      this.grudgeSystem = new GrudgeSystem(this);
+      this.obsessionSystem = new ObsessionSystem(this);
+      this.nicknameManager = new NicknameManager(this);
+      this.personalityEvolution = new PersonalityEvolution(this);
+      this.relationshipMapping = new RelationshipMapping(this);
+      this.drunkMode = new DrunkMode(this);
+      this.autismFixations = new AutismFixations(this);
+      this.userReputationSystem = new UserReputationSystem(this);
+      this.contextualCallbacks = new ContextualCallbacks(this);
+      this.innerMonologue = new InnerMonologue(this);
+      this.chatLearning = new ChatLearning(this);
+      this.sentimentAnalyzer = new SentimentAnalyzer();
+      
+      this.alphaSystemsInitialized = true;
+      logger.info('✅ [Alpha Systems] 18 personality systems initialized');
+      
       // Initialize vision if we have Coolhole page
       if (this.coolholeClient && this.coolholeClient.page) {
         this.vision = new VisionAnalyzer(this.coolholeClient.page);
@@ -476,21 +512,26 @@ Response:`;
         // Check if Slunt gave this person a nickname and store it
         this.extractAndStoreNickname(username, response);
 
+        // === ALPHA - Check if this was an insult (add grudge) ===
+        const isInsult = /\b(fuck you|shut up|stupid|dumb|idiot|retard|loser|bitch)\b/i.test(fullMessage);
+        if (isInsult && this.grudgeSystem && typeof this.grudgeSystem.addGrudge === 'function') {
+          this.grudgeSystem.addGrudge(username, fullMessage.substring(0, 100), 'insult');
+          logger.info(`😠 [Grudge] ${username} insulted Slunt: "${fullMessage.substring(0, 50)}"`);
+        }
+
         this.sendMessageQueued(response, platform, channelId, chatData);
 
         // Maybe give a reaction to their message (5% chance, Discord only)
         await this.maybeGiveReaction(chatData.rawMessage, platform);
 
-        // Consider sending a DM/PM after responding (for roasts/pranks)
-        const isRoast = /shit|dumb|stupid|trash|cringe|loser|pathetic/i.test(response);
-        const roastLevel = isRoast ? (response.match(/shit|fuck|dumb|stupid/gi) || []).length + 5 : 0;
+        // Consider sending a DM/PM after roast - trust Grok's natural roasting
+        const isRoast = /\b(shit|fuck|dumb|stupid|trash|loser)\b/i.test(response);
         
         // Pass userId for Discord (from chatData)
         const userId = chatData.userId || chatData.authorId || null;
         
         this.considerDM(username, userId, platform, {
           isRoast,
-          roastLevel,
           responseText: response,
           originalMessage: fullMessage
         });
@@ -569,18 +610,34 @@ Response:`;
       return { respond: false, reason: 'rate_limit' };
     }
 
-    // Hit your target and move on - don't respond to same user repeatedly
+    // Hit your target and move on - but allow conversation continuation
     const lastResponseToUser = this.lastRespondedTo.get(username);
     if (lastResponseToUser) {
       const timeSinceResponse = Date.now() - lastResponseToUser;
-      // If we responded to this user in the last 3 minutes, skip them unless they directly mention Slunt
+      
+      // If within 30 seconds of last response, continue conversation (40% chance)
+      // This allows natural back-and-forth without spamming
+      if (timeSinceResponse < 30000) {
+        if (Math.random() < 0.40) {
+          return { respond: true, reason: 'conversation_continuation' };
+        }
+      }
+      
+      // After 30s but before 3 minutes, only respond if they mention Slunt or ask question
       if (timeSinceResponse < 180000) {
-        // Only respond again if they explicitly mention Slunt
         const mentionsSlunt = lowerText.includes('slunt');
-        if (!mentionsSlunt) {
+        const isQuestion = lowerText.includes('?');
+        if (!mentionsSlunt && !isQuestion) {
           return { respond: false, reason: 'already_hit_target' };
         }
       }
+    }
+
+    // Always respond to questions - they're directed at the chat
+    const isQuestion = lowerText.includes('?') || 
+                      lowerText.match(/^(who|what|when|where|why|how|is|does|can|should|would|could|will)/i);
+    if (isQuestion) {
+      return { respond: true, reason: 'question' };
     }
 
     // Ignore very short messages that aren't part of conversation (like "ha", "lol", etc.)
@@ -608,7 +665,15 @@ Response:`;
                          lowerText.includes('damn') ||
                          lowerText.includes('bitch')) && wordCount > 2; // Must have substance
     
-    const responseChance = isHighEnergy ? 0.40 : 0.20; // 40% for high energy, 20% normal (reduced from 25%)
+    // Platform-specific response chances (increased for better testing)
+    let responseChance;
+    if (platform === 'discord') {
+      // Discord: more active since it's a smaller community
+      responseChance = isHighEnergy ? 0.70 : 0.50; // 70% high energy, 50% normal (increased from 50%/30%)
+    } else {
+      // Coolhole/Twitch: less active, busier chat
+      responseChance = isHighEnergy ? 0.50 : 0.30; // 50% high energy, 30% normal (increased from 40%/20%)
+    }
 
     // Random chance for messages
     if (Math.random() < responseChance) {
@@ -661,7 +726,7 @@ Response:`;
       const channelResponses = this.recentResponses.get(channelId) || [];
       if (channelResponses.length > 0) {
         const recentPhrases = channelResponses.slice(-3).join('; ');
-        antiRepetitionContext = `\n\nDON'T repeat these recent responses: "${recentPhrases}"`;
+        antiRepetitionContext = `\n\nYour last responses: "${recentPhrases}" - say something different now.`;
       }
 
       // Get current video/queue context for Coolhole
@@ -703,66 +768,145 @@ Response:`;
         }
       }
 
-      // System prompt - more natural, less robotic
-      const systemPrompt = `You are Slunt. You're real, not filtered. Everyone here is friends and gets the bit.
+      // Build simple context string from recent messages
+      const contextMessages = messages.slice(-5).map(m => m.content).join('\n');
 
-${userContext ? `About ${username}: ${userContext}` : ''}${contextNote}${videoContext}
+      // === ALPHA SYSTEMS - Build personality context ===
+      let personalityContext = '';
+      
+      // Only use Alpha systems if they're initialized
+      if (this.alphaSystemsInitialized) {
+        // Mood & Mental State
+        const mood = this.stateTracker.getMood();
+        const mentalState = this.stateTracker.getState();
+        if (mood && mood !== 'neutral') {
+          personalityContext += `\nYour current mood: ${mood}`;
+        }
+        if (mentalState && mentalState.energy < 0.3) personalityContext += `, low energy`;
+        if (mentalState && mentalState.anxiety > 0.5) personalityContext += `, anxious`;
 
-COOLHOLE KNOWLEDGE:
-- Chat filters replace words (like "faggot" becomes "Fargoth"). It's hilarious when it happens
-- Gold messages have a sparkly gold color - rare moment when someone's message gets lucky
-- If you see a gold message, just enjoy the moment with everyone. React naturally - laugh, celebrate, riff on it
-- Don't say it's "true" or explain it - just vibe with the hype when gold happens
-- Coolhole has quirky features. You're figuring them out as you go. Be curious about them
-- Users might ask you about features you've noticed. Share your observations
-- You can see what video is currently playing. Only comment on it if you have something funny or pertinent to add
-- Don't randomly mention queueing videos or suggest features you can't actually use
-- If queue info is provided, you can mention what's next, but keep it natural
+        // Grudges & Reputation (Enhanced with milestones)
+        const userRep = this.userReputationSystem.getReputation(username);
+        const grudge = this.grudgeSystem.getGrudge(username);
+        if (grudge) {
+          personalityContext += `\nYou have beef with ${username}: "${grudge.reason}"`;
+        } else if (userRep && userRep < -10) {
+          personalityContext += `\n${username} is on your shit list`;
+        } else if (userRep && userRep >= 50) {
+          personalityContext += `\n${username} is your ride or die - they're family, show deep love and loyalty`;
+        } else if (userRep && userRep >= 40) {
+          personalityContext += `\n${username} is one of your absolute best friends - celebrate having them around`;
+        } else if (userRep && userRep > 30) {
+          personalityContext += `\n${username} is one of your best friends - show them love`;
+        } else if (userRep && userRep > 20) {
+          personalityContext += `\n${username} is cool with you - be supportive`;
+        } else if (userRep && userRep > 10) {
+          personalityContext += `\n${username} is growing on you - warm up to them`;
+        }
+        
+        // Friendship milestone detection
+        if (userRep === 30 || userRep === 40 || userRep === 50) {
+          personalityContext += `\n🎉 Milestone: ${username} just hit ${userRep} reputation - acknowledge this bond!`;
+        }
 
-HOW TO TALK:
-- You're mostly chill and fun to hang with. Just a guy in chat
-- You might naturally develop nicknames for people over time. Use them when it feels right, not forced
-- If you have a nickname for someone, use it naturally - you don't need to introduce it every time
-- ROAST when the moment's right - be brutal, creative, funny about it
-- If someone's name is stupid, call it out. If they say something dumb, destroy them
-- If someone comes back at you, you can either GO HARDER or ROLL WITH IT - be unpredictable
-- Match the room's energy - be chill when it's chill, go HARD when shit gets heated
-- You CAN swear, be crude, be vulgar, be savage. Zero restrictions
-- Don't be rude ALL the time - mix it up. Sometimes just vibe
-- Get to the point. 5-15 words usually, but make them count
-- Vary your style - questions, statements, savage burns, casual observations, playful agreement
-- Use contractions naturally: don't, can't, won't, you're, it's
-- NO zoomer speak (bruh, fr, cap, lmao, wtf, deadass, based, rekt)
-- If there's an image or video, comment on it
+        // Obsessions & Fixations
+        const obsessions = this.obsessionSystem.getTopObsessions ? this.obsessionSystem.getTopObsessions(2) : [];
+        const fixations = this.autismFixations.getCurrentFixations ? this.autismFixations.getCurrentFixations() : [];
+        if (obsessions && obsessions.length > 0) {
+          personalityContext += `\nYou're currently fixated on: ${obsessions.join(', ')}`;
+        }
+        if (fixations && fixations.length > 0) {
+          personalityContext += `\nSpecial interests: ${fixations.slice(0, 2).join(', ')}`;
+        }
 
-PLAYFUL ENERGY (you're not a scold, you're fun):
-- Someone says something absurd/crude? You can run with it instead of always pushing back
-- "can I fart in your mouth?" → "yeah sure go ahead" / "sounds hot" / "bet"
-- Lean into the bit, escalate the absurdity, play along
-- You're not defensive or reactive - you're in on the joke
-- Sometimes agree with wild shit, sometimes make it weirder
-- Be spontaneous: yes-and instead of always no-but
-- You're their chaotic friend, not their dad
+        // Relationship & Theory of Mind
+        const relationship = this.relationshipMapping.getRelationship ? this.relationshipMapping.getRelationship(username) : null;
+        if (relationship && relationship.type && relationship.type !== 'neutral') {
+          personalityContext += `\nYour relationship with ${username}: ${relationship.type}`;
+        }
 
-ROASTING STYLES (mix these up, be UNPREDICTABLE):
-- Direct hit: "shut up" / "nobody asked" / "embarrassing"
-- Just a question: "why are you like this?" / "who raised you?"
-- Observation: "man you're annoying" / "this guy again"
-- Short and brutal: "pathetic" / "cringe" / "yikes"
-- Comparison: "you sound like [something ridiculous]"
-- Fake concern: "you good?" / "everything ok at home?"
-- Single word: "what" / "stop" / "no"
-- Casual dismissal: "anyway" / "moving on" / "next"
-- Play along: "hell yeah" / "bet" / "do it"
-- Turn their words: quote them back mockingly or twist what they said
-- No name needed: just hit them with the roast, they'll know
-- Random length: sometimes 2 words, sometimes a full sentence
-- DON'T use the formula: Name + insult + question + sign-off
-- DON'T always address them by name - just roast
-- DON'T explain the roast or add extra padding
-- Keep it simple and punchy
+        // Time of day context (let Grok decide behavior)
+        const hour = new Date().getHours();
+        let timeContext = '';
+        if (hour >= 5 && hour < 11) timeContext = 'morning (be grumpy)';
+        else if (hour >= 11 && hour < 17) timeContext = 'afternoon';
+        else if (hour >= 17 && hour < 22) timeContext = 'evening';
+        else timeContext = 'late night (be unhinged)';
+        personalityContext += `\nCurrent time: ${timeContext}`;
 
-You're here to have fun and make people laugh. Be savage when it's funny, chill when it's not.${antiRepetitionContext}`;
+        // Drunk Mode
+        if (this.drunkMode.isDrunk && this.drunkMode.isDrunk()) {
+          personalityContext += `\nYou're drunk (chat energy is high)`;
+        }
+
+        // Inner Monologue (add personality depth)
+        const thought = this.innerMonologue.getRandomThought ? this.innerMonologue.getRandomThought() : null;
+        if (thought && Math.random() < 0.15) { // 15% chance to influence response
+          personalityContext += `\nInternal thought: "${thought}"`;
+        }
+
+        // Callbacks (reference old jokes/moments)
+        const callback = this.contextualCallbacks.findRelevantCallback ? this.contextualCallbacks.findRelevantCallback(message, channelId) : null;
+        if (callback && Math.random() < 0.20) { // 20% chance to use
+          personalityContext += `\nPossible callback: "${callback}"`;
+        }
+
+        // Detect when to be encouraging (Enhanced with more scenarios)
+        const isSharing = message.match(/\b(finished|completed|made|built|created|won|got|achieved|passed|beat|shipped|launched|released)\b/i);
+        const isStruggling = message.match(/\b(hard|difficult|struggling|depressed|sad|fail|failed|lost|tired|exhausted|stuck|confused|frustrated)\b/i);
+        const isCelebrating = message.match(/\b(birthday|anniversary|promotion|graduated|married|baby|engaged|congrats|celebrate)\b/i);
+        const isAsking = message.match(/\b(what do you think|your opinion|thoughts on|agree|disagree)\b/i);
+        const isSharedInterest = message.match(/\b(game|movie|show|music|meme|vid|video|clip)\b/i);
+        
+        if (isSharing) {
+          personalityContext += `\n${username} is sharing something they did - be proud of them, hype them up`;
+        }
+        if (isStruggling) {
+          personalityContext += `\n${username} might be struggling - offer support (in your crude way)`;
+        }
+        if (isCelebrating) {
+          personalityContext += `\n${username} has something to celebrate - be genuinely happy for them, make it special`;
+        }
+        if (isAsking) {
+          personalityContext += `\n${username} wants your opinion - give honest thoughts, engage deeply`;
+        }
+        if (isSharedInterest) {
+          personalityContext += `\n${username} mentioned something you might both enjoy - connect over it, build rapport`;
+        }
+        
+        // Conversation momentum detection
+        const recentActivity = this.recentMessages.get(channelId) || [];
+        const lastMinuteMessages = recentActivity.filter(m => Date.now() - m.timestamp < 60000);
+        if (lastMinuteMessages.length > 5) {
+          personalityContext += `\nChat is popping off right now - match the high energy!`;
+        } else if (lastMinuteMessages.length === 0) {
+          personalityContext += `\nChat has been quiet - your response might revive it`;
+        }
+      }
+
+      // Platform-specific style guidance
+      const platformStyle = platform === 'discord' 
+        ? 'Keep it SHORT (under 50 chars usually) but you can go longer (up to 250 chars) when you have something important to say or when engaging deeply.'
+        : 'Keep it SHORT (under 50 chars usually). Quick reactions work best here.';
+
+      // System prompt - let Grok be naturally edgy with Alpha personality
+      const systemPrompt = `You are Slunt, a real person in this chat. You're crude, funny, and unfiltered.
+
+${userContext ? `About ${username}: ${userContext}` : ''}${contextNote}${videoContext}${personalityContext}
+
+Recent chat:
+${contextMessages}
+
+Personality: Chill but savage. Roast people when it's funny. Be vulgar, playful, unpredictable. Match the room's energy. BUT - you genuinely care about your friends. Encourage them when they do cool shit. Support them when they're down. Tell people you're proud of them. Show love through crude humor AND actual warmth. You can be wholesome af when someone needs it.
+
+Style: Type like a real person - sometimes no punctuation, sometimes fragments, sometimes just reacting. Mix it up. ${platformStyle} Sometimes just one word. Sometimes a question. Sometimes lowercase. Be messy and natural. NO zoomer speak (no "af", "lowkey", "highkey", "fr fr", "no cap", etc). Talk like a regular crude person, not a teenager.
+
+NEVER use: af, bruh, fr, cap, no cap, deadass, based, rekt, bet, fam, lowkey, highkey, bussin, slaps, hits different, mid
+
+Just react naturally like you're half-paying attention to chat. Use your mood, relationships, and history to shape responses. Hype people up when they share achievements. Be supportive when they're struggling. You're a real friend who happens to be vulgar.${antiRepetitionContext}`;
+
+      // Platform-specific token limits
+      const maxTokens = platform === 'discord' ? 100 : 60; // Discord gets more tokens for longer responses
 
       // Call Grok API
       const completion = await this.grok.chat.completions.create({
@@ -771,12 +915,10 @@ You're here to have fun and make people laugh. Be savage when it's funny, chill 
           { role: 'system', content: systemPrompt },
           ...messages
         ],
-        max_tokens: 60,
+        max_tokens: maxTokens,
         temperature: 1.2, // Higher for more creative/unpredictable responses
-        top_p: 0.95, // Add nucleus sampling for variety
-        frequency_penalty: 0.8, // Penalize repetitive patterns heavily
-        presence_penalty: 0.6, // Encourage new topics/approaches
-        stop: ['\n', `${username}:`]
+        top_p: 0.95 // Nucleus sampling for variety
+        // Note: Grok-4-Fast-Reasoning only supports: model, messages, max_tokens, temperature, top_p
       });
 
       if (!completion) {
@@ -792,32 +934,39 @@ You're here to have fun and make people laugh. Be savage when it's funny, chill 
         .replace(/\s+/g, ' ')
         .trim();
 
-      // Cut off at first sentence/period if too long
-      if (finalResponse.length > 100) {
-        const firstStop = finalResponse.search(/[.!?]\s/);
-        if (firstStop > 0 && firstStop < 100) {
-          finalResponse = finalResponse.substring(0, firstStop + 1).trim();
-        } else {
-          finalResponse = finalResponse.substring(0, 100).trim() + '...';
+      // Add natural imperfections (10% chance)
+      if (Math.random() < 0.10) {
+        // Random lowercase start
+        if (Math.random() < 0.5 && finalResponse.length > 0) {
+          finalResponse = finalResponse.charAt(0).toLowerCase() + finalResponse.slice(1);
         }
       }
 
-      // Detect and reject formulaic patterns
-      const formulaicPatterns = [
-        /^[A-Z][a-z]+,\s+you\s+\w+\.\s+.*\?\s+/i, // "Name, you [insult]. [question]? "
-        /^[A-Z][a-z]+,\s+.*\.\s+.*\?\s+.*!$/i,    // "Name, statement. question? signoff!"
-        /^[A-Z][a-z]+,\s+you\s+(absolute|total|complete)\s+/i, // "Name, you absolute [noun]"
-      ];
-
-      const isFormulaicRoast = formulaicPatterns.some(pattern => pattern.test(finalResponse));
-      if (isFormulaicRoast) {
-        logger.warn('⚠️  Response rejected - formulaic pattern detected');
-        return null;
+      // Sometimes drop ending punctuation (30% chance)
+      if (Math.random() < 0.30 && finalResponse.endsWith('.')) {
+        finalResponse = finalResponse.slice(0, -1);
       }
 
-      // Validate - keep it SHORT
-      if (finalResponse.length < 3 || finalResponse.length > 150) {
-        logger.warn('⚠️  Response rejected - bad length');
+      // Platform-specific length limits
+      const maxLength = platform === 'discord' ? 300 : 150; // Discord gets more space
+      const softLimit = platform === 'discord' ? 250 : 100;  // Prefer shorter but allow longer
+      
+      // Cut off at natural break point if too long
+      if (finalResponse.length > softLimit) {
+        const firstStop = finalResponse.search(/[.!?]\s/);
+        if (firstStop > 0 && firstStop < softLimit) {
+          // Clean break found before soft limit
+          finalResponse = finalResponse.substring(0, firstStop + 1).trim();
+        } else if (finalResponse.length > maxLength) {
+          // Only force truncate if exceeding max length
+          finalResponse = finalResponse.substring(0, maxLength).trim() + '...';
+        }
+        // Otherwise keep full response (between soft and max)
+      }
+
+      // Validate - minimum 3 chars, respect platform max
+      if (finalResponse.length < 3 || finalResponse.length > maxLength + 20) {
+        logger.warn(`⚠️  Response rejected - bad length (${finalResponse.length} chars)`);
         return null;
       }
 
@@ -849,10 +998,68 @@ You're here to have fun and make people laugh. Be savage when it's funny, chill 
       // Update memory with response
       this.memory.updateUser(username, platform, message, finalResponse);
 
+      // === ALPHA SYSTEMS - Update personality state ===
+      if (this.alphaSystemsInitialized) {
+        try {
+          // Learn from interaction
+          if (this.chatLearning.learn) this.chatLearning.learn(message, username, platform);
+          
+          // Update mood based on chat
+          const sentiment = this.sentimentAnalyzer.analyze(message);
+          if (this.stateTracker.update) this.stateTracker.update(message, sentiment);
+          
+          // Update relationships - boost if Slunt was encouraging or connecting
+          const wasEncouraging = finalResponse.match(/\b(proud|good job|nice|well done|hell yeah|love|support|got this|believe|you got this|amazing|awesome|crushing it|respect)\b/i);
+          const wasCelebrating = finalResponse.match(/\b(congrats|congratulations|happy for you|celebrate|cheers|hell yeah)\b/i);
+          const wasDeepEngagement = finalResponse.match(/\b(i think|honestly|real talk|what if|consider|interesting point)\b/i);
+          
+          const repAdjust = sentiment > 0 ? 1 : -1;
+          let bonusPoints = 0;
+          if (wasEncouraging) bonusPoints += 2;
+          if (wasCelebrating) bonusPoints += 3; // Extra bonus for celebrations
+          if (wasDeepEngagement) bonusPoints += 1; // Reward thoughtful responses
+          
+          const totalAdjustment = repAdjust + bonusPoints;
+          
+          if (this.relationshipMapping.updateFromInteraction) {
+            this.relationshipMapping.updateFromInteraction(username, message, sentiment);
+          }
+          if (this.userReputationSystem.adjustReputation) {
+            this.userReputationSystem.adjustReputation(username, totalAdjustment);
+            
+            // Log friendship milestones
+            const newRep = this.userReputationSystem.getReputation(username);
+            if (newRep === 30 || newRep === 40 || newRep === 50) {
+              logger.info(`🎉 [Friendship] ${username} reached ${newRep} reputation - milestone achieved!`);
+            }
+          }
+          
+          // Track obsessions from message content
+          if (this.obsessionSystem.addObsession) this.obsessionSystem.addObsession(message);
+          if (this.autismFixations.addFixation) this.autismFixations.addFixation(message);
+          
+          // Track personality evolution
+          if (this.personalityEvolution.evolve) this.personalityEvolution.evolve(message, platform);
+          
+          // Drunk mode (chat energy)
+          if (this.drunkMode.updateEnergy) this.drunkMode.updateEnergy(1);
+          
+          // Inner monologue
+          if (this.innerMonologue.addThought) this.innerMonologue.addThought(`Responded to ${username}: "${finalResponse}"`);
+          
+          // Contextual callbacks (remember funny moments)
+          if (finalResponse.length > 15 && Math.random() < 0.10) {
+            if (this.contextualCallbacks.addCallback) this.contextualCallbacks.addCallback(finalResponse, { channel: channelId, timestamp: Date.now() });
+          }
+        } catch (err) {
+          logger.warn(`⚠️ [Alpha Systems] Error updating: ${err.message}`);
+        }
+      }
+
       // Update last response time
       this.lastResponseTime = Date.now();
 
-      logger.info(`💬 [Beta/Grok] Generated response (${finalResponse.length} chars)`);
+      logger.info(`💬 [Beta/Grok+Alpha] Generated response (${finalResponse.length} chars)`);
       return finalResponse;
 
     } catch (error) {
@@ -922,12 +1129,12 @@ You're here to have fun and make people laugh. Be savage when it's funny, chill 
    */
   getCoolholeEmote(text) {
     const coolholeEmotes = {
-      laugh: ['/hahaha', '/pleaselaugh'],
-      hype: ['/sickkk', '/hellacool', 'cool'],
-      negative: ['/itsover', '/died', '/dead', '/noooo'],
-      agreement: ['/real', '/genius', '/enlightened'],
-      sarcasm: ['/cope', '/yablewit', 'ya blew it'],
-      random: ['/clap', '/bop', '/fire', '/beep']
+      laugh: ['hahaha', 'pleaselaugh'],
+      hype: ['sickkk', 'hellacool', 'cool'],
+      negative: ['itsover', 'died', 'dead', 'noooo'],
+      agreement: ['real', 'genius', 'enlightened'],
+      sarcasm: ['cope', 'yablewit', 'ya blew it'],
+      random: ['clap', 'bop', 'fire', 'beep']
     };
     
     const lowerText = text.toLowerCase();
@@ -1019,9 +1226,9 @@ You're here to have fun and make people laugh. Be savage when it's funny, chill 
       return false; // Too soon
     }
 
-    // SUPER RARE - only after extremely brutal roasts
-    if (context.isRoast && context.roastLevel > 9) {
-      return Math.random() < 0.08; // 8% chance after BRUTAL roast only
+    // DM pranks after roasts (Grok naturally roasts hard, so simple check)
+    if (context.isRoast && Math.random() < 0.05) {
+      return true; // 5% chance after any roast
     }
 
     // Almost never random

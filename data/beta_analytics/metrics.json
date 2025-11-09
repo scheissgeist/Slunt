@@ -1,12 +1,13 @@
 {
-  "sessionId": 1762665208174,
-  "startTime": 1762665208174,
+  "sessionId": 1762689087490,
+  "startTime": 1762689087490,
   "totalMessages": 3,
-  "totalResponses": 1,
-  "totalSkipped": 2,
-  "avgResponseTime": 1431,
+  "totalResponses": 2,
+  "totalSkipped": 1,
+  "avgResponseTime": 2155,
   "responseTimes": [
-    1431
+    2103,
+    2207
   ],
   "contextHits": [],
   "contextMisses": [],
@@ -14,7 +15,7 @@
   "platforms": {
     "coolhole": {
       "messages": 3,
-      "responses": 1
+      "responses": 2
     },
     "discord": {
       "messages": 0,
@@ -25,6 +26,6 @@
       "responses": 0
     }
   },
-  "sessionDuration": 60010,
-  "timestamp": 1762665268184
+  "sessionDuration": 300026,
+  "timestamp": 1762689387516
 }

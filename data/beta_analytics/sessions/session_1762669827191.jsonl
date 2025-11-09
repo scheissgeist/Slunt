@@ -1,0 +1,12 @@
+{"type":"message","timestamp":1762669834365,"username":"BbNaB","text":"slunt be nice","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669834366,"username":"BbNaB","text":"slunt be nice","decision":"respond","reason":"mentioned"}
+{"type":"message","timestamp":1762669834368,"username":"BbNaB","text":"this dude leaves his dog to sit downwind of generator exhaust","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669834368,"username":"BbNaB","text":"this dude leaves his dog to sit downwind of generator exhaust","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669834369,"username":"Phag","text":"dog's getting a high dose of that carbon monoxide","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669834369,"username":"Phag","text":"dog's getting a high dose of that carbon monoxide","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669849385,"username":"BbNaB","text":"...hey","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669849385,"username":"BbNaB","text":"...hey","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669869414,"username":"Phag","text":"what does the fox say","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669869415,"username":"Phag","text":"what does the fox say","decision":"respond","reason":"question"}
+{"type":"message","timestamp":1762669904473,"username":"BbNaB","text":"Tool video starts invading the movie","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669904473,"username":"BbNaB","text":"Tool video starts invading the movie","decision":"respond","reason":"probability"}

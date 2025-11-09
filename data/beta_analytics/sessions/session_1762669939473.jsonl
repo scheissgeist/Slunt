@@ -1,0 +1,46 @@
+{"type":"message","timestamp":1762669946605,"username":"Phag","text":"dog's getting a high dose of that carbon monoxide","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669946606,"username":"Phag","text":"dog's getting a high dose of that carbon monoxide","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669946606,"username":"BbNaB","text":"...hey","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669946607,"username":"BbNaB","text":"...hey","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669946607,"username":"Phag","text":"what does the fox say","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669946608,"username":"Phag","text":"what does the fox say","decision":"respond","reason":"question"}
+{"type":"message","timestamp":1762669946610,"username":"BbNaB","text":"Tool video starts invading the movie","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669946610,"username":"BbNaB","text":"Tool video starts invading the movie","decision":"respond","reason":"probability"}
+{"type":"response","timestamp":1762669947904,"username":"BbNaB","userMessage":"Tool video starts invading the movie","context":[{"username":"Phag","text":"dog's getting a high dose of that carbon monoxide"},{"username":"BbNaB","text":"...hey"},{"username":"Phag","text":"what does the fox say"},{"username":"BbNaB","text":"Tool video starts invading the movie"}],"response":"lol tool's trippy ass ruining the plot","responseTime":1293,"platform":"coolhole"}
+{"type":"response","timestamp":1762669948415,"username":"Phag","userMessage":"what does the fox say","context":[{"username":"Phag","text":"dog's getting a high dose of that carbon monoxide"},{"username":"BbNaB","text":"...hey"},{"username":"Phag","text":"what does the fox say"},{"username":"BbNaB","text":"Tool video starts invading the movie"}],"response":"haha phag go touch grass","responseTime":1807,"platform":"coolhole"}
+{"type":"message","timestamp":1762669986648,"username":"BbNaB","text":"slunt kinda does have a point for bringing up that old video","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669986649,"username":"BbNaB","text":"slunt kinda does have a point for bringing up that old video","decision":"respond","reason":"mentioned"}
+{"type":"response","timestamp":1762669988744,"username":"BbNaB","userMessage":"slunt kinda does have a point for bringing up that old video","context":[{"username":"Phag","text":"dog's getting a high dose of that carbon monoxide"},{"username":"BbNaB","text":"...hey"},{"username":"Phag","text":"what does the fox say"},{"username":"BbNaB","text":"Tool video starts invading the movie"},{"username":"BbNaB","text":"slunt kinda does have a point for bringing up that old video"}],"response":"yo phag that dog's baked af already","responseTime":2095,"platform":"coolhole"}
+{"type":"message","timestamp":1762669996670,"username":"Phag","text":"haha","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669996670,"username":"Phag","text":"haha","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670011700,"username":"Huculberry","text":"DONT HURT DOG","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670011701,"username":"Huculberry","text":"DONT HURT DOG","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762670026702,"username":"Phag","text":"GOOD","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670026703,"username":"Phag","text":"GOOD","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670051759,"username":"BbNaB","text":"dog needs to realize his STANDO POWA","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670051759,"username":"BbNaB","text":"dog needs to realize his STANDO POWA","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670056770,"username":"Phag","text":"ZA PASTOR","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670056771,"username":"Phag","text":"ZA PASTOR","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670081800,"username":"BbNaB","text":"ghost dog can help let him out of the cellar","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670081800,"username":"BbNaB","text":"ghost dog can help let him out of the cellar","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670086805,"username":"Phag","text":"this soundtrack is pretty good too have to admit","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670086805,"username":"Phag","text":"this soundtrack is pretty good too have to admit","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670136900,"username":"BbNaB","text":"oh, an old taxidermy project","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670136901,"username":"BbNaB","text":"oh, an old taxidermy project","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670156933,"username":"Phag","text":"is the dog going to perform an exorcism","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670156934,"username":"Phag","text":"is the dog going to perform an exorcism","decision":"respond","reason":"question"}
+{"type":"response","timestamp":1762670158875,"username":"Phag","userMessage":"is the dog going to perform an exorcism","context":[{"username":"Phag","text":"ZA PASTOR"},{"username":"BbNaB","text":"ghost dog can help let him out of the cellar"},{"username":"Phag","text":"this soundtrack is pretty good too have to admit"},{"username":"BbNaB","text":"oh, an old taxidermy project"},{"username":"Phag","text":"is the dog going to perform an exorcism"}],"response":"dog vs pastor, my money's on the pup /cope","responseTime":1941,"platform":"coolhole"}
+{"type":"message","timestamp":1762670232036,"username":"Phag","text":"has hole watched Babadook recently?","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670232037,"username":"Phag","text":"has hole watched Babadook recently?","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670257074,"username":"BbNaB","text":"I haven't seen it","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670257074,"username":"BbNaB","text":"I haven't seen it","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762670262099,"username":"Phag","text":"you need to","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670262099,"username":"Phag","text":"you need to","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762670272107,"username":"BbNaB","text":"should I","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670272107,"username":"BbNaB","text":"should I","decision":"respond","reason":"question"}
+{"type":"response","timestamp":1762670274250,"username":"BbNaB","userMessage":"should I","context":[{"username":"Phag","text":"is the dog going to perform an exorcism"},{"username":"Phag","text":"has hole watched Babadook recently?"},{"username":"BbNaB","text":"I haven't seen it"},{"username":"Phag","text":"you need to"},{"username":"BbNaB","text":"should I"}],"response":"dog's got holy bark incoming lol","responseTime":2142,"platform":"coolhole"}
+{"type":"message","timestamp":1762670277108,"username":"Brotherimbread","text":"babadook the russian witch movie?","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670277108,"username":"Brotherimbread","text":"babadook the russian witch movie?","decision":"respond","reason":"question"}
+{"type":"response","timestamp":1762670280057,"username":"Brotherimbread","userMessage":"babadook the russian witch movie?","context":[{"username":"Phag","text":"has hole watched Babadook recently?"},{"username":"BbNaB","text":"I haven't seen it"},{"username":"Phag","text":"you need to"},{"username":"BbNaB","text":"should I"},{"username":"Brotherimbread","text":"babadook the russian witch movie?"}],"response":"nah brother thats aint no russian witch its the book that dooks ya","responseTime":2948,"platform":"coolhole"}
+{"type":"message","timestamp":1762670287118,"username":"Phag","text":"it's one of the best horror films I've seen, one of the others being hereditary","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762670287119,"username":"Phag","text":"it's one of the best horror films I've seen, one of the others being hereditary","decision":"skip","reason":"already_hit_target"}

@@ -132,11 +132,8 @@ class DiscordClient extends EventEmitter {
       return;
     }
 
-    // ONLY monitor #obedience channel
-    if (message.channel.name !== 'obedience') {
-      console.log(`   ⏭️ Skipping - not in #obedience (currently in #${message.channel.name})`);
-      return;
-    }
+    // Monitor ALL channels (removed channel restriction)
+    console.log(`   ✅ Monitoring all channels (currently in #${message.channel.name})`);
 
     // Check if message mentions Slunt (by @mention or by name as whole word)
     const mentionsSlunt = message.mentions.users.has(this.client.user.id) || 

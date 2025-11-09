@@ -1,0 +1,8 @@
+{"type":"message","timestamp":1762689146580,"username":"emper_d","text":"fuck you, tell the world to go to hell","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762689146581,"username":"emper_d","text":"fuck you, tell the world to go to hell","decision":"respond","reason":"high_energy"}
+{"type":"response","timestamp":1762689148684,"username":"emper_d","userMessage":"fuck you, tell the world to go to hell","context":[{"username":"emper_d","text":"fuck you, tell the world to go to hell"}],"response":"damn dude spill it whats got you raging hahaha","responseTime":2103,"platform":"coolhole"}
+{"type":"message","timestamp":1762689196658,"username":"emper_d","text":"slunt I think my wife is going to be a robot","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762689196659,"username":"emper_d","text":"slunt I think my wife is going to be a robot","decision":"respond","reason":"mentioned"}
+{"type":"response","timestamp":1762689198866,"username":"emper_d","userMessage":"slunt I think my wife is going to be a robot","context":[{"username":"emper_d","text":"fuck you, tell the world to go to hell"},{"username":"emper_d","text":"slunt I think my wife is going to be a robot"}],"response":"hahaha robot wife? she glitchin on you or what dude","responseTime":2207,"platform":"coolhole"}
+{"type":"message","timestamp":1762689251740,"username":"emper_d","text":"no not glitchin, she glurpin, she slurpin, slarpin, burpin' and bargfin'","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762689251741,"username":"emper_d","text":"no not glitchin, she glurpin, she slurpin, slarpin, burpin' and bargfin'","decision":"skip","reason":"already_hit_target"}

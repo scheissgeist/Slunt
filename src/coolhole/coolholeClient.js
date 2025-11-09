@@ -2139,8 +2139,38 @@ class CoolholeClient extends EventEmitter {
       }
     } catch (e) {
       console.warn('⚠️ [Recovery] Page recovery unsuccessful:', e.message);
-      // If we cannot recover, mark connection lost so scheduler will reconnect
-      this.handleConnectionLoss('Page close recovery failed');
+      
+      // Check if browser context is closed (browser crash)
+      if (e.message.includes('Target page, context or browser has been closed') ||
+          e.message.includes('browserContext.newPage') ||
+          e.message.includes('Browser has been closed')) {
+        console.log('🔄 [Recovery] Browser context closed - attempting full browser relaunch...');
+        
+        // Close existing browser if any
+        try {
+          if (this.browser) {
+            await this.browser.close().catch(() => {});
+            this.browser = null;
+          }
+          if (this.browserContext) {
+            await this.browserContext.close().catch(() => {});
+            this.browserContext = null;
+          }
+          this.page = null;
+        } catch (cleanupErr) {
+          console.log('⚠️ [Recovery] Cleanup error:', cleanupErr.message);
+        }
+        
+        // Wait a moment before relaunching
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // Attempt full reconnection
+        console.log('🔄 [Recovery] Triggering full reconnection...');
+        this.handleConnectionLoss('Browser crashed - full relaunch needed');
+      } else {
+        // Other error - just mark connection lost
+        this.handleConnectionLoss('Page close recovery failed');
+      }
     } finally {
       this._recoveringPage = false;
     }
@@ -2403,13 +2433,16 @@ class CoolholeClient extends EventEmitter {
 
   /**
    * Verify that a sent message actually appeared in the chat
-   * Uses visual OCR and DOM inspection
+   * Uses DOM inspection with fuzzy matching, then OCR fallback
    */
   async verifyMessageAppeared(messageText) {
     try {
       console.log('👁️ [Visual] Verifying message appeared:', messageText.substring(0, 50));
 
-      // Method 1: Check DOM for message text in recent chat messages
+      // Wait a moment for message to render
+      await this.page.waitForTimeout(300);
+
+      // Method 1: Check DOM for message text in recent chat messages (with fuzzy matching)
       const domCheck = await this.page.evaluate((searchText) => {
         const chatBuffer = document.querySelector('#messagebuffer');
         if (!chatBuffer) return false;
@@ -2417,13 +2450,26 @@ class CoolholeClient extends EventEmitter {
         // Get all chat messages
         const messages = chatBuffer.querySelectorAll('div[class*="chat-msg"]');
         
-        // Check last 5 messages for our text
-        const recentMessages = Array.from(messages).slice(-5);
+        // Check last 10 messages for our text (increased from 5)
+        const recentMessages = Array.from(messages).slice(-10);
+        
+        // Normalize search text for fuzzy matching
+        const normalizeText = (text) => {
+          return text.toLowerCase()
+            .replace(/[^\w\s]/g, '') // Remove punctuation
+            .replace(/\s+/g, ' ')    // Normalize whitespace
+            .trim();
+        };
+        
+        const normalizedSearch = normalizeText(searchText);
         
         for (const msg of recentMessages) {
           const msgText = msg.textContent || '';
-          // Match if message contains our text (accounting for timestamp prefix)
-          if (msgText.toLowerCase().includes(searchText.toLowerCase())) {
+          const normalizedMsg = normalizeText(msgText);
+          
+          // Match if message contains our text (fuzzy match)
+          if (normalizedMsg.includes(normalizedSearch) || 
+              normalizedSearch.includes(normalizedMsg.substring(0, 30))) {
             console.log('[DOM] Found message in chat:', msgText.substring(0, 100));
             return true;
           }
@@ -2437,7 +2483,7 @@ class CoolholeClient extends EventEmitter {
         return true;
       }
 
-      // Method 2: Screenshot + OCR verification
+      // Method 2: Screenshot + OCR verification (fallback only)
       console.log('🔍 [Visual] DOM check failed, trying OCR...');
       
       // Take screenshot of chat area
@@ -2450,10 +2496,16 @@ class CoolholeClient extends EventEmitter {
         // Use Tesseract for OCR (if available)
         try {
           const Tesseract = require('tesseract.js');
-          const { data: { text } } = await Tesseract.recognize(screenshotPath, 'eng');
+          const { data: { text } } = await Tesseract.recognize(screenshotPath, 'eng', {
+            logger: () => {} // Suppress OCR logs
+          });
           
-          // Check if our message appears in the OCR text
-          const cleanMessage = messageText.toLowerCase().replace(/[^\w\s]/g, '');
+          // Fuzzy match OCR text
+          const cleanMessage = messageText.toLowerCase()
+            .replace(/[^\w\s]/g, '')
+            .replace(/\s+/g, ' ')
+            .trim()
+            .substring(0, 40); // Only match first 40 chars
           const cleanOCR = text.toLowerCase().replace(/[^\w\s]/g, '');
           
           if (cleanOCR.includes(cleanMessage)) {
@@ -2469,7 +2521,8 @@ class CoolholeClient extends EventEmitter {
         }
       }
 
-      console.warn('❌ [Visual] Could not verify message appeared');
+      // Don't treat as critical failure - message likely sent
+      console.log('⚠️ [Visual] Could not confirm message in chat - may be false negative');
       return false;
 
     } catch (error) {

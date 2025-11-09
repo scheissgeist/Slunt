@@ -167,7 +167,7 @@ class StreamStatusMonitor extends EventEmitter {
 
   /**
    * Handle stream going live
-   * Enable: Twitch + Coolhole + Discord (ALL ACTIVE)
+   * Enable: Twitch + Coolhole + Discord (ALL ALWAYS ACTIVE)
    */
   async handleGoingLive(streamData) {
     console.log('🔴 [StreamMonitor] Going LIVE!');
@@ -175,7 +175,7 @@ class StreamStatusMonitor extends EventEmitter {
     console.log(`   Game: ${streamData?.game_name || 'N/A'}`);
     console.log(`   Viewers: ${streamData?.viewer_count || 0}`);
     
-    // Enable all platforms when live
+    // ALWAYS keep all platforms enabled - never disable Discord
     await this.enablePlatform('discord');
     await this.enablePlatform('twitch');
     await this.enablePlatform('coolhole');
@@ -185,12 +185,12 @@ class StreamStatusMonitor extends EventEmitter {
 
   /**
    * Handle stream going offline
-   * Enable: Coolhole + Discord + Twitch (ALL ACTIVE)
+   * Enable: Coolhole + Discord + Twitch (ALL ALWAYS ACTIVE)
    */
   async handleGoingOffline() {
     console.log('⚫ [StreamMonitor] Going OFFLINE');
     
-    // Enable all platforms when offline
+    // ALWAYS keep all platforms enabled - never disable Discord
     await this.enablePlatform('twitch');
     await this.enablePlatform('coolhole');
     await this.enablePlatform('discord');

@@ -1,0 +1,19 @@
+{"type":"message","timestamp":1762669411639,"username":"Phag","text":"ok good thought something was said","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669411640,"username":"Phag","text":"ok good thought something was said","decision":"respond","reason":"probability"}
+{"type":"message","timestamp":1762669411642,"username":"OrbMeat","text":"slunt you working?","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669411642,"username":"OrbMeat","text":"slunt you working?","decision":"respond","reason":"mentioned"}
+{"type":"message","timestamp":1762669411643,"username":"BbNaB","text":"horror twist: his owner is a fucking HIPPIE","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669411644,"username":"BbNaB","text":"horror twist: his owner is a fucking HIPPIE","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762669411644,"username":"Phag","text":"he turned into a crystal woman","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669411644,"username":"Phag","text":"he turned into a crystal woman","decision":"skip","reason":"probability"}
+{"type":"response","timestamp":1762669413047,"username":"Phag","userMessage":"ok good thought something was said","context":[{"username":"Phag","text":"ok good thought something was said"},{"username":"OrbMeat","text":"slunt you working?"},{"username":"BbNaB","text":"horror twist: his owner is a fucking HIPPIE"},{"username":"Phag","text":"he turned into a crystal woman"}],"response":"Dude, you're repeating yourself like a glitchy parrot. Relax.","responseTime":1406,"platform":"coolhole"}
+{"type":"response","timestamp":1762669413170,"username":"OrbMeat","userMessage":"slunt you working?","context":[{"username":"Phag","text":"ok good thought something was said"},{"username":"OrbMeat","text":"slunt you working?"},{"username":"BbNaB","text":"horror twist: his owner is a fucking HIPPIE"},{"username":"Phag","text":"he turned into a crystal woman"}],"response":"Yeah, I'm kickin'. Stop spamming like a horny pigeon.","responseTime":1527,"platform":"coolhole"}
+{"type":"message","timestamp":1762669436654,"username":"BbNaB","text":"albatross","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669436654,"username":"BbNaB","text":"albatross","decision":"respond","reason":"probability"}
+{"type":"response","timestamp":1762669438619,"username":"BbNaB","userMessage":"albatross","context":[{"username":"Phag","text":"ok good thought something was said"},{"username":"OrbMeat","text":"slunt you working?"},{"username":"BbNaB","text":"horror twist: his owner is a fucking HIPPIE"},{"username":"Phag","text":"he turned into a crystal woman"},{"username":"BbNaB","text":"albatross"}],"response":"Albatross spam? Dude's channeling his inner pirate ghost.","responseTime":1965,"platform":"coolhole"}
+{"type":"message","timestamp":1762669541812,"username":"BbNaB","text":"turkey spam, ever had it?","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669541813,"username":"BbNaB","text":"turkey spam, ever had it?","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762669561826,"username":"Phag","text":"no but it sounds good","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762669561827,"username":"Phag","text":"no but it sounds good","decision":"skip","reason":"already_hit_target"}
+{"type":"message","timestamp":1762669643134,"username":"Scourge","text":"<@504429348359766017>","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762669643134,"username":"Scourge","text":"<@504429348359766017>","decision":"skip","reason":"directed_at_other"}
