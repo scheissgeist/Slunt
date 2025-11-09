@@ -7,7 +7,7 @@ const fs = require('fs');
 const helmet = require('helmet');
 const path = require('path');
 const { execSync } = require('child_process');
-const VoiceGreetings = require('./src/voice/VoiceGreetings');
+// VoiceGreetings moved to after ChatBot initialization (line 2383)
 const dotenvResult = require('dotenv').config({ override: true });
 
 // DEBUG: Print voice ID immediately after loading .env
