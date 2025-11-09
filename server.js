@@ -323,8 +323,8 @@ let chatBot = null; // Will be initialized later
 
 const sluntManager = new SluntManager();
 
-// Initialize voice greeting system
-const voiceGreetings = new VoiceGreetings(chatBot);
+// Voice greeting system will be initialized after chatBot is created
+let voiceGreetings = null;
 
 // Voice API for web demo
 const openaiTTS = require('./src/voice/openaiTTS');
@@ -2378,6 +2378,11 @@ if (enableCoolhole) {
       chatBot.setupListeners();
       console.log('✅ Platform listeners attached to ChatBot');
     }
+
+    // Initialize voice greeting system now that chatBot exists
+    const VoiceGreetings = require('./src/voice/VoiceGreetings');
+    voiceGreetings = new VoiceGreetings(chatBot);
+    console.log('🎤 Voice greetings initialized');
 
     // Give ChatBot access to rate limiter for spam protection
     chatBot.setRateLimiter(rateLimiter);
