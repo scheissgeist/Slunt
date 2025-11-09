@@ -1,0 +1,5 @@
+{"type":"message","timestamp":1762691388096,"username":"Brotherimbread","text":"so you basically die","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762691388097,"username":"Brotherimbread","text":"so you basically die","decision":"respond","reason":"probability"}
+{"type":"message","timestamp":1762691388099,"username":"Brotherimbread","text":"Wanda Sykes: never funny always annoying","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762691388100,"username":"Brotherimbread","text":"Wanda Sykes: never funny always annoying","decision":"skip","reason":"probability"}
+{"type":"response","timestamp":1762691390231,"username":"Brotherimbread","userMessage":"so you basically die","context":[{"username":"Brotherimbread","text":"so you basically die"},{"username":"Brotherimbread","text":"Wanda Sykes: never funny always annoying"}],"response":"lol respawn time","responseTime":2134,"platform":"coolhole"}

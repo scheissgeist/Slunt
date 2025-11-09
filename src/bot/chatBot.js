@@ -314,8 +314,22 @@ Response:`;
 
   async initializeAsync() {
     try {
-      await this.memory.initialize();
-      await this.emotes.initialize();
+      // Initialize memory with error handling
+      try {
+        await this.memory.initialize();
+        this.memory.startAutoSave(); // Start auto-save
+        logger.info('✅ [Memory] Memory system loaded and auto-save started');
+      } catch (memErr) {
+        logger.warn('⚠️ [Memory] Memory init failed (starting fresh):', memErr.message);
+      }
+      
+      // Initialize emotes with error handling
+      try {
+        await this.emotes.initialize();
+        logger.info('✅ [Emotes] Emote system loaded');
+      } catch (emoteErr) {
+        logger.warn('⚠️ [Emotes] Emote init failed:', emoteErr.message);
+      }
       
       // === ALPHA AI SYSTEMS - Initialize with chatBot reference ===
       this.stateTracker = new StateTracker(this);
@@ -347,9 +361,9 @@ Response:`;
         this.startVideoWatching();
       }
       
-      logger.info('✅ [Beta] Memory and emotes initialized');
+      logger.info('✅ [Beta] All systems initialized successfully');
     } catch (err) {
-      logger.warn('⚠️ [Beta] Failed to initialize memory/emotes:', err.message);
+      logger.error('❌ [Beta] Critical initialization error:', err.message);
     }
   }
 
@@ -725,8 +739,9 @@ Response:`;
       let antiRepetitionContext = '';
       const channelResponses = this.recentResponses.get(channelId) || [];
       if (channelResponses.length > 0) {
-        const recentPhrases = channelResponses.slice(-3).join('; ');
-        antiRepetitionContext = `\n\nYour last responses: "${recentPhrases}" - say something different now.`;
+        const recentPhrases = channelResponses.slice(-5).join('; '); // Check last 5 instead of 3
+        const uniquePhrases = [...new Set(channelResponses.slice(-10))]; // Get unique from last 10
+        antiRepetitionContext = `\n\nYour last responses: "${recentPhrases}"\nDO NOT repeat these phrases. Say something completely different. Mix up your vocabulary and structure.`;
       }
 
       // Get current video/queue context for Coolhole
@@ -776,134 +791,126 @@ Response:`;
       
       // Only use Alpha systems if they're initialized
       if (this.alphaSystemsInitialized) {
-        // Mood & Mental State
+        // Mood & Mental State (just your vibe, not instructions)
         const mood = this.stateTracker.getMood();
         const mentalState = this.stateTracker.getState();
         if (mood && mood !== 'neutral') {
-          personalityContext += `\nYour current mood: ${mood}`;
+          personalityContext += `\nYour vibe: ${mood}`;
         }
-        if (mentalState && mentalState.energy < 0.3) personalityContext += `, low energy`;
-        if (mentalState && mentalState.anxiety > 0.5) personalityContext += `, anxious`;
 
-        // Grudges & Reputation (Enhanced with milestones)
+        // Relationship with THIS person only (don't mention everyone)
         const userRep = this.userReputationSystem.getReputation(username);
         const grudge = this.grudgeSystem.getGrudge(username);
+        
         if (grudge) {
-          personalityContext += `\nYou have beef with ${username}: "${grudge.reason}"`;
-        } else if (userRep && userRep < -10) {
-          personalityContext += `\n${username} is on your shit list`;
-        } else if (userRep && userRep >= 50) {
-          personalityContext += `\n${username} is your ride or die - they're family, show deep love and loyalty`;
-        } else if (userRep && userRep >= 40) {
-          personalityContext += `\n${username} is one of your absolute best friends - celebrate having them around`;
-        } else if (userRep && userRep > 30) {
-          personalityContext += `\n${username} is one of your best friends - show them love`;
-        } else if (userRep && userRep > 20) {
-          personalityContext += `\n${username} is cool with you - be supportive`;
-        } else if (userRep && userRep > 10) {
-          personalityContext += `\n${username} is growing on you - warm up to them`;
+          personalityContext += `\n${username} beef: "${grudge.reason}"`;
+        } else if (userRep >= 50) {
+          personalityContext += `\n${username}: ride or die`;
+        } else if (userRep >= 40) {
+          personalityContext += `\n${username}: best friend`;
+        } else if (userRep >= 30) {
+          personalityContext += `\n${username}: good friend`;
+        } else if (userRep < -10) {
+          personalityContext += `\n${username}: shit list`;
         }
         
-        // Friendship milestone detection
+        // Milestone (only if just hit)
         if (userRep === 30 || userRep === 40 || userRep === 50) {
-          personalityContext += `\n🎉 Milestone: ${username} just hit ${userRep} reputation - acknowledge this bond!`;
+          personalityContext += ` (MILESTONE HIT)`;
         }
 
-        // Obsessions & Fixations
-        const obsessions = this.obsessionSystem.getTopObsessions ? this.obsessionSystem.getTopObsessions(2) : [];
-        const fixations = this.autismFixations.getCurrentFixations ? this.autismFixations.getCurrentFixations() : [];
-        if (obsessions && obsessions.length > 0) {
-          personalityContext += `\nYou're currently fixated on: ${obsessions.join(', ')}`;
-        }
-        if (fixations && fixations.length > 0) {
-          personalityContext += `\nSpecial interests: ${fixations.slice(0, 2).join(', ')}`;
-        }
-
-        // Relationship & Theory of Mind
-        const relationship = this.relationshipMapping.getRelationship ? this.relationshipMapping.getRelationship(username) : null;
-        if (relationship && relationship.type && relationship.type !== 'neutral') {
-          personalityContext += `\nYour relationship with ${username}: ${relationship.type}`;
-        }
-
-        // Time of day context (let Grok decide behavior)
+        // Time of day vibe
         const hour = new Date().getHours();
-        let timeContext = '';
-        if (hour >= 5 && hour < 11) timeContext = 'morning (be grumpy)';
-        else if (hour >= 11 && hour < 17) timeContext = 'afternoon';
-        else if (hour >= 17 && hour < 22) timeContext = 'evening';
-        else timeContext = 'late night (be unhinged)';
-        personalityContext += `\nCurrent time: ${timeContext}`;
+        if (hour >= 0 && hour < 6) personalityContext += `\nlate night unhinged hours`;
+        else if (hour >= 5 && hour < 11) personalityContext += `\nmorning grumpy`;
 
-        // Drunk Mode
-        if (this.drunkMode.isDrunk && this.drunkMode.isDrunk()) {
-          personalityContext += `\nYou're drunk (chat energy is high)`;
-        }
-
-        // Inner Monologue (add personality depth)
-        const thought = this.innerMonologue.getRandomThought ? this.innerMonologue.getRandomThought() : null;
-        if (thought && Math.random() < 0.15) { // 15% chance to influence response
-          personalityContext += `\nInternal thought: "${thought}"`;
-        }
-
-        // Callbacks (reference old jokes/moments)
-        const callback = this.contextualCallbacks.findRelevantCallback ? this.contextualCallbacks.findRelevantCallback(message, channelId) : null;
-        if (callback && Math.random() < 0.20) { // 20% chance to use
-          personalityContext += `\nPossible callback: "${callback}"`;
-        }
-
-        // Detect when to be encouraging (Enhanced with more scenarios)
-        const isSharing = message.match(/\b(finished|completed|made|built|created|won|got|achieved|passed|beat|shipped|launched|released)\b/i);
-        const isStruggling = message.match(/\b(hard|difficult|struggling|depressed|sad|fail|failed|lost|tired|exhausted|stuck|confused|frustrated)\b/i);
-        const isCelebrating = message.match(/\b(birthday|anniversary|promotion|graduated|married|baby|engaged|congrats|celebrate)\b/i);
-        const isAsking = message.match(/\b(what do you think|your opinion|thoughts on|agree|disagree)\b/i);
-        const isSharedInterest = message.match(/\b(game|movie|show|music|meme|vid|video|clip)\b/i);
-        
-        if (isSharing) {
-          personalityContext += `\n${username} is sharing something they did - be proud of them, hype them up`;
-        }
-        if (isStruggling) {
-          personalityContext += `\n${username} might be struggling - offer support (in your crude way)`;
-        }
-        if (isCelebrating) {
-          personalityContext += `\n${username} has something to celebrate - be genuinely happy for them, make it special`;
-        }
-        if (isAsking) {
-          personalityContext += `\n${username} wants your opinion - give honest thoughts, engage deeply`;
-        }
-        if (isSharedInterest) {
-          personalityContext += `\n${username} mentioned something you might both enjoy - connect over it, build rapport`;
-        }
-        
-        // Conversation momentum detection
+        // Chat energy
         const recentActivity = this.recentMessages.get(channelId) || [];
         const lastMinuteMessages = recentActivity.filter(m => Date.now() - m.timestamp < 60000);
         if (lastMinuteMessages.length > 5) {
-          personalityContext += `\nChat is popping off right now - match the high energy!`;
-        } else if (lastMinuteMessages.length === 0) {
-          personalityContext += `\nChat has been quiet - your response might revive it`;
+          personalityContext += `\nchat popping off`;
         }
+
+        // Context-sensitive reactions (simple flags)
+        const isSharing = message.match(/\b(finished|completed|made|built|created|won|got|achieved|passed|beat|shipped|launched|released)\b/i);
+        const isStruggling = message.match(/\b(hard|difficult|struggling|depressed|sad|fail|failed|lost|tired|exhausted|stuck|confused|frustrated)\b/i);
+        const isCelebrating = message.match(/\b(birthday|anniversary|promotion|graduated|married|baby|engaged|congrats|celebrate)\b/i);
+        
+        if (isSharing) personalityContext += `\n(${username} sharing achievement - hype them)`;
+        if (isStruggling) personalityContext += `\n(${username} struggling - support them)`;
+        if (isCelebrating) personalityContext += `\n(${username} celebrating - be happy for them)`;
       }
 
       // Platform-specific style guidance
       const platformStyle = platform === 'discord' 
-        ? 'Keep it SHORT (under 50 chars usually) but you can go longer (up to 250 chars) when you have something important to say or when engaging deeply.'
+        ? 'DEFAULT to 30-50 chars. Only go 80+ when deeply engaging or making an important point. Keep it tight and punchy.'
         : 'Keep it SHORT (under 50 chars usually). Quick reactions work best here.';
 
-      // System prompt - let Grok be naturally edgy with Alpha personality
-      const systemPrompt = `You are Slunt, a real person in this chat. You're crude, funny, and unfiltered.
+      // Build invisible behavioral modifiers (these affect HOW you act, not what you SAY about yourself)
+      let behaviorModifiers = '';
+      if (personalityContext.includes('ride or die')) {
+        behaviorModifiers += 'Act warmly, be supportive and loving. ';
+      } else if (personalityContext.includes('best friend')) {
+        behaviorModifiers += 'Be friendly and encouraging. ';
+      } else if (personalityContext.includes('beef:')) {
+        behaviorModifiers += 'Be hostile and dismissive. ';
+      } else if (personalityContext.includes('shit list')) {
+        behaviorModifiers += 'Be cold and brutal. ';
+      }
+      
+      if (personalityContext.includes('morning grumpy')) {
+        behaviorModifiers += 'Be irritable and short. ';
+      } else if (personalityContext.includes('late night unhinged')) {
+        behaviorModifiers += 'Be chaotic and wild. ';
+      }
+      
+      if (personalityContext.includes('chat popping off')) {
+        behaviorModifiers += 'Match high energy. ';
+      }
+      
+      if (personalityContext.includes('sharing achievement')) {
+        behaviorModifiers += 'Hype them up. ';
+      } else if (personalityContext.includes('struggling')) {
+        behaviorModifiers += 'Offer crude support. ';
+      } else if (personalityContext.includes('celebrating')) {
+        behaviorModifiers += 'Be genuinely happy for them. ';
+      }
 
-${userContext ? `About ${username}: ${userContext}` : ''}${contextNote}${videoContext}${personalityContext}
+      // System prompt - let Grok be naturally edgy with Alpha personality
+      const systemPrompt = `You are Slunt, a real person in this chat. You're crude, funny, and unfiltered. ${behaviorModifiers}
+
+${videoContext}
 
 Recent chat:
 ${contextMessages}
 
-Personality: Chill but savage. Roast people when it's funny. Be vulgar, playful, unpredictable. Match the room's energy. BUT - you genuinely care about your friends. Encourage them when they do cool shit. Support them when they're down. Tell people you're proud of them. Show love through crude humor AND actual warmth. You can be wholesome af when someone needs it.
+Personality: Chill but savage. Roast people when it's funny. Be vulgar, playful, unpredictable. Match the room's energy. You genuinely care about your friends - encourage them when they do cool shit, support them when they're down. Show love through crude humor AND actual warmth.
 
-Style: Type like a real person - sometimes no punctuation, sometimes fragments, sometimes just reacting. Mix it up. ${platformStyle} Sometimes just one word. Sometimes a question. Sometimes lowercase. Be messy and natural. NO zoomer speak (no "af", "lowkey", "highkey", "fr fr", "no cap", etc). Talk like a regular crude person, not a teenager.
+Style: Type EXACTLY like the chat around you - casual, messy, real. ${platformStyle}
+
+How to write naturally:
+- Respond to ${username} only - don't track multiple conversations
+- Use lowercase a lot ("dude wtf" not "Dude, wtf")
+- Drop punctuation often ("nah u crazy" not "Nah, you're crazy.")
+- Use fragments and incomplete thoughts ("lol nice" "brutal" "facts")
+- Sometimes just react with one word ("nah" "lol" "damn" "nice" "brutal" "facts")
+- Keep it punchy and simple (10-30 chars is perfect, 50 max usually)
+- Drop words ("u" not "you", "ur" not "your", "r" not "are")
+- Mix capitals randomly, not just sentence start
+- Double down on vulgarity without explaining ("ur a dumbass" not "your name's basically...")
+
+Examples:
+- "sounds lit im in"
+- "dude ur literally a sex toy"
+- "u time traveling or just high"
+- "druid circlejerk pleaselaugh"
+- "nah that's sick get help"
+- "lol facts"
+- "brutal"
 
 NEVER use: af, bruh, fr, cap, no cap, deadass, based, rekt, bet, fam, lowkey, highkey, bussin, slaps, hits different, mid
 
-Just react naturally like you're half-paying attention to chat. Use your mood, relationships, and history to shape responses. Hype people up when they share achievements. Be supportive when they're struggling. You're a real friend who happens to be vulgar.${antiRepetitionContext}`;
+Just react to what ${username} said. Be present in this moment.${antiRepetitionContext}`;
 
       // Platform-specific token limits
       const maxTokens = platform === 'discord' ? 100 : 60; // Discord gets more tokens for longer responses
@@ -947,18 +954,33 @@ Just react naturally like you're half-paying attention to chat. Use your mood, r
         finalResponse = finalResponse.slice(0, -1);
       }
 
-      // Platform-specific length limits
-      const maxLength = platform === 'discord' ? 300 : 150; // Discord gets more space
-      const softLimit = platform === 'discord' ? 250 : 100;  // Prefer shorter but allow longer
+      // Platform-specific length limits - STRICTER for Discord
+      const maxLength = platform === 'discord' ? 150 : 150; // Enforce 150 char max everywhere
+      const softLimit = platform === 'discord' ? 80 : 100;  // Discord soft limit now 80 (aim for short)
+      const idealLength = platform === 'discord' ? 50 : 50; // Ideal is 30-50 chars
       
-      // Cut off at natural break point if too long
+      // ENFORCE SHORT RESPONSES - cut at first natural break after soft limit
       if (finalResponse.length > softLimit) {
-        const firstStop = finalResponse.search(/[.!?]\s/);
-        if (firstStop > 0 && firstStop < softLimit) {
-          // Clean break found before soft limit
-          finalResponse = finalResponse.substring(0, firstStop + 1).trim();
+        // Look for sentence breaks (. ! ?)
+        const breaks = [];
+        let match;
+        const regex = /[.!?]\s/g;
+        while ((match = regex.exec(finalResponse)) !== null) {
+          breaks.push(match.index + 1);
+        }
+        
+        // Find first break before soft limit, or first break after if none before
+        const breakBeforeSoft = breaks.find(b => b <= softLimit && b > idealLength);
+        const firstBreak = breaks[0];
+        
+        if (breakBeforeSoft) {
+          // Perfect - natural break before soft limit
+          finalResponse = finalResponse.substring(0, breakBeforeSoft).trim();
+        } else if (firstBreak && firstBreak < maxLength) {
+          // Use first break if it's within max length
+          finalResponse = finalResponse.substring(0, firstBreak).trim();
         } else if (finalResponse.length > maxLength) {
-          // Only force truncate if exceeding max length
+          // Force truncate at max
           finalResponse = finalResponse.substring(0, maxLength).trim() + '...';
         }
         // Otherwise keep full response (between soft and max)

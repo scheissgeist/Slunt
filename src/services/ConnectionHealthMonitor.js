@@ -15,8 +15,8 @@ class ConnectionHealthMonitor extends EventEmitter {
 
     this.platforms = new Map(); // platform name -> { client, config, state }
     this.checkInterval = options.checkInterval || 30000; // Check every 30 seconds
-    this.heartbeatTimeout = options.heartbeatTimeout || 120000; // 2 minutes without activity = dead
-    this.maxReconnectAttempts = options.maxReconnectAttempts || 5;
+    this.heartbeatTimeout = options.heartbeatTimeout || 300000; // 5 minutes without activity = dead (was 2 min)
+    this.maxReconnectAttempts = options.maxReconnectAttempts || 999; // Essentially unlimited retries
     this.baseReconnectDelay = options.baseReconnectDelay || 5000; // Start with 5s delay
     this.maxReconnectDelay = options.maxReconnectDelay || 60000; // Max 60s delay
 
@@ -208,8 +208,8 @@ class ConnectionHealthMonitor extends EventEmitter {
       ? client.isConnected()
       : client.connected || false;
 
-    // Check if we've seen activity recently (more lenient: 2 minutes)
-    const hasRecentActivity = timeSinceActivity < (this.heartbeatTimeout * 2);
+    // Check if we've seen activity recently (lenient: 5 minutes)
+    const hasRecentActivity = timeSinceActivity < this.heartbeatTimeout;
 
     // Determine if platform is healthy - EITHER connected OR recently active
     // This fixes false negatives where connection flag is wrong but messages are flowing

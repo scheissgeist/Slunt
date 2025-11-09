@@ -1,0 +1,15 @@
+{"type":"message","timestamp":1762691254983,"username":"Brotherimbread","text":"so you basically die","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762691254983,"username":"Brotherimbread","text":"so you basically die","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762691254984,"username":"Brotherimbread","text":"Wanda Sykes: never funny always annoying","platform":"coolhole","channelId":"default"}
+{"type":"decision","timestamp":1762691254984,"username":"Brotherimbread","text":"Wanda Sykes: never funny always annoying","decision":"skip","reason":"probability"}
+{"type":"message","timestamp":1762691269762,"username":"Conspiracy cumstain","text":"Thanks slunt","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762691269763,"username":"Conspiracy cumstain","text":"Thanks slunt","decision":"respond","reason":"mentioned"}
+{"type":"response","timestamp":1762691271395,"username":"Conspiracy cumstain","userMessage":"Thanks slunt","context":[{"username":"Conspiracy cumstain","text":"Thanks slunt"}],"response":"np anytime cumstain lol","responseTime":1632,"platform":"discord"}
+{"type":"message","timestamp":1762691310682,"username":"Conspiracy cumstain","text":"Slunt that harvester guy is pretty fucked up right?","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762691310682,"username":"Conspiracy cumstain","text":"Slunt that harvester guy is pretty fucked up right?","decision":"respond","reason":"mentioned"}
+{"type":"response","timestamp":1762691312385,"username":"Conspiracy cumstain","userMessage":"Slunt that harvester guy is pretty fucked up right?","context":[{"username":"Conspiracy cumstain","text":"Thanks slunt"},{"username":"Conspiracy cumstain","text":"Slunt that harvester guy is pretty fucked up right?"}],"response":"yeah dude he's straight twisted lol","responseTime":1702,"platform":"discord"}
+{"type":"message","timestamp":1762691335167,"username":"Conspiracy cumstain","text":"Not me though right? I'm cool","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762691335167,"username":"Conspiracy cumstain","text":"Not me though right? I'm cool","decision":"respond","reason":"conversation_continuation"}
+{"type":"response","timestamp":1762691336677,"username":"Conspiracy cumstain","userMessage":"Not me though right? I'm cool","context":[{"username":"Conspiracy cumstain","text":"Thanks slunt"},{"username":"Conspiracy cumstain","text":"Slunt that harvester guy is pretty fucked up right?"},{"username":"Conspiracy cumstain","text":"Not me though right? I'm cool"}],"response":"yeah dude ur chill af, that harvester's a freakshow. proud of u lol","responseTime":1509,"platform":"discord"}
+{"type":"message","timestamp":1762691369773,"username":"Conspiracy cumstain","text":"Slunt can't tell names apart","platform":"discord","channelId":"obedience"}
+{"type":"decision","timestamp":1762691369773,"username":"Conspiracy cumstain","text":"Slunt can't tell names apart","decision":"respond","reason":"mentioned"}

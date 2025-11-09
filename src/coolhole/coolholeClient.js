@@ -2440,7 +2440,7 @@ class CoolholeClient extends EventEmitter {
       console.log('👁️ [Visual] Verifying message appeared:', messageText.substring(0, 50));
 
       // Wait a moment for message to render
-      await this.page.waitForTimeout(300);
+      await this.page.waitForTimeout(500); // Increased from 300ms
 
       // Method 1: Check DOM for message text in recent chat messages (with fuzzy matching)
       const domCheck = await this.page.evaluate((searchText) => {
@@ -2450,10 +2450,10 @@ class CoolholeClient extends EventEmitter {
         // Get all chat messages
         const messages = chatBuffer.querySelectorAll('div[class*="chat-msg"]');
         
-        // Check last 10 messages for our text (increased from 5)
-        const recentMessages = Array.from(messages).slice(-10);
+        // Check last 15 messages for our text (increased from 10)
+        const recentMessages = Array.from(messages).slice(-15);
         
-        // Normalize search text for fuzzy matching
+        // Normalize search text for fuzzy matching (MORE lenient)
         const normalizeText = (text) => {
           return text.toLowerCase()
             .replace(/[^\w\s]/g, '') // Remove punctuation
@@ -2462,16 +2462,29 @@ class CoolholeClient extends EventEmitter {
         };
         
         const normalizedSearch = normalizeText(searchText);
+        // Get key words from search text (words 3+ chars)
+        const searchWords = normalizedSearch.split(' ').filter(w => w.length >= 3);
         
         for (const msg of recentMessages) {
           const msgText = msg.textContent || '';
           const normalizedMsg = normalizeText(msgText);
           
-          // Match if message contains our text (fuzzy match)
+          // More lenient matching:
+          // 1. Exact substring match
           if (normalizedMsg.includes(normalizedSearch) || 
               normalizedSearch.includes(normalizedMsg.substring(0, 30))) {
-            console.log('[DOM] Found message in chat:', msgText.substring(0, 100));
+            console.log('[DOM] Found message in chat (exact):', msgText.substring(0, 100));
             return true;
+          }
+          
+          // 2. Match if 60% of key words found
+          if (searchWords.length > 0) {
+            const matchedWords = searchWords.filter(word => normalizedMsg.includes(word));
+            const matchRatio = matchedWords.length / searchWords.length;
+            if (matchRatio >= 0.6) {
+              console.log('[DOM] Found message in chat (fuzzy 60%):', msgText.substring(0, 100));
+              return true;
+            }
           }
         }
         
@@ -2500,21 +2513,28 @@ class CoolholeClient extends EventEmitter {
             logger: () => {} // Suppress OCR logs
           });
           
-          // Fuzzy match OCR text
+          // MORE lenient fuzzy match OCR text
           const cleanMessage = messageText.toLowerCase()
             .replace(/[^\w\s]/g, '')
             .replace(/\s+/g, ' ')
             .trim()
-            .substring(0, 40); // Only match first 40 chars
+            .substring(0, 50); // Check first 50 chars (was 40)
           const cleanOCR = text.toLowerCase().replace(/[^\w\s]/g, '');
           
-          if (cleanOCR.includes(cleanMessage)) {
+          // Get key words (3+ chars)
+          const messageWords = cleanMessage.split(' ').filter(w => w.length >= 3);
+          const matchedWords = messageWords.filter(word => cleanOCR.includes(word));
+          const matchRatio = messageWords.length > 0 ? matchedWords.length / messageWords.length : 0;
+          
+          // Accept if 50% of words match (very lenient)
+          if (cleanOCR.includes(cleanMessage) || matchRatio >= 0.5) {
             console.log('✅ [Visual] Message verified via OCR');
             return true;
           } else {
             console.log('⚠️ [Visual] OCR did not find message');
             console.log('   Expected:', cleanMessage.substring(0, 50));
             console.log('   Found:', cleanOCR.substring(0, 200));
+            console.log('   Match ratio:', (matchRatio * 100).toFixed(0) + '%');
           }
         } catch (ocrError) {
           console.warn('⚠️ [Visual] OCR failed:', ocrError.message);
