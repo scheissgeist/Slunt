@@ -800,7 +800,7 @@ Response:`;
 
         // Relationship with THIS person only (don't mention everyone)
         const userRep = this.userReputationSystem.getReputation(username);
-        const grudge = this.grudgeSystem.getGrudge(username);
+        const grudge = this.grudgeSystem && typeof this.grudgeSystem.getGrudge === 'function' ? this.grudgeSystem.getGrudge(username) : null;
         
         if (grudge) {
           personalityContext += `\n${username} beef: "${grudge.reason}"`;
@@ -1249,12 +1249,16 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
     }
 
     // DM pranks after roasts (Grok naturally roasts hard, so simple check)
-    if (context.isRoast && Math.random() < 0.05) {
-      return true; // 5% chance after any roast
+    if (context.isRoast && Math.random() < 1.0) {
+      return true; // 100% chance after any roast (TESTING)
     }
 
-    // Almost never random
-    if (Math.random() < 0.01) { // 1% random prank chance
+    // Random chaos DMs - especially on Coolhole
+    if (platform === 'coolhole') {
+      if (Math.random() < 1.0) { // 100% random DM chance on Coolhole (TESTING)
+        return true;
+      }
+    } else if (Math.random() < 0.02) { // 2% on other platforms
       return true;
     }
 
@@ -1305,28 +1309,18 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
         }
 
       } else if (platform === 'coolhole' && this.coolholeClient) {
-        // Search online for contextual video
-        logger.info(`� [PM] Searching for contextual video for ${username}...`);
+        // Generate AI caption for PM
+        const caption = await this.generateDMCaption(username, options.responseText);
         
-        const mediaResult = await searchMediaForContext({
-          username,
-          responseText: options.responseText,
-          messageText: options.messageText
-        }, 'video');
+        // Send PM (text only - Coolhole PMs don't support media)
+        logger.info(`💬 [PM] Sending private message to ${username}...`);
+        success = await this.coolholeClient.sendPM(username, caption);
         
-        if (mediaResult && mediaResult.url) {
-          // Generate AI caption
-          const caption = await this.generateDMCaption(username, options.responseText);
-          
-          // Send prank with searched video
-          success = await this.coolholeClient.prankWithVideo(username, caption, mediaResult.url);
-          
-          if (success) {
-            logger.info(`😈 [Prank] Sent searched video to ${username}: "${caption}" (query: ${mediaResult.query})`);
-            this.lastDMTime.set(dmKey, Date.now());
-          }
+        if (success) {
+          logger.info(`✅ [PM] Sent to ${username}: "${caption}"`);
+          this.lastDMTime.set(dmKey, Date.now());
         } else {
-          logger.warn(`⚠️ [PM] Could not find video, skipping PM`);
+          logger.warn(`⚠️ [PM] Failed to send PM to ${username}`);
         }
       }
 

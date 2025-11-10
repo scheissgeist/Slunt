@@ -1403,10 +1403,16 @@ class CoolholeClient extends EventEmitter {
         // MINIMAL INTERACTION - Skip focus() to avoid anti-bot detection
         // Just set value and press Enter directly
         
-        // Clear existing text and type message
+        // Clear existing text THOROUGHLY and type message
         await chatInput.evaluate((el, msg) => {
+          // Multiple clearing methods to ensure field is empty
           el.value = '';
+          el.textContent = '';
+          el.innerHTML = '';
+          // Now set the clean message
           el.value = msg;
+          // Dispatch input event to trigger any listeners
+          el.dispatchEvent(new Event('input', { bubbles: true }));
         }, message);
 
         // Try to send message, catch click/press timeouts
@@ -1476,20 +1482,173 @@ class CoolholeClient extends EventEmitter {
     }
 
     try {
-      // Format as PM command
-      const pmCommand = `/pm ${username} ${message}`;
-      console.log(`💬 [Coolhole] Sending PM to ${username}: ${message.substring(0, 50)}...`);
+      console.log(`💬 [Coolhole] Opening PM with ${username}...`);
       
-      // Use sendChat to send the /pm command
-      const success = await this.sendChat(pmCommand);
+      // Debug: Get userlist structure
+      const userlistDebug = await this.page.evaluate(() => {
+        const userlist = document.getElementById('userlist');
+        if (!userlist) return { found: false };
+        
+        // Try multiple selectors
+        const items1 = userlist.querySelectorAll('span.userlist_item');
+        const items2 = userlist.querySelectorAll('.userlist_item');
+        const items3 = userlist.querySelectorAll('span');
+        const allSpans = Array.from(userlist.querySelectorAll('span'));
+        
+        return {
+          found: true,
+          selector1_count: items1.length,
+          selector2_count: items2.length,
+          selector3_count: items3.length,
+          sampleHTML: userlist.innerHTML.substring(0, 500),
+          sampleUsernames: allSpans.slice(0, 5).map(s => s.textContent.trim()).filter(t => t)
+        };
+      });
       
-      if (success) {
-        console.log(`✅ [Coolhole] PM sent to ${username}`);
-      } else {
-        console.error(`❌ [Coolhole] Failed to send PM to ${username}`);
+      console.log(`🔍 [Coolhole] Userlist debug:`, JSON.stringify(userlistDebug, null, 2));
+      
+      // Get all usernames with multiple selector attempts
+      const availableUsers = await this.page.evaluate(() => {
+        const userlist = document.getElementById('userlist');
+        if (!userlist) return [];
+        
+        // Use .userlist_item selector (which works - returns 11 users)
+        const userElements = userlist.querySelectorAll('.userlist_item');
+        
+        // Extract ONLY the username span (second span child, skip icon span)
+        return Array.from(userElements).map(item => {
+          // Get the second span (username span)
+          const spans = item.querySelectorAll('span');
+          if (spans.length >= 2) {
+            return spans[1].textContent.trim();
+          }
+          // Fallback: get all text and take first word
+          return item.textContent.trim().split(/\s+/)[0];
+        }).filter(t => t);
+      });
+      
+      console.log(`🔍 [Coolhole] Available users (${availableUsers.length}): ${availableUsers.join(', ')}`);
+      console.log(`🔍 [Coolhole] Looking for: "${username}"`);
+      
+      // Find the user in the userlist (case-insensitive)
+      const userFound = await this.page.evaluate((user) => {
+        const userlist = document.getElementById('userlist');
+        if (!userlist) return false;
+        
+        // Use .userlist_item selector
+        const userItems = userlist.querySelectorAll('.userlist_item');
+        
+        // Find the user item (case-insensitive match)
+        for (const userItem of userItems) {
+          // Get username from second span
+          const spans = userItem.querySelectorAll('span');
+          const usernameSpan = spans.length >= 2 ? spans[1] : null;
+          
+          if (usernameSpan) {
+            const usernameText = usernameSpan.textContent.trim();
+            if (usernameText.toLowerCase() === user.toLowerCase()) {
+              console.log(`[PM] Found user: "${usernameText}"`);
+              // Right click on the username span
+              const event = new MouseEvent('contextmenu', {
+                bubbles: true,
+                cancelable: true,
+                view: window,
+                button: 2
+              });
+              usernameSpan.dispatchEvent(event);
+              return true;
+            }
+          }
+        }
+        return false;
+      }, username);
+      
+      if (!userFound) {
+        console.error(`❌ [Coolhole] User ${username} not found in userlist. Available: ${availableUsers.join(', ')}`);
+        return false;
       }
       
-      return success;
+      // Wait for context menu
+      await this.page.waitForTimeout(500);
+      
+      // Click "Private Message" in context menu
+      const pmClicked = await this.page.evaluate(() => {
+        const pmOption = Array.from(document.querySelectorAll('.contextmenu li, .context-menu li'))
+          .find(el => el.textContent.includes('Private Message') || el.textContent.includes('PM'));
+        if (pmOption) {
+          pmOption.click();
+          return true;
+        }
+        return false;
+      });
+      
+      if (!pmClicked) {
+        console.error(`❌ [Coolhole] Could not find PM option in context menu`);
+        return false;
+      }
+      
+      // Wait for PM window to open
+      await this.page.waitForTimeout(1000);
+      
+      // Find the PM input box for this user
+      const messageSent = await this.page.evaluate((user, msg) => {
+        // Look for PM window/tab with this username
+        const pmWindows = document.querySelectorAll('.pm-window, .private-msg, [class*="pm"]');
+        for (const pmWin of pmWindows) {
+          const titleText = pmWin.textContent || pmWin.innerText;
+          if (titleText.includes(user)) {
+            // Find input field in this PM window
+            const input = pmWin.querySelector('input[type="text"], textarea, .pm-input');
+            if (input) {
+              input.value = msg;
+              input.dispatchEvent(new Event('input', { bubbles: true }));
+              
+              // Find and click send button or press Enter
+              const sendBtn = pmWin.querySelector('button, .pm-send');
+              if (sendBtn) {
+                sendBtn.click();
+              } else {
+                // Press Enter
+                const enterEvent = new KeyboardEvent('keydown', {
+                  key: 'Enter',
+                  code: 'Enter',
+                  keyCode: 13,
+                  which: 13,
+                  bubbles: true
+                });
+                input.dispatchEvent(enterEvent);
+              }
+              return true;
+            }
+          }
+        }
+        return false;
+      }, username, message);
+      
+      if (messageSent) {
+        console.log(`✅ [Coolhole] PM sent to ${username}`);
+        
+        // Minimize the PM window to keep main chat visible
+        await this.page.evaluate((user) => {
+          const pmWindows = document.querySelectorAll('.pm-window, .private-msg, [class*="pm"]');
+          for (const pmWin of pmWindows) {
+            const titleText = pmWin.textContent || pmWin.innerText;
+            if (titleText.includes(user)) {
+              // Look for minimize button
+              const minimizeBtn = pmWin.querySelector('.minimize, .pm-minimize, [title*="minimize"]');
+              if (minimizeBtn) {
+                minimizeBtn.click();
+              }
+              break;
+            }
+          }
+        }, username);
+        
+        return true;
+      } else {
+        console.error(`❌ [Coolhole] Failed to send PM to ${username}`);
+        return false;
+      }
       
     } catch (error) {
       console.error(`❌ [Coolhole] PM error:`, error.message);
