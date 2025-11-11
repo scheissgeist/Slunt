@@ -1,5 +1,6 @@
 ﻿const express = require('express');
 const http = require('http');
+const https = require('https');
 const socketIo = require('socket.io');
 const net = require('net');
 const cors = require('cors');
@@ -74,22 +75,18 @@ process.on('SIGINT', () => {
   const timeSinceLastSigint = now - lastSigintTime;
   const isRapidSigint = timeSinceLastSigint < 1000;
   
-  console.log('⚠️  SIGINT received - graceful shutdown');
-  console.log(`📊 Shutdown info: SIGINT #${sigintCount}, time since last: ${timeSinceLastSigint}ms`);
-  console.log('📊 Shutdown reason: User interrupt (Ctrl+C) or system signal');
-  console.log(`🕐 Time: ${new Date().toISOString()}`);
-  
-  // Ignore first SIGINT if it happens right after startup (likely spurious Windows signal)
-  if (sigintCount === 1 && Date.now() - global.startupTime < 30000) {
-    console.log('⚠️  IGNORING spurious SIGINT during startup phase');
-    console.log('⚠️  Press Ctrl+C again within 1 second to actually shut down');
+  // Ignore FIRST SIGINT completely - Windows/VS Code often sends spurious signals
+  // Only respond to SECOND SIGINT (real user intent)
+  if (sigintCount === 1) {
+    console.log('⚠️  Single SIGINT detected - ignoring (press Ctrl+C again within 3 seconds to shutdown)');
     lastSigintTime = now;
-    return;
+    return; // Silently ignore first SIGINT
   }
   
-  // If this is a second SIGINT within 1 second, definitely shut down
-  if (isRapidSigint || sigintCount > 1) {
-    console.log('✅ Confirmed shutdown request');
+  // Second SIGINT - check if it's within reasonable time
+  if (isRapidSigint || timeSinceLastSigint < 3000) {
+    console.log('⚠️  SIGINT confirmed - graceful shutdown');
+    console.log(`📊 Shutdown info: SIGINT #${sigintCount}, time since last: ${timeSinceLastSigint}ms`);
     if (global.openvoiceProcess) {
       console.log('🎤 [XTTS] Shutting down voice server...');
       global.openvoiceProcess.kill('SIGTERM');
@@ -97,8 +94,9 @@ process.on('SIGINT', () => {
     process.exit(0);
   }
   
-  // First real SIGINT - wait for confirmation
-  console.log('⚠️  Press Ctrl+C again within 1 second to confirm shutdown');
+  // If it's been >3 seconds, reset counter (not a real shutdown attempt)
+  console.log('⚠️  SIGINT timeout - resetting counter (press twice quickly to shutdown)');
+  sigintCount = 1;
   lastSigintTime = now;
 });
 // ========================================================================
@@ -245,7 +243,26 @@ const TwitchEmoteManager = require('./src/twitch/TwitchEmoteManager');
 const StreamStatusMonitor = require('./src/services/StreamStatusMonitor');
 
 const app = express();
-const server = http.createServer(app);
+
+// Check for HTTPS certificates
+let server;
+const certPath = path.join(__dirname, 'slunt-cert.pem');
+const keyPath = path.join(__dirname, 'slunt-key.pem');
+
+if (fs.existsSync(certPath) && fs.existsSync(keyPath)) {
+  console.log('🔐 [HTTPS] Certificate found - starting HTTPS server');
+  const httpsOptions = {
+    cert: fs.readFileSync(certPath),
+    key: fs.readFileSync(keyPath)
+  };
+  server = https.createServer(httpsOptions, app);
+} else {
+  console.log('🔓 [HTTP] No certificate found - starting HTTP server');
+  console.log('   ⚠️  Microphone access requires HTTPS for remote connections');
+  console.log('   Run: .\\generate-cert.ps1 to enable HTTPS');
+  server = http.createServer(app);
+}
+
 // Lightweight in-process metrics
 const metrics = { startTime: Date.now(), requests: 0, responses: 0, errors: 0 };
 app.use((req, res, next) => {
@@ -328,6 +345,68 @@ app.get('/voice-client', (req, res) => {
   res.sendFile(path.join(__dirname, 'voiceClient.html'));
 });
 
+// Voice status endpoint - shows current provider, model status, etc.
+app.get('/api/voice/status', async (req, res) => {
+  try {
+    const provider = process.env.VOICE_TTS_PROVIDER || 'browser';
+    const status = {
+      provider: provider,
+      sttProvider: process.env.VOICE_STT_PROVIDER || 'browser',
+      available: true,
+      modelStatus: 'unknown',
+      modelInfo: {}
+    };
+
+    // Check provider-specific status
+    if (provider === 'xtts') {
+      const axios = require('axios');
+      const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
+      
+      try {
+        const response = await axios.get(`${xttsUrl}/health`, { timeout: 5000 });
+        status.available = true;
+        status.modelStatus = response.data.status || 'healthy';
+        status.modelInfo = {
+          model: response.data.model,
+          device: response.data.device,
+          referenceAudio: response.data.reference_audio || response.data.reference_samples,
+          embeddingsCached: response.data.embeddings_cached
+        };
+      } catch (err) {
+        status.available = false;
+        status.modelStatus = 'offline';
+        status.error = err.code === 'ECONNREFUSED' ? 'Server not running' : err.message;
+      }
+    } else if (provider === 'elevenlabs') {
+      status.available = !!process.env.ELEVENLABS_API_KEY;
+      status.modelStatus = status.available ? 'ready' : 'missing_api_key';
+      status.modelInfo = {
+        voiceId: process.env.ELEVENLABS_VOICE_ID,
+        model: 'eleven_multilingual_v2'
+      };
+    } else if (provider === 'openvoice') {
+      const openvoiceUrl = process.env.OPENVOICE_SERVER_URL || 'http://localhost:3002';
+      try {
+        const axios = require('axios');
+        const response = await axios.get(`${openvoiceUrl}/health`, { timeout: 5000 });
+        status.available = true;
+        status.modelStatus = 'healthy';
+        status.modelInfo = response.data;
+      } catch (err) {
+        status.available = false;
+        status.modelStatus = 'offline';
+      }
+    } else {
+      status.modelStatus = 'browser_tts';
+      status.modelInfo = { description: 'Browser Web Speech API' };
+    }
+
+    res.json(status);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // Initialize bot components
 const videoManager = new VideoManager();
 const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
@@ -336,11 +415,19 @@ const coolholeClient = new CoolholeClient(healthMonitor); // Pass healthMonitor
 const ChatBotClass = require('./src/bot/chatBot');
 const chatBot = new ChatBotClass(coolholeClient, videoManager);
 
+// Initialize Twitter integration
+const TwitterIntegration = require('./src/twitter/index');
+const twitterIntegration = new TwitterIntegration(chatBot);
+
 const sluntManager = new SluntManager();
 
 // Voice greeting system
 const VoiceGreetings = require('./src/voice/VoiceGreetings');
 const voiceGreetings = new VoiceGreetings(chatBot);
+
+// Dream generator - Slunt dreams when idle
+const DreamGenerator = require('./src/core/dreamGenerator');
+const dreamGenerator = new DreamGenerator(chatBot);
 
 // Voice API for web demo
 const openaiTTS = require('./src/voice/openaiTTS');
@@ -557,13 +644,8 @@ app.post('/api/voice', async (req, res) => {
     console.log(`🧠 [Voice] Stored user message: "${text}" (memory: ${chatBot.voiceMemory.length} msgs)`);
     
     // Unified message loop: send to Slunt
-    let reply = await chatBot.generateResponse({
-      platform: 'voice',
-      username: 'You',
-      text,
-      timestamp: Date.now(),
-      channel: 'voice',
-      voiceMode: true // Enable fast path for real-time voice
+    let reply = await chatBot.generateResponse('You', text, 'voice', 'voice', {
+      voiceMode: true
     });
     if (!reply || !String(reply).trim()) {
       reply = "I'm here. What’s up?";
@@ -804,7 +886,7 @@ app.post('/api/voice', async (req, res) => {
             speaker_wav: null
           }, {
             responseType: 'arraybuffer',
-            timeout: 60000
+            timeout: 180000 // 3 minutes for large model loading
           });
           
           audioBuffer = Buffer.from(response.data);
@@ -1273,6 +1355,31 @@ app.post('/api/test-message', async (req, res) => {
   }
 });
 
+app.post('/api/test-pm', async (req, res) => {
+  const { username, message } = req.body;
+  
+  if (!username || !message) {
+    return res.status(400).json({ error: 'Username and message required' });
+  }
+  
+  try {
+    if (!coolholeClient.isConnected()) {
+      return res.status(503).json({ error: 'Not connected to Coolhole' });
+    }
+    
+    console.log(`💬 [API] Test PM to ${username}: "${message}"`);
+    const success = await coolholeClient.sendPM(username, message);
+    
+    if (success) {
+      res.json({ success: true, message: `PM sent to ${username}` });
+    } else {
+      res.status(500).json({ error: 'Failed to send PM' });
+    }
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 app.post('/api/queue', (req, res) => {
   const { videoId, title, type = 'yt' } = req.body;
   
@@ -1444,8 +1551,35 @@ app.put('/api/slunt/config', async (req, res) => {
 app.get('/api/bot/topics', (req, res) => {
   try {
     const topics = chatBot.getTrendingTopics(20);
-    res.json(topics);
+    res.json({ topics });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Twitter control endpoint - manually trigger a tweet NOW
+app.post('/api/tweet-now', async (req, res) => {
+  try {
+    if (!twitterIntegration) {
+      return res.status(503).json({ error: 'Twitter integration not initialized' });
+    }
+    
+    console.log('📢 [API] Manual tweet trigger requested');
+    const tweet = await twitterIntegration.generateAutonomousTweet();
+    
+    if (!tweet) {
+      return res.status(500).json({ error: 'Failed to generate tweet' });
+    }
+    
+    await twitterIntegration.postTweet(tweet);
+    
+    res.json({ 
+      success: true, 
+      tweet: tweet,
+      message: 'Tweet posted successfully'
+    });
+  } catch (error) {
+    console.error('❌ [API] Tweet trigger failed:', error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -2030,7 +2164,13 @@ io.on('connection', (socket) => {
       };
       
       // Send to chatBot for processing
-      const response = await chatBot.generateResponse(voiceMessage);
+      const response = await chatBot.generateResponse(
+        voiceMessage.username,
+        voiceMessage.text,
+        voiceMessage.channel,
+        voiceMessage.platform,
+        { isVoiceMessage: true }
+      );
       
       if (response) {
         console.log(`🗣️ [Voice] Slunt responds: "${response}"`);
@@ -2674,15 +2814,13 @@ process.on('uncaughtException', (error) => {
         
         try {
           const proactivePrompt = "Continue the conversation naturally. Share an insight, ask a question, or make an observation about what was just discussed.";
-          const reply = await chatBot.generateResponse({
-            platform: 'voice',
-            username: 'You',
-            text: proactivePrompt,
-            timestamp: Date.now(),
-            channel: 'voice',
-            voiceMode: true,
-            isProactive: true
-          });
+          const reply = await chatBot.generateResponse(
+            'You',
+            proactivePrompt,
+            'voice',
+            'voice',
+            { voiceMode: true, isProactive: true }
+          );
           
           if (reply && String(reply).trim()) {
             chatBot.voiceMemory.push({
@@ -2710,20 +2848,34 @@ process.on('uncaughtException', (error) => {
   };
   
   server.listen(PORT, '0.0.0.0', () => {
+    const protocol = server instanceof https.Server ? 'https' : 'http';
+    const localIP = '192.168.1.82'; // Your local network IP
+    
     console.log(`\n${'='.repeat(60)}`);
     console.log(`🚀 Coolhole.org Chatbot Server - RUNNING`);
     console.log(`${'='.repeat(60)}`);
     console.log(`📡 Port: ${PORT}`);
-    console.log(`🎤 Voice: http://localhost:${PORT}/voice`);
-    console.log(`📊 Dashboard: http://localhost:${PORT}/`);
-    console.log(`🧠 Mind: http://localhost:${PORT}/mind`);
-    console.log(`🎯 Platforms: http://localhost:${PORT}/platforms`);
-    console.log(`🌐 Health: http://localhost:${PORT}/api/health`);
+    console.log(`🎤 Voice: ${protocol}://localhost:${PORT}/voice`);
+    if (protocol === 'https') {
+      console.log(`   🌐 Remote: ${protocol}://${localIP}:${PORT}/voice`);
+    }
+    console.log(`📊 Dashboard: ${protocol}://localhost:${PORT}/`);
+    console.log(`🧠 Mind: ${protocol}://localhost:${PORT}/mind`);
+    console.log(`🎯 Platforms: ${protocol}://localhost:${PORT}/platforms`);
+    console.log(`🌐 Health: ${protocol}://localhost:${PORT}/api/health`);
     if (process.env.VOICE_TTS_PROVIDER === 'openvoice') {
       const openvoicePort = process.env.OPENVOICE_SERVER_URL?.match(/:(\d+)/)?.[1] || '3002';
       console.log(`🎙️  OpenVoice Server: http://localhost:${openvoicePort}`);
     }
     console.log(`${'='.repeat(60)}\n`);
+    
+    // Initialize Twitter integration
+    twitterIntegration.initialize().catch(err => {
+      console.error('⚠️  Twitter integration failed to start:', err.message);
+    });
+    
+    // Start dream generator
+    dreamGenerator.start();
     
     // Start proactive voice system
     startProactiveVoice();

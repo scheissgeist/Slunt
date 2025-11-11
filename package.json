@@ -50,6 +50,7 @@
     "socket.io-client": "^4.8.1",
     "tesseract.js": "^6.0.1",
     "tmi.js": "^1.8.5",
+    "twitter-api-v2": "^1.27.0",
     "winston": "^3.18.3",
     "ws": "^8.14.2"
   },

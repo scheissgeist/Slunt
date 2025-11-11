@@ -12,6 +12,7 @@ class DiscordClient extends EventEmitter {
       token: config.token || process.env.DISCORD_TOKEN,
       clientId: config.clientId || process.env.DISCORD_CLIENT_ID,
       guildIds: config.guildIds || (process.env.DISCORD_GUILD_IDS || '').split(',').filter(Boolean),
+      allowedChannels: config.allowedChannels || (process.env.DISCORD_ALLOWED_CHANNELS || '').split(',').filter(Boolean).map(c => c.trim().toLowerCase()),
       enabled: config.enabled !== false,
       ...config
     };
@@ -132,8 +133,17 @@ class DiscordClient extends EventEmitter {
       return;
     }
 
-    // Monitor ALL channels (removed channel restriction)
-    console.log(`   ✅ Monitoring all channels (currently in #${message.channel.name})`);
+    // Only monitor allowed channels (if specified)
+    const channelName = message.channel.name.toLowerCase();
+    if (this.config.allowedChannels.length > 0) {
+      if (!this.config.allowedChannels.includes(channelName)) {
+        console.log(`   ⏭️ Skipping channel #${message.channel.name} (not in allowed: ${this.config.allowedChannels.join(', ')})`);
+        return;
+      }
+      console.log(`   ✅ Allowed channel: #${message.channel.name}`);
+    } else {
+      console.log(`   ✅ Monitoring all channels (currently in #${message.channel.name})`);
+    }
 
     // Check if message mentions Slunt (by @mention or by name as whole word)
     const mentionsSlunt = message.mentions.users.has(this.client.user.id) || 
@@ -294,6 +304,15 @@ class DiscordClient extends EventEmitter {
       if (!channel || !channel.isTextBased()) {
         console.error('❌ [Discord] Invalid channel:', channelId);
         return false;
+      }
+
+      // Only allow sending to configured channels
+      const channelName = channel.name.toLowerCase();
+      if (this.config.allowedChannels.length > 0) {
+        if (!this.config.allowedChannels.includes(channelName)) {
+          console.warn(`⚠️ [Discord] Blocked send to #${channel.name} (not in allowed: ${this.config.allowedChannels.join(', ')})`);
+          return false;
+        }
       }
 
       // Split long messages (Discord limit: 2000 chars)

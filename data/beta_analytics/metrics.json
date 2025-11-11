@@ -1,21 +1,33 @@
 {
-  "sessionId": 1762697575702,
-  "startTime": 1762697575702,
-  "totalMessages": 4,
-  "totalResponses": 4,
-  "totalSkipped": 0,
-  "avgResponseTime": 0,
-  "responseTimes": [],
+  "sessionId": 1762862275003,
+  "startTime": 1762862275003,
+  "totalMessages": 31,
+  "totalResponses": 11,
+  "totalSkipped": 20,
+  "avgResponseTime": 2139.3636363636365,
+  "responseTimes": [
+    2018,
+    1911,
+    2370,
+    1653,
+    1329,
+    3130,
+    3078,
+    1647,
+    1565,
+    2745,
+    2087
+  ],
   "contextHits": [],
   "contextMisses": [],
   "topicContinuity": [],
   "platforms": {
     "coolhole": {
-      "messages": 1,
-      "responses": 0
+      "messages": 31,
+      "responses": 11
     },
     "discord": {
-      "messages": 3,
+      "messages": 0,
       "responses": 0
     },
     "twitch": {
@@ -23,6 +35,6 @@
       "responses": 0
     }
   },
-  "sessionDuration": 180037,
-  "timestamp": 1762697755739
+  "sessionDuration": 1500194,
+  "timestamp": 1762863775197
 }

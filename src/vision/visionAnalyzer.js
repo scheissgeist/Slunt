@@ -44,6 +44,7 @@ class VisionAnalyzer extends EventEmitter {
     this.lastScreenshot = null;
     this.lastSceneHash = null;
     this.screenshotInterval = null;
+    this.videoInfoInterval = null;
     this.analysisInterval = null;
     
     // Insights
@@ -149,6 +150,15 @@ class VisionAnalyzer extends EventEmitter {
         console.error('❌ [Vision] Screenshot error:', error.message);
       }
     }, screenshotInterval);
+
+    // Fast video info updates (every 3 seconds, no screenshot needed)
+    this.videoInfoInterval = setInterval(async () => {
+      try {
+        await this.extractVideoPlayerInfo();
+      } catch (error) {
+        console.error('❌ [Vision] Video info error:', error.message);
+      }
+    }, 3000);
 
     // Periodic full analysis
     this.analysisInterval = setInterval(async () => {
@@ -446,8 +456,15 @@ class VisionAnalyzer extends EventEmitter {
       });
 
       // Update current video insight
-      if (videoInfo.title && videoInfo.title !== this.insights.currentVideo) {
-        this.insights.currentVideo = videoInfo.title;
+      if (videoInfo.title && videoInfo.title !== this.insights.currentVideo?.title) {
+        this.insights.currentVideo = {
+          title: videoInfo.title,
+          url: videoInfo.url,
+          timestamp: Date.now(),
+          isPlaying: videoInfo.isPlaying,
+          currentTime: videoInfo.currentTime,
+          duration: videoInfo.duration
+        };
         this.insights.videoHistory.push({
           title: videoInfo.title,
           timestamp: Date.now(),
@@ -528,6 +545,10 @@ class VisionAnalyzer extends EventEmitter {
       clearInterval(this.screenshotInterval);
       this.screenshotInterval = null;
     }
+    if (this.videoInfoInterval) {
+      clearInterval(this.videoInfoInterval);
+      this.videoInfoInterval = null;
+    }
     if (this.analysisInterval) {
       clearInterval(this.analysisInterval);
       this.analysisInterval = null;
@@ -572,7 +593,7 @@ class VisionAnalyzer extends EventEmitter {
    */
   logInsights() {
     console.log('\n👁️ [Vision] Current Insights:');
-    console.log(`  🎬 Current video: ${this.insights.currentVideo || 'Unknown'}`);
+    console.log(`  🎬 Current video: ${this.insights.currentVideo?.title || 'Unknown'}`);
     console.log(`  📊 Videos watched: ${this.insights.videoHistory.length}`);
     console.log(`  🎨 Avg brightness: ${Math.round(this.insights.averageBrightness)}`);
     console.log(`  🔄 Scene changes: ${this.visualMemory.sceneChanges.length}`);

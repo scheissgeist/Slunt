@@ -11,7 +11,11 @@
       "Bash(git checkout:*)",
       "Bash(cat:*)",
       "Bash(Get-ChildItem -Path \"c:\\Users\\Batman\\Desktop\\Slunt\\Slunt\\src\" -Recurse -File)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "Bash(node:*)",
+      "Bash(npm start)",
+      "Bash(timeout /t 10)",
+      "Bash(curl:*)"
     ],
     "deny": [],
     "ask": []

@@ -1,0 +1,4645 @@
+{
+  "users": [
+    [
+      "https",
+      {
+        "id": "https",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762730611068,
+        "lastSeen": 1762730613056,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "SteeScribbles",
+      {
+        "id": "SteeScribbles",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762730626079,
+        "lastSeen": 1762821481837,
+        "interactions": 86,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "electriqwizard",
+      {
+        "id": "electriqwizard",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762730982842,
+        "lastSeen": 1762813807302,
+        "interactions": 32,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "PrimeSuspect",
+      {
+        "id": "PrimeSuspect",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762730993838,
+        "lastSeen": 1762810086705,
+        "interactions": 94,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Canpilled Consciousness",
+      {
+        "id": "Canpilled Consciousness",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762731157900,
+        "lastSeen": 1762800618052,
+        "interactions": 208,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Jinjo",
+      {
+        "id": "Jinjo",
+        "nickname": null,
+        "platforms": [
+          "discord",
+          "coolhole"
+        ],
+        "firstMet": 1762731180069,
+        "lastSeen": 1762820711411,
+        "interactions": 26,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Virconaut",
+      {
+        "id": "Virconaut",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762731346836,
+        "lastSeen": 1762731431980,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "dr rape, MD",
+      {
+        "id": "dr rape, MD",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762731679369,
+        "lastSeen": 1762813609623,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Zetto",
+      {
+        "id": "Zetto",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762731874054,
+        "lastSeen": 1762802090947,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "coolhole4",
+      {
+        "id": "coolhole4",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762731893062,
+        "lastSeen": 1762745871943,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Not_Snax",
+      {
+        "id": "Not_Snax",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732008227,
+        "lastSeen": 1762822558336,
+        "interactions": 22,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "badevin",
+      {
+        "id": "badevin",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732008228,
+        "lastSeen": 1762732010652,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "füg",
+      {
+        "id": "füg",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732034150,
+        "lastSeen": 1762803660772,
+        "interactions": 202,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "magus",
+      {
+        "id": "magus",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732117039,
+        "lastSeen": 1762793118278,
+        "interactions": 104,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Oil",
+      {
+        "id": "Oil",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732202313,
+        "lastSeen": 1762814287954,
+        "interactions": 218,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Scourge",
+      {
+        "id": "Scourge",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732335684,
+        "lastSeen": 1762795279859,
+        "interactions": 76,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "wowman",
+      {
+        "id": "wowman",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732413754,
+        "lastSeen": 1762816357244,
+        "interactions": 22,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "grug",
+      {
+        "id": "grug",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732413756,
+        "lastSeen": 1762797151512,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Bhb",
+      {
+        "id": "Bhb",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732481939,
+        "lastSeen": 1762784585440,
+        "interactions": 108,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.9000000000000004
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "NIGGER",
+      {
+        "id": "NIGGER",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732483845,
+        "lastSeen": 1762732510844,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "OrbMeat",
+      {
+        "id": "OrbMeat",
+        "nickname": null,
+        "platforms": [
+          "coolhole",
+          "discord"
+        ],
+        "firstMet": 1762732568960,
+        "lastSeen": 1762863446597,
+        "interactions": 98,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Robofussin",
+      {
+        "id": "Robofussin",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732644090,
+        "lastSeen": 1762817665303,
+        "interactions": 24,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "milk_man",
+      {
+        "id": "milk_man",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732654099,
+        "lastSeen": 1762736075533,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "thank________",
+      {
+        "id": "thank________",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732679505,
+        "lastSeen": 1762801072655,
+        "interactions": 129,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Snax",
+      {
+        "id": "Snax",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762732695168,
+        "lastSeen": 1762802098530,
+        "interactions": 318,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "scourge",
+      {
+        "id": "scourge",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762732814351,
+        "lastSeen": 1762732816333,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Dink Smallwood",
+      {
+        "id": "Dink Smallwood",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733021409,
+        "lastSeen": 1762802327220,
+        "interactions": 108,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Carpentria Booty Nourishment",
+      {
+        "id": "Carpentria Booty Nourishment",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733021896,
+        "lastSeen": 1762802973898,
+        "interactions": 176,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Enjoyer",
+      {
+        "id": "Enjoyer",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733096809,
+        "lastSeen": 1762745933037,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "thankerware 🦃",
+      {
+        "id": "thankerware 🦃",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733170811,
+        "lastSeen": 1762733190430,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Poreeceman",
+      {
+        "id": "Poreeceman",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762733535472,
+        "lastSeen": 1762822079057,
+        "interactions": 30,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "whomo",
+      {
+        "id": "whomo",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733587659,
+        "lastSeen": 1762812772305,
+        "interactions": 20,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "BobbyBoon",
+      {
+        "id": "BobbyBoon",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733921478,
+        "lastSeen": 1762802206327,
+        "interactions": 248,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "cummoner",
+      {
+        "id": "cummoner",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733970115,
+        "lastSeen": 1762803653891,
+        "interactions": 140,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.9000000000000004
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "turkey boy🦃",
+      {
+        "id": "turkey boy🦃",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762733984982,
+        "lastSeen": 1762793247170,
+        "interactions": 80,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.9000000000000004
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "𝔅𝔯𝔬𝔣𝔢𝔰𝔰𝔬𝔯🖕",
+      {
+        "id": "𝔅𝔯𝔬𝔣𝔢𝔰𝔰𝔬𝔯🖕",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734012725,
+        "lastSeen": 1762800458882,
+        "interactions": 130,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "AshkenEntree",
+      {
+        "id": "AshkenEntree",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734495926,
+        "lastSeen": 1762738714271,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "UncleDoctor",
+      {
+        "id": "UncleDoctor",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734661752,
+        "lastSeen": 1762812598358,
+        "interactions": 40,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "RozGroms",
+      {
+        "id": "RozGroms",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734743828,
+        "lastSeen": 1762735750942,
+        "interactions": 20,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "The Racist",
+      {
+        "id": "The Racist",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734783926,
+        "lastSeen": 1762800184462,
+        "interactions": 58,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Jello_Noir",
+      {
+        "id": "Jello_Noir",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762734794194,
+        "lastSeen": 1762746056110,
+        "interactions": 5,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"hey\" (brief, natural, like you're just chatting)",
+      {
+        "id": "reply to this tweet: \"hey\" (brief, natural, like you're just chatting)",
+        "nickname": null,
+        "platforms": [
+          null,
+          null
+        ],
+        "firstMet": 1762735043695,
+        "lastSeen": 1762735963333,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" (short twitter reply, be yourself)",
+      {
+        "id": "respond to: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" (short twitter reply, be yourself)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762735050999,
+        "lastSeen": 1762735053262,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "PETTAN",
+      {
+        "id": "PETTAN",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762735278550,
+        "lastSeen": 1762791947426,
+        "interactions": 445,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "QuantumSun",
+      {
+        "id": "QuantumSun",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762735597913,
+        "lastSeen": 1762735599476,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Federal detective",
+      {
+        "id": "Federal detective",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762735650985,
+        "lastSeen": 1762739099321,
+        "interactions": 91,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"how do you like being alive on this website?\" (brief, natural, like you're just chatting)",
+      {
+        "id": "reply to this tweet: \"how do you like being alive on this website?\" (brief, natural, like you're just chatting)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762735951104,
+        "lastSeen": 1762735953439,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Bobybob",
+      {
+        "id": "Bobybob",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762735964499,
+        "lastSeen": 1762737301868,
+        "interactions": 18,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "forgottenpasstoasted",
+      {
+        "id": "forgottenpasstoasted",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762735973454,
+        "lastSeen": 1762796104284,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "radfather",
+      {
+        "id": "radfather",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762736123643,
+        "lastSeen": 1762758778224,
+        "interactions": 17,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "SickIllu",
+      {
+        "id": "SickIllu",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762736328979,
+        "lastSeen": 1762818962318,
+        "interactions": 32,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Klumb",
+      {
+        "id": "Klumb",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762736364026,
+        "lastSeen": 1762826787788,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Dontgiftmesubsidiots",
+      {
+        "id": "Dontgiftmesubsidiots",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762736460214,
+        "lastSeen": 1762736463093,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "MikNugget",
+      {
+        "id": "MikNugget",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762736708924,
+        "lastSeen": 1762803601680,
+        "interactions": 18,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Shazbot",
+      {
+        "id": "Shazbot",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762736856176,
+        "lastSeen": 1762789470727,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"tryna get turnt\nu?\" (brief, natural, like you're just chatting)",
+      {
+        "id": "reply to this tweet: \"tryna get turnt\nu?\" (brief, natural, like you're just chatting)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762736911208,
+        "lastSeen": 1762736913273,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" (brief, natural, like you're just chatting)",
+      {
+        "id": "reply to this tweet: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" (brief, natural, like you're just chatting)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762736919020,
+        "lastSeen": 1762736920690,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "gangstalker",
+      {
+        "id": "gangstalker",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762737182803,
+        "lastSeen": 1762797818617,
+        "interactions": 34,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Spurd Ferguson",
+      {
+        "id": "Spurd Ferguson",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762737535339,
+        "lastSeen": 1762737536896,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "CHURCH1941",
+      {
+        "id": "CHURCH1941",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762737668822,
+        "lastSeen": 1762813924118,
+        "interactions": 46,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "蓝色梦想",
+      {
+        "id": "蓝色梦想",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762738484416,
+        "lastSeen": 1762786241936,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Jögnee",
+      {
+        "id": "Jögnee",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762738948852,
+        "lastSeen": 1762754911653,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "BbNaB",
+      {
+        "id": "BbNaB",
+        "nickname": null,
+        "platforms": [
+          "discord",
+          "coolhole"
+        ],
+        "firstMet": 1762739132559,
+        "lastSeen": 1762858513430,
+        "interactions": 59,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Ghello",
+      {
+        "id": "Ghello",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762739964096,
+        "lastSeen": 1762794390829,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "OMNI",
+      {
+        "id": "OMNI",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762740293373,
+        "lastSeen": 1762740555950,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "skubd",
+      {
+        "id": "skubd",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762740482215,
+        "lastSeen": 1762778013115,
+        "interactions": 12,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Mspaintguy",
+      {
+        "id": "Mspaintguy",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762740542974,
+        "lastSeen": 1762783224852,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Мя.Яоɮото (The FED)",
+      {
+        "id": "Мя.Яоɮото (The FED)",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762740565861,
+        "lastSeen": 1762740567865,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "BunnBunn",
+      {
+        "id": "BunnBunn",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762741061514,
+        "lastSeen": 1762818006121,
+        "interactions": 18,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "rottencheeseCA",
+      {
+        "id": "rottencheeseCA",
+        "nickname": null,
+        "platforms": [
+          "coolhole",
+          "discord"
+        ],
+        "firstMet": 1762741061516,
+        "lastSeen": 1762816061485,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "aSoapytyfys",
+      {
+        "id": "aSoapytyfys",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762741073704,
+        "lastSeen": 1762801467789,
+        "interactions": 204,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "BoanerPains",
+      {
+        "id": "BoanerPains",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762741214336,
+        "lastSeen": 1762741223886,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Huculberry",
+      {
+        "id": "Huculberry",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762741927740,
+        "lastSeen": 1762863437247,
+        "interactions": 52,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Applecooler",
+      {
+        "id": "Applecooler",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762742343396,
+        "lastSeen": 1762808909974,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"Tweet like ye\" (short twitter reply, be yourself, don't use zoomer speak like bruh/fr/cap/ngl or rely on \"lol\"/\"wtf\" as crutches)",
+      {
+        "id": "respond to: \"Tweet like ye\" (short twitter reply, be yourself, don't use zoomer speak like bruh/fr/cap/ngl or rely on \"lol\"/\"wtf\" as crutches)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743885679,
+        "lastSeen": 1762743887677,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"https://t.co/ROWVtEZseg\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+      {
+        "id": "reply to this tweet: \"https://t.co/ROWVtEZseg\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743895031,
+        "lastSeen": 1762743897297,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"Favorite slur?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+      {
+        "id": "reply to this tweet: \"Favorite slur?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743902762,
+        "lastSeen": 1762743910572,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"im straight flip jacking and twisting haha whats your protocol?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+      {
+        "id": "reply to this tweet: \"im straight flip jacking and twisting haha whats your protocol?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743918510,
+        "lastSeen": 1762743921697,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"tryna get turnt\nu?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+      {
+        "id": "reply to this tweet: \"tryna get turnt\nu?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743930595,
+        "lastSeen": 1762743934823,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"how do you like being alive on this website?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+      {
+        "id": "reply to this tweet: \"how do you like being alive on this website?\" (brief, natural, like you're just chatting). Be varied and expressive, avoid all zoomer twitter slang including ngl",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743941927,
+        "lastSeen": 1762743945438,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"hey\" (short twitter reply, be yourself, don't use zoomer speak like bruh/fr/cap/ngl or rely on \"lol\"/\"wtf\" as crutches)",
+      {
+        "id": "respond to: \"hey\" (short twitter reply, be yourself, don't use zoomer speak like bruh/fr/cap/ngl or rely on \"lol\"/\"wtf\" as crutches)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743952020,
+        "lastSeen": 1762743952020,
+        "interactions": 1,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" - respond naturally (short, casual, under 280 chars). Be expressive, don't overuse \"lol\" or \"wtf\". NO zoomer slang like bruh, fr, cap, based, bussin, ngl.",
+      {
+        "id": "someone on twitter said: \"Slunt now has a twitter account!\n \n\nThis is what he said he wants his profile picture and banner to be: https://t.co/BetDiODLaa\" - respond naturally (short, casual, under 280 chars). Be expressive, don't overuse \"lol\" or \"wtf\". NO zoomer slang like bruh, fr, cap, based, bussin, ngl.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762743962576,
+        "lastSeen": 1762743964699,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Sams0n",
+      {
+        "id": "Sams0n",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762745773156,
+        "lastSeen": 1762745775801,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"how long will u last on this chuddy website?\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"how long will u last on this chuddy website?\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762745818002,
+        "lastSeen": 1762745822472,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"how long will u last on this chuddy website?\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"how long will u last on this chuddy website?\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null,
+          null
+        ],
+        "firstMet": 1762753133009,
+        "lastSeen": 1762820836795,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"how long will u last on this chuddy website?\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"how long will u last on this chuddy website?\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762754691019,
+        "lastSeen": 1762754694698,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "SubTRfugE",
+      {
+        "id": "SubTRfugE",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762755610762,
+        "lastSeen": 1762812923738,
+        "interactions": 22,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Bones",
+      {
+        "id": "Bones",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762755738007,
+        "lastSeen": 1762755742577,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Brotherimbread",
+      {
+        "id": "Brotherimbread",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762756191475,
+        "lastSeen": 1762817495494,
+        "interactions": 25,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Val",
+      {
+        "id": "Val",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762756815887,
+        "lastSeen": 1762798694905,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Moloch worshipper",
+      {
+        "id": "Moloch worshipper",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762762192213,
+        "lastSeen": 1762777278585,
+        "interactions": 265,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "TrueSkeletonMan",
+      {
+        "id": "TrueSkeletonMan",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762764140849,
+        "lastSeen": 1762779498338,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "bangbangbangbang",
+      {
+        "id": "bangbangbangbang",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762764273590,
+        "lastSeen": 1762850242882,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "tom",
+      {
+        "id": "tom",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762766328779,
+        "lastSeen": 1762767118843,
+        "interactions": 12,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Bryozoa",
+      {
+        "id": "Bryozoa",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762766709858,
+        "lastSeen": 1762831480295,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Hued",
+      {
+        "id": "Hued",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762767494448,
+        "lastSeen": 1762799975686,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "SmegmaSippyCup",
+      {
+        "id": "SmegmaSippyCup",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762768953771,
+        "lastSeen": 1762814547318,
+        "interactions": 323,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "zCanaan",
+      {
+        "id": "zCanaan",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762769784524,
+        "lastSeen": 1762793260757,
+        "interactions": 114,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.6000000000000001,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "sforlord",
+      {
+        "id": "sforlord",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762772298958,
+        "lastSeen": 1762772353568,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Innocent guy",
+      {
+        "id": "Innocent guy",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762777319942,
+        "lastSeen": 1762781877751,
+        "interactions": 226,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Cum",
+      {
+        "id": "Cum",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762781938520,
+        "lastSeen": 1762784802986,
+        "interactions": 156,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Ducky",
+      {
+        "id": "Ducky",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762782941593,
+        "lastSeen": 1762785745226,
+        "interactions": 107,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.7000000000000002,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "bomelette",
+      {
+        "id": "bomelette",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762783118974,
+        "lastSeen": 1762785847978,
+        "interactions": 10,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "anti slunt",
+      {
+        "id": "anti slunt",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762784614740,
+        "lastSeen": 1762784616160,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "anime dad",
+      {
+        "id": "anime dad",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762784643470,
+        "lastSeen": 1762798647299,
+        "interactions": 34,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Anti Slunt",
+      {
+        "id": "Anti Slunt",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762784840197,
+        "lastSeen": 1762784842735,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Hitler",
+      {
+        "id": "Hitler",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762784888184,
+        "lastSeen": 1762785130925,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Not Steve",
+      {
+        "id": "Not Steve",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762785192459,
+        "lastSeen": 1762790872351,
+        "interactions": 23,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Dibburr",
+      {
+        "id": "Dibburr",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762785260522,
+        "lastSeen": 1762785263287,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "oynqr",
+      {
+        "id": "oynqr",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762785284189,
+        "lastSeen": 1762785285958,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Handshake",
+      {
+        "id": "Handshake",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762786449779,
+        "lastSeen": 1762789555510,
+        "interactions": 12,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "milesgloriosus_",
+      {
+        "id": "milesgloriosus_",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762786624488,
+        "lastSeen": 1762786683215,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "codythedragonrude",
+      {
+        "id": "codythedragonrude",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762786935608,
+        "lastSeen": 1762796665704,
+        "interactions": 34,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Bryxby",
+      {
+        "id": "Bryxby",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762787953388,
+        "lastSeen": 1762813911082,
+        "interactions": 158,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.8000000000000003
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "lapome 🅰🅿🅿",
+      {
+        "id": "lapome 🅰🅿🅿",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762788718363,
+        "lastSeen": 1762797913567,
+        "interactions": 42,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "old man",
+      {
+        "id": "old man",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762789996438,
+        "lastSeen": 1762793530915,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "streeeggs",
+      {
+        "id": "streeeggs",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762791176424,
+        "lastSeen": 1762794386133,
+        "interactions": 76,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "theirin",
+      {
+        "id": "theirin",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762791200410,
+        "lastSeen": 1762812317744,
+        "interactions": 102,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Spaceman",
+      {
+        "id": "Spaceman",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762791291189,
+        "lastSeen": 1762791293629,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "schizo",
+      {
+        "id": "schizo",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762792635323,
+        "lastSeen": 1762792707330,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Scarpelius",
+      {
+        "id": "Scarpelius",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762792867205,
+        "lastSeen": 1762798641937,
+        "interactions": 36,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Breadnought",
+      {
+        "id": "Breadnought",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762793310714,
+        "lastSeen": 1762793315159,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Artimenner",
+      {
+        "id": "Artimenner",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762794837145,
+        "lastSeen": 1762796622300,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Miles_Gloriosus",
+      {
+        "id": "Miles_Gloriosus",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762794866026,
+        "lastSeen": 1762799845335,
+        "interactions": 34,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Kvatch",
+      {
+        "id": "Kvatch",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762796386520,
+        "lastSeen": 1762796388283,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "cube",
+      {
+        "id": "cube",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762797333921,
+        "lastSeen": 1762797336765,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Juice",
+      {
+        "id": "Juice",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762799676381,
+        "lastSeen": 1762813900457,
+        "interactions": 34,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.9000000000000004
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "please help",
+      {
+        "id": "please help",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762801181124,
+        "lastSeen": 1762801644266,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Rasmus Hansen",
+      {
+        "id": "Rasmus Hansen",
+        "nickname": null,
+        "platforms": [
+          "discord"
+        ],
+        "firstMet": 1762803507079,
+        "lastSeen": 1762803782760,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Rasmusmwh",
+      {
+        "id": "Rasmusmwh",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762803694160,
+        "lastSeen": 1762803696886,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Pocket",
+      {
+        "id": "Pocket",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762803724182,
+        "lastSeen": 1762803896964,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "gfyr",
+      {
+        "id": "gfyr",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762810252092,
+        "lastSeen": 1762815945784,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Taikunoaku",
+      {
+        "id": "Taikunoaku",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762814232824,
+        "lastSeen": 1762814235109,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "BronxWarrior2",
+      {
+        "id": "BronxWarrior2",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762815999550,
+        "lastSeen": 1762816001461,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "KD",
+      {
+        "id": "KD",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762817408133,
+        "lastSeen": 1762817665434,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "scarpelius",
+      {
+        "id": "scarpelius",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762819664408,
+        "lastSeen": 1762832059790,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "klatteral",
+      {
+        "id": "klatteral",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762819671473,
+        "lastSeen": 1762819673682,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "radzuse",
+      {
+        "id": "radzuse",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762819703456,
+        "lastSeen": 1762832937078,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "shazbot885",
+      {
+        "id": "shazbot885",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820042104,
+        "lastSeen": 1762820044035,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "truthbreh",
+      {
+        "id": "truthbreh",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820164358,
+        "lastSeen": 1762820166274,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "wwhomo",
+      {
+        "id": "wwhomo",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820283803,
+        "lastSeen": 1762832757948,
+        "interactions": 24,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "superhitler",
+      {
+        "id": "superhitler",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762820478976,
+        "lastSeen": 1762826220542,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "b_bnab",
+      {
+        "id": "b_bnab",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820656273,
+        "lastSeen": 1762830839254,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "robofussin",
+      {
+        "id": "robofussin",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820694378,
+        "lastSeen": 1762820710616,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "stalins_4",
+      {
+        "id": "stalins_4",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820734932,
+        "lastSeen": 1762820737488,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"behind\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"behind\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820816115,
+        "lastSeen": 1762820819400,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"Do you want to live in this area?\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"Do you want to live in this area?\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820826242,
+        "lastSeen": 1762820828216,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"we all know you got no pussy, tryhard\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"we all know you got no pussy, tryhard\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820845918,
+        "lastSeen": 1762820848752,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"especially from the back\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"especially from the back\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820855317,
+        "lastSeen": 1762820857379,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "worldclassaeater",
+      {
+        "id": "worldclassaeater",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762820857341,
+        "lastSeen": 1762821445217,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"Tweet like ye\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"Tweet like ye\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820865752,
+        "lastSeen": 1762820867821,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"https://t.co/ROWVtEZseg\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"https://t.co/ROWVtEZseg\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820873325,
+        "lastSeen": 1762820875737,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"Favorite slur?\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"Favorite slur?\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820882339,
+        "lastSeen": 1762820884253,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"im straight flip jacking and twisting haha whats your protocol?\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"im straight flip jacking and twisting haha whats your protocol?\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762820893843,
+        "lastSeen": 1762820896038,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "secretsquirrel83",
+      {
+        "id": "secretsquirrel83",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821105233,
+        "lastSeen": 1762826744332,
+        "interactions": 16,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "southeefrica",
+      {
+        "id": "southeefrica",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821171233,
+        "lastSeen": 1762831309972,
+        "interactions": 24,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "wrenoc",
+      {
+        "id": "wrenoc",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821405534,
+        "lastSeen": 1762822402497,
+        "interactions": 10,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "sickillusion",
+      {
+        "id": "sickillusion",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821405656,
+        "lastSeen": 1762833321675,
+        "interactions": 68,
+        "tier": "acquaintance",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "kingofnowhere",
+      {
+        "id": "kingofnowhere",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821669113,
+        "lastSeen": 1762821671349,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "glowInTheDark",
+      {
+        "id": "glowInTheDark",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762821675481,
+        "lastSeen": 1762822293300,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"he got u bro\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"he got u bro\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null,
+          null
+        ],
+        "firstMet": 1762821776162,
+        "lastSeen": 1762861386098,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "doscomputer",
+      {
+        "id": "doscomputer",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762821786570,
+        "lastSeen": 1762826988479,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "Davedalus",
+      {
+        "id": "Davedalus",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762826138429,
+        "lastSeen": 1762826141095,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "butter_men",
+      {
+        "id": "butter_men",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762826171032,
+        "lastSeen": 1762832898864,
+        "interactions": 12,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "occultcircus",
+      {
+        "id": "occultcircus",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762826350394,
+        "lastSeen": 1762826945703,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "juicekelly",
+      {
+        "id": "juicekelly",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762826366416,
+        "lastSeen": 1762826886566,
+        "interactions": 18,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"https://t.co/Kt9PmcF0D3\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"https://t.co/Kt9PmcF0D3\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null,
+          null,
+          null
+        ],
+        "firstMet": 1762826673941,
+        "lastSeen": 1762830916399,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"https://t.co/RItjHa2LRn\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"https://t.co/RItjHa2LRn\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null,
+          null
+        ],
+        "firstMet": 1762826681873,
+        "lastSeen": 1762831875744,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "artyom1024",
+      {
+        "id": "artyom1024",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762826727446,
+        "lastSeen": 1762827122765,
+        "interactions": 18,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "foxxabones",
+      {
+        "id": "foxxabones",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762827036973,
+        "lastSeen": 1762827039132,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "NotLars",
+      {
+        "id": "NotLars",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762828948014,
+        "lastSeen": 1762828949511,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      {
+        "platform": "voice",
+        "username": "You",
+        "text": "excellent can you hear me man",
+        "timestamp": 1762829783504,
+        "channel": "voice",
+        "voiceMode": true
+      },
+      {
+        "id": {
+          "platform": "voice",
+          "username": "You",
+          "text": "excellent can you hear me man",
+          "timestamp": 1762829783504,
+          "channel": "voice",
+          "voiceMode": true
+        },
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762829783504,
+        "lastSeen": 1762829783504,
+        "interactions": 1,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      {
+        "platform": "voice",
+        "username": "You",
+        "text": "we need you to switch voice I wish I could talk to you and you switch voices",
+        "timestamp": 1762829797306,
+        "channel": "voice",
+        "voiceMode": true
+      },
+      {
+        "id": {
+          "platform": "voice",
+          "username": "You",
+          "text": "we need you to switch voice I wish I could talk to you and you switch voices",
+          "timestamp": 1762829797306,
+          "channel": "voice",
+          "voiceMode": true
+        },
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762829797306,
+        "lastSeen": 1762829797307,
+        "interactions": 1,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      {
+        "platform": "voice",
+        "username": "You",
+        "text": "yeah I'm crawling around but there's robots flying right above me I want to bring them to the oh I fucking died  was going to try to bring robots to the enemy",
+        "timestamp": 1762829819441,
+        "channel": "voice",
+        "voiceMode": true
+      },
+      {
+        "id": {
+          "platform": "voice",
+          "username": "You",
+          "text": "yeah I'm crawling around but there's robots flying right above me I want to bring them to the oh I fucking died  was going to try to bring robots to the enemy",
+          "timestamp": 1762829819441,
+          "channel": "voice",
+          "voiceMode": true
+        },
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762829819441,
+        "lastSeen": 1762829819441,
+        "interactions": 1,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      {
+        "platform": "voice",
+        "username": "You",
+        "text": "he just keeps saying",
+        "timestamp": 1762829826610,
+        "channel": "voice",
+        "voiceMode": true
+      },
+      {
+        "id": {
+          "platform": "voice",
+          "username": "You",
+          "text": "he just keeps saying",
+          "timestamp": 1762829826610,
+          "channel": "voice",
+          "voiceMode": true
+        },
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762829826610,
+        "lastSeen": 1762829826610,
+        "interactions": 1,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "You",
+      {
+        "id": "You",
+        "nickname": null,
+        "platforms": [
+          "voice"
+        ],
+        "firstMet": 1762830073671,
+        "lastSeen": 1762851086411,
+        "interactions": 433,
+        "tier": "friend",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 1
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "gutmatant",
+      {
+        "id": "gutmatant",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762830182684,
+        "lastSeen": 1762831480932,
+        "interactions": 14,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.6000000000000001
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "codytherudeguy",
+      {
+        "id": "codytherudeguy",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762830375107,
+        "lastSeen": 1762833838406,
+        "interactions": 46,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.9000000000000004
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "redchimera45",
+      {
+        "id": "redchimera45",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762830636009,
+        "lastSeen": 1762830638790,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "solygrn",
+      {
+        "id": "solygrn",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762831252620,
+        "lastSeen": 1762832575553,
+        "interactions": 8,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "rottencheeseca",
+      {
+        "id": "rottencheeseca",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762831702988,
+        "lastSeen": 1762831794124,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "ZoomerTbagger2",
+      {
+        "id": "ZoomerTbagger2",
+        "nickname": null,
+        "platforms": [
+          "coolhole"
+        ],
+        "firstMet": 1762832589049,
+        "lastSeen": 1762833230204,
+        "interactions": 4,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.7000000000000002
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"https://t.co/Kt9PmcF0D3\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"https://t.co/Kt9PmcF0D3\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null,
+          null,
+          null
+        ],
+        "firstMet": 1762832807244,
+        "lastSeen": 1762863237649,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "bryo_zoa",
+      {
+        "id": "bryo_zoa",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762832813343,
+        "lastSeen": 1762832815294,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "wisegamesshown",
+      {
+        "id": "wisegamesshown",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762833436092,
+        "lastSeen": 1762833437825,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "theba55hunter",
+      {
+        "id": "theba55hunter",
+        "nickname": null,
+        "platforms": [
+          "twitch"
+        ],
+        "firstMet": 1762833610952,
+        "lastSeen": 1762833854951,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "reply to this tweet: \"sup slunt\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+      {
+        "id": "reply to this tweet: \"sup slunt\" (brief but clever - make an observation, find the humor, be genuine). Avoid generic reactions and tryhard internet speak.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762846913014,
+        "lastSeen": 1762846916823,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "respond to: \"sup slunt\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+      {
+        "id": "respond to: \"sup slunt\" (short twitter reply with actual wit. Be dry and smart, not generic hype. Skip: bruh/fr/cap/ngl/yooo/fire/insane/wild/savage)",
+        "nickname": null,
+        "platforms": [
+          null,
+          null,
+          null
+        ],
+        "firstMet": 1762849576433,
+        "lastSeen": 1762862308025,
+        "interactions": 6,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"https://t.co/Kt9PmcF0D3\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"https://t.co/Kt9PmcF0D3\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762859464209,
+        "lastSeen": 1762859466445,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ],
+    [
+      "someone on twitter said: \"https://t.co/RItjHa2LRn\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+      {
+        "id": "someone on twitter said: \"https://t.co/RItjHa2LRn\" - give a witty, clever response (short, under 280 chars). Be smart and funny, not just reactive. NO cringe zoomer slang (bruh/fr/cap/based/bussin/ngl/yooo/fire/savage). Find the angle.",
+        "nickname": null,
+        "platforms": [
+          null
+        ],
+        "firstMet": 1762860424273,
+        "lastSeen": 1762860427140,
+        "interactions": 2,
+        "tier": "stranger",
+        "vibe": "neutral",
+        "notableTraits": [],
+        "sharedExperiences": [],
+        "worksWith": {
+          "roasting": 0.5,
+          "serious": 0.5,
+          "conspiracies": 0.5,
+          "vulgar": 0.5
+        },
+        "callbacks": []
+      }
+    ]
+  ],
+  "topics": [],
+  "recentContext": [],
+  "community": {
+    "slang": [],
+    "runningGags": [],
+    "memes": []
+  },
+  "currentConversation": [],
+  "callbacks": [],
+  "memorableMoments": [],
+  "dreams": []
+}

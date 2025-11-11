@@ -15,7 +15,7 @@ class ConnectionHealthMonitor extends EventEmitter {
 
     this.platforms = new Map(); // platform name -> { client, config, state }
     this.checkInterval = options.checkInterval || 30000; // Check every 30 seconds
-    this.heartbeatTimeout = options.heartbeatTimeout || 300000; // 5 minutes without activity = dead (was 2 min)
+    this.heartbeatTimeout = options.heartbeatTimeout || 600000; // 10 minutes without activity = dead (was 5 min)
     this.maxReconnectAttempts = options.maxReconnectAttempts || 999; // Essentially unlimited retries
     this.baseReconnectDelay = options.baseReconnectDelay || 5000; // Start with 5s delay
     this.maxReconnectDelay = options.maxReconnectDelay || 60000; // Max 60s delay
@@ -208,12 +208,12 @@ class ConnectionHealthMonitor extends EventEmitter {
       ? client.isConnected()
       : client.connected || false;
 
-    // Check if we've seen activity recently (lenient: 5 minutes)
+    // Check if we've seen activity recently (lenient: 10 minutes)
     const hasRecentActivity = timeSinceActivity < this.heartbeatTimeout;
 
-    // Determine if platform is healthy - EITHER connected OR recently active
-    // This fixes false negatives where connection flag is wrong but messages are flowing
-    const isHealthy = isConnected || hasRecentActivity;
+    // Determine if platform is healthy - PRIORITIZE activity for Discord
+    // Discord.js client.connected is unreliable, so if we've seen messages, consider it healthy
+    const isHealthy = hasRecentActivity || isConnected;
 
     if (!isHealthy && !state.reconnecting) {
       console.log(`💔 [HealthMonitor] ${name} appears unhealthy:`);
