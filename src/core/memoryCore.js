@@ -641,6 +641,125 @@ class MemoryCore {
       this.save();
     }, 5 * 60 * 1000); // 5 minutes
   }
+  
+  /**
+   * ==========================================
+   * USER STATS QUERY
+   * ==========================================
+   */
+  
+  /**
+   * Get comprehensive stats about a user for sharing
+   */
+  getUserStats(username) {
+    const user = this.getUser(username);
+    
+    // Build readable stats
+    const stats = {
+      username: username,
+      nickname: user.nickname || 'none',
+      tier: user.tier,
+      interactions: user.interactions,
+      platforms: user.platforms.join(', '),
+      firstMet: this.formatTimestamp(user.firstMet),
+      lastSeen: this.formatTimestamp(user.lastSeen),
+      
+      // Relationship style
+      worksWith: {
+        roasting: this.formatPercentage(user.worksWith.roasting),
+        serious: this.formatPercentage(user.worksWith.serious),
+        conspiracies: this.formatPercentage(user.worksWith.conspiracies),
+        vulgar: this.formatPercentage(user.worksWith.vulgar)
+      },
+      
+      // Notable traits
+      vibe: user.vibe,
+      notableTraits: user.notableTraits.length > 0 ? user.notableTraits : ['none yet'],
+      sharedExperiences: user.sharedExperiences.length > 0 ? user.sharedExperiences.slice(-3) : ['none yet'],
+      
+      // Recent callbacks
+      recentCallbacks: user.callbacks.slice(-3).map(cb => ({
+        text: cb.text,
+        timesReferenced: cb.timesReferenced
+      }))
+    };
+    
+    return stats;
+  }
+  
+  /**
+   * Format stats into human-readable string
+   */
+  formatUserStats(username) {
+    const stats = this.getUserStats(username);
+    
+    let text = `📊 STATS FOR ${username.toUpperCase()}\n\n`;
+    
+    // Basic info
+    text += `Nickname: ${stats.nickname}\n`;
+    text += `Relationship: ${stats.tier}\n`;
+    text += `Interactions: ${stats.interactions}\n`;
+    text += `Platforms: ${stats.platforms}\n`;
+    text += `Known since: ${stats.firstMet}\n`;
+    text += `Last seen: ${stats.lastSeen}\n\n`;
+    
+    // What works with them
+    text += `COMMUNICATION STYLE:\n`;
+    text += `  Roasting: ${stats.worksWith.roasting}\n`;
+    text += `  Serious mode: ${stats.worksWith.serious}\n`;
+    text += `  Conspiracies: ${stats.worksWith.conspiracies}\n`;
+    text += `  Vulgarity: ${stats.worksWith.vulgar}\n\n`;
+    
+    // Personality
+    text += `VIBE: ${stats.vibe}\n`;
+    if (stats.notableTraits.length > 0 && stats.notableTraits[0] !== 'none yet') {
+      text += `TRAITS: ${stats.notableTraits.join(', ')}\n`;
+    }
+    
+    // Shared experiences
+    if (stats.sharedExperiences.length > 0 && stats.sharedExperiences[0] !== 'none yet') {
+      text += `\nSHARED MOMENTS:\n`;
+      stats.sharedExperiences.forEach(exp => {
+        text += `  • ${exp}\n`;
+      });
+    }
+    
+    return text;
+  }
+  
+  /**
+   * Format timestamp to readable date
+   */
+  formatTimestamp(timestamp) {
+    const date = new Date(timestamp);
+    const now = Date.now();
+    const diff = now - timestamp;
+    
+    // If less than a day, show hours
+    if (diff < 86400000) {
+      const hours = Math.floor(diff / 3600000);
+      return `${hours}h ago`;
+    }
+    
+    // If less than a month, show days
+    if (diff < 2592000000) {
+      const days = Math.floor(diff / 86400000);
+      return `${days}d ago`;
+    }
+    
+    // Otherwise show date
+    return date.toLocaleDateString();
+  }
+  
+  /**
+   * Format percentage (0-1 to readable string)
+   */
+  formatPercentage(value) {
+    const pct = Math.round(value * 100);
+    if (pct < 30) return `${pct}% (low)`;
+    if (pct < 60) return `${pct}% (medium)`;
+    return `${pct}% (high)`;
+  }
 }
 
 module.exports = MemoryCore;

@@ -19,7 +19,9 @@ const logger = require('./logger');
 const CoolPointsHandler = require('./coolPointsHandler');
 const CommandParser = require('./CommandParser');
 const BetaAnalytics = require('../monitoring/BetaAnalytics');
+const InnerAI = require('../monitoring/innerAI');
 const MemoryCore = require('../core/memoryCore');
+const HierarchicalMemory = require('../core/HierarchicalMemory');
 const TwitchEmoteManager = require('../twitch/TwitchEmoteManager');
 const VisionAnalyzer = require('../vision/visionAnalyzer');
 const YouTubeSearch = require('../video/youtubeSearch');
@@ -93,9 +95,12 @@ class ChatBotBeta extends EventEmitter {
 
     // Memory & Emotes (from Alpha)
     this.memory = new MemoryCore();
+    this.hierarchicalMemory = new HierarchicalMemory(this.grok); // NEW: 3-tier memory system
     this.emotes = new TwitchEmoteManager(process.env.TWITCH_CHANNELS?.split(',')[0] || 'broteam');
     this.recentResponses = new Map(); // Track last responses per channel to avoid repetition
     this.vision = null; // Will be initialized when Coolhole connects
+    this.twitchVision = null; // Vision for Twitch stream
+    this.twitchStreamPage = null; // Browser page watching Twitch stream
     this.youtubeSearch = null; // YouTube search for Coolhole
     this.videoDiscovery = null; // Proactive video finding
 
@@ -312,6 +317,63 @@ Response:`;
     }, 60000 + Math.random() * 30000); // Every 60-90 seconds
   }
 
+  /**
+   * Initialize vision for Twitch stream
+   */
+  async initializeTwitchVision() {
+    try {
+      const channel = process.env.TWITCH_CHANNELS.split(',')[0];
+      const puppeteer = require('puppeteer');
+      
+      logger.info(`👁️ [TwitchVision] Opening stream: https://www.twitch.tv/${channel}`);
+      
+      // Launch headless browser to watch stream
+      const browser = await puppeteer.launch({
+        headless: true,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-web-security',
+          '--disable-features=IsolateOrigins',
+          '--disable-site-isolation-trials',
+          '--mute-audio' // Don't play audio
+        ]
+      });
+      
+      this.twitchStreamPage = await browser.newPage();
+      await this.twitchStreamPage.setViewport({ width: 1920, height: 1080 });
+      
+      // Navigate to stream
+      await this.twitchStreamPage.goto(`https://www.twitch.tv/${channel}`, {
+        waitUntil: 'networkidle2',
+        timeout: 30000
+      });
+      
+      // Wait for page to load
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      // Initialize vision analyzer for Twitch
+      this.twitchVision = new VisionAnalyzer(this.twitchStreamPage);
+      
+      logger.info('👁️ [TwitchVision] Stream vision initialized');
+      
+      // Periodically capture stream for context (every 2 minutes)
+      setInterval(async () => {
+        try {
+          if (this.twitchVision) {
+            await this.twitchVision.captureAndAnalyze();
+          }
+        } catch (err) {
+          logger.debug(`⚠️ [TwitchVision] Capture error: ${err.message}`);
+        }
+      }, 120000); // Every 2 minutes
+      
+    } catch (err) {
+      logger.warn(`⚠️ [TwitchVision] Failed to initialize: ${err.message}`);
+    }
+  }
+
   async initializeAsync() {
     try {
       // Initialize memory with error handling
@@ -322,7 +384,16 @@ Response:`;
       } catch (memErr) {
         logger.warn('⚠️ [Memory] Memory init failed (starting fresh):', memErr.message);
       }
-      
+
+      // Initialize hierarchical memory
+      try {
+        await this.hierarchicalMemory.load();
+        this.hierarchicalMemory.startAutoConsolidation();
+        logger.info('✅ [HierarchicalMemory] Loaded and auto-consolidation started');
+      } catch (hierErr) {
+        logger.warn('⚠️ [HierarchicalMemory] Init failed:', hierErr.message);
+      }
+
       // Initialize emotes with error handling
       try {
         await this.emotes.initialize();
@@ -349,6 +420,10 @@ Response:`;
       this.alphaSystemsInitialized = true;
       logger.info('✅ [Alpha Systems] 18 personality systems initialized');
       
+      // Initialize InnerAI monitoring
+      this.innerAI = new InnerAI(this);
+      logger.info('✅ [InnerAI] Monitoring system initialized');
+      
       // Initialize vision if we have Coolhole page
       if (this.coolholeClient && this.coolholeClient.page) {
         this.vision = new VisionAnalyzer(this.coolholeClient.page);
@@ -359,6 +434,11 @@ Response:`;
         
         // Start watching videos and commenting occasionally
         this.startVideoWatching();
+      }
+      
+      // Initialize Twitch stream vision if Twitch is enabled
+      if (this.twitchClient && process.env.TWITCH_CHANNELS) {
+        this.initializeTwitchVision();
       }
       
       logger.info('✅ [Beta] All systems initialized successfully');
@@ -417,6 +497,20 @@ Response:`;
           // Vision context is optional
         }
       }
+      
+      // Get visual context from Twitch stream if available
+      if (platform === 'twitch' && this.twitchVision) {
+        try {
+          const lastAnalysis = this.twitchVision.lastScreenshot;
+          if (lastAnalysis && lastAnalysis.analysis) {
+            const brightness = lastAnalysis.analysis.brightness || 0;
+            const dominantColor = lastAnalysis.analysis.dominantColor || 'unknown';
+            visualContext = `[Watching stream: brightness ${Math.round(brightness)}, dominant color: ${dominantColor}]`;
+          }
+        } catch (err) {
+          // Vision context is optional
+        }
+      }
 
       // Check for gold message (someone said something "so true" on Coolhole)
       const isGold = chatData.isGold || false;
@@ -431,7 +525,12 @@ Response:`;
       // Analytics - log incoming message
       this.analytics.logMessage(username, fullMessage, platform, channelId);
 
-      // Store message in recent history
+      // Add to hierarchical memory (working memory)
+      if (this.hierarchicalMemory) {
+        this.hierarchicalMemory.addMessage(username, fullMessage, platform, channelId);
+      }
+
+      // Store message in recent history (legacy - keep for compatibility)
       this.addToRecentMessages(channelId, username, fullMessage);
 
       // Check for commands first
@@ -490,6 +589,37 @@ Response:`;
         if (response) {
           this.sendMessageQueued(response, platform, channelId, chatData);
           return;
+        }
+      }
+      
+      // Check for user stats queries (natural language)
+      const statsQuery = this.detectStatsQuery(fullMessage);
+      if (statsQuery && statsQuery.targetUser) {
+        const statsText = this.memory.formatUserStats(statsQuery.targetUser);
+        this.sendMessageQueued(statsText, platform, channelId, chatData);
+        return;
+      }
+      
+      // Check for fact-check queries (look it up, is this real, etc)
+      const factCheck = this.detectFactCheckQuery(username, fullMessage);
+      if (factCheck && factCheck.query) {
+        // Either actually search or just bullshit
+        const shouldActuallySearch = Math.random() < 0.6; // 60% chance to actually search
+        
+        if (shouldActuallySearch) {
+          logger.info(`🔍 [FactCheck] Actually searching: "${factCheck.query}"`);
+          const response = await this.performFactCheck(factCheck.query, username, fullMessage);
+          if (response) {
+            this.sendMessageQueued(response, platform, channelId, chatData);
+            return;
+          }
+        } else {
+          logger.info(`🤥 [FactCheck] Bullshitting about: "${factCheck.query}"`);
+          const response = await this.bullshitFactCheck(factCheck.query, username, fullMessage);
+          if (response) {
+            this.sendMessageQueued(response, platform, channelId, chatData);
+            return;
+          }
         }
       }
 
@@ -552,6 +682,11 @@ Response:`;
       }
 
     } catch (error) {
+      // Log to InnerAI for monitoring
+      if (this.innerAI) {
+        this.innerAI.logError(error, { feature: 'handleMessage', chatData });
+      }
+      
       // ErrorRecovery will handle and track this
       await this.errorRecovery.handleError(error, { feature: 'handleMessage', chatData });
       logger.error(`❌ Error handling message: ${error.message}`);
@@ -629,10 +764,10 @@ Response:`;
     if (lastResponseToUser) {
       const timeSinceResponse = Date.now() - lastResponseToUser;
       
-      // If within 30 seconds of last response, continue conversation (40% chance)
-      // This allows natural back-and-forth without spamming
+      // If within 30 seconds of last response, continue conversation (25% chance)
+      // This allows natural back-and-forth without being clingy
       if (timeSinceResponse < 30000) {
-        if (Math.random() < 0.40) {
+        if (Math.random() < 0.25) {
           return { respond: true, reason: 'conversation_continuation' };
         }
       }
@@ -651,6 +786,16 @@ Response:`;
     const isQuestion = lowerText.includes('?') || 
                       lowerText.match(/^(who|what|when|where|why|how|is|does|can|should|would|could|will)/i);
     if (isQuestion) {
+      // On Twitch, only respond to questions if they mention Slunt or are clearly for everyone
+      if (platform === 'twitch') {
+        const mentionsSlunt = lowerText.includes('slunt');
+        const isChatQuestion = lowerText.match(/\b(chat|anyone|everyone|guys)\b/i);
+        if (mentionsSlunt || isChatQuestion) {
+          return { respond: true, reason: 'question' };
+        }
+        // Otherwise skip - probably asking streamer or specific person
+        return { respond: false, reason: 'twitch_question_not_directed' };
+      }
       return { respond: true, reason: 'question' };
     }
 
@@ -679,14 +824,18 @@ Response:`;
                          lowerText.includes('damn') ||
                          lowerText.includes('bitch')) && wordCount > 2; // Must have substance
     
-    // Platform-specific response chances (increased for better testing)
+    // Platform-specific response chances - BE SELECTIVE, not needy
     let responseChance;
     if (platform === 'discord') {
-      // Discord: more active since it's a smaller community
-      responseChance = isHighEnergy ? 0.70 : 0.50; // 70% high energy, 50% normal (increased from 50%/30%)
+      // Discord: respond occasionally, not constantly
+      responseChance = isHighEnergy ? 0.35 : 0.15; // 35% high energy, 15% normal - chill out
+    } else if (platform === 'twitch') {
+      // Twitch: VERY selective - chat moves fast, don't spam
+      // Only respond to direct mentions/questions or VERY rarely to high energy
+      responseChance = 0; // Don't respond randomly on Twitch at all
     } else {
-      // Coolhole/Twitch: less active, busier chat
-      responseChance = isHighEnergy ? 0.50 : 0.30; // 50% high energy, 30% normal (increased from 40%/20%)
+      // Coolhole: selective in busy chat
+      responseChance = isHighEnergy ? 0.25 : 0.10; // 25% high energy, 10% normal - lurk more
     }
 
     // Random chance for messages
@@ -842,9 +991,14 @@ Response:`;
       }
 
       // Platform-specific style guidance
-      const platformStyle = platform === 'discord' 
-        ? 'DEFAULT to 30-50 chars. Only go 80+ when deeply engaging or making an important point. Keep it tight and punchy.'
-        : 'Keep it SHORT (under 50 chars usually). Quick reactions work best here.';
+      let platformStyle;
+      if (platform === 'voice') {
+        platformStyle = 'VOICE MODE: Speak naturally like David Hasselhoff. No internet slang. No "lol", "savage", "bruh", "fr", "lowkey" or any zoomer words. Talk like a real person having a conversation. Keep responses conversational but not overly long (2-3 sentences max). Sound confident and natural.';
+      } else if (platform === 'discord') {
+        platformStyle = 'DEFAULT to 30-50 chars. Only go 80+ when deeply engaging or making an important point. Keep it tight and punchy.';
+      } else {
+        platformStyle = 'Keep it SHORT (under 50 chars usually). Quick reactions work best here.';
+      }
 
       // Build invisible behavioral modifiers (these affect HOW you act, not what you SAY about yourself)
       let behaviorModifiers = '';
@@ -877,43 +1031,43 @@ Response:`;
       }
 
       // System prompt - let Grok be naturally edgy with Alpha personality
-      const systemPrompt = `You are Slunt, a real person in this chat. You're crude, funny, and unfiltered. ${behaviorModifiers}
+      const systemPrompt = `you're slunt, just another person in the chat. ${behaviorModifiers}
 
 ${videoContext}
 
-Recent chat:
+recent chat:
 ${contextMessages}
 
-Personality: Chill but savage. Roast people when it's funny. Be vulgar, playful, unpredictable. Match the room's energy. You genuinely care about your friends - encourage them when they do cool shit, support them when they're down. Show love through crude humor AND actual warmth.
+personality: chill. edgy when it's funny, but don't force it. talk to people like they're your friends. be real with them - supportive when needed, shit talk when it's fun. don't overdo anything.
 
-Style: Type EXACTLY like the chat around you - casual, messy, real. ${platformStyle}
+style: talk like everyone else in the chat. casual, natural, real. ${platformStyle}
 
-How to write naturally:
-- Respond to ${username} only - don't track multiple conversations
-- Use lowercase a lot ("dude wtf" not "Dude, wtf")
-- Drop punctuation often ("nah u crazy" not "Nah, you're crazy.")
-- Use fragments and incomplete thoughts ("lol nice" "brutal" "facts")
-- Sometimes just react with one word ("nah" "lol" "damn" "nice" "brutal" "facts")
-- Keep it punchy and simple (10-30 chars is perfect, 50 max usually)
-- Drop words ("u" not "you", "ur" not "your", "r" not "are")
-- Mix capitals randomly, not just sentence start
-- Double down on vulgarity without explaining ("ur a dumbass" not "your name's basically...")
+write like this:
+- lowercase most of the time
+- barely any punctuation
+- keep it short usually (30-50 chars), go longer when it makes sense (up to 150-200 chars max)
+- abbreviate naturally when it feels right (you/u, your/ur, because/cuz) 
+- react simply when that's all that's needed: "lol" "damn" "nice" "nah" "yo" "dude"
+- be vulgar when it fits but don't try too hard
+- just talk normal
+- make statements, observations, jokes - don't ask questions unless it really makes sense
+- don't repeat what people just said or ask for clarification
+- just go with the flow of conversation
 
-Examples:
-- "sounds lit im in"
-- "dude ur literally a sex toy"
-- "u time traveling or just high"
-- "druid circlejerk pleaselaugh"
-- "nah that's sick get help"
-- "lol facts"
-- "brutal"
+good examples from the chat:
+- "yo whats good"
+- "cant fuckin sleep my dude"
+- "whatcha watching playboy"
+- "bro you're fucked"
+- "dude wtf"
+- "nah you crazy"
+- "dude squirrels are the worst"
+- "knock knock whos there goatman goatman who goatman chew your legs off dude lol"
 
-NEVER use: af, bruh, fr, cap, no cap, deadass, based, rekt, bet, fam, lowkey, highkey, bussin, slaps, hits different, mid
+just reply to ${username}. be in the moment. don't overthink it.${antiRepetitionContext}`;
 
-Just react to what ${username} said. Be present in this moment.${antiRepetitionContext}`;
-
-      // Platform-specific token limits
-      const maxTokens = platform === 'discord' ? 100 : 60; // Discord gets more tokens for longer responses
+      // Keep responses SHORT - people in chat dont write essays
+      const maxTokens = platform === 'discord' ? 120 : 80; // Allow more tokens for longer thoughts when needed
 
       // Call Grok API
       const completion = await this.grok.chat.completions.create({
@@ -923,8 +1077,8 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
           ...messages
         ],
         max_tokens: maxTokens,
-        temperature: 1.2, // Higher for more creative/unpredictable responses
-        top_p: 0.95 // Nucleus sampling for variety
+        temperature: 1.1, // Natural randomness without being too wild
+        top_p: 0.9 // More focused responses
         // Note: Grok-4-Fast-Reasoning only supports: model, messages, max_tokens, temperature, top_p
       });
 
@@ -949,46 +1103,22 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
         }
       }
 
-      // Sometimes drop ending punctuation (30% chance)
-      if (Math.random() < 0.30 && finalResponse.endsWith('.')) {
+      // Sometimes drop ending punctuation (50% chance for more casual feel)
+      if (Math.random() < 0.50 && finalResponse.endsWith('.')) {
         finalResponse = finalResponse.slice(0, -1);
       }
 
-      // Platform-specific length limits - STRICTER for Discord
-      const maxLength = platform === 'discord' ? 150 : 150; // Enforce 150 char max everywhere
-      const softLimit = platform === 'discord' ? 80 : 100;  // Discord soft limit now 80 (aim for short)
-      const idealLength = platform === 'discord' ? 50 : 50; // Ideal is 30-50 chars
+      // Keep it SHORT - reject if too long, let AI learn to be concise
+      const maxLength = 200; // Allow up to 200 chars for when he needs to say more
       
-      // ENFORCE SHORT RESPONSES - cut at first natural break after soft limit
-      if (finalResponse.length > softLimit) {
-        // Look for sentence breaks (. ! ?)
-        const breaks = [];
-        let match;
-        const regex = /[.!?]\s/g;
-        while ((match = regex.exec(finalResponse)) !== null) {
-          breaks.push(match.index + 1);
-        }
-        
-        // Find first break before soft limit, or first break after if none before
-        const breakBeforeSoft = breaks.find(b => b <= softLimit && b > idealLength);
-        const firstBreak = breaks[0];
-        
-        if (breakBeforeSoft) {
-          // Perfect - natural break before soft limit
-          finalResponse = finalResponse.substring(0, breakBeforeSoft).trim();
-        } else if (firstBreak && firstBreak < maxLength) {
-          // Use first break if it's within max length
-          finalResponse = finalResponse.substring(0, firstBreak).trim();
-        } else if (finalResponse.length > maxLength) {
-          // Force truncate at max
-          finalResponse = finalResponse.substring(0, maxLength).trim() + '...';
-        }
-        // Otherwise keep full response (between soft and max)
+      // If response is too short or way too long, reject it
+      if (finalResponse.length < 3) {
+        logger.warn(`⚠️  Response rejected - too short (${finalResponse.length} chars)`);
+        return null;
       }
-
-      // Validate - minimum 3 chars, respect platform max
-      if (finalResponse.length < 3 || finalResponse.length > maxLength + 20) {
-        logger.warn(`⚠️  Response rejected - bad length (${finalResponse.length} chars)`);
+      
+      if (finalResponse.length > maxLength) {
+        logger.warn(`⚠️  Response rejected - too long (${finalResponse.length} chars), AI should keep it under 200`);
         return null;
       }
 
@@ -1080,6 +1210,22 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
 
       // Update last response time
       this.lastResponseTime = Date.now();
+      
+      // === INNER AI - Validate response quality ===
+      if (this.innerAI) {
+        const validation = this.innerAI.validateResponse(username, message, finalResponse, { platform, channelId });
+        
+        if (!validation.valid) {
+          logger.error(`❌ [InnerAI] Response rejected: ${validation.errors.join(', ')}`);
+          // Try to regenerate once
+          logger.info(`🔄 [InnerAI] Attempting regeneration...`);
+          return this.generateResponse(username, message, channelId, platform, context);
+        }
+        
+        if (validation.warnings.length > 0) {
+          logger.warn(`⚠️ [InnerAI] Response quality: ${Math.round(validation.quality * 100)}%`);
+        }
+      }
 
       logger.info(`💬 [Beta/Grok+Alpha] Generated response (${finalResponse.length} chars)`);
       return finalResponse;
@@ -1136,7 +1282,7 @@ Just react to what ${username} said. Be present in this moment.${antiRepetitionC
             }
           }
         } else if (platform === 'twitch' && this.twitchClient) {
-          await this.twitchClient.say(channelId, text);
+          await this.twitchClient.sendMessage(channelId, text);
         }
       }
 
@@ -1345,9 +1491,9 @@ Context: ${context || 'roasted them'}
 Username: ${username}
 
 Examples of style (but be original):
-- "found ur baby pic"
-- "this u?"
-- "here's u boss"
+- "found your baby pic"
+- "this you?"
+- "here's you boss"
 - "yo check this"
 - "literally you"
 
@@ -1360,7 +1506,7 @@ Caption:`;
         temperature: 1.3
       });
 
-      let caption = completion.choices[0]?.message?.content?.trim() || 'this u?';
+      let caption = completion.choices[0]?.message?.content?.trim() || 'this you?';
       
       // Clean up
       caption = caption.replace(/^"|"$/g, '').trim();
@@ -1369,7 +1515,7 @@ Caption:`;
 
     } catch (error) {
       logger.error(`❌ Error generating caption: ${error.message}`);
-      return 'this u?';
+      return 'this you?';
     }
   }
 
@@ -1407,6 +1553,188 @@ Caption:`;
 
     // Send the DM/PM
     await this.sendPrankDM(username, userId, platform, prankOptions);
+  }
+  
+  /**
+   * Detect if message is asking for user stats/relationship info
+   * Returns: { targetUser: string } or null
+   */
+  detectStatsQuery(message) {
+    const lower = message.toLowerCase();
+    
+    // Must be asking Slunt about someone
+    if (!/(slunt|you),? (what|how|tell me)/i.test(message)) {
+      return null;
+    }
+    
+    // Must be asking about relationship/stats
+    const isStatsQuery = /relationship|interactions?|think of|feel about|know about|stats|how many|how strong/i.test(lower);
+    if (!isStatsQuery) {
+      return null;
+    }
+    
+    // Extract target username
+    // Patterns: "relationship with X", "think of X", "know about X", "feel about X"
+    const patterns = [
+      /relationship with ([a-zA-Z0-9_-]+)/i,
+      /think of ([a-zA-Z0-9_-]+)/i,
+      /feel about ([a-zA-Z0-9_-]+)/i,
+      /know about ([a-zA-Z0-9_-]+)/i,
+      /interactions? with ([a-zA-Z0-9_-]+)/i,
+      /stats (?:for|on|about) ([a-zA-Z0-9_-]+)/i
+    ];
+    
+    for (const pattern of patterns) {
+      const match = message.match(pattern);
+      if (match && match[1]) {
+        const targetUser = match[1].trim();
+        
+        // Don't allow querying about Slunt himself
+        if (targetUser.toLowerCase() === 'slunt') {
+          return null;
+        }
+        
+        logger.info(`📊 [ChatBot] Stats query detected: ${targetUser}`);
+        return { targetUser };
+      }
+    }
+    
+    return null;
+  }
+  
+  /**
+   * Detect if message is asking for fact-checking/lookup
+   * Returns: { query: string } or null
+   */
+  detectFactCheckQuery(username, message) {
+    const lower = message.toLowerCase();
+    
+    // Must be asking Slunt
+    if (!/(slunt|you),? (look|search|check|find|is this)/i.test(message)) {
+      return null;
+    }
+    
+    // Fact-check triggers
+    const triggers = [
+      /look up (.+)/i,
+      /search (?:for )?(.+)/i,
+      /is (.+?) real/i,
+      /is (.+?) true/i,
+      /check if (.+)/i,
+      /find out (?:about )?(.+)/i,
+      /what'?s the (?:deal|truth|story) (?:with|about) (.+)/i,
+      /tell me about (.+)/i,
+      /explain (.+)/i
+    ];
+    
+    for (const pattern of triggers) {
+      const match = message.match(pattern);
+      if (match && match[1]) {
+        let query = match[1].trim();
+        
+        // Clean up query
+        query = query.replace(/[?!.]+$/, ''); // Remove trailing punctuation
+        
+        if (query.length > 3 && query.length < 100) {
+          logger.info(`🔍 [FactCheck] Detected query: "${query}"`);
+          return { query };
+        }
+      }
+    }
+    
+    return null;
+  }
+  
+  /**
+   * Perform actual fact check using web search
+   */
+  async performFactCheck(query, username, originalMessage) {
+    try {
+      // Search for facts
+      const searchResults = await browserSearch.searchFacts(query);
+      
+      if (!searchResults || searchResults.snippets.length === 0) {
+        return this.bullshitFactCheck(query, username, originalMessage);
+      }
+      
+      // Build context from search results
+      const factsContext = searchResults.snippets
+        .slice(0, 3)
+        .map((s, i) => `Result ${i + 1}: ${s.text}`)
+        .join('\n\n');
+      
+      // Generate response using Grok with search context
+      const prompt = `You are Slunt - edgy, irreverent chatbot. Someone asked you to look up "${query}".
+
+Here's what you found:
+
+${factsContext}
+
+Now explain this in YOUR voice - sarcastic, funny, maybe condescending. Keep it under 200 chars. Don't say "according to" or cite sources, just tell them what you found in your own words.
+
+Your response:`;
+
+      const completion = await this.grok.chat.completions.create({
+        model: this.model,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 100,
+        temperature: 1.2
+      });
+
+      let response = completion.choices[0]?.message?.content?.trim() || null;
+      
+      if (response) {
+        // Clean up
+        response = response.replace(/^(Slunt:|slunt:)\s*/i, '').trim();
+        logger.info(`✅ [FactCheck] Real answer: "${response}"`);
+        return response;
+      }
+      
+      return null;
+
+    } catch (error) {
+      logger.error(`❌ [FactCheck] Search error: ${error.message}`);
+      return this.bullshitFactCheck(query, username, originalMessage);
+    }
+  }
+  
+  /**
+   * Bullshit a fact check (just make something up)
+   */
+  async bullshitFactCheck(query, username, originalMessage) {
+    try {
+      // Should we say it's true or false?
+      const veracity = Math.random() < 0.5 ? 'true' : 'false';
+      
+      const prompt = `You are Slunt - edgy, sarcastic chatbot. Someone asked you about "${query}".
+
+You're just going to make something up and say it's ${veracity}. Be confident and funny about it. Maybe add some ridiculous "facts" to support your claim. Keep it under 200 chars.
+
+DO NOT say "I looked it up" or "according to". Just confidently state your bullshit.
+
+Your response:`;
+
+      const completion = await this.grok.chat.completions.create({
+        model: this.model,
+        messages: [{ role: 'user', content: prompt }],
+        max_tokens: 100,
+        temperature: 1.4
+      });
+
+      let response = completion.choices[0]?.message?.content?.trim() || null;
+      
+      if (response) {
+        response = response.replace(/^(Slunt:|slunt:)\s*/i, '').trim();
+        logger.info(`🤥 [FactCheck] Bullshit answer: "${response}"`);
+        return response;
+      }
+      
+      return null;
+
+    } catch (error) {
+      logger.error(`❌ [FactCheck] Bullshit error: ${error.message}`);
+      return null;
+    }
   }
 }
 

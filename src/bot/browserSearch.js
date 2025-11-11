@@ -201,6 +201,84 @@ class BrowserSearch {
       return await this.searchImage(query);
     }
   }
+  
+  /**
+   * Search web for information (fact-checking)
+   * @param {string} query - Search query
+   * @returns {Promise<Object|null>} - {snippets: [], urls: [], query}
+   */
+  async searchFacts(query) {
+    if (!this.isInitialized) {
+      await this.initialize();
+    }
+
+    if (!this.browser) {
+      logger.error('❌ Browser not available');
+      return null;
+    }
+
+    let page = null;
+    try {
+      page = await this.browser.newPage();
+      
+      await page.setUserAgent('Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36');
+      
+      // Search Google
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      await page.goto(searchUrl, { waitUntil: 'networkidle2', timeout: 10000 });
+
+      // Wait for search results
+      await page.waitForSelector('h3', { timeout: 5000 });
+
+      // Extract search result snippets
+      const results = await page.evaluate(() => {
+        const snippets = [];
+        const urls = [];
+        
+        // Get search result divs
+        const searchResults = Array.from(document.querySelectorAll('div[data-sokoban-container]'));
+        
+        searchResults.forEach(result => {
+          // Extract title
+          const titleEl = result.querySelector('h3');
+          const title = titleEl ? titleEl.innerText : '';
+          
+          // Extract snippet text
+          const snippetEl = result.querySelector('div[data-sncf]') || result.querySelector('.VwiC3b');
+          const snippet = snippetEl ? snippetEl.innerText : '';
+          
+          // Extract URL
+          const linkEl = result.querySelector('a');
+          const url = linkEl ? linkEl.href : '';
+          
+          if (snippet && snippet.length > 20) {
+            snippets.push({ title, text: snippet, url });
+          }
+          
+          if (url && url.startsWith('http')) {
+            urls.push(url);
+          }
+        });
+        
+        return { snippets: snippets.slice(0, 5), urls: urls.slice(0, 5) };
+      });
+
+      await page.close();
+
+      if (results.snippets.length > 0) {
+        logger.info(`🔍 Found ${results.snippets.length} facts for "${query}"`);
+        return { ...results, query };
+      }
+
+      logger.warn(`⚠️ No facts found for "${query}"`);
+      return null;
+
+    } catch (error) {
+      logger.error(`❌ Fact search error: ${error.message}`);
+      if (page) await page.close();
+      return null;
+    }
+  }
 
   /**
    * Cleanup - close browser

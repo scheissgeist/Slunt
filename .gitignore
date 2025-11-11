@@ -94,10 +94,17 @@ piper/
 
 # Browser profile data (for automated testing)
 .browser-profile/
+.twitter-profile/
+.twitter-browser-profile/
+
+# Session data
+data/beta_analytics/sessions/
+
+# Crash logs
+crash-log.txt
 
 *.jpg
-*.png# Browser profile cache (Puppeteer)
-.browser-profile/
+*.png
 
 # Temporary files
 temp/
