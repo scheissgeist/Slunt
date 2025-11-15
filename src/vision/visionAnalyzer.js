@@ -268,10 +268,54 @@ class VisionAnalyzer extends EventEmitter {
       colors: [],
       brightness: 0,
       sceneChanged: false,
-      videoPlayer: null
+      videoPlayer: null,
+      visualDescription: null // GPT-4 Vision description
     };
 
     try {
+      // CLAUDE VISION: Get actual visual description
+      if (process.env.ANTHROPIC_API_KEY && process.env.ANTHROPIC_API_KEY !== 'your-anthropic-api-key-here') {
+        try {
+          const Anthropic = require('@anthropic-ai/sdk');
+          const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+          
+          const base64Image = buffer.toString('base64');
+          
+          console.log('👁️ [Vision] Analyzing stream with Claude Vision...');
+          const visionResponse = await Promise.race([
+            anthropic.messages.create({
+              model: process.env.CLAUDE_MODEL || "claude-3-5-haiku-20241022", // Use configured Claude model
+              max_tokens: 150,
+              messages: [{
+                role: "user",
+                content: [
+                  {
+                    type: "image",
+                    source: {
+                      type: "base64",
+                      media_type: "image/png",
+                      data: base64Image
+                    }
+                  },
+                  { 
+                    type: "text", 
+                    text: "You're watching a Twitch stream. Describe what's happening in 2-3 short sentences. Focus on: game/content being played, what the streamer is doing, any notable UI elements, events, or moments. Be specific and detailed." 
+                  }
+                ]
+              }]
+            }),
+            new Promise((_, reject) => setTimeout(() => reject(new Error('Vision timeout')), 8000))
+          ]);
+          
+          analysis.visualDescription = visionResponse.content[0].text.trim();
+          console.log(`✅ [Vision] Claude: "${analysis.visualDescription}"`);
+          
+          this.lastVisualDescription = analysis.visualDescription;
+        } catch (visionErr) {
+          console.log(`⚠️ [Vision] Claude failed: ${visionErr.message}`);
+        }
+      }
+
       // Use sharp for image processing
       const image = sharp(buffer);
       const metadata = await image.metadata();

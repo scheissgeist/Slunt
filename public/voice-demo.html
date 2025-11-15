@@ -60,6 +60,15 @@
     <button id="startBtn">Start Listening</button>
     <button id="stopBtn" disabled>Stop</button>
     <button id="clearMemoryBtn" style="background: #f44336;">Clear Memory</button>
+    <button id="screenShareBtn" style="background: #9C27B0;">👁️ Share Screen (Optional)</button>
+    <button id="testScreenBtn" style="background: #FFA500;">🔍 Test Screen Vision</button>
+
+    <div id="screenStatus" style="display: none; margin: 12px 0; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 8px; font-size: 0.9em;">
+      📺 Screen sharing: <span id="screenStatusText" style="color: #4CAF50;">Off</span>
+    </div>
+
+    <div id="testResults" style="display: none; margin: 12px 0; padding: 12px; background: rgba(255,165,0,0.2); border-radius: 8px; border-left: 4px solid #FFA500; font-size: 0.85em; white-space: pre-wrap;"></div>
+    
     <div class="transcript" id="transcript">Transcript will appear here...</div>
     <div class="reply" id="reply">Slunt's reply will appear here...</div>
     <audio id="audio" controls style="display:none;"></audio>
@@ -69,10 +78,20 @@
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const clearMemoryBtn = document.getElementById('clearMemoryBtn');
+    const screenShareBtn = document.getElementById('screenShareBtn');
+    const testScreenBtn = document.getElementById('testScreenBtn');
+    const testResultsEl = document.getElementById('testResults');
+    const screenStatusEl = document.getElementById('screenStatus');
+    const screenStatusText = document.getElementById('screenStatusText');
     const transcriptEl = document.getElementById('transcript');
     const replyEl = document.getElementById('reply');
     const audioEl = document.getElementById('audio');
     let synthUtterance = null;
+    
+    // Screen sharing variables
+    let screenStream = null;
+    let captureInterval = null;
+    let isScreenSharing = false;
 
     // Voice status monitoring
     async function updateVoiceStatus() {
@@ -147,7 +166,7 @@
       recognition.lang = 'en-US';
       let finalTranscript = '';
       let lastSpeechTime = 0;
-      const PAUSE_MS = 1200; // Longer pause to avoid mic noise triggering responses
+      const PAUSE_MS = 700; // Quick response - natural conversation timing
       const MIN_CONFIDENCE = 0.3; // LOWERED: Accept more speech (was 0.6, too strict)
       let pauseTimer = null; // ADDED: Track single timer to prevent duplicates
       let isSending = false; // ADDED: Prevent multiple sends of same message
@@ -276,12 +295,20 @@
           } catch (e) {}
 
           try {
+            // Send voice request to server
             const res = await fetch('/api/voice', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ text })
             });
             const data = await res.json();
+
+            console.log(`✅ [Voice] Response received: "${data.reply?.substring(0, 50)}..."`);
+
+            // Check if Slunt referenced screen context
+            if (data.reply?.includes('screen') || data.reply?.includes('see') || data.reply?.includes('watching')) {
+              console.log('👁️ [Voice] Slunt may be referencing what he sees!');
+            }
             replyEl.textContent = data.reply || '[No reply]';
             if (data.audioUrl) {
               audioEl.src = data.audioUrl;
@@ -311,15 +338,18 @@
         }, PAUSE_MS + 10); // Minimal extra delay for snappy responses
       };
       recognition.onerror = (e) => {
-        transcriptEl.textContent = 'Error: ' + e.error;
+        console.error('[Speech] Recognition error:', e.error);
+        if (e.error !== 'no-speech' && e.error !== 'aborted') {
+          transcriptEl.textContent = 'Error: ' + e.error;
+        }
       };
       recognition.onend = () => {
         if (listenContinuously) {
-          recognition.start();
-        } else {
-          isListening = false;
-          startBtn.disabled = false;
-          stopBtn.disabled = true;
+          try {
+            recognition.start();
+          } catch (e) {
+            console.log('[Speech] Recognition restart skipped:', e.message);
+          }
         }
       };
     }
@@ -327,22 +357,185 @@
     startBtn.onclick = () => {
       if (recognition && !isListening) {
         listenContinuously = true;
-        recognition.start();
         isListening = true;
         startBtn.disabled = true;
         stopBtn.disabled = false;
-        transcriptEl.textContent = 'Listening (continuous)...';
+        startBtn.textContent = '🎤 Listening';
+        transcriptEl.textContent = 'Listening...';
+        transcriptEl.style.borderLeft = '4px solid #4CAF50';
+        try {
+          recognition.start();
+        } catch (e) {
+          console.log('[Speech] Recognition start failed:', e.message);
+        }
       }
     };
     stopBtn.onclick = () => {
       if (recognition && isListening) {
         listenContinuously = false;
-        recognition.stop();
+        try {
+          recognition.stop();
+        } catch (e) {}
         isListening = false;
         startBtn.disabled = false;
         stopBtn.disabled = true;
+        startBtn.textContent = 'Start Listening';
+        transcriptEl.style.borderLeft = '';
+        transcriptEl.textContent = 'Stopped';
       }
     };
+    
+    // Screen sharing functionality
+    screenShareBtn.onclick = async () => {
+      if (isScreenSharing) {
+        stopScreenSharing();
+      } else {
+        await startScreenSharing();
+      }
+    };
+    
+    async function startScreenSharing() {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+          alert('Screen sharing not supported in this browser');
+          return;
+        }
+        
+        // Initialize Socket.IO for screen sharing (lazy load)
+        if (!window.socket) {
+          await loadSocketIO();
+        }
+        
+        // Request screen sharing - browser will show picker
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: { 
+            width: 1920, 
+            height: 1080,
+            frameRate: 1
+          },
+          audio: false,
+          preferCurrentTab: false
+        });
+        
+        isScreenSharing = true;
+        screenShareBtn.textContent = '🛑 Stop Sharing Screen';
+        screenShareBtn.style.background = '#f44336';
+        screenStatusEl.style.display = 'block';
+        screenStatusText.textContent = 'Active';
+        screenStatusText.style.color = '#4CAF50';
+        
+        // Handle stream ending
+        screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+          stopScreenSharing();
+        });
+        
+        // Capture and send frames every 3 seconds (faster updates for gameplay)
+        captureInterval = setInterval(() => {
+          if (isScreenSharing) {
+            captureAndSendFrame();
+          }
+        }, 3000);
+
+        // Send initial frame immediately
+        console.log('📸 [Client] Screen sharing started - sending first frame...');
+        captureAndSendFrame();
+        
+        console.log('Screen sharing started');
+      } catch (error) {
+        console.error('Screen sharing error:', error);
+        if (error.name === 'NotAllowedError') {
+          alert('Screen sharing permission denied');
+        } else {
+          alert('Screen sharing error: ' + error.message);
+        }
+      }
+    }
+    
+    function stopScreenSharing() {
+      if (screenStream) {
+        screenStream.getTracks().forEach(track => track.stop());
+        screenStream = null;
+      }
+      
+      if (captureInterval) {
+        clearInterval(captureInterval);
+        captureInterval = null;
+      }
+      
+      isScreenSharing = false;
+      screenShareBtn.textContent = '👁️ Share Screen (Optional)';
+      screenShareBtn.style.background = '#9C27B0';
+      screenStatusEl.style.display = 'none';
+      screenStatusText.textContent = 'Off';
+      
+      console.log('Screen sharing stopped');
+    }
+    
+    async function captureAndSendFrame() {
+      if (!screenStream || !isScreenSharing || !window.socket) return;
+      
+      try {
+        const video = document.createElement('video');
+        video.srcObject = screenStream;
+        video.muted = true;
+        await video.play();
+        
+        await new Promise(resolve => {
+          if (video.readyState >= 2) resolve();
+          else video.addEventListener('loadedmetadata', resolve, { once: true });
+        });
+        
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.min(video.videoWidth, 1920);
+        canvas.height = Math.min(video.videoHeight, 1080);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              window.socket.emit('voice:screenFrame', {
+                data: reader.result,
+                timestamp: Date.now(),
+                description: 'User screen content',
+                deleteAfterProcessing: true
+              });
+              console.log('📸 [Client] Screen frame sent to server for vision analysis');
+            };
+            reader.readAsDataURL(blob);
+          }
+        }, 'image/jpeg', 0.7);
+        
+        video.pause();
+        video.srcObject = null;
+      } catch (error) {
+        console.error('Frame capture error:', error);
+      }
+    }
+    
+    // Lazy load Socket.IO only when needed for screen sharing
+    function loadSocketIO() {
+      return new Promise((resolve, reject) => {
+        if (window.io) {
+          if (!window.socket) {
+            window.socket = io();
+          }
+          resolve();
+          return;
+        }
+        
+        const script = document.createElement('script');
+        script.src = '/socket.io/socket.io.js';
+        script.onload = () => {
+          window.socket = io();
+          console.log('Socket.IO loaded for screen sharing');
+          resolve();
+        };
+        script.onerror = () => reject(new Error('Failed to load Socket.IO'));
+        document.head.appendChild(script);
+      });
+    }
   </script>
 </body>
 </html>

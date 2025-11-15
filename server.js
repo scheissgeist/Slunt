@@ -234,6 +234,8 @@ const CoolholeExplorer = require('./src/coolhole/coolholeExplorer');
 const VisionAnalyzer = require('./src/vision/visionAnalyzer');
 const CursorController = require('./src/services/CursorController');
 const VoiceManager = require('./src/voice/voiceManager');
+const VoiceScreenCapture = require('./src/voice/VoiceScreenCapture');
+const VoicePunctuator = require('./src/voice/VoicePunctuator');
 
 // Multi-platform support
 const PlatformManager = require('./src/io/platformManager');
@@ -345,6 +347,29 @@ app.get('/voice-client', (req, res) => {
   res.sendFile(path.join(__dirname, 'voiceClient.html'));
 });
 
+// Debug endpoint - check screen capture status
+app.get('/api/voice/screen-debug', (req, res) => {
+  const screenContext = voiceScreenCapture.getContext();
+  const status = voiceScreenCapture.getStatus();
+  const hudData = voiceScreenCapture.getHUDData();
+  const recentEvents = voiceScreenCapture.getRecentEvents(30000);
+  const gameType = voiceScreenCapture.getGameType();
+  
+  res.json({
+    hasContext: !!screenContext,
+    context: screenContext,
+    fullStatus: status,
+    liveMonitoring: {
+      gameType,
+      hudData,
+      recentEvents,
+      awarenessActive: status.active
+    },
+    clientData: voiceScreenCapture.clientScreenData,
+    instructions: screenContext ? 'Slunt is watching your screen with live awareness' : 'No screen context - enable screen sharing'
+  });
+});
+
 // Voice status endpoint - shows current provider, model status, etc.
 app.get('/api/voice/status', async (req, res) => {
   try {
@@ -434,6 +459,11 @@ const openaiTTS = require('./src/voice/openaiTTS');
 const elevenLabsTTS = require('./src/voice/elevenLabsTTS');
 const coquiTTS = require('./src/voice/coquiTTS');
 const resembleAI = require('./src/voice/resembleAI');
+
+// Get current PTT state (removed)
+app.get('/api/voice/ptt', (req, res) => {
+  res.json({ pttActive: globalPTTActive });
+});
 
 // Voice memory management endpoint
 app.post('/api/voice/clear-memory', async (req, res) => {
@@ -611,52 +641,126 @@ app.post('/api/voice', async (req, res) => {
     const { text } = req.body;
     if (!text) {
       console.log(`❌ [Voice API] No text provided`);
-      return res.status(400).json({ 
+      return res.status(400).json({
         error: 'No text provided',
         message: 'Speech recognition did not capture any text',
         suggestion: 'Try speaking louder or closer to the microphone',
         canRetry: true
       });
     }
-    console.log(`📝 [Voice API] Processing text: "${text}"`);
-    
+    console.log(`📝 [Voice API] Processing text (raw): "${text}"`);
+
+    // Add punctuation to user's speech (makes it more natural)
+    const punctuatedInput = await voicePunctuator.punctuate(text, { useAI: false }); // Use quick rules only for speed
+    if (punctuatedInput !== text) {
+      console.log(`✨ [Voice] Punctuated input: "${punctuatedInput}"`);
+    }
+    const userText = punctuatedInput;
+
     // 🚫 Filter out UI control phrases that shouldn't be treated as conversation
     const controlPhrases = ['start listening', 'stop listening', 'clear memory', 'stop', 'start'];
-    const lowerText = text.toLowerCase().trim();
+    const lowerText = userText.toLowerCase().trim();
     if (controlPhrases.includes(lowerText)) {
-      console.log(`🎤 [Voice] Ignoring control phrase: "${text}"`);
-      return res.json({ 
+      console.log(`🎤 [Voice] Ignoring control phrase: "${userText}"`);
+      return res.json({
         reply: "I'm listening. Go ahead.",
         audioUrl: null,
         ignored: true
       });
     }
+
+    // 🗑️ Check for "forget that" / "nevermind" / "ignore that" commands
+    const forgetPhrases = [
+      'forget that', 'forget it', 'forget this',
+      'nevermind', 'never mind', 'nvm',
+      'ignore that', 'ignore it', 'ignore this',
+      'scratch that', 'disregard', 'cancel that'
+    ];
+    const isForgetCommand = forgetPhrases.some(phrase => lowerText.includes(phrase));
     
-    // ✅ STORE USER MESSAGE IN VOICE MEMORY
+    if (isForgetCommand) {
+      // Clear voice memory
+      if (chatBot.voiceMemory && chatBot.voiceMemory.length > 0) {
+        const clearedCount = chatBot.voiceMemory.length;
+        chatBot.voiceMemory = [];
+        console.log(`🗑️ [Voice] Cleared ${clearedCount} messages from memory (forget command)`);
+        return res.json({
+          reply: "Alright, slate's clean. What's up?",
+          audioUrl: null,
+          memoryCleared: true
+        });
+      } else {
+        console.log(`🗑️ [Voice] Forget command but memory already empty`);
+        return res.json({
+          reply: "Nothing to forget, man. We're starting fresh.",
+          audioUrl: null,
+          memoryCleared: false
+        });
+      }
+    }
+
+    // ✅ STORE USER MESSAGE IN VOICE MEMORY (keep only last 6 for speed)
     if (!chatBot.voiceMemory) {
       chatBot.voiceMemory = [];
     }
     chatBot.voiceMemory.push({
       speaker: 'You',  // Changed from 'role' to 'speaker' to match context builder
-      text: text,
+      text: userText,
       timestamp: Date.now()
     });
-    console.log(`🧠 [Voice] Stored user message: "${text}" (memory: ${chatBot.voiceMemory.length} msgs)`);
-    
-    // Unified message loop: send to Slunt
-    let reply = await chatBot.generateResponse('You', text, 'voice', 'voice', {
-      voiceMode: true
-    });
-    if (!reply || !String(reply).trim()) {
-      reply = "I'm here. What’s up?";
+    // Keep only last 6 messages for SPEED (3 exchanges)
+    if (chatBot.voiceMemory.length > 6) {
+      chatBot.voiceMemory = chatBot.voiceMemory.slice(-6);
     }
+    console.log(`🧠 [Voice] Stored user message: "${userText}" (memory: ${chatBot.voiceMemory.length} msgs)`);
+
+    // Get screen context if available (prioritize TwitchVision over local screen sharing)
+    let screenContext = null;
+    
+    // First try TwitchVision (watching Twitch stream)
+    if (chatBot.twitchVision && chatBot.twitchVision.lastVisualDescription) {
+      screenContext = `[Watching Twitch stream: ${chatBot.twitchVision.lastVisualDescription}]`;
+      console.log(`📺 [Voice] ✅ TWITCH VISION CONTEXT:`);
+      console.log(`📺 [Voice] "${screenContext}"`);
+    } 
+    // Fallback to local screen sharing
+    else {
+      screenContext = voiceScreenCapture.getContext();
+      if (screenContext) {
+        console.log(`📺 [Voice] ✅ LOCAL SCREEN CONTEXT:`);
+        console.log(`📺 [Voice] "${screenContext}"`);
+        console.log(`📺 [Voice] Screen data age: ${voiceScreenCapture.clientScreenData ? Math.floor((Date.now() - voiceScreenCapture.clientScreenData.timestamp) / 1000) + 's' : 'N/A'}`);
+      }
+    }
+    
+    const contextOptions = {
+      isVoiceMessage: true,
+      voiceMode: true
+    };
+    if (screenContext) {
+      contextOptions.visualContext = screenContext;
+    } else {
+      console.log(`📺 [Voice] ⚠️  NO VISUAL CONTEXT`);
+      console.log(`📺 [Voice] Reason: TwitchVision not active and no screen sharing`);
+    }
+
+    // Unified message loop: send to Slunt
+    let reply = await chatBot.generateResponse('You', userText, 'voice', 'voice-chat', contextOptions);
+    if (!reply || !String(reply).trim()) {
+      reply = "I'm here. What's up?";
+    }
+
+    // Add natural punctuation and prosody to Slunt's response (DISABLED for speed)
+    const punctuatedReply = reply; // Skip AI punctuation for speed
+    console.log(`🗣️ [Voice] Slunt responds: "${punctuatedReply}"`);
+
     //  STORE SLUNT'S REPLY IN VOICE MEMORY
     chatBot.voiceMemory.push({
       speaker: 'Slunt',  // Changed from 'role' to 'speaker' to match context builder
-      text: reply,
+      text: punctuatedReply,
       timestamp: Date.now()
     });
-    const replyPreview = reply.length > 50 ? reply.slice(0, 50) + '...' : reply;
+    const replyPreview = punctuatedReply.length > 50 ? punctuatedReply.slice(0, 50) + '...' : punctuatedReply;
     console.log(`🧠 [Voice] Stored Slunt reply: "${replyPreview}" (memory: ${chatBot.voiceMemory.length} msgs)`);
     
     // Get TTS audio from selected provider (MP3)
@@ -670,7 +774,7 @@ app.post('/api/voice', async (req, res) => {
         try {
           const axios = require('axios');
           const resp = await axios.post(`${VOICE_SERVICE_URL.replace(/\/$/,'')}/tts`, {
-            text: reply,
+            text: punctuatedReply, // Use punctuated version for TTS
             provider,
             voiceId: process.env.ELEVENLABS_VOICE_ID || undefined,
             speed: process.env.VOICE_OPENAI_SPEED ? Number(process.env.VOICE_OPENAI_SPEED) : undefined,
@@ -678,7 +782,7 @@ app.post('/api/voice', async (req, res) => {
           }, { timeout: 60000 });
           const data = resp.data || {};
           if (data.status === 'completed' && data.audioUrl) {
-            return res.json({ reply, audioUrl: data.audioUrl, tts: data.tts || { provider } });
+            return res.json({ reply: punctuatedReply, audioUrl: data.audioUrl, tts: data.tts || { provider } });
           }
           // fall through to local if remote didn't complete
         } catch (remoteErr) {
@@ -757,7 +861,7 @@ app.post('/api/voice', async (req, res) => {
       } else if (provider === 'coqui') {
         // Coqui TTS - Local, free, high quality
         try {
-          audioBuffer = await coquiTTS(reply || '', {
+          audioBuffer = await coquiTTS(punctuatedReply || '', {
             speaker: process.env.COQUI_SPEAKER,
             language: process.env.COQUI_LANGUAGE,
             model: process.env.COQUI_MODEL
@@ -783,7 +887,7 @@ app.post('/api/voice', async (req, res) => {
         let voiceUsed = primaryVoiceId || null;
         let usedFallback = false;
         try {
-          audioBuffer = await elevenLabsTTS(reply || '', {
+          audioBuffer = await elevenLabsTTS(punctuatedReply || '', {
             voiceId: primaryVoiceId,
             modelId: process.env.ELEVENLABS_MODEL
           });
@@ -791,7 +895,7 @@ app.post('/api/voice', async (req, res) => {
         } catch (primaryErr) {
           if (backupVoiceId) {
             console.warn('⚠️  [Voice] Primary ElevenLabs voice failed, trying backup voice ID');
-            audioBuffer = await elevenLabsTTS(reply || '', {
+            audioBuffer = await elevenLabsTTS(punctuatedReply || '', {
               voiceId: backupVoiceId,
               modelId: process.env.ELEVENLABS_MODEL
             });
@@ -808,7 +912,7 @@ app.post('/api/voice', async (req, res) => {
       } else if (provider === 'openai') {
         // OpenAI TTS - Paid, high quality voices
         try {
-          audioBuffer = await openaiTTS(reply || '', {
+          audioBuffer = await openaiTTS(punctuatedReply || '', {
             voice: process.env.VOICE_OPENAI_VOICE,
             speed: process.env.VOICE_OPENAI_SPEED ? Number(process.env.VOICE_OPENAI_SPEED) : undefined
           });
@@ -830,7 +934,7 @@ app.post('/api/voice', async (req, res) => {
           const voiceUuid = process.env.RESEMBLE_VOICE_UUID || process.env.RESEMBLE_PROJECT_UUID;
 
           console.log(`🎙️ [Voice] Resemble.AI generating speech with custom voice`);
-          audioBuffer = await resembleClient.textToSpeech(reply || '', {
+          audioBuffer = await resembleClient.textToSpeech(punctuatedReply || '', {
             voice_uuid: voiceUuid
           });
 
@@ -878,7 +982,7 @@ app.post('/api/voice', async (req, res) => {
         try {
           const axios = require('axios');
           const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
-          
+
           console.log(`🎙️ [Voice] XTTS generating speech (fine-tuned Hoff model)`);
           const response = await axios.post(`${xttsUrl}/tts`, {
             text: reply || '',
@@ -886,15 +990,50 @@ app.post('/api/voice', async (req, res) => {
             speaker_wav: null
           }, {
             responseType: 'arraybuffer',
-            timeout: 180000 // 3 minutes for large model loading
+            timeout: 300000 // 5 minutes for large model loading (first run can be slow)
           });
-          
+
           audioBuffer = Buffer.from(response.data);
           ttsMeta.model = 'xtts_v2_finetuned';
           ttsMeta.format = 'wav';
           console.log(`✅ [Voice] XTTS generated ${audioBuffer.length} bytes`);
         } catch (xttsErr) {
           console.warn('⚠️  [Voice] XTTS TTS failed, falling back to browser TTS');
+          console.warn('⚠️  [Voice] Error:', xttsErr.message);
+          if (xttsErr.message.includes('ECONNREFUSED') || xttsErr.code === 'ECONNREFUSED') {
+            console.warn('⚠️  [Voice] XTTS server may not be running on', process.env.XTTS_SERVER_URL || 'http://localhost:5002');
+          }
+          audioBuffer = null;
+        }
+      } else if (provider === 'xtts-stream') {
+        // XTTS Streaming - Faster perceived response time
+        try {
+          const axios = require('axios');
+          const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
+
+          console.log(`🎙️ [Voice] XTTS STREAMING speech (sentence-by-sentence)`);
+
+          // Call streaming endpoint
+          const response = await axios.post(`${xttsUrl}/tts/stream`, {
+            text: reply || '',
+            language: 'en'
+          }, {
+            responseType: 'stream',
+            timeout: 300000
+          });
+
+          // Collect all chunks
+          const chunks = [];
+          for await (const chunk of response.data) {
+            chunks.push(chunk);
+          }
+
+          audioBuffer = Buffer.concat(chunks);
+          ttsMeta.model = 'xtts_v2_streaming';
+          ttsMeta.format = 'wav';
+          console.log(`✅ [Voice] XTTS stream collected ${audioBuffer.length} bytes`);
+        } catch (xttsErr) {
+          console.warn('⚠️  [Voice] XTTS streaming failed, falling back to browser TTS');
           console.warn('⚠️  [Voice] Error:', xttsErr.message);
           if (xttsErr.message.includes('ECONNREFUSED') || xttsErr.code === 'ECONNREFUSED') {
             console.warn('⚠️  [Voice] XTTS server may not be running on', process.env.XTTS_SERVER_URL || 'http://localhost:5002');
@@ -918,13 +1057,13 @@ app.post('/api/voice', async (req, res) => {
         const audioRelPath = `temp/audio/voice_reply_${Date.now()}.${fileExt}`;
         const audioFile = path.join(__dirname, audioRelPath);
         fs.writeFileSync(audioFile, audioBuffer);
-        const response = { reply, audioUrl: `/${audioRelPath}`, tts: ttsMeta };
-        console.log(`✅ [Voice API] Sending response with audio:`, { reply: reply?.substring(0, 50), audioUrl: response.audioUrl });
+        const response = { reply: punctuatedReply, audioUrl: `/${audioRelPath}`, tts: ttsMeta };
+        console.log(`✅ [Voice API] Sending response with audio:`, { reply: punctuatedReply?.substring(0, 50), audioUrl: response.audioUrl });
         // Respond with reply text and audio URL (+meta)
         res.json(response);
       } else {
-        const response = { reply, audioUrl: null, tts: ttsMeta };
-        console.log(`⚠️  [Voice API] Sending response without audio (browser TTS fallback):`, { reply: reply?.substring(0, 50) });
+        const response = { reply: punctuatedReply, audioUrl: null, tts: ttsMeta };
+        console.log(`⚠️  [Voice API] Sending response without audio (browser TTS fallback):`, { reply: punctuatedReply?.substring(0, 50) });
         // No audio buffer - let browser handle TTS
         res.json(response);
       }
@@ -932,7 +1071,7 @@ app.post('/api/voice', async (req, res) => {
       // Graceful fallback: return text without audio so client can use browser TTS
       const ttsMsg = ttsErr?.code === 'NO_API_KEY' ? 'OPENAI_API_KEY is not configured' : (ttsErr.message || 'TTS failed');
       console.warn('⚠️  [Voice] TTS unavailable:', ttsMsg);
-      res.json({ reply, audioUrl: null, ttsError: ttsMsg });
+      res.json({ reply: punctuatedReply, audioUrl: null, ttsError: ttsMsg });
     }
   } catch (err) {
     console.error('❌ [Voice API] Fatal error:', err);
@@ -959,6 +1098,17 @@ const voiceManager = new VoiceManager({
 });
 
 console.log(`🎤 [Voice] Voice system ${voiceManager.config.enabled ? 'ENABLED' : 'DISABLED'}`);
+
+// Initialize voice screen capture (lightweight)
+const voiceScreenCapture = new VoiceScreenCapture();
+
+// Initialize voice punctuator (uses Grok for natural punctuation)
+const OpenAI = require('openai');
+const grokForPunctuation = new OpenAI({
+  apiKey: process.env.XAI_API_KEY || process.env.OPENAI_API_KEY,
+  baseURL: 'https://api.x.ai/v1'
+});
+const voicePunctuator = new VoicePunctuator(grokForPunctuation);
 
 // Initialize multi-platform manager
 const platformManager = new PlatformManager();
@@ -2095,6 +2245,19 @@ io.on('connection', (socket) => {
     console.log(`❌ [Socket.IO] Client disconnected: ${socket.id} (Remaining: ${connectedClients})`);
   });
   
+  // Voice cache stats
+  socket.on('voice:cacheStats', () => {
+    try {
+      if (global.voiceCache) {
+        const stats = global.voiceCache.getStats();
+        socket.emit('voice:cacheStats', stats);
+        console.log('📊 Voice cache stats:', stats);
+      }
+    } catch (error) {
+      console.error('Error getting cache stats:', error.message);
+    }
+  });
+  
   // Multi-platform dashboard endpoints
   socket.on('request_status', () => {
     const status = platformManager.getStatus();
@@ -2139,56 +2302,333 @@ io.on('connection', (socket) => {
       enabled: voiceManager ? voiceManager.config.enabled : false,
       isListening: voiceManager ? voiceManager.isListening : false,
       isSpeaking: voiceManager ? voiceManager.isSpeaking : false,
-      stats: voiceManager ? voiceManager.getStats() : null
+      stats: voiceManager ? voiceManager.getStats() : null,
+      screenCapture: voiceScreenCapture ? voiceScreenCapture.getStatus() : null
     };
     if (callback) callback(status);
   });
   
+  // Screen capture control for voice (client-side with auto-delete)
+  let isProcessingVision = false; // Prevent simultaneous vision processing
+  let lastVisionTime = 0;
+  const VISION_DEBOUNCE = 15000; // Only analyze vision every 15 seconds (reduced from 30s for more frequent updates)
+
+  // Background vision cache for instant access
+  let visionCache = {
+    description: null,
+    timestamp: null,
+    confidence: 0
+  };
+
+  socket.on('voice:screenFrame', async (frameData) => {
+    if (voiceScreenCapture && frameData && frameData.data) {
+      // Skip if already processing or too soon since last analysis
+      const now = Date.now();
+      if (isProcessingVision) {
+        // Skip silently - already processing
+        return;
+      }
+      if (now - lastVisionTime < VISION_DEBOUNCE) {
+        // Skip silently - too soon
+        return;
+      }
+
+      isProcessingVision = true;
+      lastVisionTime = now;
+
+      // Extract base64 image data (do this BEFORE async processing)
+      const base64Data = frameData.data.replace(/^data:image\/\w+;base64,/, '');
+      const imageBuffer = Buffer.from(base64Data, 'base64');
+
+      // Immediately clear frame data to free memory
+      frameData.data = null;
+      frameData = null;
+
+      // ASYNC BACKGROUND PROCESSING: Fire and forget
+      // This allows screen frames to be received without blocking
+      (async () => {
+        try {
+          console.log('🔍 [Vision] Starting ASYNC background analysis...');
+
+          // Run OCR and LLaVA in parallel (both async)
+          const ocrPromise = (async () => {
+            try {
+              const Tesseract = require('tesseract.js');
+              const { data } = await Promise.race([
+                Tesseract.recognize(imageBuffer, 'eng', { logger: () => {} }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('OCR timeout')), 3000))
+              ]);
+
+              const detectedText = data.lines && Array.isArray(data.lines)
+                ? data.lines.map(line => line.text.trim()).filter(text => text.length > 2)
+                : [];
+
+              if (detectedText.length > 0) {
+                console.log(`✅ [Vision/OCR] Found ${detectedText.length} text elements`);
+              }
+              return detectedText;
+            } catch (err) {
+              console.log('⚠️ [Vision/OCR] Failed or timed out');
+              return [];
+            }
+          })();
+
+          // LLaVA Visual Understanding (via Ollama)
+          const llavatPromise = (async () => {
+            try {
+              const axios = require('axios');
+              console.log('👁️ [Vision/LLaVA] Analyzing visuals...');
+
+              const response = await Promise.race([
+                axios.post('http://localhost:11434/api/generate', {
+                  model: 'llava:7b',
+                  prompt: 'Describe what you see in this image in 2-3 concise sentences. Focus on: what is being displayed (game/app/content), main visual elements, colors, and any notable activity or events. Be specific.',
+                  images: [base64Data],
+                  stream: false
+                }, { timeout: 15000 }),
+                new Promise((_, reject) => setTimeout(() => reject(new Error('LLaVA timeout')), 15000))
+              ]);
+
+              if (response?.data?.response) {
+                const visualDesc = response.data.response.trim();
+                console.log(`✅ [Vision/LLaVA] "${visualDesc.substring(0, 80)}..."`);
+                return visualDesc;
+              }
+              return null;
+            } catch (err) {
+              console.log(`⚠️ [Vision/LLaVA] Failed: ${err.message}`);
+              return null;
+            }
+          })();
+
+          // Wait for both to complete (but don't block the main thread)
+          const [detectedText, visualDescription] = await Promise.all([ocrPromise, llavaPromise]);
+
+          // Build rich description combining visual understanding + text
+          let description;
+          if (visualDescription) {
+            // LLaVA provides visual context
+            if (detectedText.length > 0) {
+              const topText = detectedText.slice(0, 5).join(', ');
+              description = `${visualDescription} [Text visible: ${topText}]`;
+            } else {
+              description = visualDescription;
+            }
+          } else {
+            // Fallback to OCR only
+            if (detectedText.length > 0) {
+              description = `Screen shows: ${detectedText.slice(0, 10).join(', ')}`;
+            } else {
+              description = 'Screen visible';
+            }
+          }
+
+          console.log(`📺 [Vision] Final: "${description.substring(0, 100)}..."`);
+
+          // Update cache for instant access
+          visionCache = {
+            description: description,
+            timestamp: Date.now(),
+            confidence: visualDescription ? 0.9 : (detectedText.length > 0 ? 0.6 : 0.3)
+          };
+
+          // Store metadata in VoiceScreenCapture
+          const metadata = {
+            description: description,
+            detectedText: detectedText,
+            visualDescription: visualDescription,
+            timestamp: Date.now(),
+            confidence: visionCache.confidence,
+            active: true
+          };
+
+          voiceScreenCapture.updateFromClient(metadata);
+          console.log('✅ [Vision] Background analysis complete and cached');
+
+        } catch (error) {
+          console.error('❌ [Vision] Background analysis FAILED:', error.message);
+
+          // Store fallback in cache
+          visionCache = {
+            description: 'Screen visible but analysis unavailable',
+            timestamp: Date.now(),
+            confidence: 0.2
+          };
+
+          // Fallback metadata
+          const metadata = {
+            description: visionCache.description,
+            timestamp: Date.now(),
+            confidence: 0.2
+          };
+          voiceScreenCapture.updateFromClient(metadata);
+        }
+      })(); // Execute immediately but don't await
+
+      // Immediately reset processing flag since we're running in background
+      isProcessingVision = false;
+      console.log('🔍 [Vision] Frame accepted for background processing (non-blocking)');
+    }
+  });
+  
+  socket.on('voice:stopScreenCapture', () => {
+    if (voiceScreenCapture) {
+      voiceScreenCapture.stop();
+      socket.emit('voice:screenCaptureStatus', { active: false });
+    }
+  });
+
+  // Track active voice responses for cancellation
+  let activeVoiceResponses = new Set();
+
   socket.on('voice:speech', async (data) => {
     try {
       if (!voiceManager) {
         socket.emit('voice:error', { message: 'Voice system not initialized' });
         return;
       }
+
+      const startTotal = Date.now();
+      const responseId = data.responseId || Date.now();
+      activeVoiceResponses.add(responseId);
+
+      console.log(`🎤 [Voice] Received speech (raw): "${data.text}" [${responseId}]`);
+
+      // Add punctuation to user's speech (makes it more natural)
+      const punctuatedInput = await voicePunctuator.punctuate(data.text, { useAI: false }); // Use quick rules only for speed
+      if (punctuatedInput !== data.text) {
+        console.log(`📝 [Voice] Punctuated input: "${punctuatedInput}"`);
+      }
+      const userText = punctuatedInput;
+
+      // Quick response cache for common phrases (instant response)
+      const VoiceResponseCache = require('./src/voice/VoiceResponseCache');
+      if (!global.voiceCache) {
+        global.voiceCache = new VoiceResponseCache();
+      }
       
-      console.log(`🎤 [Voice] Received speech: "${data.text}"`);
+      const quickResponse = global.voiceCache.getQuickResponse(userText);
+      if (quickResponse) {
+        // Check if we have pre-generated audio
+        const cachedAudioPath = global.voiceCache.getCachedAudioPath(quickResponse);
+        
+        if (cachedAudioPath) {
+          // INSTANT response - pre-generated audio!
+          const totalTime = Date.now() - startTotal;
+          console.log(`⚡⚡ [Voice] INSTANT pre-generated response: "${quickResponse}" (${totalTime}ms - NO TTS!)`);
+          
+          socket.emit('voice:response', {
+            text: quickResponse,
+            audioUrl: `/temp/audio/cache/${path.basename(cachedAudioPath)}`,
+            timestamp: Date.now(),
+            timing: {
+              ai: 0,
+              tts: 0, // Pre-generated!
+              total: totalTime
+            }
+          });
+          return;
+        }
+        
+        // Cached text response but need to generate audio
+        const startTTS = Date.now();
+        const audioUrl = await voiceManager.speak(quickResponse);
+        const ttsTime = Date.now() - startTTS;
+        const totalTime = Date.now() - startTotal;
+        
+        console.log(`⚡ [Voice] CACHED response in ${totalTime}ms (TTS only)`);
+        
+        socket.emit('voice:response', {
+          text: quickResponse,
+          audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
+          timestamp: Date.now(),
+          timing: {
+            ai: 0, // Cached - no AI call!
+            tts: ttsTime,
+            total: totalTime
+          }
+        });
+        return;
+      }
       
       // Process speech as a message from the user
       const voiceMessage = {
         platform: 'voice-chat',
         username: data.username || 'You',
-        text: data.text,
+        text: userText, // Use punctuated text
         timestamp: Date.now(),
         channel: 'voice-chat',
         isVoiceMessage: true
       };
       
-      // Send to chatBot for processing
+      // Add screen context if available
+      const screenContext = voiceScreenCapture.getContext();
+      if (screenContext) {
+        voiceMessage.visualContext = screenContext;
+      }
+      
+      // Check if canceled before expensive AI operation
+      if (!activeVoiceResponses.has(responseId)) {
+        console.log(`🚫 [Voice] Response ${responseId} canceled before AI - skipping`);
+        return;
+      }
+
+      // Send to chatBot for processing (MEASURE AI TIME)
+      const startAI = Date.now();
       const response = await chatBot.generateResponse(
         voiceMessage.username,
         voiceMessage.text,
         voiceMessage.channel,
         voiceMessage.platform,
-        { isVoiceMessage: true }
+        {
+          isVoiceMessage: true,
+          visualContext: voiceMessage.visualContext // Pass screen context!
+        }
       );
-      
+      const aiTime = Date.now() - startAI;
+
+      // Check if canceled after AI but before TTS
+      if (!activeVoiceResponses.has(responseId)) {
+        console.log(`🚫 [Voice] Response ${responseId} canceled after AI - skipping TTS`);
+        return;
+      }
+
       if (response) {
-        console.log(`🗣️ [Voice] Slunt responds: "${response}"`);
-        
-        // Generate speech audio
-        const audioUrl = await voiceManager.speak(response);
+        // Add natural punctuation and prosody to Slunt's response
+        const punctuatedResponse = await voicePunctuator.punctuate(response, {
+          useAI: true, // Use AI for better prosody on output
+          isOutput: true
+        });
+
+        if (punctuatedResponse !== response) {
+          console.log(`🗣️ [Voice] Slunt responds (raw): "${response}"`);
+          console.log(`✨ [Voice] Punctuated output: "${punctuatedResponse}" (AI: ${aiTime}ms)`);
+        } else {
+          console.log(`🗣️ [Voice] Slunt responds: "${punctuatedResponse}" (AI: ${aiTime}ms)`);
+        }
+
+        // Generate speech audio (MEASURE TTS TIME)
+        const startTTS = Date.now();
+        const audioUrl = await voiceManager.speak(punctuatedResponse); // Use punctuated version for TTS
+        const ttsTime = Date.now() - startTTS;
+        const totalTime = Date.now() - startTotal;
         
         if (audioUrl) {
-          console.log(`✅ [Voice] ElevenLabs audio generated: ${audioUrl}`);
+          console.log(`✅ [Voice] XTTS audio generated in ${ttsTime}ms (Total: ${totalTime}ms)`);
         } else {
-          console.log(`⚠️ [Voice] No ElevenLabs audio - browser will use fallback TTS`);
+          console.log(`⚠️ [Voice] No XTTS audio - browser will use fallback TTS`);
         }
         
-        // Send response back to client
+        // Send response back to client with timing data
         socket.emit('voice:response', {
-          text: response,
+          text: punctuatedResponse, // Send punctuated version to display
           audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          timing: {
+            ai: aiTime,
+            tts: ttsTime,
+            total: totalTime
+          }
         });
       } else {
         // Response was filtered/rejected - send a fallback
@@ -2212,17 +2652,223 @@ io.on('connection', (socket) => {
     } catch (error) {
       console.error('❌ [Voice] Error processing speech:', error);
       socket.emit('voice:error', { message: error.message });
+    } finally {
+      // Clean up response tracking
+      activeVoiceResponses.delete(responseId);
     }
   });
-  
-  socket.on('voice:interrupt', () => {
+
+  socket.on('voice:interrupt', (data) => {
     if (voiceManager) {
       voiceManager.stopSpeaking();
       console.log('⏸️ [Voice] Speech interrupted by user');
     }
+
+    // Cancel pending response if specified
+    if (data && data.responseId) {
+      activeVoiceResponses.delete(data.responseId);
+      console.log(`🚫 [Voice] Canceled pending response ${data.responseId}`);
+    }
   });
-  
-  
+
+  // Streaming voice handler - sends audio chunks as they're generated
+  socket.on('voice:speech:stream', async (data) => {
+    try {
+      if (!voiceManager) {
+        socket.emit('voice:error', { message: 'Voice system not initialized' });
+        return;
+      }
+
+      const startTotal = Date.now();
+      const responseId = data.responseId || Date.now();
+      activeVoiceResponses.add(responseId);
+
+      console.log(`🎤 [Voice Stream] Received speech: "${data.text}" [${responseId}]`);
+
+      // Punctuate input
+      const punctuatedInput = await voicePunctuator.punctuate(data.text, { useAI: false });
+      const userText = punctuatedInput;
+
+      // Process speech message
+      const voiceMessage = {
+        platform: 'voice-chat',
+        username: data.username || 'You',
+        text: userText,
+        timestamp: Date.now(),
+        channel: 'voice-chat',
+        isVoiceMessage: true
+      };
+
+      // Add screen context
+      const screenContext = voiceScreenCapture.getContext();
+      if (screenContext) {
+        voiceMessage.visualContext = screenContext;
+      }
+
+      // Check cancellation
+      if (!activeVoiceResponses.has(responseId)) {
+        console.log(`🚫 [Voice Stream] Response ${responseId} canceled before AI`);
+        return;
+      }
+
+      // Generate AI response
+      const startAI = Date.now();
+      const response = await chatBot.generateResponse(
+        voiceMessage.username,
+        voiceMessage.text,
+        voiceMessage.channel,
+        voiceMessage.platform,
+        {
+          isVoiceMessage: true,
+          visualContext: voiceMessage.visualContext
+        }
+      );
+      const aiTime = Date.now() - startAI;
+
+      // Check cancellation
+      if (!activeVoiceResponses.has(responseId)) {
+        console.log(`🚫 [Voice Stream] Response ${responseId} canceled after AI`);
+        return;
+      }
+
+      if (response) {
+        // Punctuate output
+        const punctuatedResponse = await voicePunctuator.punctuate(response, {
+          useAI: true,
+          isOutput: true
+        });
+
+        console.log(`🗣️ [Voice Stream] Slunt responds: "${punctuatedResponse}" (AI: ${aiTime}ms)`);
+        console.log(`🎙️ [Voice Stream] Starting streaming TTS...`);
+
+        // Call XTTS streaming endpoint
+        const axios = require('axios');
+        const xttsUrl = process.env.XTTS_SERVER_URL || 'http://localhost:5002';
+
+        const startTTS = Date.now();
+
+        try {
+          const streamResponse = await axios.post(`${xttsUrl}/tts/stream`, {
+            text: punctuatedResponse,
+            language: 'en'
+          }, {
+            responseType: 'stream',
+            timeout: 300000
+          });
+
+          // Notify client that streaming is starting
+          socket.emit('voice:stream:start', {
+            text: punctuatedResponse,
+            responseId: responseId,
+            timestamp: Date.now()
+          });
+
+          let chunkCount = 0;
+          let buffer = Buffer.alloc(0);
+
+          // Process the stream
+          for await (const chunk of streamResponse.data) {
+            buffer = Buffer.concat([buffer, chunk]);
+
+            // Parse chunks based on our header format: "CHUNK:idx:size\n"
+            while (buffer.length > 0) {
+              // Look for header
+              const headerEnd = buffer.indexOf('\n');
+              if (headerEnd === -1) break; // Need more data
+
+              const header = buffer.slice(0, headerEnd).toString('utf-8');
+              const match = header.match(/^CHUNK:(\d+):(\d+)$/);
+
+              if (!match) {
+                console.error('❌ [Voice Stream] Invalid chunk header:', header);
+                buffer = buffer.slice(headerEnd + 1);
+                continue;
+              }
+
+              const chunkIdx = parseInt(match[1]);
+              const chunkSize = parseInt(match[2]);
+
+              // Check if we have the full chunk
+              if (buffer.length < headerEnd + 1 + chunkSize) {
+                break; // Need more data
+              }
+
+              // Extract chunk data
+              const chunkData = buffer.slice(headerEnd + 1, headerEnd + 1 + chunkSize);
+              buffer = buffer.slice(headerEnd + 1 + chunkSize);
+
+              // Save chunk to temp file
+              const tempDir = path.join(__dirname, 'temp', 'audio', 'stream');
+              if (!fs.existsSync(tempDir)) {
+                fs.mkdirSync(tempDir, { recursive: true });
+              }
+
+              const chunkFile = path.join(tempDir, `chunk_${responseId}_${chunkIdx}.wav`);
+              fs.writeFileSync(chunkFile, chunkData);
+
+              // Send chunk to client
+              socket.emit('voice:stream:chunk', {
+                responseId: responseId,
+                chunkIdx: chunkIdx,
+                audioUrl: `/temp/audio/stream/chunk_${responseId}_${chunkIdx}.wav`,
+                timestamp: Date.now()
+              });
+
+              chunkCount++;
+              console.log(`📤 [Voice Stream] Sent chunk ${chunkIdx} (${chunkData.length} bytes)`);
+            }
+          }
+
+          const ttsTime = Date.now() - startTTS;
+          const totalTime = Date.now() - startTotal;
+
+          console.log(`✅ [Voice Stream] Completed: ${chunkCount} chunks in ${ttsTime}ms (Total: ${totalTime}ms)`);
+
+          // Notify client that streaming is complete
+          socket.emit('voice:stream:end', {
+            responseId: responseId,
+            totalChunks: chunkCount,
+            timing: {
+              ai: aiTime,
+              tts: ttsTime,
+              total: totalTime
+            }
+          });
+
+        } catch (streamError) {
+          console.error('❌ [Voice Stream] Streaming failed:', streamError.message);
+
+          // Fallback to regular TTS
+          console.log('🔄 [Voice Stream] Falling back to regular TTS...');
+          const audioUrl = await voiceManager.speak(punctuatedResponse);
+
+          socket.emit('voice:response', {
+            text: punctuatedResponse,
+            audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
+            timestamp: Date.now()
+          });
+        }
+
+      } else {
+        // No response - send fallback
+        const fallback = "What?";
+        const audioUrl = await voiceManager.speak(fallback);
+        socket.emit('voice:response', {
+          text: fallback,
+          audioUrl: audioUrl ? `/temp/audio/${path.basename(audioUrl)}` : null,
+          timestamp: Date.now()
+        });
+      }
+
+    } catch (error) {
+      console.error('❌ [Voice Stream] Error:', error);
+      socket.emit('voice:error', { message: error.message });
+    } finally {
+      activeVoiceResponses.delete(data.responseId);
+    }
+  });
+
+
   socket.on('mute_bot', (data) => {
     const duration = data.duration || 300000;
     chatBot.muted = true;
@@ -2621,6 +3267,14 @@ if (enableCoolhole) {
     healthMonitor.start();
     console.log('💗 Health monitoring started');
     
+    // ========================================
+    // STEP 5: Connect personality broadcaster to dashboard
+    // ========================================
+    if (chatBot.personalityBroadcaster) {
+      chatBot.personalityBroadcaster.setSocketIO(io);
+      console.log('📡 [Dashboard] Personality systems connected - Drunk, Autism, Hipster, Umbra, Emotions');
+    }
+    
     // Initialize clip creator if Twitch is available
     // DISABLED: Method doesn't exist, clip creation not critical for chat
     /*
@@ -2698,11 +3352,25 @@ const killPortProcess = async (port) => {
 };
 
 // Prevent unhandled promise rejections from crashing the server
+// ============================================================
+// BULLETPROOF ERROR HANDLING - Never Crash
+// ============================================================
+
 process.on('unhandledRejection', (reason, promise) => {
   console.error('❌ [CRITICAL] Unhandled Promise Rejection:', reason);
   console.error('Promise:', promise);
   console.error('Stack:', reason?.stack);
-  // Don't exit - keep server running (bot should be resilient)
+  
+  // Log to file for debugging
+  try {
+    const fs = require('fs');
+    const logEntry = `\n[${new Date().toISOString()}] Unhandled Rejection:\n${reason}\n${reason?.stack}\n`;
+    fs.appendFileSync('crash-log.txt', logEntry);
+  } catch (e) {
+    console.error('Could not write to crash log:', e.message);
+  }
+  
+  // NEVER EXIT - stay alive no matter what
   console.log('✅ [Recovery] Continuing despite error - bot remains operational');
 });
 
@@ -2710,18 +3378,93 @@ process.on('uncaughtException', (error) => {
   console.error('❌ [CRITICAL] Uncaught Exception:', error);
   console.error('Stack:', error.stack);
   
-  // Don't exit - keep server running unless it's truly fatal
-  if (error.code === 'ERR_IPC_CHANNEL_CLOSED' || 
-      error.code === 'ECONNRESET' ||
-      error.code === 'EPIPE' ||
-      error.code === 'ETIMEDOUT') {
-    console.log('⚠️  Non-fatal network error, continuing...');
+  // Log to file for debugging
+  try {
+    const fs = require('fs');
+    const logEntry = `\n[${new Date().toISOString()}] Uncaught Exception:\n${error.message}\n${error.stack}\n`;
+    fs.appendFileSync('crash-log.txt', logEntry);
+  } catch (e) {
+    console.error('Could not write to crash log:', e.message);
+  }
+  
+  // Non-fatal errors - always continue
+  const nonFatalCodes = [
+    'ERR_IPC_CHANNEL_CLOSED',
+    'ECONNRESET',
+    'EPIPE',
+    'ETIMEDOUT',
+    'ECONNREFUSED',
+    'EHOSTUNREACH',
+    'ENETUNREACH',
+    'ENOTFOUND',
+    'EAI_AGAIN',
+    'ESOCKETTIMEDOUT',
+    'ERR_HTTP_INVALID_STATUS_CODE',
+    'ERR_STREAM_PREMATURE_CLOSE',
+    'MODULE_NOT_FOUND' // Missing optional modules shouldn't crash
+  ];
+  
+  if (nonFatalCodes.includes(error.code) || error.name === 'FetchError') {
+    console.log('⚠️  Non-fatal error, continuing...');
   } else {
     console.log('⚠️  Exception caught - bot remains operational');
   }
+  
+  // NEVER EXIT - stay alive no matter what
+});
+
+// Catch memory warnings but don't crash
+process.on('warning', (warning) => {
+  console.warn('⚠️  Process Warning:', warning.name, warning.message);
+});
+
+// Handle process signals gracefully (Ctrl+C protection)
+let shutdownInProgress = false;
+process.on('SIGINT', () => {
+  if (shutdownInProgress) {
+    console.log('\n⚠️  Already shutting down gracefully...');
+    return;
+  }
+  shutdownInProgress = true;
+  console.log('\n⚠️  SIGINT received - use Ctrl+C twice quickly to force shutdown');
+  console.log('💪 Slunt stays running. Use restart-slunt.bat or npm run kill to stop.');
+  
+  // Reset shutdown flag after 3 seconds
+  setTimeout(() => {
+    shutdownInProgress = false;
+  }, 3000);
+});
+
+process.on('SIGTERM', () => {
+  console.log('⚠️  SIGTERM received - bot remains active');
 });
 
 (async () => {
+  try {
+    // BULLETPROOF INITIALIZATION WRAPPER
+    await initializeServer();
+  } catch (error) {
+    console.error('❌❌❌ [FATAL] Server initialization failed:', error);
+    console.error('Stack:', error.stack);
+    
+    // Log to file
+    try {
+      const fs = require('fs');
+      const logEntry = `\n[${new Date().toISOString()}] FATAL INIT ERROR:\n${error.message}\n${error.stack}\n`;
+      fs.appendFileSync('crash-log.txt', logEntry);
+    } catch (e) {
+      console.error('Could not write crash log');
+    }
+    
+    console.log('\n⚠️  Attempting to restart in 5 seconds...');
+    setTimeout(() => {
+      console.log('🔄 Restarting...');
+      process.exit(1);
+    }, 5000);
+  }
+})();
+
+async function initializeServer() {
   // Detect and use available port
   PORT = await findAvailablePort(PREFERRED_PORT);
   console.log(`🚀 [Server] Starting on port ${PORT}`);
@@ -2731,17 +3474,20 @@ process.on('uncaughtException', (error) => {
   // Initialize backup system
   await backupManager.initialize();
 
-  // Auto-start XTTS fine-tuned Hoff voice server if using openvoice TTS provider
-  if (process.env.VOICE_TTS_PROVIDER === 'openvoice') {
+  // Auto-start XTTS fine-tuned Hoff voice server if using xtts TTS provider
+  if (process.env.VOICE_TTS_PROVIDER === 'xtts') {
     const { spawn } = require('child_process');
-    const openvoicePort = process.env.OPENVOICE_SERVER_URL?.match(/:(\d+)/)?.[1] || '5001';
+    const xttsPort = process.env.XTTS_SERVER_URL?.match(/:(\d+)/)?.[1] || '5002';
 
     console.log('🎤 [XTTS] Starting fine-tuned Hoff voice server (5.6GB model)...');
     console.log('   This may take 30-60 seconds to load the model...');
 
-    const pythonCmd = path.join(__dirname, 'OpenVoice', 'venv', 'Scripts', 'python.exe');
-    const openvoiceProcess = spawn(pythonCmd, ['api_server_xtts.py'], {
-      cwd: path.join(__dirname, 'OpenVoice'),
+    // Use the optimized Hoff voice server from D:\Voices
+    const pythonCmd = 'C:\\Users\\Batman\\miniconda3\\envs\\tts2\\python.exe';
+    const serverScript = 'D:\\Voices\\hoff_voice_zero_shot.py';
+    
+    const openvoiceProcess = spawn(pythonCmd, [serverScript], {
+      cwd: 'D:\\Voices',
       stdio: ['ignore', 'pipe', 'pipe'],
       detached: false
     });
@@ -2749,8 +3495,8 @@ process.on('uncaughtException', (error) => {
     openvoiceProcess.stdout.on('data', (data) => {
       const output = data.toString();
       console.log(`[XTTS] ${output.trim()}`);
-      if (output.includes('Running on')) {
-        console.log(`✅ [XTTS] Fine-tuned Hoff voice server ready on port ${openvoicePort}`);
+      if (output.includes('Running on') || output.includes('ready')) {
+        console.log(`✅ [XTTS] Fine-tuned Hoff voice server ready on port ${xttsPort}`);
       }
     });
 
@@ -2775,10 +3521,10 @@ process.on('uncaughtException', (error) => {
     // Store process reference for cleanup
     global.openvoiceProcess = openvoiceProcess;
 
-    // Wait for OpenVoice models to load (takes ~15-20 seconds)
-    console.log('⏳ [OpenVoice] Waiting for models to load (this takes ~20 seconds)...');
-    await new Promise(resolve => setTimeout(resolve, 25000));
-    console.log('✅ [OpenVoice] Startup wait complete');
+    // Wait for XTTS models to load (takes ~30-60 seconds)
+    console.log('⏳ [XTTS] Waiting for models to load (this takes ~30 seconds)...');
+    await new Promise(resolve => setTimeout(resolve, 35000));
+    console.log('✅ [XTTS] Startup wait complete');
   }
 
   // Start cleanup interval for rate limiter
@@ -2892,10 +3638,7 @@ process.on('uncaughtException', (error) => {
     }, 2000);
 // ...existing code...
   });
-})().catch(err => {
-  console.error('❌ [FATAL] Server startup failed:', err);
-  process.exit(1);
-});
+}
 
 // Graceful server error handling
 server.on('error', (err) => {

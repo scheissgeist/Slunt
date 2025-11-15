@@ -117,6 +117,13 @@
       color: white;
     }
     
+    #screenShareBtn {
+      background: linear-gradient(135deg, #9C27B0 0%, #7B1FA2 100%);
+      color: white;
+      font-size: 1em;
+      padding: 12px 30px;
+    }
+    
     button:disabled {
       opacity: 0.5;
       cursor: not-allowed;
@@ -208,6 +215,11 @@
       <button id="startBtn">🎤 Start Listening</button>
       <button id="stopBtn" disabled>🔇 Stop</button>
       <button id="interruptBtn" disabled>✋ Interrupt Slunt</button>
+      <button id="screenShareBtn">👁️ Share Screen (Optional)</button>
+    </div>
+    
+    <div id="screenStatus" class="status" style="display: none; font-size: 1em;">
+      📺 Screen sharing: <span id="screenStatusText">Off</span>
     </div>
     
     <div id="error" class="error" style="display: none;"></div>
@@ -222,6 +234,11 @@
         <li><strong>Click "Start Listening"</strong> to begin voice conversation</li>
         <li><strong>Speak naturally</strong> - Slunt will hear you and respond</li>
         <li><strong>Interrupt anytime</strong> - Click interrupt or just start speaking</li>
+        <li><strong>Share Screen (Optional)</strong> - Let Slunt see what you're looking at for context
+          <br><em style="opacity: 0.7;">→ You can choose: Entire screen, specific monitor, or just one window</em>
+          <br><em style="opacity: 0.7;">→ Great for games on other monitors!</em>
+          <br><em style="opacity: 0.7;">→ All screen data auto-deleted after 15 seconds</em>
+        </li>
         <li><strong>Works during streaming</strong> - Keep this open while streaming on Twitch</li>
       </ul>
     </div>
@@ -238,6 +255,9 @@
     const startBtn = document.getElementById('startBtn');
     const stopBtn = document.getElementById('stopBtn');
     const interruptBtn = document.getElementById('interruptBtn');
+    const screenShareBtn = document.getElementById('screenShareBtn');
+    const screenStatusEl = document.getElementById('screenStatus');
+    const screenStatusText = document.getElementById('screenStatusText');
     const transcriptEl = document.getElementById('transcript');
     const errorEl = document.getElementById('error');
     
@@ -248,6 +268,181 @@
     let isListening = false;
     let isSpeaking = false;
     let currentAudio = null;
+    
+    // Push-to-talk variables
+    let isPushToTalkActive = false;
+    let shiftHeld = false;
+    let mouseButton4or5Held = false;
+    
+    // Screen sharing variables
+    let screenStream = null;
+    let captureInterval = null;
+    let isScreenSharing = false;
+
+    // Voice activity detection variables
+    let audioContext = null;
+    let analyser = null;
+    let silenceStart = null;
+    let isCurrentlySpeaking = false;
+    const SILENCE_THRESHOLD = -45; // dB - adjust if needed
+    const SILENCE_DURATION = 250; // ms - FAST auto-stop for snappy responses (reduced from 400ms)
+    let lastAudioSentTime = 0;
+    let pendingResponseId = null;
+
+    // Transcript auto-clear after silence
+    let lastUserSpeechTime = 0;
+    let transcriptClearTimer = null;
+    const TRANSCRIPT_CLEAR_DELAY = 2000; // Clear after 2 seconds of silence - fast and tight
+
+    function scheduleTranscriptClear() {
+      // Cancel any existing timer
+      if (transcriptClearTimer) {
+        clearTimeout(transcriptClearTimer);
+      }
+      
+      // Set new timer to clear old user messages after silence
+      transcriptClearTimer = setTimeout(() => {
+        const now = Date.now();
+        const timeSinceLastSpeech = now - lastUserSpeechTime;
+        
+        // Only clear if it's been long enough since last speech
+        if (timeSinceLastSpeech >= TRANSCRIPT_CLEAR_DELAY) {
+          // Remove all "you" messages from transcript, keep only Slunt's responses
+          const transcriptItems = transcriptEl.querySelectorAll('.transcript-item');
+          transcriptItems.forEach(item => {
+            if (item.classList.contains('you')) {
+              item.remove();
+            }
+          });
+          console.log('🗑️ Cleared old user messages from transcript after silence');
+        }
+      }, TRANSCRIPT_CLEAR_DELAY);
+    }
+
+    // Voice activity detection - monitors audio level
+    function checkAudioLevel() {
+      if (!analyser || !isPushToTalkActive) return;
+
+      const dataArray = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(dataArray);
+
+      // Calculate average volume
+      const average = dataArray.reduce((sum, value) => sum + value, 0) / dataArray.length;
+      const volumeDb = 20 * Math.log10(average / 255);
+
+      const now = Date.now();
+
+      if (volumeDb > SILENCE_THRESHOLD) {
+        // Sound detected
+        silenceStart = null;
+        isCurrentlySpeaking = true;
+      } else if (isCurrentlySpeaking) {
+        // Silence detected while speaking
+        if (!silenceStart) {
+          silenceStart = now;
+        } else if (now - silenceStart > SILENCE_DURATION) {
+          // Silence lasted long enough - auto-stop
+          console.log('🔇 AUTO-STOP: Silence detected for ' + SILENCE_DURATION + 'ms');
+          statusEl.textContent += ' (auto-stopped after silence)';
+          if (mediaRecorder && mediaRecorder.state === 'recording') {
+            try {
+              mediaRecorder.stop();
+            } catch (e) {
+              console.log('Error auto-stopping:', e.message);
+            }
+          }
+          isCurrentlySpeaking = false;
+          silenceStart = null;
+        }
+      }
+
+      // Continue monitoring
+      if (isPushToTalkActive) {
+        requestAnimationFrame(checkAudioLevel);
+      }
+    }
+
+    // Push-to-talk: Shift + Mouse Button 4 or 5
+    function updatePushToTalkState() {
+      const wasActive = isPushToTalkActive;
+      isPushToTalkActive = shiftHeld && mouseButton4or5Held;
+
+      if (isPushToTalkActive && !wasActive && mediaRecorder && isListening) {
+        console.log('🎤 Push-to-talk ACTIVATED - Recording...');
+        statusEl.textContent = '🎤 Recording (speak now, will auto-stop after brief pause)';
+        statusEl.className = 'status listening';
+
+        // If user starts speaking again while Slunt is responding, interrupt him
+        const now = Date.now();
+        if (pendingResponseId && now - lastAudioSentTime < 10000) {
+          console.log('🔇 User interrupted - canceling pending response');
+          socket.emit('voice:interrupt', { responseId: pendingResponseId });
+          pendingResponseId = null;
+        }
+        try {
+          audioChunks = [];
+          silenceStart = null;
+          isCurrentlySpeaking = false;
+          mediaRecorder.start();
+          // Start monitoring audio for silence detection
+          checkAudioLevel();
+        } catch (e) {
+          console.log('MediaRecorder already started:', e.message);
+        }
+      } else if (!isPushToTalkActive && wasActive && mediaRecorder && isListening) {
+        console.log('🔇 Push-to-talk RELEASED - Stopped recording');
+        statusEl.textContent = 'Muted (Hold Shift + Mouse Button 4/5 to talk)';
+        statusEl.className = 'status';
+        isCurrentlySpeaking = false;
+        silenceStart = null;
+        try {
+          if (mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+          }
+        } catch (e) {
+          console.log('MediaRecorder already stopped:', e.message);
+        }
+      }
+    }
+
+    // Keyboard listeners
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Shift') {
+        shiftHeld = true;
+        updatePushToTalkState();
+      }
+    });
+
+    document.addEventListener('keyup', (e) => {
+      if (e.key === 'Shift') {
+        shiftHeld = false;
+        updatePushToTalkState();
+      }
+    });
+
+    // Mouse button listeners (buttons 3 and 4 are mouse buttons 4 and 5)
+    document.addEventListener('mousedown', (e) => {
+      if (e.button === 3 || e.button === 4) {
+        e.preventDefault();
+        mouseButton4or5Held = true;
+        updatePushToTalkState();
+      }
+    });
+
+    document.addEventListener('mouseup', (e) => {
+      if (e.button === 3 || e.button === 4) {
+        e.preventDefault();
+        mouseButton4or5Held = false;
+        updatePushToTalkState();
+      }
+    });
+
+    // Reset on window blur (safety)
+    window.addEventListener('blur', () => {
+      shiftHeld = false;
+      mouseButton4or5Held = false;
+      updatePushToTalkState();
+    });
 
     startBtn.addEventListener('click', async () => {
       updateStatus('Requesting microphone...', '');
@@ -258,7 +453,15 @@
           return;
         }
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        updateStatus('Microphone access granted', '');
+
+        // Set up audio analyser for voice activity detection
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioContext.createMediaStreamSource(stream);
+        analyser = audioContext.createAnalyser();
+        analyser.fftSize = 2048;
+        source.connect(analyser);
+
+        updateStatus('Microphone ready - Push-to-talk enabled', '');
         mediaRecorder = new MediaRecorder(stream);
         audioChunks = [];
         mediaRecorder.ondataavailable = (event) => {
@@ -272,6 +475,10 @@
           updateStatus('MediaRecorder error', '');
         };
         mediaRecorder.onstop = async () => {
+          if (audioChunks.length === 0) {
+            console.log('No audio chunks recorded');
+            return;
+          }
           const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
           addTranscript('you', '[Voice message sent]');
           updateStatus('Processing...', '');
@@ -287,15 +494,16 @@
             updateStatus('Audio read error', '');
           };
           reader.readAsArrayBuffer(audioBlob);
+          audioChunks = []; // Clear for next recording
         };
-        mediaRecorder.start();
         isListening = true;
-        updateStatus('Listening...', 'listening');
+        updateStatus('Muted (Hold Shift + Mouse Button 4/5 to talk)', '');
         startBtn.disabled = true;
         stopBtn.disabled = false;
         interruptBtn.disabled = false;
         clearError();
-        transcriptEl.innerHTML = '<p style="text-align: center; opacity: 0.5;">Listening for your voice...</p>';
+        transcriptEl.innerHTML = '<p style="text-align: center; opacity: 0.5;">Push-to-talk ready...</p>';
+        console.log('🎤 Push-to-talk mode enabled. Hold Shift + Mouse Button 4 or 5 to speak.');
       } catch (error) {
         console.error('Error starting microphone:', error);
         showError('Error starting microphone: ' + error.message);
@@ -305,8 +513,15 @@
 
     stopBtn.addEventListener('click', () => {
       if (mediaRecorder && isListening) {
-        mediaRecorder.stop();
+        try {
+          if (mediaRecorder.state === 'recording') {
+            mediaRecorder.stop();
+          }
+        } catch (e) {}
         isListening = false;
+        isPushToTalkActive = false;
+        shiftHeld = false;
+        mouseButton4or5Held = false;
         updateStatus('Stopped', '');
         startBtn.disabled = false;
         stopBtn.disabled = true;
@@ -331,10 +546,141 @@
       addTranscript('system', '⏸️ Speech interrupted');
     }
     
+    // Screen sharing functionality
+    screenShareBtn.addEventListener('click', async () => {
+      if (isScreenSharing) {
+        stopScreenSharing();
+      } else {
+        await startScreenSharing();
+      }
+    });
+    
+    async function startScreenSharing() {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getDisplayMedia) {
+          showError('Screen sharing not supported in this browser');
+          return;
+        }
+        
+        // Request screen sharing - browser will show picker for screen/monitor/window
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: { 
+            width: 1920, 
+            height: 1080,
+            frameRate: 1 // Low frame rate for efficiency
+          },
+          audio: false,
+          // Prefer entire screen/monitor for games, but user can still choose window
+          preferCurrentTab: false
+        });
+        
+        isScreenSharing = true;
+        screenShareBtn.textContent = '🛑 Stop Sharing Screen';
+        screenShareBtn.style.background = 'linear-gradient(135deg, #f44336 0%, #da190b 100%)';
+        screenStatusEl.style.display = 'block';
+        screenStatusText.textContent = 'Active';
+        screenStatusText.style.color = '#4CAF50';
+        
+        // Handle stream ending (user stops sharing)
+        screenStream.getVideoTracks()[0].addEventListener('ended', () => {
+          stopScreenSharing();
+        });
+        
+        // Capture and send frames every 5 seconds
+        captureInterval = setInterval(() => {
+          if (isScreenSharing) {
+            captureAndSendFrame();
+          }
+        }, 5000);
+        
+        // Send initial frame
+        captureAndSendFrame();
+        
+        console.log('Screen sharing started');
+      } catch (error) {
+        console.error('Screen sharing error:', error);
+        if (error.name === 'NotAllowedError') {
+          showError('Screen sharing permission denied');
+        } else {
+          showError('Screen sharing error: ' + error.message);
+        }
+      }
+    }
+    
+    function stopScreenSharing() {
+      if (screenStream) {
+        screenStream.getTracks().forEach(track => track.stop());
+        screenStream = null;
+      }
+      
+      if (captureInterval) {
+        clearInterval(captureInterval);
+        captureInterval = null;
+      }
+      
+      isScreenSharing = false;
+      screenShareBtn.textContent = '👁️ Share Screen (Optional)';
+      screenShareBtn.style.background = '';
+      screenStatusEl.style.display = 'none';
+      screenStatusText.textContent = 'Off';
+      
+      console.log('Screen sharing stopped');
+    }
+    
+    async function captureAndSendFrame() {
+      if (!screenStream || !isScreenSharing) return;
+      
+      try {
+        // Create video element
+        const video = document.createElement('video');
+        video.srcObject = screenStream;
+        video.muted = true;
+        await video.play();
+        
+        // Wait for video to be ready
+        await new Promise(resolve => {
+          if (video.readyState >= 2) resolve();
+          else video.addEventListener('loadedmetadata', resolve, { once: true });
+        });
+        
+        // Create canvas and capture frame
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.min(video.videoWidth, 1920);
+        canvas.height = Math.min(video.videoHeight, 1080);
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // Convert to JPEG blob (compressed)
+        canvas.toBlob((blob) => {
+          if (blob) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              // Send base64 image to server
+              socket.emit('voice:screenFrame', {
+                data: reader.result,
+                timestamp: Date.now(),
+                description: 'User screen content',
+                deleteAfterProcessing: true // Tell server to delete after analysis
+              });
+              console.log('Screen frame sent to server (will be auto-deleted)');
+            };
+            reader.readAsDataURL(blob);
+          }
+        }, 'image/jpeg', 0.7); // 70% quality for better detail (games/action)
+        
+        // Clean up video
+        video.pause();
+        video.srcObject = null;
+      } catch (error) {
+        console.error('Frame capture error:', error);
+      }
+    }
+    
     // Socket events
     socket.on('voice:response', async (data) => {
       console.log('Slunt response:', data);
-      addTranscript('slunt', data.text);
+      pendingResponseId = null; // Clear pending response - we got it!
+      addTranscript('slunt', data.text, data.timing);
       // Play audio if available
       if (data.audioUrl) {
         await playAudio(data.audioUrl);
@@ -365,8 +711,24 @@
       if (data && data.text) {
         addTranscript('you', data.text);
         updateStatus('Transcript received', '');
+        
+        // Track when user last spoke
+        lastUserSpeechTime = Date.now();
+        
+        // Schedule transcript clearing after silence
+        scheduleTranscriptClear();
+        
         // Send recognized text for Slunt to respond
-        socket.emit('voice:speech', { text: data.text });
+        lastAudioSentTime = Date.now();
+        pendingResponseId = Date.now(); // Use timestamp as simple ID
+
+        // Use streaming for faster perceived response time
+        const useStreaming = true; // Enable streaming mode
+        if (useStreaming) {
+          socket.emit('voice:speech:stream', { text: data.text, responseId: pendingResponseId });
+        } else {
+          socket.emit('voice:speech', { text: data.text, responseId: pendingResponseId });
+        }
       } else {
         showError('No transcript received');
       }
@@ -388,7 +750,101 @@
       console.error('Voice error:', data);
       showError(data.message || 'Voice system error');
     });
-    
+
+    // Streaming audio handlers
+    let streamingAudioQueue = [];
+    let streamingResponseId = null;
+    let streamingText = '';
+
+    socket.on('voice:stream:start', (data) => {
+      console.log('🎙️ Stream started:', data.text);
+      streamingResponseId = data.responseId;
+      streamingText = data.text;
+      streamingAudioQueue = [];
+      isSpeaking = true;
+      updateStatus('Slunt is speaking (streaming)...', 'speaking');
+    });
+
+    socket.on('voice:stream:chunk', async (data) => {
+      if (data.responseId !== streamingResponseId) {
+        console.warn('⚠️ Received chunk for different response, ignoring');
+        return;
+      }
+
+      console.log(`📦 Received chunk ${data.chunkIdx}: ${data.audioUrl}`);
+
+      // Queue the chunk
+      streamingAudioQueue.push({
+        idx: data.chunkIdx,
+        audioUrl: data.audioUrl,
+        timestamp: data.timestamp
+      });
+
+      // Sort by index to ensure correct order
+      streamingAudioQueue.sort((a, b) => a.idx - b.idx);
+
+      // Start playing if not already playing
+      if (!currentAudio && streamingAudioQueue.length > 0) {
+        playNextStreamChunk();
+      }
+    });
+
+    socket.on('voice:stream:end', (data) => {
+      console.log(`✅ Stream complete: ${data.totalChunks} chunks`);
+
+      // Add to transcript with timing
+      if (streamingText) {
+        addTranscript('slunt', streamingText, data.timing);
+      }
+
+      // Reset streaming state
+      streamingResponseId = null;
+      streamingText = '';
+    });
+
+    async function playNextStreamChunk() {
+      if (streamingAudioQueue.length === 0) {
+        // No more chunks to play
+        if (streamingResponseId === null) {
+          // Stream is complete
+          isSpeaking = false;
+          currentAudio = null;
+          if (isListening) {
+            updateStatus('Listening...', 'listening');
+          }
+        }
+        return;
+      }
+
+      const chunk = streamingAudioQueue.shift();
+      console.log(`▶️ Playing chunk ${chunk.idx}`);
+
+      try {
+        currentAudio = new Audio(chunk.audioUrl);
+        currentAudio.playbackRate = 1.5; // Hoff talks quick
+
+        currentAudio.onended = () => {
+          currentAudio = null;
+          // Play next chunk
+          playNextStreamChunk();
+        };
+
+        currentAudio.onerror = (error) => {
+          console.error('Streaming chunk playback error:', error);
+          currentAudio = null;
+          // Try next chunk
+          playNextStreamChunk();
+        };
+
+        await currentAudio.play();
+      } catch (error) {
+        console.error('Error playing streaming chunk:', error);
+        currentAudio = null;
+        // Try next chunk
+        playNextStreamChunk();
+      }
+    }
+
     // Detect when user starts speaking (for interruption)
     if (typeof recognition !== 'undefined' && recognition) {
       const orig = recognition.onspeechstart;
@@ -403,7 +859,7 @@
         currentAudio = new Audio(audioUrl);
         
         // Play Monster voice 30% faster
-        currentAudio.playbackRate = 1.3;
+        currentAudio.playbackRate = 1.5; // 50% faster - Hoff talks quick
         
         currentAudio.onended = () => {
           isSpeaking = false;
@@ -432,17 +888,26 @@
       statusEl.className = 'status ' + className;
     }
     
-    function addTranscript(speaker, text) {
+    function addTranscript(speaker, text, timing) {
       const item = document.createElement('div');
       item.className = `transcript-item ${speaker}`;
       
       const speakerLabel = speaker === 'you' ? 'You' : speaker === 'slunt' ? 'Slunt' : 'System';
       const timestamp = new Date().toLocaleTimeString();
       
+      // Add timing info if available
+      let timingInfo = '';
+      if (timing && timing.total) {
+        const aiTime = timing.ai || 0;
+        const ttsTime = timing.tts || 0;
+        timingInfo = `<div class="timing" style="font-size: 10px; color: #666; margin-top: 2px;">⏱️ ${timing.total}ms (AI: ${aiTime}ms, TTS: ${ttsTime}ms)</div>`;
+      }
+      
       item.innerHTML = `
         <div class="speaker">${speakerLabel}</div>
         <div>${text}</div>
         <div class="timestamp">${timestamp}</div>
+        ${timingInfo}
       `;
       
       // Remove placeholder text if exists

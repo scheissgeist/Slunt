@@ -22,6 +22,10 @@ class TwitchClient extends EventEmitter {
     this.rateLimits = new Map(); // channel -> messages in window
     this.rateWindow = 30000; // 30 seconds
     this.maxMessagesPerWindow = 20; // Twitch limit for regular users
+    
+    // Duplicate message detection
+    this.seenMessages = new Map(); // messageId -> timestamp
+    this.messageCacheWindow = 10000; // 10 seconds - should be enough to catch duplicates
   }
 
   /**
@@ -116,6 +120,28 @@ class TwitchClient extends EventEmitter {
     // Ignore bot's own messages
     if (self) {
       return;
+    }
+
+    // Deduplicate messages using message ID
+    const messageId = tags.id;
+    if (messageId && this.seenMessages.has(messageId)) {
+      // Already processed this message
+      return;
+    }
+
+    // Store message ID with timestamp
+    if (messageId) {
+      this.seenMessages.set(messageId, Date.now());
+      
+      // Clean up old entries periodically (every 100 messages)
+      if (this.seenMessages.size > 100) {
+        const now = Date.now();
+        for (const [id, timestamp] of this.seenMessages.entries()) {
+          if (now - timestamp > this.messageCacheWindow) {
+            this.seenMessages.delete(id);
+          }
+        }
+      }
     }
 
     // Clean channel name (remove #)

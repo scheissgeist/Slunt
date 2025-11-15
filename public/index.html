@@ -610,6 +610,23 @@
                 </div>
             </div>
 
+            <!-- Umbra Protocol -->
+            <div class="card">
+                <h2>😎 Umbra Protocol</h2>
+                <div style="text-align: center; font-size: 1.5em; color: #8b5cf6; margin: 15px 0;" id="umbraStatus">INACTIVE</div>
+                <div class="stat">
+                    <span class="stat-label">Status:</span>
+                    <span class="stat-value" id="umbraActive">Inactive</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-label">Total Overshares:</span>
+                    <span class="stat-value" id="umbraOvershares">0</span>
+                </div>
+                <div style="margin-top: 15px; padding: 10px; background: rgba(139,92,246,0.2); border-radius: 5px; font-size: 0.9em;">
+                    💬 "StonerPony420 Energy" - Overshares dating life
+                </div>
+            </div>
+
             <!-- Dopamine System -->
             <div class="card">
                 <h2>⚡ Dopamine System</h2>
@@ -1085,9 +1102,21 @@
         socket.on('hipster_update', (data) => {
             if (!data) return;
             
-            document.getElementById('hipsterBand').textContent = data.currentFavorite || '-';
-            document.getElementById('hipsterStatus').textContent = data.isActive ? '🎸 Active' : 'Inactive';
-            document.getElementById('hipsterMentions').textContent = data.totalActivations || 0;
+            document.getElementById('hipsterBand').textContent = data.currentBand || '-';
+            document.getElementById('hipsterStatus').textContent = data.isActive ? '🎸 ACTIVE' : 'Inactive';
+            document.getElementById('hipsterMentions').textContent = data.mentions || 0;
+        });
+
+        // Umbra Protocol Updates
+        socket.on('umbra_update', (data) => {
+            if (!data) return;
+            
+            const status = data.isActive ? '😎 ACTIVE' : 'INACTIVE';
+            document.getElementById('umbraStatus').textContent = status;
+            document.getElementById('umbraStatus').style.color = data.isActive ? '#8b5cf6' : '#6b7280';
+            document.getElementById('umbraActive').textContent = data.isActive ? '😎 OVERSHARING' : 'Inactive';
+            document.getElementById('umbraActive').style.color = data.isActive ? '#8b5cf6' : 'inherit';
+            document.getElementById('umbraOvershares').textContent = data.overshares || 0;
         });
 
         // Dopamine Updates
