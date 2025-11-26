@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir /b /s \"c:\\Users\\Batman\\Desktop\\Slunt\\Slunt\\*.js\")",
+      "Bash(findstr:*)",
+      "Bash(npm install:*)",
+      "Bash(netstat:*)",
+      "Bash(node server.js:*)",
+      "Bash(timeout 15 node:*)",
+      "Bash(curl:*)",
+      "Bash(timeout:*)",
+      "Bash(dir /b openvoice-envScriptspython.exe)",
+      "Bash(start-xtts.bat)",
+      "Bash(cmd /c start-xtts.bat)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

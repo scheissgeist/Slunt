@@ -1,0 +1,11 @@
+{
+  "botScript": "contextual-slunt-bot.js",
+  "maxRuntime": 86400000,
+  "autoRestart": true,
+  "logLevel": "info",
+  "chatSettings": {
+    "responseDelay": 2000,
+    "maxMessagesPerMinute": 10,
+    "idleTimeout": 300000
+  }
+}

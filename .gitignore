@@ -1,0 +1,62 @@
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Environment variables (CRITICAL - has API keys)
+.env
+.env.local
+.env.*.local
+
+# Python virtual environments
+openvoice-env/
+venv/
+*.pyc
+__pycache__/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# Data files (user data, analytics)
+data/
+*.json.backup
+metrics/
+
+# Voice/model files (too large for git)
+D:\Voices/
+*.wav
+*.mp3
+*.pth
+*.ckpt
+
+# Screenshots/temp files
+screenshot_*.png
+temp/
+tmp/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+.vscode/
+.idea/
+*.code-workspace
+
+# Puppeteer cache
+.cache/
+puppeteer/.local-chromium/
+
+# Terminal files
+terminals/
+
+# Build artifacts
+dist/
+build/
+
+# Test coverage
+coverage/
